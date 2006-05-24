@@ -12,11 +12,7 @@ module DAVAZ
 			LANGUAGES = [
 				'en'
 			]
-			def initialize(session)
-				@zone = session.zone
-				super
-			end
-			def base_url(zone=@zone)
+			def base_url(zone=@session.zone)
 				[@session.http_protocol + ':/', @session.server_name, @language, zone].compact.join("/")
 			end
 			DICTIONARIES = {
@@ -195,7 +191,7 @@ module DAVAZ
 				:movies_css				=>	'css/movies.css',
 				:work_title				=>	'images/global/work.gif',
 			}
-			def event_url(zone=@zone, event=:home, args={})
+			def event_url(zone=@session.zone, event=:home, args={})
 				args = args.collect { |*pair| pair }.flatten
 				arr = [base_url(zone), event]
 				arr.push(args).compact.join('/')

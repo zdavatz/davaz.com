@@ -5,7 +5,7 @@
 
 module DAVAZ
 	SERVER_NAME = 'www.davaz.com'
-	SERVER_URI = "druby://localhost:10000"
+	SERVER_URI = "druby://localhost:9998"
 	PROJECT_ROOT = File.expand_path('../..', File.dirname(__FILE__))
 	DOCUMENT_ROOT = File.join(PROJECT_ROOT, 'doc')
 	SMTP_SERVER = 'mail.ywesee.com'

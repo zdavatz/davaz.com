@@ -8,7 +8,7 @@ require 'util/davazconfig'
 DRb.start_service('druby://localhost:0')
 
 begin
-	SBSM::Request.new('druby://localhost:10000').process
+	SBSM::Request.new(DAVAZ::SERVER_URI).process
 rescue Exception => e
 	$stderr << "DAVAZ-Client-Error: " << e.message << "\n"
 	$stderr << e.class << "\n"

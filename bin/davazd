@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby
 # OddbServer
 
-$: << File.expand_path("..", File.dirname(__FILE__))
-$: << File.expand_path("../..", File.dirname(__FILE__))
+$: << File.expand_path("../src", File.dirname(__FILE__))
 
 require 'drb/drb'
-require 'src/util/drbserver'
-require 'src/util/davazapp'
-require 'src/util/db_manager'
+require 'util/drbserver'
+require 'util/davazapp'
+require 'util/db_manager'
 
 db_manager = DAVAZ::Util::DbManager.new
 app = DAVAZ::Util::DavazApp.new

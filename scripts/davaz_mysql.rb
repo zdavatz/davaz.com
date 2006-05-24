@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # DavazMySQL -- davaz.com -- 22.08.2005 -- mhuggler@ywesee.com
 
+$: << File.expand_path("../", File.dirname(__FILE__))
+
 require 'mysql'
 require 'fileutils'
 require 'yaml'
@@ -9,7 +11,7 @@ require 'rexml/document'
 require 'scripts/parse_html'
 
 module DavazMySQL
-	OLD_DAVAZ_DIR = 'davaz.php'
+	OLD_DAVAZ_DIR = 'davaz.com'
 	module Table
 		class Table 
 			def table_name
@@ -773,13 +775,13 @@ CREATE TABLE tools (
 			attr_accessor :display_id, :to_display_id
 		end
 		def initialize
+			file = File.expand_path("../etc/db_connection_data.yml", File.dirname(__FILE__))
+			data = YAML.load(File.read(file))
 			host = 'localhost'
-			user = 'davaz'
-			passwd = 'juerg'
 			old_db = 'davaz'
 			new_db = 'davaz2'
-			@old_mysql = Mysql.connect(host, user, passwd, old_db)
-			@new_mysql = Mysql.connect(host, user, passwd, new_db)
+			@old_mysql = Mysql.connect(host, data['user'], data['password'], old_db)
+			@new_mysql = Mysql.connect(host, data['user'], data['password'], new_db)
 		end
 		def get_tables
 			tables = @old_mysql.list_tables
@@ -1195,14 +1197,14 @@ CREATE TABLE tools (
 					end
 					if(lti.linked_to == :displayelements)
 						query = [
-							"INSERT INTO #{lti.linked_to.to_s}_displayelements VALUE ( '",
+							"INSERT INTO #{lti.linked_to.to_s}_displayelements VALUES ('",
 							lti.display_id, "','",
 							lti.to_display_id,
 							"');"
 						].join()
 					else
 						query = [
-							"INSERT INTO #{lti.linked_to.to_s}_displayelements VALUE ( '",
+							"INSERT INTO #{lti.linked_to.to_s}_displayelements VALUES ('",
 							link_id.to_s, "','",
 							display_id.to_s,
 							"');"

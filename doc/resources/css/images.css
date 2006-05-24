@@ -1,0 +1,15 @@
+div.zone-image {
+	background-image: url("/resources/images/global/topleft.gif");
+}
+
+div.content {
+	text-align: center;
+}
+
+div.image {
+	text-align: center;
+	padding-top: 20px;
+}
+div.comment {
+	text-align: center;
+}

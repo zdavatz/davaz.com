@@ -1,0 +1,237 @@
+#foot-container {
+	clear: both;
+	padding-left: 180px;
+	padding-right: 0px;
+}
+
+#foot-container .column {
+	position: relative;
+	float: left;
+}
+
+#foot-navigation {
+	height: 20px;
+	width: 100%;
+	text-align: right; 
+	color: white;
+	background: #990099;
+}
+
+div#copyright {
+	width: 180px;
+	right: 180px;
+	margin-left: -100%;
+	height: 20px;
+	text-align: left;
+	color: white;
+	background: #990099;
+}
+
+/*** IE6 Fix ***/
+* html #copyright {
+	  left: 0px; 
+}
+
+
+/*
+div.foot-navigation-navigation {
+	position: relative;
+	top: -15px;
+	left: 20%;
+	width: 78%;
+	text-align: right;
+	z-index: 2;
+}
+*/
+
+a.foot-navigation:visited,a.foot-navigation:link {
+	color: white;
+	background: #990099;
+	font: 9pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	text-align: center;
+}
+
+a.foot-navigation:hover {
+	color: blue;
+	background: #990099;
+	font: 9pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	text-align: center;
+}
+
+div#top-navigation {
+	height: 37px;
+	background: #990099;
+	color: #DAA520;
+	font-weight: bold;
+	text-align: center; 
+	z-index: 1;
+	padding-top: 15px;
+}
+
+/*
+div.inner-top-navigation {
+	padding-top: 15px;
+	font: bold 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	color: #DAA520;
+	margin-left: auto; margin-right: auto;
+	margin-top: auto; margin-bottom: auto;
+}
+*/
+
+a.top-navigation:visited, a.top-navigation:link {
+	color: #DAA520;
+	font: bold 10pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	text-align: center;
+}
+
+a.top-navigation:hover {
+	color: white;
+	font: bold 10pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	text-align: center;
+}
+
+div#logo {
+	position: absolute;
+	top: 0px;
+	right: 10px;
+	width:45px;
+	height:45px;
+	z-index: 3;
+}
+
+a#logo:visited, a#logo:link {
+	background-image: url("/resources/images/global/DaVaz_logo.gif");
+	background-repeat: no-repeat;
+	display: block;
+}
+
+a#logo:hover {
+	background-image: url("/resources/images/global/DaVaz_logo_i.gif");
+	background-repeat: no-repeat;
+	display: block;
+}
+
+
+div#left-navigation {
+	padding-top: 140px;
+	width: 200px;
+	right: 200px;
+	margin-left: -100%;
+	z-index: 3;
+}
+
+/*** IE6 Fix ***/
+* html #left-navigation {
+	  left: 0px;           /* RC width */
+}
+
+ul#left-navigation {
+	list-style: none;
+	padding-left: 0pt;
+}
+
+li.left-navigation {
+	text-align: right;
+	height: 35px;
+}
+
+li.left-navigation-small {
+	text-align: right;
+	height: 25px;
+}
+
+a.lnavlink:link, a.lnavlink:visited {
+	display: block;
+	font-weight: bold;
+	font-size: 12pt; 
+	font-style: italic;
+	text-decoration: none;
+	padding-right: 20px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	color: #996600;
+}
+
+a.small-lnavlink:link, a.small-lnavlink:visited {
+	display: block;
+	font-weight: bold;
+	font-size: 10pt; 
+	font-style: italic;
+	text-decoration: none;
+	padding-right: 20px;
+	color: #996600;
+}
+
+a.lnavlink:hover, a.lnavlink-active:link, 
+a.lnavlink-active:visited {
+	display: block;
+	font-weight: bold;
+	font-size: 12pt; 
+	text-decoration: none;
+	padding-right: 20px;
+	font-style: normal;
+	color: white;
+}
+
+a.small-lnavlink:hover, a.small-lnavlink-active:link, 
+a.small-lnavlink-active:visited {
+	display: block;
+	font-weight: bold;
+	font-size: 10pt; 
+	text-decoration: none;
+	padding-right: 20px;
+	font-style: normal;
+	color: white;
+}
+
+li#design-active, a#design:hover {
+	background-color: #FF6600;
+}
+
+li#drawings-active, a#drawings:hover {
+	background-color: #74ba7c;
+}
+
+li#paintings-active, a#paintings:hover {
+	background-color: #c60c6d;
+}
+
+li#multiples-active, a#multiples:hover {
+	background-color: #ce3dff;
+}
+
+li#movies-active, a#movies:hover {
+	background-color: #7a8a99;
+}
+
+li#photos-active, a#photos:hover {
+	background-color: #39cece;
+}
+
+li#carpets-active, a#carpets:hover {
+	background-color: #ff6c0d;
+}
+
+li#schnitzenthesen-active, a#schnitzenthesen:hover {
+	background-color: #9eff0c;
+}
+
+li#gallery_search-active, a#gallery_search:hover {
+	background-color: #f1171d;
+}
+
+li#lectures-active, a#lectures:hover {
+	background-color: #6d3d0c;
+}
+
+li#exhibitions-active, a#exhibitions:hover {
+	background-color: #f1a309;
+}
+
+li#articles-active, a#articles:hover {
+	background-color: #6d6dff;
+}

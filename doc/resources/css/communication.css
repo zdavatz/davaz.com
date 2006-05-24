@@ -1,0 +1,277 @@
+div#content {
+	background-image: url("/resources/images/global/background.jpg");
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+span.table-info {
+	font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	color: black;
+}
+
+div#top-navigation {
+	padding-left: 200px;
+}
+
+div#zone-image {
+	background-image: url("/resources/images/global/topleft_communication.gif");
+	background-repeat: no-repeat;
+}
+
+div.table-info {
+	padding-bottom: 20px;
+}
+
+input.new-entry {
+	background-color: #990099;
+	width: 200px;
+	color: white;
+	border:3px solid #DDDDDD;
+}
+
+input.add-entry {
+	background-color: #990099;
+	color: white;
+	border:3px solid #DDDDDD;
+}
+
+input.order-item {
+	margin-top: 20px;
+	background-color: #990099;
+	color: white;
+	border:3px solid #DDDDDD;
+}
+
+input.button, input#submit {
+	margin-top: 20px;
+	background-color: #990099;
+	color: white;
+	border:3px solid #DDDDDD;
+}
+
+td.date-right {
+	text-align: right;
+}
+
+td.text, td.text-bg {
+	padding-top: 10px;
+	padding-bottom: 30px;
+	font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	color: black;
+	background: none;
+}
+
+td.image, td.image-bg {
+	padding-top: 10px;
+	text-align: right;
+	padding-bottom: 30px;
+}
+
+div.link-title {
+	width: 700px;
+	margin-left: auto; margin-right: auto;
+	background-color: #990099;
+}
+
+div.link-title-link {
+	float: left;
+	text-align: left;
+}
+
+div.link-title-date {
+	color: white;
+	text-align: right;
+}
+
+div.link-text {
+	width: 700px;
+	margin-left: auto; margin-right: auto;
+	color: black;
+	clear: both;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	text-align: left;
+}
+
+a.link-title:link, a.link-title:visited {
+	color: white;
+	text-decoration: none;
+}
+
+a.link-title:hover {
+	color: blue;
+	text-decoration: none;
+}
+
+table.guestbook-entry {
+	width: 100%;
+	color: black;
+}
+
+td.label {
+	width: 60px;
+	padding-right: 20px;
+	text-align: left;
+}
+
+td.guestbook-entry-text {
+	text-align: left;
+}
+
+td.date-right {
+	text-align: right; 
+}
+
+table.guestbookentry-form {
+	margin-left: auto; margin-right: auto;
+	width: 600px;
+}
+
+td.labels {
+	width: 80px;
+}
+
+td.labels input {
+	background: black;
+}
+
+td.shop-input {
+	width: 30px;
+}
+
+td.shop-name {
+	text-align: left;
+}
+
+td.shop-item {
+	width: 70px;	
+}
+
+td.shop-price {
+	width: 75px;
+}
+
+td.shop-divider {
+	width: 5px;
+}
+
+div.shop-list {
+}
+
+table.shop-list {
+	margin-top: 20px;
+	margin-left: auto; margin-right: auto;
+	width: 700px;
+	color: black;
+}
+
+table.shop-list th {
+	text-align: left;
+	color: red;
+	font-weight: bold;
+	font-size: 14pt;
+}
+
+div#shopping-cart {
+	margin-top: 20px;
+/*	display: none; */
+	margin-left: auto; margin-right: auto;
+	width: 700px;
+	text-align: left;
+	color: black;
+}
+
+table#news-list {
+	margin-left: auto; margin-right: auto;
+	width: 700px;
+}
+
+td.news-title {
+	background-color: #990099;
+	color: white;
+	text-align: left;
+}
+
+td.news-date {
+	background-color: #990099;
+	color: white;
+	text-align: right;
+}
+
+td.news-text {
+	color: black;
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+
+td.news-image img {
+	width: 200px;
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+
+div.guestbook {
+	width: 600px;
+	margin-left: auto; margin-right: auto;
+	border-bottom: 2px solid #990099;
+}
+
+div.guestbook table {
+	padding-top: 30px;
+}
+
+input {
+	background: none;
+}
+
+textarea {
+	background: none;
+}
+
+td.shopping-cart-subtotal {
+	text-align: right;
+	font-weight: bold;
+}
+
+td.shopping-cart-total {
+	border-top: black solid 1pt;
+	text-align: right;
+	font-weight: bold;
+}
+
+td.shopping-cart-total-title {
+	text-align: left;
+	font-weight: bold;
+}
+
+table#shopping-cart {
+	margin-left: auto; margin-right: auto;
+	width: 700px;
+	text-align: left;
+}
+
+div#shopping-address {
+	margin-top: 40px;
+}
+
+table#shopping-address {
+	width: 700px;
+	margin-left: auto; margin-right: auto;
+	text-align: left;
+	color: black;
+}
+
+div#shopping-submit {
+	width: 700px;
+	margin-left: auto; margin-right: auto;
+	text-align: left;
+}
+
+.processingerror, .error {
+	font-weight: bold;
+	color: red;
+}
+
+td.shopping-cart-title {
+	width: 250px;
+}

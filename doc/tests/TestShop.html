@@ -1,0 +1,163 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TestShop</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">TestShop</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/en/communication/shop</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>article[683]</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>500</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=remove all items</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>article[683]</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>500</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>remove item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=remove item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>500</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextNotPresent</td>
+	<td>remove item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>500</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>article[685]</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>500</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>order_item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Please fill out the fields that are marked with red.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>TestName</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>surname</td>
+	<td>TestSurname</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>street</td>
+	<td>TestStreet</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>postal_code</td>
+	<td>TestZip</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>city</td>
+	<td>TestCity</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>country</td>
+	<td>TestCountry</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>TestEmail</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>order_item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Your Postal Code seems to be invalid.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Sorry, but your email-address seems to be invalid. Please try again.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>postal_code</td>
+	<td>8888</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>mhuggler@ywesee.com</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>order_item</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Your order has been succesfully sent.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/en/communication/shop</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

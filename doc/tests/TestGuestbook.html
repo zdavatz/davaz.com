@@ -1,0 +1,88 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>TestGuestbook</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">TestGuestbook</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/en/communication/guestbook</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>new_entry</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>TestName</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>surname</td>
+	<td>TestSurname</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>TestEmail</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>city</td>
+	<td>TestCity</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>add_entry</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Please fill out the fields that are marked with red</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>country</td>
+	<td>TestCountry</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>messagetxt</td>
+	<td>This is a guestbook test entry</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>add_entry</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Sorry, but your email-address seems to be invalid. Please try again</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>mhuggler@ywesee.com</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>add_entry</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>This is a guestbook test entry</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

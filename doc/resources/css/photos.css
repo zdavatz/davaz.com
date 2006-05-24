@@ -1,0 +1,46 @@
+div#content {
+	background-image: url("/resources/images/global/background.jpg");
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+div#foot-navigation {
+	background: #33CCCC;
+}
+
+a.foot-navigation:visited,a.foot-navigation:link {
+	background: #33CCCC;
+}
+
+a.foot-navigation:hover {
+	background: #33CCCC;
+}
+
+div#top-navigation {
+	color: #FF6600;
+	background: #33CCCC;
+	padding-left: 200px;
+}
+
+a.top-navigation:visited, a.top-navigation:link {
+	color: #FF6600;
+	background: #33CCCC;
+}
+
+a.top-navigation:hover {
+	color: white;
+	background: #33CCCC;
+}
+
+div#copyright {
+	background: #33CCCC;
+}
+
+div#zone-image {
+	background-image: url("/resources/images/global/topleft_photos.gif");
+	background-repeat: no-repeat;
+}
+
+a.inner-top-navigation:visited, a.inner-top-navigation:link {
+	color: #FF6600;
+}

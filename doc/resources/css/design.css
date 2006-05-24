@@ -1,0 +1,36 @@
+div#content {
+	background-image: url("/resources/images/global/background.jpg");
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+div#foot-navigation {
+	background: #FF6600;
+}
+a.foot-navigation:visited,a.foot-navigation:link {
+	background: #FF6600;
+}
+a.foot-navigation:hover {
+	background: #FF6600;
+}
+div#top-navigation {
+	color: #FFFF00;
+	background: #FF6600;
+	padding-left: 200px;
+}
+a.top-navigation:visited, a.top-navigation:link {
+	color: #FFFF00;
+	background: #FF6600;
+}
+a.top-navigation:hover {
+	color: white;
+	background: #FF6600;
+}
+div#zone-image {
+	background-image: url("/resources/images/global/topleft_drawings.gif");
+	background-repeat: no-repeat;
+}
+
+div#copyright {
+	background: #FF6600;
+}

@@ -1,0 +1,65 @@
+div#content {
+	background-image: url("/resources/images/global/background.jpg");
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+div#foot-navigation {
+	background: #663300;
+}
+
+a.foot-navigation:visited,a.foot-navigation:link {
+	background: #663300;
+}
+
+a.foot-navigation:hover {
+	background: #663300;
+}
+
+div#top-navigation {
+	color: #DAA520;
+	background: #663300;
+	padding-left: 200px;
+}
+
+a.top-navigation:visited, a.top-navigation:link {
+	color: #DAA520;
+	background: #663300;
+}
+
+a.top-navigation:hover {
+	color: white;
+	background: #663300;
+}
+
+div#copyright {
+	background: #663300;
+}
+
+div#zone-image {
+	background-image: url("/resources/images/global/topleft_lectures.gif");
+	background-repeat: no-repeat;
+}
+
+div.lectures {
+	width: 600px; 
+	margin-left: auto; margin-right: auto;
+	padding-top: 10px;
+	text-align: left;
+	color: black;
+}
+
+div.lectures a:link, div.lectures a:visited {
+	text-decoration: none;
+	color: blue;
+}
+
+div.lectures a:hover {
+	color: red;
+}
+
+h1.block-title {
+	display: inline;
+	font-size: 10pt;
+	font-weight: normal;
+}

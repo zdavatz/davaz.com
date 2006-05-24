@@ -1,0 +1,61 @@
+div#content {
+	background-image: url("/resources/images/global/background.jpg");
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+div#foot-navigation {
+	background: #F0A000;
+}
+
+a.foot-navigation:visited,a.foot-navigation:link {
+	background: #F0A000;
+}
+
+a.foot-navigation:hover {
+	background: #F0A000;
+}
+
+div#top-navigation {
+	color: #FFFF68;
+	background: #F0A000;
+	padding-left: 200px;
+}
+
+a.top-navigation:visited, a.top-navigation:link {
+	color: #FFFF68;
+	background: #F0A000;
+}
+
+a.top-navigation:hover {
+	color: white;
+	background: #F0A000;
+}
+
+div#copyright {
+	background: #F0A000;
+}
+
+div#zone-image {
+	background-image: url("/resources/images/global/topleft_exhibitions.gif");
+	background-repeat: no-repeat;
+}
+
+div.exhibitions {
+	color: black;
+	width: 600px;
+	text-align: left;
+	margin-left: auto; margin-right: auto;
+}
+
+div.exhibitions a:link, div.exhibitions a:hover, 
+div.exhibitions a:visited {
+	text-decoration: none;
+}
+
+h1.block-title {
+	display: inline;
+	font-size: 10pt;
+	font-weight: normal;
+	padding-right: 5px;
+}

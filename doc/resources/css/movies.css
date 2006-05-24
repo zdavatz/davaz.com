@@ -1,0 +1,96 @@
+div#content {
+	background-image: url("/resources/images/global/background.jpg");
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+div#foot-navigation {
+	background: #738494;
+}
+
+a.foot-navigation:visited,a.foot-navigation:link {
+	background: #738494;
+}
+
+a.foot-navigation:hover {
+	background: #738494;
+}
+
+div#top-navigation {
+	background: #738494;
+	padding-left: 200px;
+}
+
+a.top-navigation:visited, a.top-navigation:link {
+	background: #738494;
+}
+
+a.top-navigation:hover {
+	background: #738494;
+}
+
+div#copyright {
+	background: #738494;
+}
+
+div#zone-image {
+	background-image: url("/resources/images/global/topleft_movies.gif");
+	background-repeat: no-repeat;
+}
+
+span.movies-details {
+	color: black;
+	font-weight: bold;
+	float: left;
+	clear: both;
+}
+
+span.movies-title {
+	color: red;
+	font-weight: bold;
+}
+
+div.movies-details {
+	float: left;
+	height: 200px;
+	width: 300px;
+	padding-top: 20px;
+	text-align: left;
+}
+
+div.movies-image {
+	float: left;
+	text-align: right;
+	height: 200px;
+	width: 290px;
+	padding-top: 20px;
+}
+
+div.movies-comment {
+	width: 600px;
+	padding-bottom: 10px;
+	text-align: left;
+	color: black;
+}
+
+div.movies-details-link {
+	width: 600px;
+	padding-bottom: 20px;
+	text-align: left;
+	border-bottom: solid #990099 2px;
+}
+
+div.movies-streaming-links {
+	width: 600px;
+	text-align: left;
+	margin-bottom: 5px;
+}
+
+a.inner-top-navigation:visited, a.inner-top-navigation:link {
+	color: #DAA520;
+}
+
+div.movies-list-item {
+	width: 600px;
+	margin-left: auto; margin-right: auto;
+}

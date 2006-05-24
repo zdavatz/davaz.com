@@ -1,0 +1,42 @@
+div#content {
+	background-image: url("/resources/images/global/background.jpg");
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+div#foot-navigation {
+	background: #99FF00;
+}
+
+a.foot-navigation:visited,a.foot-navigation:link {
+	background: #99FF00;
+}
+
+a.foot-navigation:hover {
+	background: #99FF00;
+}
+
+div#top-navigation {
+	color: #3333CC;
+	background: #99FF00;
+	padding-left: 200px;
+}
+
+a.top-navigation:visited, a.top-navigation:link {
+	color: #3333CC;
+	background: #99FF00;
+}
+
+a.top-navigation:hover {
+	color: white;
+	background: #99FF00;
+}
+
+div#copyright {
+	background: #99FF00;
+}
+
+div#zone-image {
+	background-image: url("/resources/images/global/topleft_schnitzenthesen.gif");
+	background-repeat: no-repeat;
+}

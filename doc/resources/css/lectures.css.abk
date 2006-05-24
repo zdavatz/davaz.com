@@ -1,0 +1,54 @@
+div.foot-navigation {
+	background: #663300;
+}
+
+a.foot-navigation:visited,a.foot-navigation:link {
+	background: #663300;
+}
+
+a.foot-navigation:hover {
+	background: #663300;
+}
+
+div.top-navigation {
+	color: #DAA520;
+	background: #663300;
+}
+
+a.top-navigation:visited, a.top-navigation:link {
+	color: #DAA520;
+	background: #663300;
+}
+
+a.top-navigation:hover {
+	color: white;
+	background: #663300;
+}
+
+div.zone-image {
+	background-image: url("/resources/images/lectures/topleft.gif");
+}
+
+div.content {
+	padding-left: 100px;
+}
+
+div.lectures {
+	padding-top: 10px;
+	color: black;
+}
+
+div.lectures a:link, div.lectures a:visited {
+	text-decoration: none;
+	color: blue;
+}
+
+div.lectures a:hover {
+	color: red;
+}
+
+h1.block-title {
+	display: inline;
+	font-size: 10pt;
+	font-weight: normal;
+}

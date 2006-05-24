@@ -1,0 +1,11 @@
+<html>
+	<head>
+		<title>Tear down selenium test stubs</title>
+	</head>
+	<body>
+		<% 
+			load 'tear_down.rb' 
+			Selenium::TearDown.new.tear_down_guestbook 
+		%>
+	</body>
+</html>

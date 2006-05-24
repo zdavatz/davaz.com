@@ -1,0 +1,185 @@
+div#content {
+	background-image: url("/resources/images/global/background.jpg");
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+div.text {
+	padding-top: 50px;
+}
+
+div.poem-links {
+	color: blue;
+	padding-top: 50px;
+}
+
+div.slideshow {
+	padding-top: 10px;
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 1;
+}
+
+div.slideshow-container {
+	position: relative;
+	height: 320px;
+	width: 450px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+span.slideshow-image-container {
+	text-align: center;
+}
+
+img.slideshow-image {
+	height: 280px;
+}
+
+span.slideshow-image-title {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+div.family-origin {
+	position: relative;
+	width: 205px;
+	margin-left: auto;
+	margin-right: auto;
+	color: black;
+	font-weight: bold;
+	text-align: center;
+}
+
+div.family-intro {
+	text-align: center;
+	z-index: 3;
+}
+
+div.family-forward-link {
+	text-align: center;
+}
+
+div.oneliner {
+	font: bold 14pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	padding-top: 10px;
+	padding-bottom: 40px;
+	text-align: center;
+}
+
+table#life-time-periods {
+	margin-left: auto; margin-right: auto;
+	width: 800px;
+	text-align: center;
+}
+
+td.life-times {
+	width: 20px;
+}
+
+table.life-time-periods a:link, table.life-time-periods a:visited {
+	text-decoration: none;
+}
+
+div#life-translations {
+	position: relative;
+	width: 100%;
+	padding-top: 20px;
+	text-align: center;
+}
+
+td.title, td.title-bg {
+	font: bold 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	color: white;
+	background: #990099;
+	width: 100%;
+}
+
+td.text, td.text-bg {
+	color: black;
+}
+
+img.no-decoration {
+	text-decoration: none;
+}
+
+a:link, a:visited, a:hover {
+	text-decoration: none;
+}
+
+div.intro-text {
+	position: relative;
+	margin-left: auto; 
+	margin-right: auto;
+	width: 600px;
+	margin-top: 20px;
+	color: black;
+	text-align: center;
+}
+
+div.back-link {
+	width: 60px;
+	margin-left: auto; 
+	margin-right: auto;
+	padding-top: 20px;
+}
+
+h1.block-title {
+	font-size: 10pt;
+	background: #990099;
+	color: white;
+}
+
+ul#biography {
+	margin-left: auto; margin-right: auto;
+	list-style: none;
+	width: 800px;
+	padding-left: 0pt;
+	color: black;
+	text-align: left;
+}
+
+div#zone-image {
+	background-image: url("/resources/images/global/topleft.gif");
+	background-repeat: no-repeat;
+}
+
+div#ticker-link {
+	margin: 20px;
+}
+
+div#top-navigation {
+	padding-left: 200px;
+}
+
+div#cv-chinese, div#cv-hungarian {
+	display: none;
+}
+
+/* Ticker */
+
+div#ticker-container {
+	margin-left: auto; margin-right: auto;
+	overflow: hidden;
+	display: none;
+	height: 143px;
+	/*width: 600px;
+	background-image: url('/resources/images/global/movie.gif');*/
+}
+
+div.ticker-window {
+	height: 143px;
+	overflow: hidden;
+}
+
+div.ticker-window div {
+	float: left;
+	overflow: hidden;
+}
+
+div.ticker-window div img {
+	padding: 2px;
+}
+

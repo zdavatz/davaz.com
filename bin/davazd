@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+# OddbServer
+
+$: << File.expand_path("..", File.dirname(__FILE__))
+$: << File.expand_path("../..", File.dirname(__FILE__))
+
+require 'drb/drb'
+require 'src/util/drbserver'
+require 'src/util/davazapp'
+require 'src/util/db_manager'
+
+db_manager = DAVAZ::Util::DbManager.new
+app = DAVAZ::Util::DavazApp.new
+app.db_manager = db_manager
+server = DAVAZ::Util::DRbServer.new(app)
+
+$0 = "DAVAZ"
+
+DRb.start_service('druby://localhost:10000', server)
+
+DRb.thread.join

@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+# View::OneLiner -- davaz.com -- 24.08.2005 -- mhuggler@ywesee.com
+
+require 'htmlgrid/divcomposite'
+require 'htmlgrid/dojotoolkit'
+
+module DAVAZ
+	module View
+		module Works
+class OneLiner < HtmlGrid::Component
+	def to_html(context)
+		args = {
+			'messages'	=> [],
+			'colors'		=> [],
+		}
+		model.each { |oneliner|
+			oneliner.text.split("\r\n").each { |line|
+				args['colors'].push(oneliner.color_in_hex)
+				args['messages'].push(line)
+			}
+		}
+		dojo_tag('oneliner', args)
+	end
+end
+		end
+	end
+end

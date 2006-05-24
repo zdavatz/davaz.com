@@ -1,0 +1,85 @@
+body {
+	background: #FFFFCC; 
+	font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+}
+.poem {
+	font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	color: black;
+}
+.title {
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+.author {
+	color: blue;
+	padding-top: 10px;
+}
+
+.images {
+	padding-top: 20px;
+}
+
+table.movie-slide {
+	font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+}
+
+td.movie-slide, td.movie-slide-bg {
+	padding-left: 20px;
+	padding-right: 20px;
+	font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	color: black;
+}
+
+td.movie-image, td.movie-image-bg {
+	padding-left: 20px;
+	padding-right: 20px;
+	font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+}
+
+td.streaming-links, td.streaming-links-bg {
+	padding-left: 20px;
+	padding-right: 20px;
+	font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+}
+
+#divmovies {
+	position: absolute;
+	top: 60px;
+}
+
+a.slide-control:visited, a.slide-control:link, a:slide-control:hover {
+	margin: 0px;
+	padding: 0px;
+	text-decoration: none;
+	border: 0px;
+}
+.movie-details-title {
+	background: #990099;
+	color: white;
+	font-weight: bold;
+}
+.movie-details-subtitle {
+	background: #FF33FF;
+	color: white;
+}
+.movie-details-image {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	float: left;
+}
+.movie-details-infos {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	text-align: right;
+}
+.movie-details-comment {
+	clear: both;
+}
+div.popup {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+}
+div.popup-images {
+	padding-bottom: 20px;
+}

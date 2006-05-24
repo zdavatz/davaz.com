@@ -15,6 +15,6 @@ server = DAVAZ::Util::DRbServer.new(app)
 
 $0 = "DAVAZ"
 
-DRb.start_service('druby://localhost:10000', server)
+DRb.start_service(DAVAZ::SERVER_URI, server)
 
 DRb.thread.join

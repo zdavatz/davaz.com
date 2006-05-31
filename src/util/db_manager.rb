@@ -124,7 +124,7 @@ module DAVAZ
 			end
 			def load_serie_objects(table_class, artgroup_id, serie_id)
 				sql = <<-SQL
-					SELECT artobjects_displayelements.*, 
+					SELECT artobjects.title, artobjects_displayelements.*, 
 					displayelements.display_id, displayelements.text AS comment
 					FROM artobjects
 					LEFT JOIN artobjects_displayelements USING (artobject_id)
@@ -140,8 +140,10 @@ module DAVAZ
 				sql = <<-SQL
 					SELECT 
 						slideshow_items.display_id AS display_id,
-						slideshow_items.position
+						slideshow_items.position, 
+						displayelements.title AS title 
 					FROM slideshow_items
+					LEFT JOIN displayelements USING (display_id)
 					WHERE slideshow_items.slideshow='#{title}'
 					ORDER BY slideshow_items.position;
 				SQL
@@ -222,7 +224,7 @@ module DAVAZ
 					ORDER BY #{order} #{order_direction}
 				EOS
 				result = connection.query(query)
-				compose_displayelements_result(result)
+				array = compose_displayelements_result(result)
 			end
 			def load_displayelement(select_by, value)
 				query = <<-EOS
@@ -275,6 +277,28 @@ module DAVAZ
 					end
 				}
 				elements
+			end
+			def load_link_displayelement(link_id)
+				query = <<-EOS
+					SELECT displayelements.*, links.link_id
+					FROM links 
+					JOIN links_displayelements USING (link_id)
+					JOIN displayelements USING (display_id)
+					WHERE links.link_id='#{link_id}'
+				EOS
+				result = connection.query(query) 
+				elements = []
+				result.each_hash { |row|
+					element = DAVAZ::Model::DisplayElement.new
+					row.each { |key, value|
+						method = "#{key}=".to_sym
+						if(element.respond_to?(method))
+							element.send(method, value)
+						end
+					}
+					elements.push(element)
+				}
+				elements.first
 			end
 			def load_link_displayelements(link_id)
 				query = <<-EOS

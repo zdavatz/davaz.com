@@ -37,17 +37,34 @@ ywesee.widget.Ticker = function() {
 			} else {
 				this.imagePosition += 1;	
 			}
-			var div = this.createImageDiv();
+			var div = document.createElement("div");
+			this.assembleImageDiv(div);
+			this.updateImageDiv(div);
 			this.tickerWindow.appendChild(div);
 		}
 		this.endTransition();
 	}
+
+/*
+	this.countChildren = function(parentNode) {
+		count = 0;
+		var node = parentNode.firstChild;	
+		while(node && node.Type != dojo.dom.ELEMENT_NODE){
+			node = node.nextSibling;
+			count += 1;
+		}
+		return count;
+	}
+*/
 	
 	this.endTransition = function () {
 		var _this = this;
+		var div = '';
 		var callback = function() {
 			var firstDiv = dojo.dom.firstElement(_this.tickerWindow, 'div');
-			_this.tickerWindow.removeChild(firstDiv);
+			div = _this.tickerWindow.removeChild(firstDiv);
+			_this.updateImageDiv(div);
+			_this.tickerWindow.appendChild(div);
 			_this.endTransition();
 		};
 		var wipeOutDiv = dojo.dom.firstElement(this.tickerWindow, 'div');
@@ -57,21 +74,20 @@ ywesee.widget.Ticker = function() {
 		} else {
 			this.imagePosition += 1;	
 		}
-		var div = _this.createImageDiv();
-		this.tickerWindow.appendChild(div);
 	}
 
-	this.createImageDiv = function() {
-		var div = document.createElement("div");
+	this.updateImageDiv = function(div) {
+		var link = dojo.dom.firstElement(div, 'a');
+		var img = dojo.dom.firstElement(link, 'img');
 		div.style.width = this.divSize;
 		div.style.height = this.divSize;
 		div.style.clear = "none";
-		var link = this.createImageLink();
-		div.appendChild(link);
-		return div;
+		img.src = this.images[this.imagePosition];
+		img.style.marginLeft = '0px'
+		link.href = this.eventUrls[this.imagePosition];
 	}
 
-	this.createImageLink = function() {
+	this.assembleImageDiv = function(div) {
 		var img = document.createElement("img");
 		img.src = this.images[this.imagePosition];
 		img.alt = "movie";
@@ -81,7 +97,7 @@ ywesee.widget.Ticker = function() {
 		var link = document.createElement("a");
 		link.href = this.eventUrls[this.imagePosition];
 		link.appendChild(img);
-		return link
+		div.appendChild(link);
 	}
 
 	this.wipe = function(node, duration, startWidth, endWidth, callback) {

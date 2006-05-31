@@ -1,8 +1,9 @@
 var toggle_busy = false;
-function toggleImageSrc(imageId, url) {
+function toggleRackImage(imageId, url, titleId, title) {
 	if(toggle_busy) return;
-	var node = dojo.byId(imageId);
-	var src_image_id = node.src.split("/").pop();
+	var imgNode = dojo.byId(imageId);
+	var titleNode = dojo.byId(titleId);
+	var src_image_id = imgNode.src.split("/").pop();
 	var new_image_id = url.split("/").pop();
 	if(src_image_id == new_image_id) return;
 	toggle_busy = true;
@@ -10,10 +11,15 @@ function toggleImageSrc(imageId, url) {
 		toggle_busy = false;
 	}
 	var callback1 = function() {
-		node.src = url;
-		dojo.fx.fadeIn(node, 200, callback2);
+		imgNode.src = url;
+		dojo.fx.fadeIn(imgNode, 200, callback2);
 	}
-	dojo.fx.fadeOut(node, 200, callback1);
+	dojo.fx.fadeOut(imgNode, 200, callback1);
+	var callback3 = function() {
+		titleNode.innerHTML = title;	
+		dojo.fx.fadeIn(titleNode, 200);
+	}
+	dojo.fx.fadeOut(titleNode, 200, callback3);
 }
 
 function toggleSlideshow() {

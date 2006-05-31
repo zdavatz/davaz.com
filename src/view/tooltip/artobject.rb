@@ -4,6 +4,7 @@
 require 'view/tooltip/tooltip'
 require 'htmlgrid/image'
 require 'htmlgrid/divcomposite'
+require 'util/image_helper'
 
 module DAVAZ
 	module View
@@ -17,7 +18,7 @@ class ArtObject < View::ToolTip::ToolTip
 	def image(model)
 		display_id = model.display_id
 		img = HtmlGrid::Image.new(display_id, model, @session, self)
-		url = @lookandfeel.upload_image_path(display_id)
+		url = DAVAZ::Util::ImageHelper.image_path(display_id)
 		img.attributes['src'] = url
 		img.css_class = 'image-tooltip-image'
 		img

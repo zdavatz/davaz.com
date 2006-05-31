@@ -4,39 +4,12 @@
 require 'view/tooltip/tooltip'
 require 'htmlgrid/image'
 require 'htmlgrid/divcomposite'
+require 'util/image_helper'
 
 module DAVAZ
 	module View
 		module ToolTip
-class MoreImagesComposite < HtmlGrid::DivComposite
-	COMPONENTS = {
-		[0,0]	=>	:image,
-		[0,1]	=>	:text, 
-		[0,2]	=>	:more_link,
-	}
-	CSS_MAP = {
-		0	=>	'image-tooltip-image',
-		1	=>	'image-tooltip-text',
-	}
-	def image(model)
-		display_id = model.display_id
-		img = HtmlGrid::Image.new(display_id, model, @session, self)
-		url = @lookandfeel.upload_image_path(display_id)
-		img.attributes['src'] = url
-		img.css_class = 'image-tooltip-image'
-		img
-	end
-	def more_link(model)
-		display_id = model.display_id
-		link_id = model.link_id
-		link = HtmlGrid::Link.new(display_id, @model, @session)
-		args = [ :link_id, link_id ]
-		link.href = @lookandfeel.event_url(:images, :images, args)
-		link.value = @lookandfeel.lookup(:more_images)
-		link
-	end
-end
-class ImageList < HtmlGrid::DivList
+class ImageComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	:image,
 		[0,1]	=>	:text,
@@ -48,23 +21,17 @@ class ImageList < HtmlGrid::DivList
 	def image(model)
 		display_id = model.display_id
 		img = HtmlGrid::Image.new(display_id, model, @session, self)
-		url = @lookandfeel.upload_image_path(display_id)
-		img.attributes['src'] = url
+		url = DAVAZ::Util::ImageHelper.image_path(display_id)
+		img.set_attribute('src', url)
+		img.set_attribute('style', "max-width: #{LARGE_IMAGE_WIDTH};")
 		img.css_class = 'image-tooltip-image'
 		img
 	end
 end
 class Image < View::ToolTip::ToolTip 
 	COMPONENTS = {
-		[0,0] =>	:image_list,
+		[0,0] =>	ImageComposite,
 	}
-	def image_list(model)
-		if(model.size > 1)
-			View::ToolTip::MoreImagesComposite.new(model.first, @session, self)
-		else
-			View::ToolTip::ImageList.new(model, @session, self)
-		end
-	end
 end
 		end
 	end

@@ -3,19 +3,21 @@
 
 require 'htmlgrid/dojotoolkit'
 require 'htmlgrid/component'
+require 'util/image_helper'
 
 module DAVAZ
 	module View
 		class Ticker < HtmlGrid::Component
 			def to_html(context)
 				args = {
-					'images'			=>	[],
-					'eventUrls'		=>	[],
-					'windowWidth'	=>	'780',
+					'images'					=>	[],
+					'eventUrls'				=>	[],
+					'windowWidth'			=>	'780',
+					'componentWidth'	=>	TICKER_COMPONENT_WIDTH,
 				}
 				model.each { |item| 
 					unless(item.display_id.nil?)
-						path = @lookandfeel.upload_image_path(item.display_id)
+						path = DAVAZ::Util::ImageHelper.image_path(item.display_id, 'medium')
 						args['images'].push(path)
 						if(item.class == DAVAZ::Model::ArtObject)
 							event_args = {

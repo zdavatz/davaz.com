@@ -8,6 +8,7 @@ require 'htmlgrid/spancomposite'
 require 'htmlgrid/value'
 require 'htmlgrid/link'
 require 'date'
+require 'util/image_helper'
 
 module DAVAZ
 	module View
@@ -35,9 +36,9 @@ class MovieImage < HtmlGrid::Div
 	def init
 		super
 		img = HtmlGrid::Image.new(:movie_image, @model, @session, self) 
-		url = @lookandfeel.upload_image_path(@model.display_id)
+		url = DAVAZ::Util::ImageHelper.image_path(@model.display_id, 'large')
 		img.attributes['src']	= url
-		img.attributes['width'] = '200px'
+		img.attributes['width'] = MEDIUM_IMAGE_WIDTH 
 		#img.attributes['height'] = '150px'
 		@value = img
 	end

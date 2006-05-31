@@ -29,6 +29,7 @@ ywesee.widget.SlideShow = function(){
 	// useful properties
 	this.images = [];	
 	this.titles = [];
+	this.imageHeight = "200px";
 	this.imageIdx = 0;	
 	this.delay = 4000;
 	this.transitionInterval = 2000; 
@@ -58,6 +59,7 @@ ywesee.widget.SlideShow = function(){
 		dojo.style.setOpacity(this.container2, 0.9999);
 		if(this.images.length>1){
 			this.title2.innerHTML = this.titles[this.imageIdx];
+			this.img2.style.height = this.imageHeight;
 			this.img2.src = this.images[this.imageIdx++];
 			this.endTransition();
 		}else{
@@ -128,6 +130,7 @@ ywesee.widget.SlideShow = function(){
 		dojo.style.setOpacity(this[this.background], 0);
 		this[this.background_title].innerHTML = this.titles[this.imageIdx];
 		this[this.background_image].src = this.images[this.imageIdx++];
+		this[this.background_image].style.height = this.imageHeight;
 		if(this.imageIdx>(this.images.length-1)){
 			this.imageIdx = 0;
 		}

@@ -4,7 +4,7 @@
 require 'htmlgrid/dojotoolkit'
 require 'htmlgrid/divcomposite'
 require 'view/slideshow'
-#require 'image_size'
+require 'util/image_helper'
 
 module DAVAZ
 	module View
@@ -44,14 +44,18 @@ module DAVAZ
 		end
 		class ImageContainer < HtmlGrid::Div
 			def init
-				super
-				div = HtmlGrid::Div.new(@model, @session, self)
 				unless(@model.empty?)
-					display_id = @model.first.display_id
+					image = @model.first
+					display_id = image.display_id
 					img = HtmlGrid::Image.new(display_id, @model, @session, self)
-					url = @lookandfeel.upload_image_path(display_id)
-					img.attributes['src'] = url
+					url = DAVAZ::Util::ImageHelper.image_path(display_id, 'large')
+					img.set_attribute('src', url)
 					img.css_id = 'image-container-image'
+					style = [
+						"max-width: #{LARGE_IMAGE_WIDTH}",
+						"max-height: #{LARGE_IMAGE_WIDTH}"
+					]
+					img.set_attribute('style', style.join(";"))
 					@value = img
 				else
 					div = HtmlGrid::Div.new(@model, @session, self)
@@ -71,8 +75,8 @@ module DAVAZ
 					count = @model.size
 					columns = Math.sqrt(count).round
 					rows = (count.to_f/columns.to_f).ceil
-					@cwidth = (359/columns)-8
-					@rheight = (359/rows)-8
+					@cwidth = (349/columns)-8
+					@rheight = (349/rows)-8
 					@css_style_map = [
 						"width: #{@cwidth}px; height: #{@rheight}px; padding: 4px;"
 					]
@@ -82,7 +86,7 @@ module DAVAZ
 			def image(model)
 				display_id = model.display_id
 				img = HtmlGrid::Image.new(display_id, model, @session, self)
-				url = @lookandfeel.upload_image_path(display_id)
+				url = DAVAZ::Util::ImageHelper.image_path(display_id, 'medium')
 				img.attributes['src'] = url
 				img.css_id = 'thumb-container'
 =begin
@@ -99,19 +103,32 @@ module DAVAZ
 =end
 				link = HtmlGrid::Link.new(display_id, model, @session, self)
 				link.href = "javascript:void(0)"
-				link.attributes['onmouseover'] = "toggleImageSrc('image-container-image', '#{url}')"
+				image_id = 'image-container-image'
+				title_id = 'image-title-span'
+				title = model.title 
+				script = "toggleRackImage('#{image_id}','#{url}','#{title_id}','#{title}')"
+				link.attributes['onmouseover'] = script 
 				link.value = img
 				link
+			end
+		end
+		class ImageTitle < HtmlGrid::Span
+			CSS_ID = 'image-title-span'
+			def init
+				image = @model.first
+				@value = image.title unless image.nil?
 			end
 		end
 		class Rack < HtmlGrid::DivComposite
 			COMPONENTS = {
 				[0,0]	=>	ImageContainer,
 				[0,1]	=>	RackContainer,
+				[0,2]	=>	ImageTitle, 
 			}
 			CSS_ID_MAP = {
 				0	=>	'image-container',
 				1	=>	'thumb-container',
+				2	=>	'image-title-container',
 			}
 		end
 		class SlideshowDiv < HtmlGrid::Div

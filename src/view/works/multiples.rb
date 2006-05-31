@@ -4,6 +4,7 @@
 require 'view/publictemplate'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/spanlist'
+require 'util/image_helper'
 
 module DAVAZ
 	module View
@@ -22,7 +23,7 @@ class JavaAppletDiv < HtmlGrid::Div
 	CSS_ID = "java-applet"
 	def init
 		super
-		image = @lookandfeel.upload_image_path(@model.display_id)
+		image = DAVAZ::Util::ImageHelper.image_path(@model.display_id)
 		@value = <<-EOS
 <applet name="ptviewer" archive="/resources/java/ptviewer.jar" codebase="/Library"  code="ptviewer.class"  width="320" height="200">
 	<param name="file"    value="#{@image}">
@@ -54,8 +55,8 @@ class ThumbImages < HtmlGrid::SpanList
 		link.href = @lookandfeel.event_url(:works, @session.event, model.artobject_id)
 		display_id = model.display_id
 		img = HtmlGrid::Image.new(display_id, model, @session, self)
-		url = @lookandfeel.upload_image_path(display_id)
-		img.attributes['width']	= '100px'
+		url = DAVAZ::Util::ImageHelper.image_path(display_id, 'medium')
+		img.attributes['width']	= MEDIUM_IMAGE_WIDTH 
 		img.attributes['src'] = url
 		img.css_class = 'thumb-image'
 		link.value = img 

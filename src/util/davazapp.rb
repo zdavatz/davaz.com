@@ -37,7 +37,7 @@ module DAVAZ
 				@db_manager.load_artobject(artobject_id)
 			end
 			def load_biography_text(lang)
-				@db_manager.load_displayelements(nil,lang, 'title', 'DESC')
+				@db_manager.load_displayelements(nil, lang, 'title', 'DESC')
 			end
 			def load_country(id)
 				@db_manager.load_country(id)
@@ -65,6 +65,9 @@ module DAVAZ
 			end
 			def load_hiswork_text
 				@db_manager.load_displayelements(nil, 'hiswork', 'position', 'ASC')
+			end
+			def load_link_displayelement(link_id)
+				@db_manager.load_link_displayelement(link_id)
 			end
 			def load_link_displayelements(link_id)
 				@db_manager.load_link_displayelements(link_id)

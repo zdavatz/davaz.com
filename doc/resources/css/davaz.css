@@ -81,7 +81,7 @@ div#tooltip-container {
 }
 
 img.image-tooltip-image {
-	max-width: 390px;
+/*	max-width: 390px; */
 	display: inline;
 }
 
@@ -123,11 +123,11 @@ div.multimedia-buttons {
 }
 
 div#image-container {
-	width: 360px;
-	height: 360px;
+	width: 370px;
+	height: 370px;
 	overflow: hidden;
 	float: left;
-	line-height: 360px;
+	line-height: 370px;
 	font-size: 296px;
 	text-align: left;
 	vertical-align: top;
@@ -137,16 +137,28 @@ img#image-container-image {
 	top: 0px;
 	left: 0px;
 	padding-top: 4px;
-	max-width: 350px;
-	max-height: 350px;
-	height:expression(this.width > this.height ? "auto" : "350px");
-	width:expression(this.width > this.height ? "350px" : "auto");
+/*	max-width: 350px;
+	max-height: 350px; */
+	height:expression(this.width > this.height ? "auto" : "360px");
+	width:expression(this.width > this.height ? "360px" : "auto");
+}
+
+div#image-title-container {
+	top: 0px;
+	left: 0px;
+	text-align: left;
+}
+
+div#image-title-container span {
+	font-size: 10pt;
+	color: black;
+	margin-left: -360px;
 }
 
 div#thumb-container {
 	margin-left: 5px;
-	width: 360px;
-	height: 360px;
+	width: 350px;
+	height: 350px;
 	overflow: hidden;
 }
 

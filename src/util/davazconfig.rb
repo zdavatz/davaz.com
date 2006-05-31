@@ -12,6 +12,10 @@ module DAVAZ
 	MAIL_FROM = '"markus.huggler" <mhuggler@ywesee.com>'
 	SMTP_FROM = 'mhuggler@ywesee.com'
 	RECIPIENTS = [ 'mhuggler@ywesee.com' ]
+	TICKER_COMPONENT_WIDTH = '140'
+	MEDIUM_IMAGE_WIDTH = '180px'
+	LARGE_IMAGE_WIDTH = '360px'
+	SLIDESHOW_IMAGE_HEIGHT = '280px'
 	CURRENCIES = {
 		'USD'		=>	'CHF',
 		'Euro'	=>	'CHF',

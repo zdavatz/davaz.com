@@ -187,7 +187,6 @@ module DAVAZ
 				:signature				=>	'images/init/signature.GIF',
 				:tooltip_css			=>	'css/tooltip.css',
 				:topleft_ph				=>	'images/global/topleft_ph.gif',
-				:upload_images		=>	'uploads/images',
 				:movies_css				=>	'css/movies.css',
 				:work_title				=>	'images/global/work.gif',
 			}
@@ -198,20 +197,6 @@ module DAVAZ
 			end
 			def foot_navigation(filter=false)
 				@session.foot_navigation
-			end
-			def image_path(resource_name, image_name)
-				resource_path = resource(resource_name)
-				image_path = File.join(DOCUMENT_ROOT, resource_path, image_name)
-				extension = if(File.exist?(image_path + '.jpeg'))
-					'.jpeg'
-				elsif(File.exist?(image_path + '.gif'))
-					'.gif'
-				elsif(File.exist?(image_path + '.jpg'))
-					'.jpg'
-				end
-				unless extension.nil?
-					File.join(resource_path, image_name + extension)
-				end
 			end
 =begin
 			def paypal_encrypted_value
@@ -240,19 +225,6 @@ PKCS7-----
 			end
 			def top_navigation(filter=false)
 				@session.top_navigation
-			end
-			def upload_image_path(display_id)
-				resource_path = resource(:upload_images)
-				directory = display_id[-1,2]
-				image_path = File.join(DOCUMENT_ROOT, resource_path, directory, display_id)	
-				extension = if(File.exist?(image_path + '.jpg'))
-					'.jpg'
-				elsif(File.exist?(image_path + '.gif'))
-					'.gif'
-				end
-				unless extension.nil?
-					File.join(resource_path, directory, display_id + extension)
-				end
 			end
 			def set_dictionary(language)
 				super

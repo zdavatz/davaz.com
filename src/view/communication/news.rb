@@ -5,6 +5,7 @@ require 'view/list'
 require 'view/publictemplate'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/value'
+require 'util/image_helper'
 
 module DAVAZ
 	module View
@@ -30,8 +31,9 @@ class NewsList < View::List
 	def image(model)
 		unless(model.to_display_id.nil?)
 			img = HtmlGrid::Image.new('news-image', model, @session, self) 
-			url = @lookandfeel.upload_image_path(model.to_display_id)
+			url = DAVAZ::Util::ImageHelper.image_path(model.to_display_id, 'medium')
 			img.set_attribute('src', url)
+			img.set_attribute('width', MEDIUM_IMAGE_WIDTH)
 			img
 		end
 	end

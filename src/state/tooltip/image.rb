@@ -13,7 +13,7 @@ class Image < State::ToolTip::Global
 	def init
 		super
 		link_id = @session.user_input(:link_id)
-		@model = @session.app.load_link_displayelements(link_id)
+		@model = @session.app.load_link_displayelement(link_id)
 	end
 end
 		end

@@ -4,7 +4,7 @@
 module DAVAZ
 	module Model
 		class SlideShowItem
-			attr_accessor :display_id, :artobject_id, :comment, :position
+			attr_accessor :display_id, :artobject_id, :title, :position
 		end
 	end
 end

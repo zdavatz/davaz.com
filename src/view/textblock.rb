@@ -5,6 +5,7 @@ require 'uri'
 require 'htmlgrid/namedcomponent'
 require 'htmlgrid/span'
 require 'htmlgrid/link'
+require 'util/image_helper'
 
 module DAVAZ 
 	module View
@@ -57,9 +58,14 @@ module DAVAZ
 								display_id = display.display_id
 								image = HtmlGrid::Image.new(display_id, \
 									@model, @session, self)
-								url = @lookandfeel.upload_image_path(display_id)
+								url = DAVAZ::Util::ImageHelper.image_path(display_id)
 								image.set_attribute('src', url)
 								div_content << image.to_html(context)
+								if(display.text)
+									span = HtmlGrid::Span.new(@model, @session, self)
+									span.value = display.text
+									div_content << span.to_html(context)
+								end
 							}
 							compose_hidden_div(html, context, link, div_content)
 						end

@@ -56,7 +56,7 @@ class ThumbImages < HtmlGrid::SpanList
 		display_id = model.display_id
 		img = HtmlGrid::Image.new(display_id, model, @session, self)
 		url = DAVAZ::Util::ImageHelper.image_path(display_id, 'medium')
-		img.attributes['width']	= MEDIUM_IMAGE_WIDTH 
+		img.attributes['width']	= SMALL_IMAGE_WIDTH 
 		img.attributes['src'] = url
 		img.css_class = 'thumb-image'
 		link.value = img 

@@ -48,7 +48,7 @@ module DAVAZ
 					image = @model.first
 					display_id = image.display_id
 					img = HtmlGrid::Image.new(display_id, @model, @session, self)
-					url = DAVAZ::Util::ImageHelper.image_path(display_id, 'large')
+					url = DAVAZ::Util::ImageHelper.image_path(display_id)
 					img.set_attribute('src', url)
 					img.css_id = 'image-container-image'
 					style = [

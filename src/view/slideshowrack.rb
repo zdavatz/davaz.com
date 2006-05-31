@@ -86,7 +86,7 @@ module DAVAZ
 			def image(model)
 				display_id = model.display_id
 				img = HtmlGrid::Image.new(display_id, model, @session, self)
-				url = DAVAZ::Util::ImageHelper.image_path(display_id, 'medium')
+				url = DAVAZ::Util::ImageHelper.image_path(display_id)
 				img.attributes['src'] = url
 				img.css_id = 'thumb-container'
 =begin

@@ -154,28 +154,6 @@ class MoviePage < HtmlGrid::Div
 		@value = link
 	end
 end
-class PlayerDownload < HtmlGrid::DivComposite
-	CSS_CLASS = 'player-download'
-	COMPONENTS = {
-		[0,0]	=>	'player_download_text',
-		[1,0]	=>	'nbsp',	
-		[2,0]	=>	:realplayer_download,
-		[3,0]	=>	'slash_divider',
-		[4,0]	=>	:quicktime_download,
-	}
-	def realplayer_download(model)
-		link = HtmlGrid::HttpLink.new(:realone_player, model, @session, self)
-		link.href = @lookandfeel.lookup(:realplayer_download)
-		link.css_class = 'realplayer-download'
-		link
-	end
-	def quicktime_download(model)
-		link = HtmlGrid::HttpLink.new(:quicktime_player, model, @session, self)
-		link.href = @lookandfeel.lookup(:quicktime_download)
-		link.css_class = 'quicktime-download'
-		link
-	end
-end
 class MovieLinks < HtmlGrid::DivComposite
 	CSS_CLASS = 'movie-links'
 	COMPONENTS = {
@@ -273,8 +251,7 @@ class InitComposite < HtmlGrid::DivComposite
 		[8,0]		=>	Copyright,
 		[9,0]		=>	OneLiner,
 		[10,0]	=>	MovieLinks,
-		[11,0]	=>	PlayerDownload,
-		[12,0]	=>	PayPalDiv,
+		[11,0]	=>	PayPalDiv,
 	}
 end
 class Init < View::PublicTemplate

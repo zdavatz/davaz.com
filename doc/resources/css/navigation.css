@@ -144,7 +144,8 @@ li.left-navigation-small {
 	height: 25px;
 }
 
-a.lnavlink:link, a.lnavlink:visited {
+a.lnavlink:link, a.lnavlink:visited, 
+a.lnavlink-active:link, a.lnavlink-active:visited {
 	display: block;
 	font-weight: bold;
 	font-size: 12pt; 
@@ -156,13 +157,15 @@ a.lnavlink:link, a.lnavlink:visited {
 	color: #996600;
 }
 
-a.small-lnavlink:link, a.small-lnavlink:visited {
+a.small-lnavlink:link, a.small-lnavlink:visited,
+a.small-lnavlink-active:link, a.small-lnavlink-active:visited {
 	display: block;
 	font-weight: bold;
 	font-size: 10pt; 
 	font-style: italic;
 	text-decoration: none;
 	padding-right: 20px;
+	padding-top: 6px;
 	color: #996600;
 }
 

@@ -25,24 +25,30 @@ class JavaAppletDiv < HtmlGrid::Div
 		super
 		image = DAVAZ::Util::ImageHelper.image_path(@model.display_id)
 		@value = <<-EOS
-<applet name="ptviewer" archive="/resources/java/ptviewer.jar" codebase="/Library"  code="ptviewer.class"  width="320" height="200">
-	<param name="file"    value="#{image}">
-	<param name=pan     value="-45">
-	<param name=tilt    value="-50">
-	<param name=fov     value="80">
-	<param name=fovmax    value="120">
-	<param name=fovmin    value="30">
-	<param name=auto    value="0.5">
-	<param name=bar_x     value="115">
-	<param name=bar_y     value="169">
-	<param name=bar_width   value="193">
-	<param name=bar_height  value="20">
-	<param name=tiltmin   value="-85">
-	<param name="HFOV"    value="360">
-	<param name="VFOV"    value="0">
-</applet>
-<br>
-<img src="/resources/images/global/control.gif" usemap="#control" border="0" width="56" height="14"><map name="control"><area shape="rect" coords="0,0,14,14" alt="Autorotation Start" href="javascript:DoAutorotationStart()"><area shape="rect" coords="14,0,28,14" alt="Autorotation Stop"  href="javascript:DoAutorotationStop()"> <area shape="rect" coords="28,0,42,14" alt="Zoom In" href="javascript:DoZoomIn()"> <area shape="rect" coords="42,0,56,14" alt="Zoom Out" href="javascript:DoZoomOut()"></map>
+			<applet name="ptviewer" valign=bottom border=0 hspace=0 vspace=0 archive="/resources/java/ptviewer.jar" code=ptviewer.class width="380" height="200" mayscript=true>
+        <param name=file 		value="ptviewer:0">
+				<param name=frame		value="/resources/images/global/control.gif">
+        <param name=bar_x 		value="198">
+        <param name=bar_y 		value="163">
+        <param name=bar_width 	value="165">
+        <param name=bar_height 	value="23">
+        <param name=inits		value="ptviewer:startApplet(1)">
+        <param name=shotspot0   value=" x310 y186 a324 b200 u'ptviewer:startAutoPan(0.5,0,1)' ">
+        <param name=shotspot1   value=" x324 y186 a338 b200 u'ptviewer:stopAutoPan()' ">
+        <param name=shotspot2   value=" x338 y186 a352 b200 u'ptviewer:startAutoPan(0,0,0.97)' ">
+        <param name=shotspot3   value=" x352 y186 a366 b200 u'ptviewer:startAutoPan(0,0,1.03)' ">
+        <param name=shotspot4   value=" x366 y186 a380 b200 u'ptviewer:gotoView(0,0,80)' ">
+				<param name=pano0		value=" {file=#{image}}
+												    {pan=-45}
+												    {tilt=-50}
+												    {fov=120}
+												    {fovmax=120}
+												    {fovmin=30}
+												    {auto=0.5}
+												    {mousehs=mousehs}
+												    {getview=getview} ">
+														<param name=wait		value="#{image}">
+      </applet>
 		EOS
 	end
 end
@@ -52,7 +58,8 @@ class ThumbImages < HtmlGrid::SpanList
 	}
 	def image(model)
 		link = HtmlGrid::Link.new(:serie_link, model, @session, self)
-		link.href = @lookandfeel.event_url(:works, @session.event, model.artobject_id)
+		args = { 'artobject_id'	=>	model.artobject_id }
+		link.href = @lookandfeel.event_url(:works, @session.event, args)
 		display_id = model.display_id
 		img = HtmlGrid::Image.new(display_id, model, @session, self)
 		url = DAVAZ::Util::ImageHelper.image_path(display_id, 'medium')

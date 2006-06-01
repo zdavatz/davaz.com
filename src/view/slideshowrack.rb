@@ -53,7 +53,7 @@ module DAVAZ
 					img.css_id = 'image-container-image'
 					style = [
 						"max-width: #{LARGE_IMAGE_WIDTH}",
-						"max-height: #{LARGE_IMAGE_WIDTH}"
+						"max-height: 340px"
 					]
 					img.set_attribute('style', style.join(";"))
 					@value = img

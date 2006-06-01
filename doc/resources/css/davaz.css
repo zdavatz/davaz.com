@@ -140,7 +140,7 @@ img#image-container-image {
 /*	max-width: 350px;
 	max-height: 350px; */
 	height:expression(this.width > this.height ? "auto" : "360px");
-	width:expression(this.width > this.height ? "360px" : "auto");
+	width:expression(this.width > this.height ? "340px" : "auto");
 }
 
 div#image-title-container {

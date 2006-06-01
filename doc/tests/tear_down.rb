@@ -6,7 +6,7 @@ require 'mysql'
 
 module Selenium
 	class TearDown
-		DB_CONNECTION_DATA = File.expand_path('../../../etc/db_connection_data.yml', File.dirname(__FILE__))
+		DB_CONNECTION_DATA = File.expand_path('../../etc/db_connection_data.yml', File.dirname(__FILE__))
 		def initialize
 			@connection = connect
 		end

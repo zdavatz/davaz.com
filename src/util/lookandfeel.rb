@@ -23,7 +23,6 @@ module DAVAZ
 					:articles									=>	'Articles',
 					:back											=>	'<< Back',
 					:bottleneck								=>	'Bottleneck',
-					:carpets									=>	'Carpets',
 					:change_of_times					=>	'Change of Times<br>1990 - 2000',
 					:contact_email						=>	'Email',
 					:chinese									=>	'Chinese',
@@ -150,7 +149,6 @@ module DAVAZ
 			}
 			RESOURCES = {
 				:articles_css			=>	'css/articles.css',
-				:carpets_css			=>	'css/carpets.css',
 				:css							=>	'css/davaz.css',
 				:communication_css	=>	'css/communication.css',
 				:design_css				=>	'css/design.css',

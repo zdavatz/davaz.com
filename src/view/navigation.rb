@@ -54,142 +54,6 @@ module DAVAZ
 				NAV_METHOD = :top_navigation
 			end
 		end
-=begin
-		module LeftNavigationModule
-			class Composite < HtmlGrid::UlComposite 
-				CSS_CLASS = "left-navigation"
-				COMPONENTS = { }
-				def init
-					evt = @session.event
-					[ :drawings, :paintings, :multiples, :movies, :photos,
-						:carpets, :schnitzenthesen, :gallery_search, :articles,
-						:lectures, :exhibitions, ].each_with_index { |key, idx|
-						components.store(idx, key)
-						#css = key.to_s
-						#if(evt == key)
-						#	css << '-active'
-						#end
-						#css_map.store([0, idx], css)
-					}
-					super
-				end
-				def drawings(model)
-					navigation_link(model, :works, :drawings)
-				end
-				def paintings(model)
-					navigation_link(model, :works, :paintings)
-				end
-				def multiples(model)
-					navigation_link(model, :works, :multiples)
-				end
-				def movies(model)
-					navigation_link(model, :works, :movies)
-				end
-				def photos(model)
-					navigation_link(model, :works, :photos)
-				end
-				def carpets(model)
-					navigation_link(model, :works, :carpets)
-				end
-				def schnitzenthesen(model)
-					navigation_link(model, :works, :schnitzenthesen)
-				end
-				def gallery_search(model)
-					navigation_link(model, :public, :gallery_search)
-				end
-				def articles(model)
-					navigation_link(model, :public, :articles)
-				end
-				def lectures(model)
-					navigation_link(model, :public, :lectures)
-				end
-				def exhibitions(model)
-					navigation_link(model, :public, :exhibitions)
-				end
-				def navigation_link(model, zone, key)
-					div = HtmlGrid::Div.new(model, @session, self)
-					div.css_class = 'left-nav-stretch'
-					link = HtmlGrid::Link.new(key, model, @session, self)
-					link.href = @lookandfeel.event_url(zone, key)
-					link.value = div 
-					link
-				end
-			end
-			class DivComposite < HtmlGrid::DivComposite
-				CSS_CLASS = 'left-navigation'
-				COMPONENTS = {
-					[0,0]	=>	LeftNavigationModule::Composite,
-				}
-			end
-		end
-		module FootNavigationModule
-			class Copyright < HtmlGrid::DivComposite
-				CSS_CLASS = 'copyright'
-				COMPONENTS = {
-					[0,0]	=>	'copyright',
-				}
-			end
-			class Navigation < HtmlGrid::DivComposite
-				CSS_CLASS = 'foot-navigation-navigation'
-				COMPONENTS = {
-					[0,0]	=>	:guestbook,
-					[1,0]	=>	'pipe_divider',
-					[2,0]	=>	:shop,
-					[3,0]	=>	'pipe_divider',
-					[4,0]	=>	:email_link,
-					[5,0]	=>	'pipe_divider',
-					[6,0]	=>	:news,
-					[7,0]	=>	'pipe_divider',
-					[8,0]	=>	:links,
-					[9,0]	=>	'pipe_divider',
-					[10,0]	=>	:home,
-				}
-				def email_link(model) 
-					link = HtmlGrid::MailLink.new(:contact_email, model, @session, self)
-					link.href = @lookandfeel.lookup(:email_juerg) 
-					link.css_class = 'foot-navigation'
-					link
-				end
-				def home(model)
-					link = HtmlGrid::Link.new(:home, model, @session, self)
-					link.href = @lookandfeel.event_url(:personal, :home)
-					link.css_class = 'foot-navigation'
-					link
-				end
-				def guestbook(model)
-					link = HtmlGrid::Link.new(:guestbook, model, @session, self)
-					link.href = @lookandfeel.event_url(:communication, :guestbook)
-					link.css_class = 'foot-navigation'
-					link
-				end
-				def links(model)
-					link = HtmlGrid::Link.new(:links, model, @session, self)
-					link.href = @lookandfeel.event_url(:communication, :links)
-					link.css_class = 'foot-navigation'
-					link
-				end
-				def news(model)
-					link = HtmlGrid::Link.new(:news, model, @session, self)
-					link.href = @lookandfeel.event_url(:communication, :news)
-					link.css_class = 'foot-navigation'
-					link
-				end
-				def shop(model)
-					link = HtmlGrid::Link.new(:shop, model, @session, self)
-					link.href = @lookandfeel.event_url(:communication, :shop)
-					link.css_class = 'foot-navigation'
-					link
-				end
-			end
-			class Composite < HtmlGrid::DivComposite
-				CSS_CLASS = 'foot-navigation'
-				COMPONENTS = {
-					[0,0]	=>	FootNavigationModule::Copyright,
-					[1,0]	=>	FootNavigationModule::Navigation,
-				}
-			end
-		end
-=end
 		class InitTopNavigation < HtmlGrid::DivComposite 
 			CSS_CLASS = "top-navigation"
 			COMPONENTS = {
@@ -262,8 +126,7 @@ module DAVAZ
 					:design, :schnitzenthesen, 
 				]
 				@small_links = [ 
-					:gallery_search, :articles, :lectures, :exhibitions, 
-					:carpets 
+					:gallery_search, :articles, :lectures, :exhibitions
 				]
 				links.concat(@small_links).each_with_index { |key, idx|
 					components.store(idx, key)
@@ -312,9 +175,6 @@ module DAVAZ
 			end
 			def exhibitions(model)
 				navigation_link(model, :public, :exhibitions)
-			end
-			def carpets(model)
-				navigation_link(model, :works, :carpets)
 			end
 			def navigation_link(model, zone, key)
 				link = HtmlGrid::Link.new(key, model, @session, self)

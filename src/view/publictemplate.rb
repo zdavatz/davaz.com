@@ -193,9 +193,6 @@ module DAVAZ
 		class PhotosPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :photos_css ]
 		end
-		class CarpetsPublicTemplate < View::CommonPublicTemplate
-			CSS_FILES = [ :navigation_css, :carpets_css ]
-		end
 		class SchnitzenthesenPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :schnitzenthesen_css ]
 		end

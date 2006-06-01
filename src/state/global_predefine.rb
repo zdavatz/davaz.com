@@ -27,7 +27,6 @@ class Work < State::Personal::Global; end
 		end
 		module Works
 class Global < State::Global; end
-class Carpets < State::Works::Global; end
 class Design < State::Works::Global; end
 class Drawings < State::Works::Global; end
 class Movies < State::Works::Global; end

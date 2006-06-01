@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# ImageProcessor -- davaz.com -- 31.05.2006 -- mhuggler@ywesee.com
+# ImageHelper -- davaz.com -- 31.05.2006 -- mhuggler@ywesee.com
 
 require 'RMagick'
 
@@ -9,23 +9,15 @@ module DAVAZ
 			include Magick	
 			UPLOAD_IMAGES_PATH = 'uploads/images'
 			def initialize
-				@original_images = ImageList.new
-				@processed_images = {
-					:medium =>	ImageList.new,
-					:large	=>	ImageList.new,
-					:slideshow	=>	ImageList.new,
-				}
 				@geometries = {
-					:medium =>	Geometry.new(MEDIUM_IMAGE_WIDTH.to_i),
-					:large	=>	Geometry.new(LARGE_IMAGE_WIDTH.to_i),
+					:small			=>	Geometry.new(SMALL_IMAGE_WIDTH.to_i),
+					:medium			=>	Geometry.new(MEDIUM_IMAGE_WIDTH.to_i),
+					:large			=>	Geometry.new(LARGE_IMAGE_WIDTH.to_i),
 					:slideshow	=>	Geometry.new(nil, SLIDESHOW_IMAGE_HEIGHT.to_i),
 				}
 			end
-			def add_processed_image(size, img)
-				@processed_images[size].push(img)
-			end
 			def add_image(display_id)
-				name = ImageHelper.abs_upload_image(display_id)
+				name = ImageHelper.abs_image_path(display_id)
 				original = Image.read(name).first
 				resize_image(display_id, original)
 			end
@@ -59,13 +51,13 @@ module DAVAZ
 				dir_components.join("/")
 			end
 			def ImageHelper.image_path(display_id, size=nil)
-				file = ImageHelper.abs_upload_image(display_id, size)
+				file = ImageHelper.abs_image_path(display_id, size)
 				unless file.nil?
 					file.slice!(DOCUMENT_ROOT)
 					file
 				end
 			end
-			def ImageHelper.abs_upload_image(display_id, size=nil)
+			def ImageHelper.abs_image_path(display_id, size=nil)
 				pattern = File.join(ImageHelper.images_path(size), \
 					display_id.to_s[-1,1], display_id.to_s + ".*") 
 				Dir.glob(pattern).first

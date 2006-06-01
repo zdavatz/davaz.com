@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # State::Works::Global -- davaz.com -- 29.08.2005 -- mhuggler@ywesee.com
 
-require 'state/works/carpets'
 require 'state/works/design'
 require 'state/works/drawings'
 require 'state/works/multiples'
@@ -18,7 +17,6 @@ class Global < State::Global
 	ZONE = :works
 	ARTGROUP_ID = nil
 	GLOBAL_MAP = {
-		:carpets							=>	State::Works::Carpets,
 		:design								=>	State::Works::Design,
 		:drawings							=>	State::Works::Drawings,
 		:multiples						=>	State::Works::Multiples,

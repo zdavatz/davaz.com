@@ -21,4 +21,18 @@ module DAVAZ
 		'USD'		=>	'CHF',
 		'Euro'	=>	'CHF',
 	}
+	COLORS = {
+		:articles			=>	'#6d6dff',		
+		:carpets			=>	'#ff6c0d',		
+		:design				=>	'#FF6600',		
+		:drawings			=>	'#74ba7c',		
+		:exhibitions	=>	'#f1a309',		
+		:gallery			=>	'#f1171d',		
+		:lectures			=>	'#6d3d0c',		
+		:movies				=>	'#7a8a99',		
+		:multiples		=>	'#ce3dff',		
+		:paintings		=>	'#c60c6d',		
+		:photos				=>	'#39cece',		
+		:schnitzenthesen	=>	'#9eff0c',		
+	}	
 end

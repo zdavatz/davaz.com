@@ -51,7 +51,15 @@ module DAVAZ
 					WHERE artobjects.artobject_id='#{artobject_id}';
 				EOS
 				result = connection.query(query)
-				create_model_array(DAVAZ::Model::ArtObject, result).first
+				artobject = nil
+				result.each_hash { |key, value| 
+					model = DAVAZ::Model::ArtObject.new
+					key.each { |column_name, column_value| 
+						model.send(column_name.to_s + '=', column_value)
+					}
+					artobject = model
+				}
+				artobject
 			end
 			def load_artobjects(artgroup_id)
 				query = <<-EOS
@@ -147,15 +155,16 @@ module DAVAZ
 					WHERE slideshow_items.slideshow='#{title}'
 					ORDER BY slideshow_items.position;
 				SQL
-=begin
-						artobjects_displayelements.artobject_id AS artobject_id,
-						artobjects.title AS comment
-					LEFT JOIN artobjects_displayelements USING (display_id)
-					LEFT JOIN artobjects USING (artobject_id)
-=end
 				result = connection.query(sql)
-				rslt = create_model_array(DAVAZ::Model::SlideShowItem, result)
-				rslt
+				array = [] 
+				result.each_hash { |key, value|
+					model = DAVAZ::Model::SlideShowItem.new
+					key.each { |column_name, column_value| 
+						model.send(column_name.to_s + '=', column_value)
+					}
+					array.push(model) unless model.display_id == '0'
+				}
+				array
 			end
 			def load_shop_items()
 				query = <<-EOS

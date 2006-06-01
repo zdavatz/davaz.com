@@ -26,7 +26,7 @@ class JavaAppletDiv < HtmlGrid::Div
 		image = DAVAZ::Util::ImageHelper.image_path(@model.display_id)
 		@value = <<-EOS
 <applet name="ptviewer" archive="/resources/java/ptviewer.jar" codebase="/Library"  code="ptviewer.class"  width="320" height="200">
-	<param name="file"    value="#{@image}">
+	<param name="file"    value="#{image}">
 	<param name=pan     value="-45">
 	<param name=tilt    value="-50">
 	<param name=fov     value="80">

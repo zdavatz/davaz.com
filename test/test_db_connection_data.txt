@@ -1,6 +1,0 @@
-# test_db_connection_data -- DAVAZ -- 24.02.2004 -- mhuggler@ywesee.com
-
-host = test_host 
-user = test_user
-password = test_password 
-db = test_db 

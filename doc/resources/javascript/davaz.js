@@ -100,7 +100,18 @@ function toggleArticle(link, articleId, url) {
 			load: function(type, data, event) { 
 				node.innerHTML = data;
 				dojo.fx.html.wipeIn(node, 1000, function() {
-					document.location.hash = articleId;
+					/*
+					The following code does not work with ie.
+					It is a nice-to-have feature:
+
+					var href = document.location.href;
+					var pos = href.indexOf('#');
+					if(pos)
+					{
+						href = href.substring(0,pos);
+					}
+					document.location.href = href + "#" + articleId;
+					document.location.hash = articleId; */
 					document.body.style.cursor = 'auto';
 					link.style.cursor = 'auto';
 				});

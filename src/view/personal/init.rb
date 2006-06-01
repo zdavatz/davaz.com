@@ -95,8 +95,8 @@ class CommunicationLinksComposite < View::Composite
 		[0,1]	=>	:links,
 		[0,2]	=>	:email,
 		[0,3]	=>	:gallery,
-		[0,4]	=>	:guestbook,
-		[0,5]	=>	:shop,
+		[0,4]	=>	:movies,
+		[0,5]	=>	:guestbook,
 		
 	}
 	CSS_MAP = {
@@ -130,15 +130,15 @@ class CommunicationLinksComposite < View::Composite
 		link.css_class = 'communication-link'
 		link
 	end
-	def guestbook(model)
-		link = HtmlGrid::Link.new(:guestbook, model, @session, self)
-		link.href = @lookandfeel.event_url(:communication, :guestbook)
+	def movies(model)
+		link = HtmlGrid::Link.new(:movies, model, @session, self)
+		link.href = @lookandfeel.event_url(:communication, :movies)
 		link.css_class = 'communication-link'
 		link
 	end
-	def shop(model)
-		link = HtmlGrid::Link.new(:shop, model, @session, self)
-		link.href = @lookandfeel.event_url(:communication, :shop)
+	def guestbook(model)
+		link = HtmlGrid::Link.new(:guestbook, model, @session, self)
+		link.href = @lookandfeel.event_url(:communication, :guestbook)
 		link.css_class = 'communication-link'
 		link
 	end

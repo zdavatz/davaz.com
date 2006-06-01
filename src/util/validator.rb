@@ -15,6 +15,7 @@ module DAVAZ
 				:articles,
 				:back,
 				:bottleneck,
+				:design,
 				:drawings,
 				:exhibitions,
 				:family,

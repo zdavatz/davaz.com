@@ -37,6 +37,7 @@ module DAVAZ
 				:poems, 
 				:remove_all_items,
 				:schnitzenthesen,
+				:search,
 				:send_order,
 				:shop_thanks,
 				:shop,

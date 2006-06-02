@@ -64,7 +64,7 @@ module DAVAZ
 			]
 			MOVIES_DIV_IMAGE_WIDTH = 185
 			MOVIES_DIV_IMAGE_SPEED = 4000
-			DOJO_DEBUG = true
+			DOJO_DEBUG = true 
 			DOJO_PREFIX = {
 				'ywesee'	=>	'../javascript',
 			}
@@ -196,7 +196,9 @@ module DAVAZ
 		class SchnitzenthesenPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :schnitzenthesen_css ]
 		end
-		class GallerySearchPublicTemplate < View::CommunicationPublicTemplate; end
+		class GallerySearchPublicTemplate < View::PublicTemplate
+			CSS_FILES = [ :navigation_css, :gallery_css ]
+		end
 		class ArticlesPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :articles_css ]
 		end

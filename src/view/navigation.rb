@@ -123,7 +123,7 @@ module DAVAZ
 				@evt = @session.event
 				links = [
 					:drawings, :paintings, :multiples, :movies, :photos,
-					:design, :schnitzenthesen, 
+					:design, :schnitzenthesen, :empty_link
 				]
 				@small_links = [ 
 					:gallery_search, :articles, :lectures, :exhibitions
@@ -163,6 +163,9 @@ module DAVAZ
 			end
 			def schnitzenthesen(model)
 				navigation_link(model, :works, :schnitzenthesen)
+			end
+			def empty_link(model)
+				''
 			end
 			def gallery_search(model)
 				navigation_link(model, :public, :gallery_search)

@@ -129,6 +129,7 @@ class IndiaTicker < HtmlGrid::Div
 		super
 		model = @session.app.load_slideshow('passage_through_india')
 		@value = View::Ticker.new(model, @session, self)
+		@value.component_height = '135'
 	end
 end
 class IndiaTickerContainer < HtmlGrid::DivComposite

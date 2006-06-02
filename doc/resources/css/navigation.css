@@ -169,8 +169,8 @@ a.small-lnavlink-active:link, a.small-lnavlink-active:visited {
 	font-style: italic;
 	text-decoration: none;
 	padding-right: 20px;
-	padding-top: 5px;
-	padding-bottom: 1px;
+	padding-top: 4px;
+	padding-bottom: 2px;
 	color: #996600;
 }
 

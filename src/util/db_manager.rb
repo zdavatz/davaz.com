@@ -121,6 +121,22 @@ module DAVAZ
 				result = connection.query(sql)
 				create_model_array(DAVAZ::Model::OneLiner, result) 
 			end
+			def load_series
+				sql = <<-SQL
+					SELECT * 
+					FROM series	
+				SQL
+				result = connection.query(sql)
+				array = [] 
+				result.each_hash { |key, value|
+					model = DAVAZ::Model::Serie.new
+					key.each { |column_name, column_value| 
+						model.send(column_name.to_s + '=', column_value)
+					}
+					array.push(model)
+				}
+				array
+			end
 			def load_series_by_artgroup(artgroup_id)
 				sql = <<-SQL
 					SELECT series.serie_id,series.name FROM artobjects

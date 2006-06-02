@@ -12,7 +12,8 @@ module DAVAZ
 	MAIL_FROM = '"markus.huggler" <mhuggler@ywesee.com>'
 	SMTP_FROM = 'mhuggler@ywesee.com'
 	RECIPIENTS = [ 'mhuggler@ywesee.com' ]
-	TICKER_COMPONENT_WIDTH = '140'
+	TICKER_COMPONENT_WIDTH = '180'
+	TICKER_COMPONENT_HEIGHT = '180'
 	SMALL_IMAGE_WIDTH = '100px'
 	MEDIUM_IMAGE_WIDTH = '180px'
 	LARGE_IMAGE_WIDTH = '360px'

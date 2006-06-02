@@ -8,12 +8,19 @@ require 'util/image_helper'
 module DAVAZ
 	module View
 		class Ticker < HtmlGrid::Component
+			attr_accessor :component_width, :component_height
+			def init
+				@component_width = TICKER_COMPONENT_WIDTH
+				@component_height = TICKER_COMPONENT_HEIGHT
+				super
+			end
 			def to_html(context)
 				args = {
 					'images'					=>	[],
 					'eventUrls'				=>	[],
 					'windowWidth'			=>	'780',
-					'componentWidth'	=>	TICKER_COMPONENT_WIDTH,
+					'componentWidth'	=>	@component_width,
+					'componentHeight'	=>	@component_height,
 				}
 				model.each { |item| 
 					unless(item.display_id.nil?)

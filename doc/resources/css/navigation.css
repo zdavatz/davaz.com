@@ -135,11 +135,13 @@ ul#left-navigation {
 }
 
 li.left-navigation {
+	text-shadow: #a9a9a9 0.2em 0.3em 0.2em;
 	text-align: right;
 	height: 35px;
 }
 
 li.left-navigation-small {
+	text-shadow: #a9a9a9 0.2em 0.3em 0.2em;
 	text-align: right;
 	height: 25px;
 }
@@ -161,12 +163,14 @@ a.lnavlink-active:link, a.lnavlink-active:visited {
 a.small-lnavlink:link, a.small-lnavlink:visited,
 a.small-lnavlink-active:link, a.small-lnavlink-active:visited {
 	display: block;
+	height: 19px;
 	font-weight: bold;
 	font-size: 10pt; 
 	font-style: italic;
 	text-decoration: none;
 	padding-right: 20px;
-	padding-top: 6px;
+	padding-top: 5px;
+	padding-bottom: 1px;
 	color: #996600;
 }
 

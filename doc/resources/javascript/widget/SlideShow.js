@@ -95,7 +95,7 @@ ywesee.widget.SlideShow = function(){
 		};
 		var callback2 = function() { 
 			_this[_this.foreground].style.display = "none";
-			_this[_this.background].style.display = "inline";
+			_this[_this.background].style.display = "block";
 			dojo.fx.html.fadeIn(_this[_this.background], _this.transitionInterval,
 			callback1);
 		};

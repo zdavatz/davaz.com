@@ -164,13 +164,13 @@ div#ticker-container {
 	margin-left: auto; margin-right: auto;
 	overflow: hidden;
 	display: none;
-	height: 143px;
+	height: 140px;
 	/*width: 600px;
 	background-image: url('/resources/images/global/movie.gif');*/
 }
 
 div.ticker-window {
-	height: 143px;
+	height: 140px;
 	overflow: hidden;
 }
 

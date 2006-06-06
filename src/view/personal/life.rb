@@ -123,21 +123,6 @@ class LifeTranslations < HtmlGrid::DivComposite
 		link
 	end
 end
-class IndiaTicker < HtmlGrid::Div
-	CSS_ID = 'ticker'
-	def init
-		super
-		model = @session.app.load_slideshow('passage_through_india')
-		@value = View::Ticker.new(model, @session, self)
-		@value.component_height = '135'
-	end
-end
-class IndiaTickerContainer < HtmlGrid::DivComposite
-	CSS_ID = 'ticker-container'
-	COMPONENTS = {
-		[0,0]	=>	IndiaTicker,
-	}
-end
 class LifeComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'inner-content'
 	COMPONENTS = {
@@ -169,7 +154,8 @@ class LifeComposite < HtmlGrid::DivComposite
 end
 class Life < View::PersonalPublicTemplate
 	CONTENT = View::Personal::LifeComposite
-	TICKER = View::Personal::IndiaTickerContainer
+	TICKER = View::TickerContainer
+	SLIDESHOW_NAME = 'passage_through_india'
 end
 		end
 	end

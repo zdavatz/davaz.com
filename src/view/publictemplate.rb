@@ -8,34 +8,6 @@ require 'view/ticker'
 
 module DAVAZ
 	module View
-		class Content < HtmlGrid::DivComposite
-			COMPONENTS = {
-				[0,0]	=>	:ticker,
-				[0,1]	=>	:content,
-			}
-			CSS_ID_MAP = {
-				0	=>	'ticker',
-				1	=>	'inner-content',
-			}
-			def ticker(model)
-				model = @session.app.load_slideshow('passage_through_india')
-				View::Ticker.new(model, @session, self)
-			end
-		end
-		class Container < HtmlGrid::DivComposite
-			COMPONENTS = {
-				[0,0]	=>	Content,
-				[0,1]	=>	View::LeftNavigation,
-			}
-			CSS_ID_MAP = {
-				0	=>	'content',
-				1	=>	'left-navigation',
-			}
-			CSS_MAP = {
-				0	=>	'column',
-				1	=>	'column',
-			}
-		end
 		class FootContainer < HtmlGrid::DivComposite
 			COMPONENTS = {
 				[0,0]		=>	View::FootNavigation,
@@ -121,7 +93,9 @@ module DAVAZ
 				div = HtmlGrid::Div.new(model, @session, self)
 				value = []
 				unless(self::class::TICKER.nil?)
-					 value <<  __standard_component(model, self::class::TICKER) 
+					slideshow_name = self::class::SLIDESHOW_NAME
+					slides = @session.app.load_slideshow(slideshow_name)
+					value <<  __standard_component(slides, self::class::TICKER) 
 				end
 				value <<  __standard_component(model, self::class::CONTENT)
 				div.value = value

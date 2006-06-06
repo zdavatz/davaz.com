@@ -42,7 +42,7 @@ div#zone-image {
 }
 
 div.lectures {
-	width: 600px; 
+	width: 610px; 
 	margin-left: auto; margin-right: auto;
 	padding-top: 10px;
 	text-align: left;
@@ -62,4 +62,5 @@ h1.block-title {
 	display: inline;
 	font-size: 10pt;
 	font-weight: normal;
+	padding-right: 5px;
 }

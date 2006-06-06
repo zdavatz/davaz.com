@@ -17,16 +17,16 @@ ywesee.widget.Ticker = function() {
 	this.images = []
 	this.eventUrls = []
 	this.windowWidth = 780;
-	this.componentWidth =	"180";
-	this.componentHeight = "180";
+	this.componentWidth =	180;
+	this.componentHeight = 180;
 	this.tickerSpeed = 4000;
 	this.imagePosition = 0;
 
 	this.tickerWindow = null;
 
 	this.fillInTemplate = function() {
-		this.divWidth = this.componentWidth+"px";
-		this.divHeight = this.componentHeight+"px";
+		this.divWidth = this.componentWidth+2+"px";
+		this.divHeight = this.componentHeight+2+"px";
 		this.imageWidth = this.componentWidth+"px";
 		this.imageHeight = this.componentHeight+"px";
 		container = dojo.byId('ticker-container');

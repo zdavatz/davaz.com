@@ -27,6 +27,8 @@ class MorphopolisTicker < HtmlGrid::Div
 		super
 		model = @session.app.load_slideshow('morphopolis')
 		@value = View::Ticker.new(model, @session, self)
+		@value.component_height = 135
+		@value.component_width = 180
 	end
 end
 class MorphopolisTickerContainer < HtmlGrid::DivComposite
@@ -78,7 +80,8 @@ class WorkComposite < HtmlGrid::DivComposite
 end
 class Work < View::PersonalPublicTemplate
 	CONTENT = View::Personal::WorkComposite
-	TICKER = View::Personal::MorphopolisTickerContainer
+	TICKER = View::TickerContainer
+	SLIDESHOW_NAME = 'morphopolis'
 end
 		end
 	end

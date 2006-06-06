@@ -10,6 +10,7 @@
 }
 
 #foot-navigation {
+	padding-top: 4px;
 	height: 20px;
 	width: 100%;
 	text-align: right; 
@@ -21,6 +22,7 @@ div#copyright {
 	width: 180px;
 	right: 180px;
 	margin-left: -100%;
+	padding-top: 4px;
 	height: 20px;
 	text-align: left;
 	color: white;
@@ -233,7 +235,6 @@ li#carpets-active, a#carpets:hover {
 
 li#schnitzenthesen-active, a#schnitzenthesen:hover {
 	/*background-color: #9eff0c;*/
-	color: grey;
 	background-image: url(/resources/images/navigation/schnitzenthesen.png);
 }
 

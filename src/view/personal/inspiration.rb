@@ -52,8 +52,10 @@ class InspirationComposite < HtmlGrid::DivComposite
 	end
 end
 class Inspiration < View::PersonalPublicTemplate
+	TICKER_SHOW = 'passage_through_india'
 	CONTENT = View::Personal::InspirationComposite
-	TICKER = View::Personal::IndiaTickerContainer
+	TICKER = View::TickerContainer
+	SLIDESHOW_NAME = 'passage_through_india'
 end
 		end
 	end

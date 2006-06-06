@@ -31,7 +31,7 @@ module DAVAZ
 					:close_window							=>  'Close Window',	
 					:close_window_href				=>  'javascript:window.close()',	
 					:comma_divider						=>	',&nbsp;',
-					:copyright								=>	'&copy;DaVaz 2005',
+					:copyright								=>	"&copy;DaVaz #{Time.now.year}",
 					:country									=>	'Country',
 					:dash_divider							=>	'&nbsp;-&nbsp;',
 					:date											=>	'Date',

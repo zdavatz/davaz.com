@@ -69,7 +69,7 @@ class GallerySearchComposite < HtmlGrid::DivComposite
 	CSS_ID = 'inner-content'
 	COMPONENTS = {
 		[0,0]	=>	GallerySearchTitle,
-		#[0,1]	=>	GallerySearchBar,
+		[0,1]	=>	GallerySearchBar,
 		[0,2]	=>	:oneliner,
 		[0,3]	=>	SeriesTitle,
 		[0,4]	=>	:serie_links,

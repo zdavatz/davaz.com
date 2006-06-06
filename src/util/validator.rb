@@ -66,6 +66,7 @@ module DAVAZ
 				:messagetxt,
 				:lang,
 				:name,
+				:search_query,
 				:street,
 				:surname,
 			]

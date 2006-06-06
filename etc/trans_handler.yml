@@ -1,0 +1,8 @@
+---
+shortcut:
+  '/home':
+    'language': 'en'
+    'event': 'home'
+
+redirect:
+  '/': '/index.html'

@@ -16,6 +16,10 @@ class News < State::Communication::Global; end
 class Shop < State::Communication::Global; end
 class ShopThanks < State::Communication::Global; end
 		end
+		module Gallery
+class Global < State::Global; end
+class Search < State::Gallery::Global; end
+		end
 		module Personal 
 class Global < State::Global; end
 class Family < State::Personal::Global; end

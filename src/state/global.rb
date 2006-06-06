@@ -4,6 +4,7 @@
 require 'sbsm/state'
 require 'htmlgrid/link'
 require 'state/communication/global'
+require 'state/gallery/global'
 require 'state/images'
 require 'state/personal/init' 
 require 'state/personal/global' 

@@ -1,0 +1,135 @@
+div#top-navigation {
+	padding-left: 200px;
+}
+
+div#content {
+	background-image: url("/resources/images/global/background.jpg");
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+div#zone-image {
+	background-image: url("/resources/images/global/topleft.gif");
+	background-repeat: no-repeat;
+}
+
+div.oneliner {
+	padding-top: 40px;
+	padding-bottom: 10px;
+	font: bold 16pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	text-align: center;
+}
+
+.center {
+	margin-left: auto; margin-right: auto;
+	text-align: center;
+}
+
+div#gallery-navigation {
+	padding-top: 20px;
+	width: 600px;
+	height: 40px;
+	margin-left: auto; margin-right: auto;
+}
+
+div#new-search {
+	padding-top: 20px;
+	width: 600px;
+	height: 30px;
+	margin-left: auto; margin-right: auto;
+}
+
+span.gallery-navigation {
+}
+
+a.gallery-navigation:link, a.gallery-navigation:visited,
+a.gallery-navigation:hover {
+	font-weight: bold;
+	text-decoration: none;
+	color: blue;
+}
+
+table#result-list-column-names {
+	padding-top: 20px;
+	width: 800px;
+	margin-left: auto; margin-right: auto;
+	text-align: left;
+}
+
+table#result-list-column-names td {
+	font-weight: bold;
+	color: white;
+	background: #990099;
+}
+
+table.result-list {
+	width: 800px;
+	margin-left: auto; margin-right: auto;
+	text-align: left;
+}
+
+table.result-list th {
+	font-weight: normal;
+	background : #FF33FF;
+	color : #FFFFFF;
+}
+
+table.result-list td {
+	color: black;
+}
+
+td.result-title, td.result-title-bg {
+	width: 200px;
+}
+
+td.result-title-bg {
+	background-color: #FFDCFF;
+}
+
+td.result-year, td.result-year-bg {
+	width: 40px;
+}
+
+td.result-year-bg {
+	background-color: #FFDCFF;
+}
+
+td.result-tool, td.result-tool-bg {
+	width: 110px;
+}
+
+td.result-tool-bg {
+	background-color: #FFDCFF;
+}
+
+td.result-material, td.result-material-bg {
+	width: 110px;
+}
+
+td.result-material-bg {
+	background-color: #FFDCFF;
+}
+
+td.result-size, td.result-size-bg {
+	width: 90px;
+}
+
+td.result-size-bg {
+	background-color: #FFDCFF;
+}
+
+td.result-location, td.result-location-bg {
+	width: 80px;
+}
+
+td.result-location-bg {
+	background-color: #FFDCFF;
+}
+
+td.result-serie, td.result-serie-bg {
+	width: 80px;
+}
+
+td.result-serie-bg {
+	background-color: #FFDCFF;
+}

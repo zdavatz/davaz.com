@@ -196,18 +196,5 @@ module DAVAZ
 				link
 			end
 		end
-=begin
-		class LeftNavigation < HtmlGrid::DivComposite
-			COMPONENTS = {
-				[0,0]	=>	LeftNavigationModule::Composite,
-			}
-		end
-		class FootNavigation < HtmlGrid::DivComposite 
-			CSS_CLASS = "foot-navigation"
-			COMPONENTS = {
-				[0,0]	=>	FootNavigationModule::Composite,
-			}
-		end
-=end
 	end
 end

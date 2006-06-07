@@ -13,6 +13,7 @@ module DAVAZ
 				:ajax_shop,
 				:article,
 				:articles,
+				:artobject,
 				:back,
 				:bottleneck,
 				:design,

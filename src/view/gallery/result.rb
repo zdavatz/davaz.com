@@ -19,7 +19,7 @@ class ResultList < View::List
 		[2,0]	=>	:tool,
 		[3,0]	=>	:material,
 		[4,0]	=>	:size,
-		[5,0]	=>	:location,
+		[5,0]	=>	:country,
 		[6,0]	=>	:serie,
 	}
 	CSS_MAP = {
@@ -28,9 +28,22 @@ class ResultList < View::List
 		[2,0]	=>	'result-tool',
 		[3,0]	=>	'result-material',
 		[4,0]	=>	'result-size',
-		[5,0]	=>	'result-location',
+		[5,0]	=>	'result-country',
 		[6,0]	=>	'result-serie',
 	}
+	def title(model)
+		link = HtmlGrid::Link.new(:title, @model, @session, self)
+		args = [ 
+			[ :search_query, @session.user_input(:search_query) ],
+			[ :artobject_id, model.artobject_id ],
+		]
+		unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
+			args.unshift([ :artgroup_id, artgroup_id])
+		end
+		link.href = @lookandfeel.event_url(:gallery, :artobject, args)
+		link.value = model.title
+		link
+	end
 	def year(model)
 		begin
 			Date.parse(model.date).year
@@ -54,7 +67,7 @@ class ResultColumnNames < View::Composite
 		[2,0]	=>	'tool',
 		[3,0]	=>	'material',
 		[4,0]	=>	'size',
-		[5,0]	=>	'location',
+		[5,0]	=>	'country',
 		[6,0]	=>	'serie',
 	}
 	CSS_MAP = {
@@ -63,7 +76,7 @@ class ResultColumnNames < View::Composite
 		[2,0]	=>	'result-tool',
 		[3,0]	=>	'result-material',
 		[4,0]	=>	'result-size',
-		[5,0]	=>	'result-location',
+		[5,0]	=>	'result-country',
 		[6,0]	=>	'result-serie',
 	}
 end

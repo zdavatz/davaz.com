@@ -51,6 +51,7 @@ module DAVAZ
 				dir_components.join("/")
 			end
 			def ImageHelper.image_path(display_id, size=nil)
+				return nil if display_id.nil?
 				file = ImageHelper.abs_image_path(display_id, size)
 				unless file.nil?
 					file.slice!(DOCUMENT_ROOT)

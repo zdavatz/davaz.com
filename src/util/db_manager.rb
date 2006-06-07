@@ -48,10 +48,25 @@ module DAVAZ
 			def load_artobject(artobject_id)
 				query = <<-EOS
 					SELECT artobjects.*, 
-					artobjects_displayelements.display_id AS display_id
+						artobjects_displayelements.display_id AS display_id,
+						artgroups.name AS artgroup,
+						materials.name AS material,
+						tools.name AS tool,
+						series.name AS serie,
+						countries.name AS country
 					FROM artobjects
 					LEFT OUTER JOIN artobjects_displayelements
-					ON artobjects.artobject_id = artobjects_displayelements.artobject_id
+						ON artobjects.artobject_id = artobjects_displayelements.artobject_id
+					LEFT OUTER JOIN artgroups
+						ON artobjects.artgroup_id = artgroups.artgroup_id
+					LEFT OUTER JOIN materials 
+						ON artobjects.material_id = materials.material_id
+					LEFT OUTER JOIN tools 
+						ON artobjects.tool_id = tools.tool_id
+					LEFT OUTER JOIN series 
+						ON artobjects.serie_id = series.serie_id
+					LEFT OUTER JOIN countries 
+						ON artobjects.country_id = countries.country_id
 					WHERE artobjects.artobject_id='#{artobject_id}';
 				EOS
 				result = connection.query(query)
@@ -77,7 +92,8 @@ module DAVAZ
 						artgroups.name AS artgroup,
 						materials.name AS material,
 						tools.name AS tool,
-						series.name AS serie
+						series.name AS serie,
+						countries.name AS country
 					FROM artobjects
 					LEFT OUTER JOIN artobjects_displayelements
 						ON artobjects.artobject_id = artobjects_displayelements.artobject_id
@@ -89,6 +105,8 @@ module DAVAZ
 						ON artobjects.tool_id = tools.tool_id
 					LEFT OUTER JOIN series 
 						ON artobjects.serie_id = series.serie_id
+					LEFT OUTER JOIN countries 
+						ON artobjects.country_id = countries.country_id
 					#{by_artgroup}
 					ORDER BY artobjects.title DESC
 				EOS
@@ -430,18 +448,24 @@ module DAVAZ
 				end
 				query = <<-EOS
 					SELECT artobjects.*, 
+						artobjects_displayelements.display_id AS display_id,
 						artgroups.name AS artgroup,
 						materials.name AS material,
 						tools.name AS tool,
-						series.name AS serie
+						series.name AS serie,
+						countries.name AS country
 					FROM artobjects
 					LEFT OUTER JOIN artgroups USING (artgroup_id)
+					LEFT OUTER JOIN artobjects_displayelements
+						ON artobjects.artobject_id = artobjects_displayelements.artobject_id
 					LEFT OUTER JOIN materials 
 						ON artobjects.material_id = materials.material_id
 					LEFT OUTER JOIN tools 
 						ON artobjects.tool_id = tools.tool_id
 					LEFT OUTER JOIN series 
 						ON artobjects.serie_id = series.serie_id
+					LEFT OUTER JOIN countries 
+						ON artobjects.country_id = countries.country_id
 					WHERE artobjects.title
 						REGEXP "#{search_pattern}"
 						#{artgroup}

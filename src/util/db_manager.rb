@@ -5,6 +5,7 @@ require 'ftools'
 require 'date'
 require 'mysql'
 require 'yaml'
+require 'model/artgroup'
 require 'model/displayelement'
 require 'model/guest'
 require 'model/link'
@@ -18,6 +19,7 @@ module DAVAZ
 			DB_CONNECTION_DATA = File.expand_path('../../etc/db_connection_data.yml', File.dirname(__FILE__))
 			def initialize
 				@connection = connect
+				@connection.reconnect = true
 			end
 			def connect
 				db_data = YAML.load(File.read(DB_CONNECTION_DATA))
@@ -35,9 +37,11 @@ module DAVAZ
 				result = connection.query(query)
 				artgroups = []
 				result.each_hash { |key, value| 
+					model = DAVAZ::Model::Artgroup.new
 					key.each { |col_name, col_value|
-						artgroups.push(col_value) if(col_name=='artgroup_id')	
+						model.send(col_name.to_s + '=', col_value)
 					}
+					artgroups.push(model)
 				}		
 				artgroups
 			end
@@ -62,13 +66,30 @@ module DAVAZ
 				artobject
 			end
 			def load_artobjects(artgroup_id)
+				if(artgroup_id.nil?)
+					by_artgroup = ""
+				else
+					by_artgroup = "WHERE artobjects.artgroup_id='#{artgroup_id}'"
+				end
 				query = <<-EOS
 					SELECT artobjects.*, 
-					artobjects_displayelements.display_id AS display_id
+						artobjects_displayelements.display_id AS display_id,
+						artgroups.name AS artgroup,
+						materials.name AS material,
+						tools.name AS tool,
+						series.name AS serie
 					FROM artobjects
-					JOIN artobjects_displayelements
-					ON artobjects.artobject_id = artobjects_displayelements.artobject_id
-					WHERE artgroup_id='#{artgroup_id}'
+					LEFT OUTER JOIN artobjects_displayelements
+						ON artobjects.artobject_id = artobjects_displayelements.artobject_id
+					LEFT OUTER JOIN artgroups
+						ON artobjects.artgroup_id = artgroups.artgroup_id
+					LEFT OUTER JOIN materials 
+						ON artobjects.material_id = materials.material_id
+					LEFT OUTER JOIN tools 
+						ON artobjects.tool_id = tools.tool_id
+					LEFT OUTER JOIN series 
+						ON artobjects.serie_id = series.serie_id
+					#{by_artgroup}
 					ORDER BY artobjects.title DESC
 				EOS
 				result = connection.query(query)
@@ -184,7 +205,7 @@ module DAVAZ
 			end
 			def load_shop_items()
 				query = <<-EOS
-					SELECT artobjects.*, artgroups.name AS artgroup_name
+					SELECT artobjects.*, artgroups.name AS artgroup
 					FROM artobjects
 					LEFT OUTER JOIN artgroups
 					ON artobjects.artgroup_id = artgroups.artgroup_id
@@ -400,6 +421,36 @@ module DAVAZ
 					hash.store(model.send(hsh_key), model)
 				}
 				hash
+			end
+			def search_artobjects(search_pattern, artgroup_id)
+				if(artgroup_id.nil?)
+					artgroup = ""
+				else
+					artgroup = "AND artobjects.artgroup_id='#{artgroup_id}'"
+				end
+				query = <<-EOS
+					SELECT artobjects.*, 
+						artgroups.name AS artgroup,
+						materials.name AS material,
+						tools.name AS tool,
+						series.name AS serie
+					FROM artobjects
+					LEFT OUTER JOIN artgroups USING (artgroup_id)
+					LEFT OUTER JOIN materials 
+						ON artobjects.material_id = materials.material_id
+					LEFT OUTER JOIN tools 
+						ON artobjects.tool_id = tools.tool_id
+					LEFT OUTER JOIN series 
+						ON artobjects.serie_id = series.serie_id
+					WHERE artobjects.title
+						REGEXP "#{search_pattern}"
+						#{artgroup}
+					OR series.name
+						REGEXP "#{search_pattern}"
+						#{artgroup}
+				EOS
+				result = connection.query(query)
+				create_model_array(DAVAZ::Model::ArtObject, result)
 			end
 			def update_currency(origin, target, rate)
 				query = <<-EOS

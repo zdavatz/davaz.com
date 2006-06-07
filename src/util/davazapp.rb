@@ -27,6 +27,9 @@ module DAVAZ
 			def insert_guest(values_hsh)
 				@db_manager.insert_guest(values_hsh)
 			end
+			def load_artgroups
+				@db_manager.load_artgroups
+			end
 			def load_articles
 				@db_manager.load_displayelements(nil, 'articles', 'position', 'ASC')
 			end
@@ -130,6 +133,13 @@ module DAVAZ
 			end
 			def load_multiples
 				@db_manager.load_artobjects('MUL')
+			end
+			def search_artobjects(query, artgroup_id)
+				if(query == 'all_entries')
+					@db_manager.load_artobjects(artgroup_id)
+				else
+					@db_manager.search_artobjects(query, artgroup_id)
+				end
 			end
 		end
 	end

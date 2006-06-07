@@ -27,7 +27,7 @@ class StubResult
 	end
 end
 class StubConnection
-	attr_accessor :query_str, :result
+	attr_accessor :query_str, :result, :reconnect
 	def artgroups_result
 		hsh = {
 			{
@@ -79,7 +79,7 @@ class DbManager < Test::Unit::TestCase
 	def test_load_artgroups
 		@manager.connection.result = :artgroups_result
 		result = @manager.load_artgroups
-		assert_equal(['DRA', 'MOV'], result.sort)
+		assert_equal(['DRA', 'MOV'], result.collect{ |x| x.artgroup_id }.sort)
 	end
 	def test_load_slideshow
 		@manager.connection.result = :slideshow_result

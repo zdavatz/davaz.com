@@ -53,6 +53,12 @@ module DAVAZ
 					[	:personal, :home ],
 				]
 			end
+			def search
+				artgroup_id = @session.user_input(:artgroup_id)
+				query = @session.user_input(:search_query)
+				result = @session.app.search_artobjects(query, artgroup_id)
+				State::Gallery::Result.new(@session, result)
+			end
 			def switch_zone(zone)
 				name = zone.to_s.split('_').collect { |word| 
 					word.capitalize }.join

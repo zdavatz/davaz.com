@@ -173,6 +173,9 @@ module DAVAZ
 		class GallerySearchPublicTemplate < View::PublicTemplate
 			CSS_FILES = [ :navigation_css, :gallery_css ]
 		end
+		class GalleryPublicTemplate < View::PublicTemplate
+			CSS_FILES = [ :navigation_css, :gallery_css ]
+		end
 		class ArticlesPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :articles_css ]
 		end

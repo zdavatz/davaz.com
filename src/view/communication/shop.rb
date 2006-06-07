@@ -21,7 +21,7 @@ class ShopTitle < HtmlGrid::Div
 end
 class ShopList < View::List
 	CSS_CLASS = 'shop-list'
-	TABLE_TITLE_CLASS = 'table-list'
+	#TABLE_TITLE_CLASS = 'table-list'
 	STRIPED_BG = false
 	SORT_DEFAULT = :title
 	COMPONENTS = {
@@ -45,7 +45,7 @@ class ShopList < View::List
 		[7,0]	=>	'shop-price',
 	}
 	def compose_header(offset=[0,0])
-		table_title = @model.first.artgroup_name
+		table_title = @model.first.artgroup
 		@grid.add(table_title, 0, 0)
 		@grid.add_tag('TH', 0, 0)
 		@grid.set_colspan(0, 0, full_colspan)
@@ -110,7 +110,7 @@ class ShopFormAddress < View::Composite
 	end
 end
 class ShoppingCartList < View::List
-	TABLE_TITLE_CLASS = 'shopping-cart-title'
+	#TABLE_TITLE_CLASS = 'shopping-cart-title'
 	STRIPED_BG = false
 	CSS_CLASS = 'shopping-cart-list'
 	COMPONENTS = {
@@ -208,9 +208,9 @@ class ShopForm < HtmlGrid::DivForm
 		tables = []
 		artgroups.each { |artgroup|
 			artgroup_items = @model.select { |item|
-				item.artgroup_id == artgroup
+				item.artgroup_id == artgroup.artgroup_id
 			}
-			unless(artgroup_items.size == 0)
+			unless(artgroup_items.empty?)
 				tables.push(ShopList.new(artgroup_items, @session, self))
 			end
 		}

@@ -5,8 +5,8 @@ module DAVAZ
 	module Model
 		class ArtObject
 			attr_accessor :artobject_id, :tool_id, :tool, :material_id, :material
-			attr_accessor :artgroup_id, :artgroup_name, :country_id, :type
-			attr_accessor :serie_id, :serie_nr, :size, :location
+			attr_accessor :artgroup_id, :artgroup, :country_id, :type
+			attr_accessor :serie_id, :serie_nr, :serie, :size, :location
 			attr_accessor :language, :title, :comment, :public
 			attr_accessor :date
 			attr_accessor :display_id, :text

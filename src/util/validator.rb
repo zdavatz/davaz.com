@@ -61,6 +61,7 @@ module DAVAZ
 			]
 			STRINGS = [
 				:address,
+				:artgroup_id,
 				:city,
 				:country,
 				:messagetxt,

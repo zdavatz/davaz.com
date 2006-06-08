@@ -209,3 +209,10 @@ span.hide-hidden-div-link {
 	display: block;
 	padding: 5px;
 }
+
+div#login-form {
+	width: 300px;
+	border: red solid 1pt;
+	padding-top: 40px;
+	margin-left: auto; margin-right: auto;
+}

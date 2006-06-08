@@ -151,6 +151,10 @@ div#artobject-pager {
 	float: left;
 }
 
+div#artobject-pager span {
+	padding-right: 5px;
+}
+
 div#artobject-back-link {
 	padding-top: 2px;
 	text-align: right;

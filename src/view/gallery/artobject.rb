@@ -52,31 +52,16 @@ class Pager < HtmlGrid::SpanComposite
 	def items(model)
 		"Item #{@model.index(@session[:active_object])+1} of #{model.size}"
 	end
-	def last(model)
-		active_index = @model.index(@session[:active_object])
-		link = HtmlGrid::Link.new(:paging_last, model, @session, self)
-		args = [ 
-			[ :search_query, @session.user_input(:search_query) ],
-			[ :artobject_id, @model.at(active_index-1).artobject_id ],
-		]
-		unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
-			args.unshift([ :artgroup_id, artgroup_id])
-		end
-		link.href = @lookandfeel.event_url(:gallery, :artobject, args)
-		image = HtmlGrid::Image.new(:paging_last, model, @session, self)
-		image_src = @lookandfeel.resource(:paging_last)
-		image.set_attribute('src', image_src)
-		link.value = image 
-		link
-	end
 	def next(model)
 		active_index = @model.index(@session[:active_object])
 		unless(active_index+1 == @model.size)
 			link = HtmlGrid::Link.new(:paging_next, model, @session, self)
 			args = [ 
-				[ :search_query, @session.user_input(:search_query) ],
 				[ :artobject_id, @model.at(active_index+1).artobject_id ],
 			]
+			unless((search_query = @session.user_input(:search_query)).nil?)
+				args.unshift([ :search_query, search_query])
+			end
 			unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
 				args.unshift([ :artgroup_id, artgroup_id])
 			end
@@ -93,9 +78,11 @@ class Pager < HtmlGrid::SpanComposite
 		unless(active_index-1 == -1)
 			link = HtmlGrid::Link.new(:paging_last, model, @session, self)
 			args = [ 
-				[ :search_query, @session.user_input(:search_query) ],
 				[ :artobject_id, @model.at(active_index-1).artobject_id ],
 			]
+			unless((search_query = @session.user_input(:search_query)).nil?)
+				args.unshift([ :search_query, search_query])
+			end
 			unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
 				args.unshift([ :artgroup_id, artgroup_id])
 			end

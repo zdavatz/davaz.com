@@ -81,6 +81,7 @@ module DAVAZ
 					:links										=>	'Links',
 					:links_from_davaz					=>	'Links from Da Vaz',
 					:location									=>	'Location',
+					:login										=>	'Login',
 					:material									=>	'Material',
 					:messagetxt								=>	'Message',
 					:more											=>	'more...',
@@ -149,15 +150,17 @@ module DAVAZ
 					:times_divider						=>	'&nbsp;x&nbsp;',
 					:tool											=>	'Tool',
 					:total										=>	'TOTAL',
+					:username									=>	'Username',
 					:update										=>	'Submit',
 					:movie_page								=>	' ::  movie page',
 					:movie										=>	'Movie',
 					:movies										=>	'Movies',
 					:multiples								=>	'Multiples',
+					:password									=>	'Password',
+					:postal_code							=>	'Postal Code',
 					:work											=>	'HIS WORK',
 					:year											=>	'Year',
 					:ywesee_url								=>	'http://www.ywesee.com',
-					:postal_code							=>	'Postal Code',
 				}
 			}
 			RESOURCES = {

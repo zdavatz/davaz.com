@@ -51,6 +51,7 @@ module DAVAZ
 				:work,
 			]
 			ZONES = [ 
+				:admin,
 				:communication,
 				:gallery, 
 				:personal, 

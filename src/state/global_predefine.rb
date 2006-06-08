@@ -7,6 +7,10 @@ require 'htmlgrid/component'
 module DAVAZ
 	module State
 		class Global < SBSM::State; end
+		module Admin
+class Global < State::Global; end
+class Home < State::Admin::Global; end
+		end
 		module Communication
 class Global < State::Global; end
 class Guestbook < State::Communication::Global; end

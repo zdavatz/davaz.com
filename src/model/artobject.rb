@@ -8,7 +8,7 @@ module DAVAZ
 			attr_accessor :artgroup_id, :artgroup, :country_id, :country
 			attr_accessor :serie_id, :serie_nr, :serie, :size, :location
 			attr_accessor :language, :title, :comment, :public
-			attr_accessor :date, :type
+			attr_accessor :date, :type, :google_video_url
 			attr_accessor :display_id, :text
 			attr_accessor :price, :dollar_price, :euro_price, :count
 			attr_reader	:count

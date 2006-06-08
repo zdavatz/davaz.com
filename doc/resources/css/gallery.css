@@ -193,6 +193,13 @@ div#artobject-image {
 	float: left;
 }
 
+img#artobject-image {
+	max-width: 350px;
+	max-height: 350px;
+	height:expression(this.width > this.height ? "auto" : "350px");
+	width:expression(this.width > this.height ? "350px" : "auto");
+}
+
 div#artobject-details {
 	color: black;
 	text-align: right; 

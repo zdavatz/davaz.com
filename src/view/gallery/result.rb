@@ -40,7 +40,12 @@ class ResultList < View::List
 		unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
 			args.unshift([ :artgroup_id, artgroup_id])
 		end
-		link.href = @lookandfeel.event_url(:gallery, :artobject, args)
+		if((video_url = model.google_video_url).empty?)
+			link.href = @lookandfeel.event_url(:gallery, :artobject, args)
+		else
+			link.href = video_url 
+			link.set_attribute('target', '_blank')
+		end
 		link.value = model.title
 		link
 	end
@@ -83,8 +88,8 @@ end
 class GalleryNavigation < HtmlGrid::SpanComposite
 	CSS_CLASS = 'gallery-navigation'
 	COMPONENTS = {
-		[0,0]	=>	:gallery,
-		[1,0]	=>	'pipe_divider',
+		#[0,0]	=>	:gallery,
+		#[1,0]	=>	'pipe_divider',
 	}
 	def init
 		build_navigation()
@@ -100,9 +105,10 @@ class GalleryNavigation < HtmlGrid::SpanComposite
 		link
 	end
 	def build_navigation
-		@link_idx = 2
+		#@link_idx = 2
+		@link_idx = 0
 		@model.each_with_index { |event, idx| 
-			idx+=1
+			#idx += 1
 			pos = [idx*2,0]
 			components.store(pos, :navigation_link)
 			if(idx > 0 && idx != 7)
@@ -119,7 +125,7 @@ class GalleryNavigation < HtmlGrid::SpanComposite
 		link = HtmlGrid::Link.new(artgroup.intern, model, @session, self)
 		args = [
 			[ :artgroup_id, artgroup_id ],
-			[ :search_query, @session.user_input(:search_query) ],
+			[ :search_query, :all_entries ],
 		]
 		link.href = @lookandfeel.event_url(:gallery, :search, args)
 		link.css_class = self::class::CSS_CLASS 
@@ -136,9 +142,11 @@ class SearchBar < HtmlGrid::InputText
 		args = [
 			[ @name, '' ],
 		]
+=begin
 		unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
 			args.unshift([ :artgroup_id, artgroup_id])
 		end
+=end
 		submit = @lookandfeel.event_url(:gallery, :search, args)
 		script = "if(#{@name}.value!='#{val}'){"
 		script << "var href = '#{submit}'"
@@ -150,8 +158,8 @@ end
 class NewSearch < HtmlGrid::DivForm
 	CSS_CLASS = ''
 	COMPONENTS = {
-		[0,0]	=>	:all_entries,
-		[1,0]	=>	'pipe_divider',
+		#[0,0]	=>	:all_entries,
+		#[1,0]	=>	'pipe_divider',
 		[2,0]	=>	:search_query,
 		[3,0]	=>	:submit,
 	}

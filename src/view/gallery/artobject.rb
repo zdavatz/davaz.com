@@ -39,6 +39,7 @@ class ArtObjectInnerComposite < HtmlGrid::DivComposite
 		img = HtmlGrid::Image.new(model.display_id, model, @session, self)
 		url = DAVAZ::Util::ImageHelper.image_path(model.display_id)
 		img.set_attribute('src', url)
+		img.css_id = 'artobject-image'
 		img 
 	end
 end

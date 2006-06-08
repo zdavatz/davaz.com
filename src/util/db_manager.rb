@@ -108,7 +108,7 @@ module DAVAZ
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
 					#{by_artgroup}
-					ORDER BY artobjects.title DESC
+					ORDER BY artobjects.title DESC 
 				EOS
 				result = connection.query(query)
 				create_model_array(DAVAZ::Model::ArtObject, result)

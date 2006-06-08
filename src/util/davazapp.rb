@@ -140,7 +140,7 @@ module DAVAZ
 				@db_manager.load_artobjects('MUL')
 			end
 			def search_artobjects(query, artgroup_id)
-				if(query == 'all_entries')
+				if(query.nil?)
 					@db_manager.load_artobjects(artgroup_id)
 				else
 					@db_manager.search_artobjects(query, artgroup_id)

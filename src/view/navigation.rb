@@ -126,13 +126,13 @@ module DAVAZ
 					:design, :schnitzenthesen, :empty_link
 				]
 				@small_links = [ 
-					:search, :articles, :lectures, :exhibitions
+					:gallery, :articles, :lectures, :exhibitions
 				]
 				links.concat(@small_links).each_with_index { |key, idx|
 					components.store(idx, key)
 					css_id = key.to_s
 					css_class = 'left-navigation'
-					if(@evt == key)
+					if(@evt == key || (key == :gallery && @evt == :home))
 						css_id << '-active'
 					end
 					if(@small_links.include?(key))
@@ -167,16 +167,16 @@ module DAVAZ
 			def empty_link(model)
 				''
 			end
-			def search(model)
-				link = HtmlGrid::Link.new(:gallery_search, model, @session, self)
-				link.href = @lookandfeel.event_url(:gallery, :search)
+			def gallery(model)
+				link = HtmlGrid::Link.new(:gallery, model, @session, self)
+				link.href = @lookandfeel.event_url(:gallery, :home)
 				css = 'small-lnavlink'
-				if(@evt == :search)
+				if(@evt == :home)
 					css << '-active'
 				end
 				link.css_class = css
-				link.css_id = 'search'
-				link.value = @lookandfeel.lookup(:gallery_search) 
+				link.css_id = 'gallery'
+				link.value = @lookandfeel.lookup(:gallery) 
 				link
 			end
 			def articles(model)
@@ -202,6 +202,53 @@ module DAVAZ
 				link.css_class = css
 				link.css_id = key.to_s
 				link.value = @lookandfeel.lookup(key) 
+				link
+			end
+		end
+		class GalleryNavigation < HtmlGrid::SpanComposite
+			CSS_CLASS = 'gallery-navigation'
+			COMPONENTS = {
+				#[0,0]	=>	:gallery,
+				#[1,0]	=>	'pipe_divider',
+			}
+			def init
+				@model = @session.app.load_artgroups
+				build_navigation()
+				super
+			end
+			def gallery(model)
+				link = HtmlGrid::Link.new(:gallery, model, @session, self)
+				args = [
+					[ :search_query, @session.user_input(:search_query) ],
+				]
+				link.href = @lookandfeel.event_url(:gallery, :search, args)
+				link.css_class = self::class::CSS_CLASS 
+				link
+			end
+			def build_navigation
+				#@link_idx = 2
+				@link_idx = 0
+				@model.each_with_index { |event, idx| 
+					#idx += 1
+					pos = [idx*2,0]
+					components.store(pos, :navigation_link)
+					if(idx > 0 && idx != 7)
+						components.store([idx*2-1,0], 'pipe_divider')
+					else
+						components.store([idx*2-1,0], 'br')
+					end
+				}
+			end
+			def navigation_link(model)
+				artgroup = @model.at(@link_idx-2).name.downcase
+				artgroup_id = @model.at(@link_idx-2).artgroup_id
+				@link_idx += 1
+				link = HtmlGrid::Link.new(artgroup.intern, model, @session, self)
+				args = [
+					[ :artgroup_id, artgroup_id ]
+				]
+				link.href = @lookandfeel.event_url(:gallery, :search, args)
+				link.css_class = self::class::CSS_CLASS 
 				link
 			end
 		end

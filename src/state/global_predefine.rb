@@ -18,7 +18,9 @@ class ShopThanks < State::Communication::Global; end
 		end
 		module Gallery
 class Global < State::Global; end
-class Search < State::Gallery::Global; end
+class Home < State::Gallery::Global; end
+class Result < State::Gallery::Global; end
+class ArtObject < State::Gallery::Global; end
 		end
 		module Personal 
 class Global < State::Global; end

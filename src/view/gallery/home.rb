@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# View::Gallery::Search -- davaz.com -- 28.09.2005 -- mhuggler@ywesee.com
+# View::Gallery::Home -- davaz.com -- 28.09.2005 -- mhuggler@ywesee.com
 
 require 'view/publictemplate'
 require 'htmlgrid/divcomposite'
@@ -33,7 +33,7 @@ class InputBar < HtmlGrid::InputText
 			'id'			=>	"searchbar",
 		})
 		args = [@name, '']
-		submit = @lookandfeel.event_url(:gallery, :search_gallery, args)
+		submit = @lookandfeel.event_url(:gallery, :search, args)
 		script = "if(#{@name}.value!='#{val}'){"
 		script << "var href = '#{submit}'"
 		script << "+escape(#{@name}.value.replace(/\\//, '%2F'));"
@@ -74,7 +74,7 @@ class SerieLinks < HtmlGrid::SpanList
 		link = HtmlGrid::Link.new('toggle-slideshow-rack', model, @session, self)
 		link.href = 'javascript:void(0)'
 		args = [ :serie_id, model.serie_id ]
-		url = @lookandfeel.event_url(:gallery, :ajax_search, args)
+		url = @lookandfeel.event_url(:gallery, :ajax_home, args)
 		link.value = model.name + @lookandfeel.lookup('comma_divider')
 		script = "toggleSearchSlideShowRack(this, '#{url}')"
 		link.set_attribute('onclick', script)
@@ -82,28 +82,33 @@ class SerieLinks < HtmlGrid::SpanList
 		link
 	end
 end
-class UpperSearchComposite < HtmlGrid::DivComposite
+class UpperHomeComposite < HtmlGrid::DivComposite
 	CSS_ID = 'upper-search-composite'
 	COMPONENTS = {
 		[0,0]	=>	SearchTitle,
-		[0,1]	=>	SearchBar,
-		[0,2]	=>	:oneliner,
-		[0,3]	=>	SeriesTitle,
+		[0,1]	=>	View::GalleryNavigation,
+		[0,2]	=>	SearchBar,
+		[0,3]	=>	:oneliner,
+		[0,4]	=>	SeriesTitle,
 	}
 	CSS_ID_MAP = {
 		0	=>	'search-title',
-		1	=>	'search-bar',
-		2	=>	'search-oneliner',
+		2	=>	'search-bar',
+		3	=>	'search-oneliner',
 	}
+	def init
+		@artgroups = @session.app.load_artgroups
+		super
+	end
 	def oneliner(model)
 		model = @session.app.load_oneliner('index')
 		View::Works::OneLiner.new(model, @session, self)		
 	end
 end
-class SearchComposite < HtmlGrid::DivComposite
+class HomeComposite < HtmlGrid::DivComposite
 	CSS_ID = 'inner-content'
 	COMPONENTS = {
-		[0,0]	=>	UpperSearchComposite,
+		[0,0]	=>	UpperHomeComposite,
 		[0,1]	=>	:slideshow_rack,
 		[0,2]	=>	:serie_links,
 	}
@@ -120,8 +125,8 @@ class SearchComposite < HtmlGrid::DivComposite
 		SearchSlideShowRackComposite.new([], @session, self)
 	end
 end
-class Search < View::GalleryPublicTemplate
-	CONTENT = View::Gallery::SearchComposite 
+class Home < View::GalleryPublicTemplate
+	CONTENT = View::Gallery::HomeComposite 
 end
 		end
 	end

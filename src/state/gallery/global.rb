@@ -4,18 +4,18 @@
 require 'state/global'
 require 'state/gallery/artobject'
 require 'state/gallery/result'
-require 'state/gallery/search'
+require 'state/gallery/home'
 
 module DAVAZ
 	module State
 		module Gallery
 class Global < State::Global
-	HOME_STATE = State::Personal::Init
+	HOME_STATE = State::Gallery::Home
 	ZONE = :gallery
 	GLOBAL_MAP = {
 		:artobject			=>	State::Gallery::ArtObject,
-		:search					=>	State::Gallery::Search,
-		:ajax_search		=>	State::Gallery::AjaxSearch,
+		:ajax_home			=>	State::Gallery::AjaxHome,
+		:home						=>	State::Gallery::Home,
 	}
 end
 		end

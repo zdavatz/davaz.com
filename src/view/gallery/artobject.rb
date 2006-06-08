@@ -119,11 +119,12 @@ class ArtObjectOuterComposite < HtmlGrid::DivComposite
 	}
 	def back_to_overview(model)
 		link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
-		args = [ 
-			[ :search_query, @session.user_input(:search_query) ],
-		]
+		args = []
+		unless((search_query = @session.user_input(:search_query)).nil?)
+			args.push([ :search_query, search_query])
+		end
 		unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
-			args.unshift([ :artgroup_id, artgroup_id])
+			args.push([ :artgroup_id, artgroup_id])
 		end
 		link.href = @lookandfeel.event_url(:gallery, :search, args)
 		link

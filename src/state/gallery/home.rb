@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
-# State::Gallery::Search -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
+# State::Gallery::Home -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
 
 require 'state/global_predefine'
-require 'view/gallery/search'
+require 'view/gallery/home'
 
 module DAVAZ
 	module State
 		module Gallery 
-class AjaxSearch < SBSM::State
+class AjaxHome < SBSM::State
 	VOLATILE = true
 	VIEW = View::SearchSlideShowRackComposite
 	def init
@@ -16,8 +16,8 @@ class AjaxSearch < SBSM::State
 		super
 	end
 end
-class Search < State::Gallery::Global
-	VIEW = View::Gallery::Search
+class Home < State::Gallery::Global
+	VIEW = View::Gallery::Home
 end
 		end
 	end

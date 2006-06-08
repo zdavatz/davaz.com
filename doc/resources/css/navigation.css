@@ -238,7 +238,7 @@ li#schnitzenthesen-active, a#schnitzenthesen:hover {
 	background-image: url(/resources/images/navigation/schnitzenthesen.png);
 }
 
-li#search-active, a#search:hover {
+li#gallery-active, a#gallery:hover {
 	/*background-color: #f1171d;*/
 	background-image: url(/resources/images/navigation/gallery.png);
 }

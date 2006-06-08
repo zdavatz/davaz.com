@@ -59,7 +59,6 @@ module DAVAZ
 					:family										=>	'HIS FAMILY',
 					:family_of_origin					=>	'His Family of Origin',
 					:gallery									=>	'Gallery',
-					:gallery_search						=>	'Gallery',
 					:guestbook								=>	'Guestbook',
 					:guestbook_info						=>	'Please add your comments.<br>I greatly appreciate your opinion and further information.<br><br>Thank you!',
 					:heartbeat								=>	'Heartbeat',

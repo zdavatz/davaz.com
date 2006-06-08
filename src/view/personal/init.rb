@@ -126,7 +126,7 @@ class CommunicationLinksComposite < View::Composite
 	end
 	def gallery(model)
 		link = HtmlGrid::Link.new(:gallery, model, @session, self)
-		link.href = @lookandfeel.event_url(:public, :gallery_search)
+		link.href = @lookandfeel.event_url(:gallery, :search)
 		link.css_class = 'communication-link'
 		link
 	end

@@ -33,7 +33,8 @@ class Global < State::Global
 				serie_id = series.first.serie_id
 			end
 		end
-		@model = @session.app.load_serie_objects(Model::ArtObject, artgroup_id, serie_id)
+		#@model = @session.app.load_serie_objects(Model::ArtObject, artgroup_id, serie_id)
+		@model = @session.app.load_serie(serie_id)
 		super
 	end
 	def artgroup_id

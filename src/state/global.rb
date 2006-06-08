@@ -53,7 +53,7 @@ module DAVAZ
 					[	:personal, :home ],
 				]
 			end
-			def search
+			def search_gallery
 				artgroup_id = @session.user_input(:artgroup_id)
 				query = @session.user_input(:search_query)
 				result = @session.app.search_artobjects(query, artgroup_id)

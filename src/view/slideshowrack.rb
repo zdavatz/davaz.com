@@ -157,5 +157,24 @@ module DAVAZ
 				0	=>	'rack-container',
 			}
 		end
+		class SearchSlideShowRackComposite < HtmlGrid::DivComposite
+			COMPONENTS = {
+				[0,0]	=>	:close_x,
+				[0,1]	=>	SlideShowRackInnerComposite,
+				[0,2]	=>	MultimediaButtons,
+			}
+			CSS_ID_MAP = {
+				0	=>	'close-x',
+				1	=>	'rack-container',
+			}
+			def close_x(model)
+				link = HtmlGrid::Link.new('close', model, @session, self)
+				link.href = 'javascript:void(0)'
+				link.value = "X"
+				script = "closeSearchSlideShowRack()"
+				link.set_attribute('onclick', script)
+				link
+			end
+		end
 	end
 end

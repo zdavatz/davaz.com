@@ -170,9 +170,6 @@ module DAVAZ
 		class SchnitzenthesenPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :schnitzenthesen_css ]
 		end
-		class GallerySearchPublicTemplate < View::PublicTemplate
-			CSS_FILES = [ :navigation_css, :gallery_css ]
-		end
 		class GalleryPublicTemplate < View::PublicTemplate
 			CSS_FILES = [ :navigation_css, :gallery_css ]
 		end

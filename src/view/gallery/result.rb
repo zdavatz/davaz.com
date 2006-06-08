@@ -100,7 +100,7 @@ class GalleryNavigation < HtmlGrid::SpanComposite
 		args = [
 			[ :search_query, @session.user_input(:search_query) ],
 		]
-		link.href = @lookandfeel.event_url(:gallery, :search, args)
+		link.href = @lookandfeel.event_url(:gallery, :search_gallery, args)
 		link.css_class = self::class::CSS_CLASS 
 		link
 	end
@@ -127,12 +127,12 @@ class GalleryNavigation < HtmlGrid::SpanComposite
 			[ :artgroup_id, artgroup_id ],
 			[ :search_query, :all_entries ],
 		]
-		link.href = @lookandfeel.event_url(:gallery, :search, args)
+		link.href = @lookandfeel.event_url(:gallery, :search_gallery, args)
 		link.css_class = self::class::CSS_CLASS 
 		link
 	end
 end
-class SearchBar < HtmlGrid::InputText
+class InputBar < HtmlGrid::InputText
 	def init
 		super
 		val = @lookandfeel.lookup(@name)
@@ -147,7 +147,7 @@ class SearchBar < HtmlGrid::InputText
 			args.unshift([ :artgroup_id, artgroup_id])
 		end
 =end
-		submit = @lookandfeel.event_url(:gallery, :search, args)
+		submit = @lookandfeel.event_url(:gallery, :search_gallery, args)
 		script = "if(#{@name}.value!='#{val}'){"
 		script << "var href = '#{submit}'"
 		script << "+escape(#{@name}.value.replace(/\\//, '%2F'));"
@@ -164,9 +164,9 @@ class NewSearch < HtmlGrid::DivForm
 		[3,0]	=>	:submit,
 	}
 	SYMBOL_MAP = {
-		:search_query			=>	SearchBar,	
+		:search_query			=>	InputBar,	
 	}
-	EVENT = :search
+	EVENT = :search_gallery
 	FORM_METHOD = 'POST'
 	def init
 		self.onload = "document.getElementById('searchbar').focus();"
@@ -181,7 +181,7 @@ class NewSearch < HtmlGrid::DivForm
 		unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
 			args.unshift([ :artgroup_id, artgroup_id])
 		end
-		url = @lookandfeel.event_url(:gallery, :search, args)
+		url = @lookandfeel.event_url(:gallery, :search_gallery, args)
 		script = "document.location.href='#{url}';"
 		button.set_attribute("onclick", script)
 		button

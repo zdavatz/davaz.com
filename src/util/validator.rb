@@ -10,6 +10,7 @@ module DAVAZ
 			EVENTS = [ 
 				:add_entry,
 				:ajax_article,
+				:ajax_search,
 				:ajax_shop,
 				:article,
 				:articles,
@@ -21,7 +22,6 @@ module DAVAZ
 				:exhibitions,
 				:family,
 				:gallery,
-				:gallery_search,
 				:guestbook,
 				:guestbookentry,
 				:home,
@@ -39,6 +39,7 @@ module DAVAZ
 				:remove_all_items,
 				:schnitzenthesen,
 				:search,
+				:search_gallery,
 				:send_order,
 				:shop_thanks,
 				:shop,

@@ -160,6 +160,20 @@ module DAVAZ
 				result = connection.query(sql)
 				create_model_array(DAVAZ::Model::OneLiner, result) 
 			end
+			def load_serie(serie_id)
+				sql = <<-SQL
+					SELECT artobjects.*,
+						artobjects_displayelements.display_id AS display_id,
+						displayelements.text AS comment
+					FROM artobjects
+					LEFT JOIN artobjects_displayelements USING (artobject_id)
+					LEFT JOIN displayelements USING (display_id)
+					WHERE serie_id='#{serie_id}'
+					ORDER BY serie_nr DESC
+				SQL
+				result = connection.query(sql)
+				create_model_array(Model::ArtObject, result)
+			end
 			def load_series
 				sql = <<-SQL
 					SELECT * 
@@ -185,6 +199,7 @@ module DAVAZ
 				result = connection.query(sql)
 				create_unique_model_array(Model::Serie, result, 'serie_id')
 			end
+=begin
 			def load_serie_objects(table_class, artgroup_id, serie_id)
 				sql = <<-SQL
 					SELECT artobjects.title, artobjects_displayelements.*, 
@@ -199,6 +214,7 @@ module DAVAZ
 				result = connection.query(sql)
 				create_model_array(table_class, result)
 			end
+=end
 			def load_slideshow(title)
 				sql = <<-SQL
 					SELECT 

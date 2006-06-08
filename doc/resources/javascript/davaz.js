@@ -89,6 +89,50 @@ function removeFromShoppingCart(url, fieldId) {
 	});
 }
 
+function closeSearchSlideShowRack() {
+	var slideShowRack = dojo.byId('slideshow-rack');
+	var upperSearchComposite = dojo.byId('upper-search-composite');
+	var callback = function() {
+		dojo.fx.html.wipeIn(upperSearchComposite, 100);
+	}
+	dojo.fx.html.wipeOut(slideShowRack, 100, callback);	
+}
+
+function toggleSearchSlideShowRack(link, url) {
+	var slideShowRack = dojo.byId('slideshow-rack');
+	var upperSearchComposite = dojo.byId('upper-search-composite');
+	display = dojo.style.getStyle(slideShowRack, "display");
+	if(display=="none") {
+		document.body.style.cursor = 'progress';
+		link.style.cursor = 'progress';
+		dojo.io.bind({
+			url: url,
+			load: function(type, data, event) { 
+				slideShowRack.innerHTML = data;
+				var callback2 = function() {
+					document.body.style.cursor = 'auto';
+					link.style.cursor = 'auto';
+				}
+				var callback = function() {
+					dojo.fx.html.wipeIn(slideShowRack, 1000, callback2);
+				}
+				dojo.fx.html.wipeOut(upperSearchComposite, 1000, callback);
+			},
+			mimetype: "text/html"
+		});
+	} else {
+		document.body.style.cursor = 'progress';
+		link.style.cursor = 'progress';
+		dojo.io.bind({
+			url: url,
+			load: function(type, data, event) { 
+				slideShowRack.innerHTML = data;
+			},
+			mimetype: "text/html"
+		});
+	}
+}
+
 function toggleArticle(link, articleId, url) {
 	var node = dojo.byId(articleId);
 	display = dojo.style.getStyle(node, "display");

@@ -98,15 +98,20 @@ module DAVAZ
 					@db_manager.load_link_displayelements(link_id)
 				end
 			end
+			def load_serie(serie_id)
+				@db_manager.load_serie(serie_id)
+			end
 			def load_series
 				@db_manager.load_series
 			end
 			def load_series_by_artgroup(artgroup_id)
 				@db_manager.load_series_by_artgroup(artgroup_id)
 			end
+=begin
 			def load_serie_objects(table_class, artgroup_id, serie_id)
 				@db_manager.load_serie_objects(table_class, artgroup_id, serie_id)
 			end
+=end
 			def load_shop_artgroups
 				@db_manager.load_artgroups('shop_order')
 			end

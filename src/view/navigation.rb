@@ -126,7 +126,7 @@ module DAVAZ
 					:design, :schnitzenthesen, :empty_link
 				]
 				@small_links = [ 
-					:gallery_search, :articles, :lectures, :exhibitions
+					:search, :articles, :lectures, :exhibitions
 				]
 				links.concat(@small_links).each_with_index { |key, idx|
 					components.store(idx, key)
@@ -167,8 +167,17 @@ module DAVAZ
 			def empty_link(model)
 				''
 			end
-			def gallery_search(model)
-				navigation_link(model, :public, :gallery_search)
+			def search(model)
+				link = HtmlGrid::Link.new(:gallery_search, model, @session, self)
+				link.href = @lookandfeel.event_url(:gallery, :search)
+				css = 'small-lnavlink'
+				if(@evt == :search)
+					css << '-active'
+				end
+				link.css_class = css
+				link.css_id = 'search'
+				link.value = @lookandfeel.lookup(:gallery_search) 
+				link
 			end
 			def articles(model)
 				navigation_link(model, :public, :articles)

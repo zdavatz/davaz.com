@@ -42,7 +42,7 @@ function toggleSlideshow() {
 function toggleTicker() {
 	var node = dojo.byId('ticker-container');
 	display = dojo.style.getStyle(node, "display");
-	if(display=="none") {
+	if(display=="none" || display=='') {
 		dojo.fx.html.wipeIn('ticker-container', 300);	
 	} else {
 		dojo.fx.html.wipeOut('ticker-container', 300);	
@@ -88,6 +88,24 @@ function removeFromShoppingCart(url, fieldId) {
 		mimetype: 'text/html'
 	});
 }
+
+/*
+function addInputField(url, editFormId) {
+	var editForm = dojo.byId(editFormId);
+	dojo.io.bind({
+		url: url,
+		load: function(type, data, event) { 
+			dojo.fx.html.wipeIn(editForm, 100);
+		},
+		mimetype: "text/html"
+	});
+}
+function TrimString(sInString) {
+	sInString = sInString.replace( /^\s+/g, "" );// strip leading
+	return sInString.replace( /\s+$/g, "" );// strip trailing
+}
+*/
+
 
 function closeSearchSlideShowRack() {
 	var slideShowRack = dojo.byId('slideshow-rack');
@@ -169,4 +187,47 @@ function toggleArticle(link, articleId, url) {
 
 function jumpTo(nodeId) {
 	document.location.hash = nodeId;
+}
+
+function removeImage(url) {
+	var node = dojo.byId('links-list-container');
+	document.body.style.cursor = 'progress';
+	dojo.io.bind({
+		url: url,	
+		load: function(type, data, event) {
+			node.innerHTML = data;
+			document.body.style.cursor = 'auto';
+		},
+		mimetype: 'text/html'
+	});
+}
+
+function addImageFromChooser(url) {
+	var node = dojo.byId('links-list-container');
+	var chooser = dojo.byId('links-list-image-chooser');
+	document.body.style.cursor = 'progress';
+	dojo.io.bind({
+		url: url,	
+		load: function(type, data, event) {
+			node.innerHTML = data;
+			document.body.style.cursor = 'auto';
+		},
+		mimetype: 'text/html'
+	});
+}
+
+function showImageChooser(url) {
+	var node = dojo.byId('links-list-image-chooser');
+	document.body.style.cursor = 'progress';
+	dojo.io.bind({
+		url: url,
+		load: function(type, data, event) {
+			node.innerHTML = data;
+			var callback = function() {
+				document.body.style.cursor = 'auto';
+			};
+			dojo.fx.html.wipeIn(node, 300, callback);
+		},
+		mimetype: 'text/html'
+	});
 }

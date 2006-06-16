@@ -9,9 +9,14 @@ module DAVAZ
 		class Validator < SBSM::Validator
 			EVENTS = [ 
 				:add_entry,
+				:ajax_add_image,
 				:ajax_article,
 				:ajax_home,
+				:ajax_remove_image,
 				:ajax_shop,
+				:ajax_toggle_rack,
+				:ajax_toggle_slideshow,
+				:ajax_works_global,
 				:article,
 				:articles,
 				:artobject,
@@ -26,11 +31,13 @@ module DAVAZ
 				:guestbookentry,
 				:home,
 				:images,
+				:image_chooser,
 				:init, 
 				:inspiration,
 				:lectures,
 				:life,
 				:links,
+				:login,
 				:multiples,
 				:news,
 				:paintings,
@@ -47,8 +54,14 @@ module DAVAZ
 				:tooltip_artobject,
 				:tooltip_image,
 				:tooltip_poem,
+				:update,
+				:update_biographyitem,
+				:upload_image,
 				:movies,
 				:work,
+			]
+			FILES = [
+				:image_file,
 			]
 			ZONES = [ 
 				:admin,
@@ -64,14 +77,22 @@ module DAVAZ
 			STRINGS = [
 				:address,
 				:artgroup_id,
+				:author,
 				:city,
 				:country,
+				:email,
+				:image_display_id,
+				:image_title,
 				:messagetxt,
 				:lang,
+				:location,
 				:name,
 				:search_query,
 				:street,
 				:surname,
+				:target,
+				:text,
+				:title,
 			]
 			NUMERIC = [
 				:artobject_id,

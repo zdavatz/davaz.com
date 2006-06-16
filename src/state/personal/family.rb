@@ -9,8 +9,13 @@ module DAVAZ
 		module Personal
 class Family < State::Personal::Global
 	VIEW = View::Personal::Family
+	def init
+		@model = OpenStruct.new
+		@model.family_text = @session.app.load_hisfamily_text
+		add_slideshow_items(@model, 'family')
+		super
+	end
 end
 		end
 	end
 end
-

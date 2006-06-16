@@ -155,14 +155,10 @@ class ResultComposite < HtmlGrid::DivComposite
 		0	=>	'gallery-navigation',
 		1	=>	'new-search',
 	}
-	def init
-		@artgroups = @session.app.load_artgroups
-		super
-	end
 	def result_list(model)
 		tables = []
-		@artgroups.each { |artgroup|
-			artgroup_items = @model.select { |item|
+		@model.artgroups.each { |artgroup|
+			artgroup_items = @model.result.select { |item|
 				item.artgroup_id == artgroup.artgroup_id
 			}
 			unless(artgroup_items.empty?)

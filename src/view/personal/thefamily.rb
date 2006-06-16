@@ -39,13 +39,9 @@ class TheFamilyComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'content'
 	COMPONENTS = {
 		[0,0]	=>	TheFamilyTitle,
-		[1,0]	=>	:the_family,
+		[1,0]	=>	TheFamilyText,
 		[2,0]	=>	TheFamilyBackLink,
 	}
-	def the_family(model)
-		model = @session.app.load_thefamily_text
-		View::Personal::TheFamilyText.new(model, @session, self)
-	end
 end
 class TheFamily < View::PersonalPublicTemplate 
 	CONTENT = View::Personal::TheFamilyComposite

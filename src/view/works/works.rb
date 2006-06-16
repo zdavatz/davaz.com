@@ -23,16 +23,12 @@ class Works < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	WorksTitle,
 		[0,1]	=>	SlideShowRackComposite,
-		[0,2]	=>	:serie_links,
+		[0,2]	=>	component(SerieLinks, :series),
 	}
 	CSS_ID_MAP = {
+		1	=>	'show-wipearea',
 		2	=>	'serie-links',
 	}
-	def serie_links(model)
-		artgroup_id = @session.state.artgroup_id
-		model = @session.app.load_series_by_artgroup(artgroup_id)
-		View::SerieLinks.new(model, @session, self)
-	end
 end
 		end
 	end

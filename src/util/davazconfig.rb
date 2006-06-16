@@ -18,6 +18,8 @@ module DAVAZ
 	MEDIUM_IMAGE_WIDTH = '180px'
 	LARGE_IMAGE_WIDTH = '360px'
 	SLIDESHOW_IMAGE_HEIGHT = '280px'
+	YUS_URI = "drbssl://localhost:9997"
+	YUS_DOMAIN = "com.davaz"
 	CURRENCIES = {
 		'USD'		=>	'CHF',
 		'Euro'	=>	'CHF',

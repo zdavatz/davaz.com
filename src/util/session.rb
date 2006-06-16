@@ -22,8 +22,16 @@ module DAVAZ
 					active.switch_zone(zone)
 				end
 			end
+			def cap_max_states
+				# ignore
+			end
 			def foot_navigation
 				@active_state.foot_navigation
+			end
+			def login
+				if(user = @app.login(user_input(:email), user_input(:pass)))
+					@user = user
+				end
 			end
 			def top_navigation
 				@active_state.top_navigation

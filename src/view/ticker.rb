@@ -43,20 +43,20 @@ module DAVAZ
 				dojo_tag('ticker', args)
 			end
 		end
-			class InnerTicker < HtmlGrid::Div
-				CSS_ID = 'ticker'
-				def init
-					super
-					@value = View::Ticker.new(@model, @session, self)
-					@value.component_height = 135
-					@value.component_width = 180
-				end
+		class InnerTicker < HtmlGrid::Div
+			CSS_ID = 'ticker'
+			def init
+				super
+				@value = View::Ticker.new(@model, @session, self)
+				@value.component_height = 135
+				@value.component_width = 180
 			end
-			class TickerContainer < HtmlGrid::DivComposite
-				CSS_ID = 'ticker-container'
-				COMPONENTS = {
-					[0,0]	=>	InnerTicker,
-				}
-			end
+		end
+		class TickerContainer < HtmlGrid::DivComposite
+			CSS_ID = 'ticker-container'
+			COMPONENTS = {
+				[0,0]	=>	InnerTicker,
+			}
+		end
 	end
 end

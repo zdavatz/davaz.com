@@ -56,8 +56,10 @@ module DAVAZ
 			def search
 				artgroup_id = @session.user_input(:artgroup_id)
 				query = @session.user_input(:search_query)
-				result = @session.app.search_artobjects(query, artgroup_id)
-				State::Gallery::Result.new(@session, result)
+				model = OpenStruct.new
+				model.result = @session.app.search_artobjects(query, artgroup_id)
+				model.artgroups = @session.app.load_artgroups 
+				State::Gallery::Result.new(@session, model)
 			end
 			def switch_zone(zone)
 				name = zone.to_s.split('_').collect { |word| 

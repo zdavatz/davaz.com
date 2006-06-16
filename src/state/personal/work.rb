@@ -10,7 +10,10 @@ module DAVAZ
 class Work < State::Personal::Global
 	VIEW = View::Personal::Work
 	def init
-		@model = @session.app.load_hiswork_text
+		@model = OpenStruct.new
+		@model.text = @session.app.load_hiswork_text
+		@model.slideshow = @session.app.load_slideshow('morphopolis')
+		@model.oneliner = @session.app.load_oneliner('hiswork')
 		super
 	end
 end

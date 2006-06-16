@@ -28,8 +28,8 @@ class InspirationComposite < HtmlGrid::DivComposite
 	CSS_ID = 'inner-content'
 	COMPONENTS = {
 		[0,0]	=>	InspirationTitle,
-		[1,0]	=>	:oneliner,
-		[2,0]	=>	:inspiration_text,	
+		[1,0]	=>	component(OneLiner, :oneliner),
+		[2,0]	=>	component(InspirationText, :text),	
 		[3,0]	=>	:india_ticker_link,
 	}
 	def india_ticker_link(model)
@@ -41,14 +41,6 @@ class InspirationComposite < HtmlGrid::DivComposite
 		div.css_id = 'ticker-link'
 		div.value = link
 		div	
-	end
-	def inspiration_text(model)
-		model = @session.app.load_hisinspiration_text
-		View::Personal::InspirationText.new(model, @session, self)
-	end
-	def oneliner(model)
-		model = @session.app.load_oneliner('hisinspiration')
-		View::Works::OneLiner.new(model, @session, self)		
 	end
 end
 class Inspiration < View::PersonalPublicTemplate

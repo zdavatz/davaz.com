@@ -4,7 +4,7 @@
 require 'view/publictemplate'
 require 'view/textblock'
 require 'htmlgrid/divcomposite'
-require 'view/slideshow'
+require 'view/serie_widget'
 
 module DAVAZ
 	module View
@@ -44,8 +44,8 @@ end
 class FamilyInfoComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	FamilyOrigin,
-		[0,1]	=>	:slideshow,
-		[0,2]	=>	:family_text,
+		[0,1]	=>	component(SerieWidget, :slideshow_items, 'SlideShow'),
+		[0,2]	=>	component(FamilyText, :family_text),
 		[0,3]	=>	FamilyForwardLink,
 	}
 	CSS_MAP = {
@@ -54,14 +54,6 @@ class FamilyInfoComposite < HtmlGrid::DivComposite
 		2	=>	'family-intro',
 		3	=>	'family-forward-link',
 	}
-	def slideshow(model)
-		model = @session.app.load_slideshow('family')
-		View::Slideshow.new(model, @session, self)
-	end
-	def family_text(model)
-		model = @session.app.load_hisfamily_text
-		View::Personal::FamilyText.new(model, @session, self)
-	end
 end
 class FamilyComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'content'

@@ -4,7 +4,8 @@
 require 'view/publictemplate'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/spanlist'
-require 'view/slideshowrack'
+require 'view/serie_widget'
+require 'view/works/oneliner'
 
 module DAVAZ
 	module View
@@ -74,9 +75,10 @@ class SerieLinks < HtmlGrid::SpanList
 		link = HtmlGrid::Link.new('toggle-slideshow-rack', model, @session, self)
 		link.href = 'javascript:void(0)'
 		args = [ :serie_id, model.serie_id ]
-		url = @lookandfeel.event_url(:gallery, :ajax_home, args)
+		url = @lookandfeel.event_url(:gallery, :ajax_toggle_rack, args)
 		link.value = model.name + @lookandfeel.lookup('comma_divider')
-		script = "toggleSearchSlideShowRack(this, '#{url}')"
+		#script = "toggleSearchSlideShowRack(this, '#{url}')"
+		script = "toggleShow('show', '#{url}', null, 'upper-search-composite');"
 		link.set_attribute('onclick', script)
 		link.css_class = 'serie-link'
 		link
@@ -88,7 +90,7 @@ class UpperHomeComposite < HtmlGrid::DivComposite
 		[0,0]	=>	SearchTitle,
 		[0,1]	=>	View::GalleryNavigation,
 		[0,2]	=>	SearchBar,
-		[0,3]	=>	:oneliner,
+		[0,3]	=>	component(View::Works::OneLiner, :oneliner),
 		[0,4]	=>	SeriesTitle,
 	}
 	CSS_ID_MAP = {
@@ -96,33 +98,21 @@ class UpperHomeComposite < HtmlGrid::DivComposite
 		2	=>	'search-bar',
 		3	=>	'search-oneliner',
 	}
-	def init
-		@artgroups = @session.app.load_artgroups
-		super
-	end
-	def oneliner(model)
-		model = @session.app.load_oneliner('index')
-		View::Works::OneLiner.new(model, @session, self)		
-	end
 end
 class HomeComposite < HtmlGrid::DivComposite
 	CSS_ID = 'inner-content'
 	COMPONENTS = {
 		[0,0]	=>	UpperHomeComposite,
 		[0,1]	=>	:slideshow_rack,
-		[0,2]	=>	:serie_links,
+		[0,2]	=>	component(SerieLinks, :series),
 	}
 	CSS_ID_MAP = {
 		0	=>	'upper-search-composite',
-		1	=>	'slideshow-rack',
+		1	=>	'show-wipearea',
 		2	=>	'serie-links',
 	}
-	def serie_links(model)
-		model = @session.app.load_series
-		SerieLinks.new(model, @session, self)
-	end
 	def slideshow_rack(model)
-		SearchSlideShowRackComposite.new([], @session, self)
+		GallerySlideShowRackComposite.new([], @session, self)
 	end
 end
 class Home < View::GalleryPublicTemplate

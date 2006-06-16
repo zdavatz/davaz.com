@@ -16,7 +16,8 @@ class Multiples < State::Works::Global
 			multiples = @session.app.load_multiples
 			artobject_id = multiples.first.artobject_id
 		end
-		@model = @session.app.load_artobject(artobject_id)
+		@model.artobject = @session.app.load_artobject(artobject_id)
+		@model.multiples = @session.app.load_multiples()
 	end
 end
 		end

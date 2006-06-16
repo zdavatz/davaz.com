@@ -204,10 +204,9 @@ class ShopForm < HtmlGrid::DivForm
 		3	=>	'shopping-submit',
 	}
 	def item_list(model)
-		artgroups = @session.app.load_shop_artgroups
 		tables = []
-		artgroups.each { |artgroup|
-			artgroup_items = @model.select { |item|
+		@model.artgroups.each { |artgroup|
+			artgroup_items = @model.items.select { |item|
 				item.artgroup_id == artgroup.artgroup_id
 			}
 			unless(artgroup_items.empty?)

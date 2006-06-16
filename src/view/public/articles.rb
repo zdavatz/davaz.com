@@ -5,6 +5,7 @@ require 'view/publictemplate'
 require 'view/textblock'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
+require 'htmlgrid/input'
 
 module DAVAZ
 	module View
@@ -20,14 +21,13 @@ class ArticlesList < HtmlGrid::DivList
 		1	=>	'article-author',
 		2	=>	'article-text',
 	}
-
 	def title(model)
 		link = HtmlGrid::Link.new('toggle-article', model, @session, self)
 		link.href = 'javascript:void(0)'
 		args = [ :display_id, model.display_id ]
 		url = @lookandfeel.event_url(:article, :ajax_article, args)
 		link.set_attribute('onclick', "toggleArticle(this, '#{model.display_id}', '#{url}')")
-		link.value = model.title
+		link.value = model.title 
 		link
 	end
 	def article(model)
@@ -55,6 +55,31 @@ class ArticlesComposite < HtmlGrid::DivComposite
 end
 class Articles < View::ArticlesPublicTemplate
 	CONTENT = View::Public::ArticlesComposite 
+end
+class AdminArticlesList < ArticlesList 
+	def title(model)
+		span = HtmlGrid::Span.new(model, @session, self)
+		span.css_class = 'article-title' 
+		span.css_id = [ span.css_class, model.display_id ].join("-")
+		span.value = model.title
+		span
+	end
+	def author(model)
+		span = HtmlGrid::Span.new(model, @session, self)
+		span.css_class = 'article-author' 
+		span.css_id = [ span.css_class, model.display_id ].join("-")
+		span.value = model.author
+		span
+	end
+end
+class AdminArticlesComposite < HtmlGrid::DivComposite
+	COMPONENTS = {
+		[0,0]	=>	ArticlesTitle,
+		[1,0]	=>	AdminArticlesList,
+	}
+end
+class AdminArticles < View::ArticlesPublicTemplate 
+	CONTENT = AdminArticlesComposite
 end
 		end
 	end

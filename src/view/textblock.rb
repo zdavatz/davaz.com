@@ -52,7 +52,7 @@ module DAVAZ
 				links = @model.links
 				links.each { |link|
 					div_content = ""
-					if(link.type == 'image')
+					if(link.link_type == 'image')
 						if(link.displayelements.size > 1)
 							link.displayelements.each { |display|
 								display_id = display.display_id
@@ -69,7 +69,7 @@ module DAVAZ
 							}
 							compose_hidden_div(html, context, link, div_content)
 						end
-					elsif(link.type == 'text')
+					elsif(link.link_type == 'text')
 						display = link.displayelements.first
 						div_content << title_to_html(context, display.title)
 						div_content << author_to_html(context, display.author)
@@ -97,12 +97,12 @@ module DAVAZ
 				context.p(args) { add_links(author, context) }
 			end
 			def linkify(link, context)
-				if(link.type=='link')
+				if(link.link_type=='link')
 					lnk = HtmlGrid::Link.new(link.word, @model, @session, self)
 					lnk.href = link.href
 					lnk.value = link.word
 					lnk.to_html(context)
-				elsif(link.displayelements.size > 1 || link.type == 'text' || link.type == 'html')
+				elsif(link.displayelements.size > 1 || link.link_type == 'text' || link.link_type == 'html')
 					lnk = HtmlGrid::Link.new(link.word, @model, @session, self)
 					lnk.href = 'javascript:void(0)'
 					lnk.value = link.word
@@ -113,8 +113,8 @@ module DAVAZ
 					@link_id ||= 0
 					@link_id += 1
 					link_id = link.link_id
-					event = "tooltip_#{link.type}".to_sym
-					if(link.type == 'image')
+					event = "tooltip_#{link.link_type}".to_sym
+					if(link.link_type == 'image')
 						@images.push(link)
 					end
 					args = [ :link_id, link_id ]
@@ -138,6 +138,27 @@ module DAVAZ
 					'class'	=>	'block-title'
 				}
 				context.h1(args) { add_links(title, context) }
+			end
+		end
+		class AdminTextBlock < TextBlock 
+			def anchor_title_to_html(context)
+				title = @model.title
+				css_class = 'block-title'
+				component_id = [ css_class, @model.display_id ].join("-")
+				args = {
+					'class'	=> css_class,	
+					'id'		=> component_id,	
+				}
+				span = context.span(args) { add_links(title, context) }
+				link = HtmlGrid::Link.new(:edit_link, @model, @session, self) 
+				link.css_class = 'admin-action'
+				link.value = @session.lookandfeel.lookup(:edit)
+				args = [
+					[ :display_id, @model.display_id ]
+				]
+				url = @lookandfeel.event_url(:admin, :update_biographyitem, args) 
+				link.href = url
+				context.h1({'class', css_class}) { span << link.to_html(context) }
 			end
 		end
 		class ArticleTextBlock < View::TextBlock
@@ -180,6 +201,13 @@ module DAVAZ
 			end
 		end
 		class TitleTextBlock < View::TextBlock
+			def to_html(context)
+				html = anchor_title_to_html(context)
+				html << text_to_html(context)
+				add_hidden_divs(html, context)
+			end
+		end
+		class AdminTitleTextBlock < View::AdminTextBlock
 			def to_html(context)
 				html = anchor_title_to_html(context)
 				html << text_to_html(context)

@@ -28,6 +28,13 @@ module DAVAZ
 			def connection
 				@connection ||= connect
 			end
+			def add_image_to_link(link_id, display_id)
+				query = <<-EOS
+					INSERT INTO links_displayelements
+					VALUES ('#{link_id}', '#{display_id}')
+				EOS
+				connection.query(query)
+			end
 			def load_artgroups(order_by='artgroup_id')
 				query = <<-EOS
 					SELECT *
@@ -127,6 +134,82 @@ module DAVAZ
 				}
 				rates
 			end
+			def load_display_images
+				query = <<-EOS
+					SELECT displayelements.*
+					FROM displayelements
+					WHERE display_type = 'image'
+					LIMIT 30
+				EOS
+				result = connection.query(query)
+				create_model_array(DAVAZ::Model::DisplayElement, result)
+			end
+			def load_display_link(link_id)
+				query = <<-EOS
+					SELECT links.*, 
+						links_displayelements.display_id AS image_id 
+					FROM links
+					LEFT OUTER JOIN links_displayelements
+						USING (link_id)
+					WHERE links.link_id = '#{link_id}'
+				EOS
+				result = connection.query(query)
+				link = nil
+				result.each_hash { |row| 
+					if(link.nil?)
+						link = DAVAZ::Model::Link.new
+						row.each { |key, value|
+							method = "#{key}=".to_sym
+							if(link.respond_to?(method) && method!='image_id=')
+								link.send(method, value)
+							end
+						}
+					end
+					link.add_displayelement(row['image_id'])
+				}
+				link
+			end
+			def compose_displayelements_result(result)
+				elements = []
+				element = nil
+				last_id = nil
+				result.each_hash { |row|
+					display_id = row.delete('display_id')
+					if(display_id != last_id)
+						element = DAVAZ::Model::DisplayElement.new
+						row.each { |key, value|
+							method = "#{key}=".to_sym
+							if(element.respond_to?(method))
+								element.send(method, value)
+							end
+						}
+						element.send(:display_id=, display_id)
+						elements.push(element)
+						last_id = display_id
+					end
+					link = DAVAZ::Model::Link.new
+					row.each { |key, value|
+						method = "#{key}=".to_sym
+						if(link.respond_to?(method))
+							link.send(method, value) unless value.nil?
+						end
+					}
+					old_link = element.links.select { |old_lnk| 
+						old_lnk.link_id == link.link_id	
+					}
+					to_element = load_displayelement('display_id', \
+						row['link_display_id'])
+					if(old_link.empty?)
+						to_element.link_id = link.link_id unless to_element.nil?
+						link.add_displayelement(to_element) unless to_element.nil?
+						element.links.push(link) unless link.word.nil?
+					else
+						to_element.link_id = old_link.first.link_id unless to_element.nil?
+						old_link.first.add_displayelement(to_element) unless to_element.nil?
+					end
+				}
+				elements
+			end
 			def load_exhibitions
 			end
 			def load_guests
@@ -137,8 +220,6 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				create_model_array(DAVAZ::Model::Guest, result) 
-			end
-			def load_material(id)
 			end
 			def load_news
 				query = <<-EOS
@@ -199,22 +280,6 @@ module DAVAZ
 				result = connection.query(sql)
 				create_unique_model_array(Model::Serie, result, 'serie_id')
 			end
-=begin
-			def load_serie_objects(table_class, artgroup_id, serie_id)
-				sql = <<-SQL
-					SELECT artobjects.title, artobjects_displayelements.*, 
-					displayelements.display_id, displayelements.text AS comment
-					FROM artobjects
-					LEFT JOIN artobjects_displayelements USING (artobject_id)
-					LEFT JOIN displayelements USING (display_id) 
-					WHERE serie_id='#{serie_id}'
-					AND artgroup_id='#{artgroup_id}'
-					ORDER BY serie_nr DESC
-				SQL
-				result = connection.query(sql)
-				create_model_array(table_class, result)
-			end
-=end
 			def load_slideshow(title)
 				sql = <<-SQL
 					SELECT 
@@ -283,17 +348,14 @@ module DAVAZ
 				}
 				item
 			end
-			def load_shop_item(id)
-			end
-			def load_tool(id)
-			end
 			def load_displayelements(type, location, order="display_id", order_direction="ASC")
 				where = []
-				where.push("displayelements.type='#{type}'") unless type.nil?
+				where.push("displayelements.display_type='#{type}'") unless type.nil?
 				where.push("displayelements.location='#{location}'") unless location.nil?
 				query = <<-EOS
-					SELECT displayelements.*, links.word, links.link_id,
-					links.href, links.type, 
+					SELECT displayelements.*, 
+					links.word, links.link_id,
+					links.href, links.link_type, 
 					links_displayelements.display_id AS link_display_id
 					FROM displayelements 
 					LEFT OUTER JOIN links 
@@ -308,13 +370,16 @@ module DAVAZ
 			end
 			def load_displayelement(select_by, value)
 				query = <<-EOS
-					SELECT displayelements.*,links.word, links.link_id,
-					links.href, links.type
+					SELECT displayelements.*,
+					links.word, links.link_id,
+					links.href, links.link_type,
+					links_displayelements.display_id AS link_display_id
 					FROM displayelements 
 					LEFT OUTER JOIN links 
 					ON displayelements.display_id = links.display_id
+					LEFT OUTER JOIN links_displayelements
+					ON links_displayelements.link_id = links.link_id
 					WHERE displayelements.#{select_by}='#{value}'
-					LIMIT 1 
 				EOS
 				result = connection.query(query)
 				compose_displayelements_result(result).first
@@ -347,13 +412,15 @@ module DAVAZ
 					old_link = element.links.select { |old_lnk| 
 						old_lnk.link_id == link.link_id	
 					}
-					to_element = load_displayelement('display_id', 
+					to_element = load_displayelement('display_id', \
 						row['link_display_id'])
 					if(old_link.empty?)
-						link.add_displayelement(to_element)
+						to_element.link_id = link.link_id unless to_element.nil?
+						link.add_displayelement(to_element) unless to_element.nil?
 						element.links.push(link) unless link.word.nil?
 					else
-						old_link.first.add_displayelement(to_element)
+						to_element.link_id = old_link.first.link_id unless to_element.nil?
+						old_link.first.add_displayelement(to_element) unless to_element.nil?
 					end
 				}
 				elements
@@ -402,7 +469,17 @@ module DAVAZ
 				}
 				elements
 			end
-			def load_movie(id)
+			def insert_displayelement(values)
+				values_array = []
+				values.each { |key, value|
+					values_array.push("#{key} = '#{value}'")	
+				}
+				query = <<-EOS
+					INSERT INTO displayelements
+					SET #{values_array.join(',')} 
+				EOS
+				connection.query(query)
+				connection.insert_id
 			end
 			def insert_guest(user_values)
 				values = [
@@ -456,6 +533,14 @@ module DAVAZ
 				}
 				hash
 			end
+			def remove_image_from_link(link_id, display_id)
+				query = <<-EOS
+					DELETE FROM links_displayelements
+					WHERE links_displayelements.link_id = '#{link_id}'
+					AND links_displayelements.display_id = '#{display_id}'
+				EOS
+				connection.query(query)
+			end
 			def search_artobjects(search_pattern, artgroup_id)
 				if(artgroup_id.nil?)
 					artgroup = ""
@@ -497,6 +582,21 @@ module DAVAZ
 					UPDATE currencies
 					SET rate='#{rate}'
 					WHERE origin='#{origin}' AND target='#{target}';
+				EOS
+				result = connection.query(query)
+				connection.affected_rows
+			end
+			def update_displayelement(display_id, update_hash)
+				update_array = []
+				update_hash.each { |key, value|
+					unless(value.nil?)
+						update_array.push("#{key}='#{value}'")
+					end
+				}
+				query = <<-EOS
+					UPDATE displayelements
+					SET #{update_array.join(', ')}
+					WHERE display_id='#{display_id}'
 				EOS
 				result = connection.query(query)
 				connection.affected_rows

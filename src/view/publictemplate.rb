@@ -3,9 +3,16 @@
 
 require 'htmlgrid/divtemplate'
 require 'htmlgrid/dojotoolkit'
+require 'htmlgrid/form'
 require 'view/navigation'
 require 'view/ticker'
 
+module HtmlGrid
+	module FormMethods
+		remove_const(:ACCEPT_CHARSET)
+		ACCEPT_CHARSET = 'UTF-8'
+	end
+end
 module DAVAZ
 	module View
 		class FootContainer < HtmlGrid::DivComposite
@@ -48,13 +55,14 @@ module DAVAZ
 				'ywesee.widget.*',
 				'ywesee.widget.OneLiner',
 				'ywesee.widget.SlideShow',
+				'ywesee.widget.Rack',
 				'ywesee.widget.Ticker'
 			]
 			CONTENT = nil
 			TICKER = nil
 			COMPONENTS = {
 				[0,0]		=>	View::TopNavigation,
-				[0,1]		=>	:container,
+				[0,1]		=>	:dojo_container,
 				[0,2]		=>	View::FootContainer,
 				[0,3]		=>	:logo,	
 				[0,4]		=>	:zone_image,
@@ -88,14 +96,13 @@ module DAVAZ
 =end
 				super
 			end
-			def container(model)
+			def dojo_container(model)
 				divs = []
 				div = HtmlGrid::Div.new(model, @session, self)
 				value = []
-				unless(self::class::TICKER.nil?)
-					slideshow_name = self::class::SLIDESHOW_NAME
-					slides = @session.app.load_slideshow(slideshow_name)
-					value <<  __standard_component(slides, self::class::TICKER) 
+				if(ticker = self.class::TICKER)
+					slides = @session.app.load_slideshow(ticker)
+					value <<  __standard_component(slides, View::TickerContainer) 
 				end
 				value <<  __standard_component(model, self::class::CONTENT)
 				div.value = value
@@ -184,6 +191,9 @@ module DAVAZ
 		end
 		class ImagesPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :images_css ]
+		end
+		class AdminPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :admin_css ]
 		end
 	end
 end

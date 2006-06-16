@@ -1,44 +1,3 @@
-var toggle_busy = false;
-function toggleRackImage(imageId, url, titleId, title) {
-	if(toggle_busy) return;
-	var imgNode = dojo.byId(imageId);
-	var titleNode = dojo.byId(titleId);
-	var src_image_id = imgNode.src.split("/").pop();
-	var new_image_id = url.split("/").pop();
-	if(src_image_id == new_image_id) return;
-	toggle_busy = true;
-	var callback2 = function() {
-		toggle_busy = false;
-	}
-	var callback1 = function() {
-		imgNode.src = url;
-		dojo.fx.fadeIn(imgNode, 200, callback2);
-	}
-	dojo.fx.fadeOut(imgNode, 200, callback1);
-	var callback3 = function() {
-		titleNode.innerHTML = title;	
-		dojo.fx.fadeIn(titleNode, 200);
-	}
-	dojo.fx.fadeOut(titleNode, 200, callback3);
-}
-
-function toggleSlideshow() {
-	var rack = dojo.byId('rack');
-	var slideshow = dojo.byId('slideshow');
-	display = dojo.style.getStyle(rack, "display");
-	if(display=="none") {
-		var callback = function() {
-			dojo.fx.html.wipeIn(rack, 300);
-		}
-		dojo.fx.html.wipeOut(slideshow, 300, callback);
-	} else {
-		var callback = function() {
-			dojo.fx.html.wipeIn(slideshow, 300);
-		}
-		dojo.fx.html.wipeOut(rack, 300, callback);
-	}
-}
-
 function toggleTicker() {
 	var node = dojo.byId('ticker-container');
 	display = dojo.style.getStyle(node, "display");
@@ -89,65 +48,55 @@ function removeFromShoppingCart(url, fieldId) {
 	});
 }
 
-/*
-function addInputField(url, editFormId) {
-	var editForm = dojo.byId(editFormId);
-	dojo.io.bind({
-		url: url,
-		load: function(type, data, event) { 
-			dojo.fx.html.wipeIn(editForm, 100);
-		},
-		mimetype: "text/html"
-	});
-}
-function TrimString(sInString) {
-	sInString = sInString.replace( /^\s+/g, "" );// strip leading
-	return sInString.replace( /\s+$/g, "" );// strip trailing
-}
-*/
-
-
-function closeSearchSlideShowRack() {
-	var slideShowRack = dojo.byId('slideshow-rack');
-	var upperSearchComposite = dojo.byId('upper-search-composite');
+function replaceDiv(id, replace_id) {
+	var node = dojo.byId(id);	
+	var replace = dojo.byId(replace_id);
 	var callback = function() {
-		dojo.fx.html.wipeIn(upperSearchComposite, 100);
+		dojo.fx.html.wipeIn(replace, 100);
 	}
-	dojo.fx.html.wipeOut(slideShowRack, 100, callback);	
+	dojo.fx.html.wipeOut(node, 100, callback);	
 }
 
-function toggleSearchSlideShowRack(link, url) {
-	var slideShowRack = dojo.byId('slideshow-rack');
-	var upperSearchComposite = dojo.byId('upper-search-composite');
-	display = dojo.style.getStyle(slideShowRack, "display");
-	if(display=="none") {
-		document.body.style.cursor = 'progress';
-		link.style.cursor = 'progress';
+function toggleShow(id, url, view, replace_id) {
+	var show = dojo.widget.byId(id);
+	var container = dojo.byId(id + "-container");
+	var wipearea = dojo.byId(id + "-wipearea");
+	var display;
+	var replace = dojo.byId(replace_id);
+
+	if(view == null) {
+		if(show) {
+			view = show.widgetType;
+		} else  {
+			view = 'Rack';	
+		}
+	}
+	if(url == null) {
+		url = show.dataUrl;	
+	}
+	
+	var loadShow = function() {
 		dojo.io.bind({
 			url: url,
 			load: function(type, data, event) { 
-				slideShowRack.innerHTML = data;
-				var callback2 = function() {
-					document.body.style.cursor = 'auto';
-					link.style.cursor = 'auto';
+				data['id'] = id;
+				if(show) {
+					show.destroy();	
 				}
-				var callback = function() {
-					dojo.fx.html.wipeIn(slideShowRack, 1000, callback2);
+				var widget = dojo.widget.createWidget(view, data, container,
+																							'last');
+				widget.dataUrl = url;
+				if(dojo.style.getStyle(wipearea, "display") == 'none') {
+					dojo.fx.html.wipeIn(wipearea, 1000);
 				}
-				dojo.fx.html.wipeOut(upperSearchComposite, 1000, callback);
 			},
-			mimetype: "text/html"
+			mimetype: "text/json"
 		});
+	}
+	if(replace && dojo.style.getStyle(replace, "display") != 'none') {
+		dojo.fx.html.wipeOut(replace, 1000, loadShow);
 	} else {
-		document.body.style.cursor = 'progress';
-		link.style.cursor = 'progress';
-		dojo.io.bind({
-			url: url,
-			load: function(type, data, event) { 
-				slideShowRack.innerHTML = data;
-			},
-			mimetype: "text/html"
-		});
+		loadShow.call();	
 	}
 }
 
@@ -190,6 +139,19 @@ function jumpTo(nodeId) {
 }
 
 function removeImage(url) {
+	var node = dojo.byId('links-list-container');
+	document.body.style.cursor = 'progress';
+	dojo.io.bind({
+		url: url,	
+		load: function(type, data, event) {
+			node.innerHTML = data;
+			document.body.style.cursor = 'auto';
+		},
+		mimetype: 'text/html'
+	});
+}
+
+function addImage(url) {
 	var node = dojo.byId('links-list-container');
 	document.body.style.cursor = 'progress';
 	dojo.io.bind({

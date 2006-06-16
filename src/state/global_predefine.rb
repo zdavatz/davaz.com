@@ -10,6 +10,8 @@ module DAVAZ
 		module Admin
 class Global < State::Global; end
 class Home < State::Admin::Global; end
+class ImageChooser < State::Admin::Global; end
+class DisplayElement < State::Admin::Global; end
 		end
 		module Communication
 class Global < State::Global; end

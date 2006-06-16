@@ -5,7 +5,7 @@ require 'view/publictemplate'
 require 'view/list'
 require 'view/textblock'
 require 'view/works/oneliner'
-require 'view/slideshow'
+require 'view/serie_widget'
 require 'view/ticker'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/link'
@@ -124,22 +124,18 @@ class LifeTranslations < HtmlGrid::DivComposite
 	end
 end
 class LifeComposite < HtmlGrid::DivComposite
+	LIFE_LIST = component(LifeList, :biography_items)
 	CSS_CLASS = 'inner-content'
 	COMPONENTS = {
 		[0,0]	=>	:india_ticker_link,
-		[0,1]	=>	:slideshow,
-		[0,2]	=>	:oneliner,
+		[0,1]	=>	component(SerieWidget, :slideshow_items, 'SlideShow'),
+		[0,2]	=>	component(View::Works::OneLiner, :oneliner),
 		[0,3]	=>	LifeTimePeriods,
 		[1,3]	=>	LifeTranslations,
-		[2,3]	=>	LifeList,
 	}
-	def slideshow(model)
-		model = @session.app.load_slideshow('life')
-		View::Slideshow.new(model, @session, self)
-	end
-	def oneliner(model)
-		model = @session.app.load_oneliner('hislife')
-		View::Works::OneLiner.new(model, @session, self)
+	def init
+		components[[2,3]] = self.class::LIFE_LIST
+		super
 	end
 	def india_ticker_link(model)
 		link = HtmlGrid::Link.new(:india_ticker_link, model, @session, self)
@@ -154,8 +150,19 @@ class LifeComposite < HtmlGrid::DivComposite
 end
 class Life < View::PersonalPublicTemplate
 	CONTENT = View::Personal::LifeComposite
-	TICKER = View::TickerContainer
-	SLIDESHOW_NAME = 'passage_through_india'
+	TICKER = 'passage_through_india'
+end
+class AdminLifeList < HtmlGrid::UlList
+	CSS_ID = 'biography'
+	COMPONENTS = {
+		[0,0]	=>	View::AdminTitleTextBlock,
+	}
+end
+class AdminLifeComposite < LifeComposite 
+	LIFE_LIST = component(AdminLifeList, :biography_items)
+end
+class AdminLife < Life
+	CONTENT = View::Personal::AdminLifeComposite
 end
 		end
 	end

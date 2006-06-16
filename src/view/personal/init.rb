@@ -231,11 +231,6 @@ class PayPalDiv < HtmlGrid::DivComposite
 end
 class OneLiner < HtmlGrid::Div
 	CSS_ID = 'oneliner'
-	def init
-		super
-		model = @session.app.load_oneliner('index')
-		@value = View::Works::OneLiner.new(model, @session, self)
-	end
 end
 class InitComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'init-container'
@@ -249,7 +244,7 @@ class InitComposite < HtmlGrid::DivComposite
 		[6,0]		=>	PicBottleneck,
 		[7,0]		=>	CommunicationLinks,
 		[8,0]		=>	Copyright,
-		[9,0]		=>	OneLiner,
+		[9,0]		=>	component(OneLiner, :oneliner),
 		[10,0]	=>	MovieLinks,
 		[11,0]	=>	PayPalDiv,
 	}
@@ -258,7 +253,7 @@ class Init < View::PublicTemplate
 	CSS_FILES = [ :navigation_css, :init_css ]
 	COMPONENTS = {
 		[0,0]	=>	View::TopNavigation,
-		[0,1]	=>	:ticker,
+		[0,1]	=>	component(Ticker, :movies),
 		[0,2]	=>	InitComposite,
 	}
 	CSS_ID_MAP = {
@@ -275,14 +270,10 @@ class Init < View::PublicTemplate
 			<<-EOS
 			function scrollDiv(elId) {
 				var node = document.getElementById(elId);
-				dojo.fx.html.slideTo(node, [-#{@model.size * self.class.const_get(:MOVIES_DIV_IMAGE_WIDTH)},0], #{@model.size * self.class.const_get(:MOVIES_DIV_IMAGE_SPEED)})
+				dojo.fx.html.slideTo(node, [-#{@model.movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_WIDTH)},0], #{@model.movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_SPEED)})
 			}
 			EOS
 		}
-	end
-	def ticker(model)
-		model = @session.app.load_movies
-		@value = View::Ticker.new(model, @session, self)	
 	end
 end
 		end

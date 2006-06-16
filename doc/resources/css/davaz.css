@@ -122,7 +122,7 @@ div.multimedia-buttons {
 	margin-top: 20px;
 }
 
-div#image-container {
+div.image-container {
 	width: 370px;
 	height: 370px;
 	overflow: hidden;
@@ -133,38 +133,33 @@ div#image-container {
 	vertical-align: top;
 }
 
-img#image-container-image {
+img.image-container-image {
 	top: 0px;
 	left: 0px;
 	padding-top: 4px;
-/*	max-width: 350px;
-	max-height: 350px; */
+	max-width: 360px;
+	max-height: 340px;
 	height:expression(this.width > this.height ? "auto" : "360px");
 	width:expression(this.width > this.height ? "340px" : "auto");
 }
 
-div#image-title-container {
+div.image-title-container {
 	top: 0px;
 	left: 0px;
 	text-align: left;
 }
 
-div#image-title-container span {
+div.image-title-container span {
 	font-size: 10pt;
 	color: black;
 	margin-left: -360px;
 }
 
-div#thumb-container {
+div.thumb-container {
 	margin-left: 5px;
 	width: 350px;
 	height: 350px;
 	overflow: hidden;
-}
-
-div.thumb-container {
-	overflow: hidden;
-	float: left;
 }
 
 a.serie-link:link, a.serie-link:visited, a.serie-link:hover {
@@ -184,9 +179,14 @@ img.slideshow-control-image {
 	display: inline;
 }
 
+div#rack-slideshow {
+	display: none;
+}
+
 div#rack-container {
-	width: 100%;
+	width: 700px;
 	height: 370px;
+	margin-left: auto; margin-right: auto;
 	overflow: hidden;
 }
 
@@ -211,8 +211,35 @@ span.hide-hidden-div-link {
 }
 
 div#login-form {
+	text-align: left;
+	color: black;
 	width: 300px;
-	border: red solid 1pt;
-	padding-top: 40px;
+	padding-top: 100px;
+	margin-left: auto; margin-right: auto;
+}
+
+a.admin-action:link, a.admin-action:visited, a.admin-action:hover {
+	color: red;
+	padding-left: 10px;
+	text-decoration: none;
+	font-weight: normal;
+}
+
+div.edit-displayelement {
+	color: black;
+	width: 700px;
+	text-align: left;
+	margin-left: auto; margin-right: auto;
+	padding-top: 5px;
+}
+
+div.edit-displayelement label {
+	display: block;
+	float: left;
+	width: 110px;
+}
+
+div#show-container {
+	width: 700px;
 	margin-left: auto; margin-right: auto;
 }

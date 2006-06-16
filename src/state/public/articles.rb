@@ -24,6 +24,9 @@ class Articles < State::Public::Global
 		@model = @session.load_articles 
 	end
 end
+class AdminArticles < Articles
+	VIEW = View::Public::AdminArticles
+end
 		end
 	end
 end

@@ -29,10 +29,10 @@ ywesee.widget.SlideShow = function(){
 	// useful properties
 	this.images = [];	
 	this.titles = [];
-	this.imageHeight = "200px";
+	this.imageHeight = "280px";
 	this.imageIdx = 0;	
-	this.delay = 4000;
-	this.transitionInterval = 2000; 
+	this.delay = 3500;
+	this.transitionInterval = 1500; 
 	this.background = "container2"; 
 	this.background_image = "img2"; 
 	this.background_title = "title2"; 
@@ -42,6 +42,8 @@ ywesee.widget.SlideShow = function(){
 	this.stopped = false;	
 	this.fadeAnim = null; 
 	this.critical = false;
+	this.loadedCallback = 'backgroundImageLoaded';
+	this.dataUrl = null;
 
 	// our DOM nodes:
 	this.imagesContainer = null;
@@ -57,14 +59,16 @@ ywesee.widget.SlideShow = function(){
 	this.fillInTemplate = function(){
 		dojo.style.setOpacity(this.container1, 0.9999);
 		dojo.style.setOpacity(this.container2, 0.9999);
-		if(this.images.length>1){
+		//if(this.images.length>1){
 			this.title2.innerHTML = this.titles[this.imageIdx];
 			this.img2.style.height = this.imageHeight;
-			this.img2.src = this.images[this.imageIdx++];
+			this.img2.src = this.images[this.imageIdx];
+			this.imageIdx++;
 			this.endTransition();
-		}else{
-			this.img1.src = this.images[this.imageIdx++];
-		}
+		//}else{
+			//this[this.foreground_image].src = this.images[0];
+			//this.img1.src = this.images[this.imageIdx++];
+		//}
 	}
 
 	this.togglePaused = function(){
@@ -113,7 +117,8 @@ ywesee.widget.SlideShow = function(){
 		this.background_image = tmp_image;
 		this.background_title = tmp_title;
 
-		this.loadNextImage();
+		if(this.images.length > 1)
+			this.loadNextImage();
 	}
 
 	this.loadNextImage = function(){
@@ -122,6 +127,7 @@ ywesee.widget.SlideShow = function(){
 			srcObj: this[this.background_image],
 			srcFunc: "onload",
 			adviceObj: this,
+			//adviceFunc: this.loadedCallback,
 			adviceFunc: "backgroundImageLoaded",
 			once: true, 
 			delay: this.delay
@@ -135,6 +141,80 @@ ywesee.widget.SlideShow = function(){
 			this.imageIdx = 0;
 		}
 	}
+
+/*
+	this.refill = function(data) {
+		if(this.critical) return;
+		this.critical = true;
+
+		//this.stopped = false;
+		//this.togglePaused();
+		var length = this.images.length;
+		for(name in data) {
+			this[name] = data[name];
+		}
+
+		if(length == 0 || this.images.length == 1) {
+			this.fillInTemplate();
+		} else {
+			var which_image;
+			var which_title;
+			if(this.stopped) {
+				this[this.foreground_title].innerHTML = this.titles[0];
+				this[this.foreground_image].src = this.images[0];
+			} else {
+				//this.imageIdx = 0;	
+				//this[this.foreground_title].innerHTML = this.titles[0];
+				//this[this.foreground_image].src = this.images[0];
+				this.imageIdx = 0; this.images.length - 1;	
+				this.loadedCallback = 'refillCallback';
+				this.disconnectOnLoads('backgroundImageLoaded');
+				var img = this[this.background_image];
+				this[this.background_title].innerHTML = this.titles[0];
+				img.src = this.images[0];
+				dojo.event.kwConnect({
+					srcObj: img,
+					srcFunc: "onload",
+					adviceObj: this,
+					adviceFunc: 'refillCallback',
+					once: true, 
+					delay: this.delay
+				});
+			}
+		}
+	}
+
+	this.refillCallback = function() {
+		dojo.debug('refillCallback');
+		//this.togglePaused();
+		this.loadedCallback = 'backgroundImageLoaded';
+		this.disconnectOnLoads('refillCallback');
+		this.loadNextImage();
+
+		//this.loadedCallback = "backgroundImageLoaded";
+		//this.loadNextImage();
+		//dojo.debug('we have arrived');
+	}
+	
+	this.disconnectOnLoads = function(funcname) {
+		dojo.event.kwDisconnect({
+			srcObj: this.img1,
+			srcFunc: "onload",
+			adviceObj: this,
+			adviceFunc: funcname,
+			once: true, 
+			delay: this.delay
+		});
+		dojo.event.kwDisconnect({
+			srcObj: this.img2,
+			srcFunc: "onload",
+			adviceObj: this,
+			adviceFunc: funcname,
+			once: true, 
+			delay: this.delay
+		});
+	}
+*/
 }
 dojo.inherits(ywesee.widget.SlideShow, dojo.widget.HtmlWidget);
 dojo.widget.tags.addParseTreeHandler("dojo:slideshow");

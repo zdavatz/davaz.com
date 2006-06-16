@@ -74,16 +74,18 @@ class ThumbImagesDiv < HtmlGrid::Div
 	CSS_ID = 'thumb-images'
 	def init
 		super
-		model = @session.app.load_multiples()
-		@value = ThumbImages.new(model, @session, self)
+		puts @model.class
 	end
 end
 class MultiplesComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'content'
 	COMPONENTS = {
 		[0,0]	=>	MultiplesTitle,
-		[0,1]	=>	JavaAppletDiv,
-		[0,2]	=>	ThumbImagesDiv,
+		[0,1]	=>	component(JavaAppletDiv, :artobject),
+		[0,2]	=>	component(ThumbImages, :multiples),
+	}
+	CSS_ID_MAP = {
+		2	=>	'thumb-images',
 	}
 end
 class Multiples < View::MultiplesPublicTemplate

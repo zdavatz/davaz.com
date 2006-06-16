@@ -5,7 +5,7 @@ module DAVAZ
 	module Model
 		class Link
 			attr_accessor :link_id, :block_id, :word, :comment
-			attr_accessor :href, :type
+			attr_accessor :href, :link_type, :display_id
 			attr_reader :displayelements
 			def initialize
 				@displayelements = []

@@ -36,7 +36,9 @@ end
 class Shop < State::Communication::Global
 	VIEW = View::Communication::Shop
 	def init
-		@model = @session.app.load_shop_items
+		@model = OpenStruct.new
+		@model.items = @session.app.load_shop_items
+		@model.artgroups = @session.app.load_shop_artgroups
 		super
 	end
 	def remove_all_items

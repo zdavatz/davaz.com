@@ -14,7 +14,8 @@ class Global < State::Global
 	ZONE = :gallery
 	GLOBAL_MAP = {
 		:artobject			=>	State::Gallery::ArtObject,
-		:ajax_home			=>	State::Gallery::AjaxHome,
+		:ajax_toggle_rack	=>	State::Gallery::AjaxToggleRack,
+		:ajax_toggle_slideshow	=>	State::Gallery::AjaxToggleSlideshow,
 		:home						=>	State::Gallery::Home,
 	}
 end

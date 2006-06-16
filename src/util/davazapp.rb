@@ -1,12 +1,14 @@
 #!/usr/bin/env ruby
 # Util::DavazApp -- davaz.com -- 26.08.2005 -- mhuggler@ywesee.com
 
+require 'yus/session'
 require 'util/updater'
 
 module DAVAZ
 	module Util
 		class DavazApp
 			RUN_UPDATER = true 
+			YUS_SERVER = DRb::DRbObject.new(nil, YUS_URI)
 			attr_accessor :db_manager
 			def initialize
 				if(RUN_UPDATER)
@@ -24,8 +26,14 @@ module DAVAZ
 					}
 				}
 			end
+			def insert_displayelement(values)
+				@db_manager.insert_displayelement(values)
+			end
 			def insert_guest(values_hsh)
 				@db_manager.insert_guest(values_hsh)
+			end
+			def add_image_to_link(link_id, display_id)
+				@db_manager.add_image_to_link(link_id, display_id)
 			end
 			def load_artgroups
 				@db_manager.load_artgroups
@@ -50,6 +58,15 @@ module DAVAZ
 			end
 			def load_currency_rates(model)
 				@db_manager.load_currency_rates(model)
+			end
+			def load_displayelement(display_id)
+				@db_manager.load_displayelement('display_id', display_id)
+			end
+			def load_display_images
+				@db_manager.load_display_images
+			end
+			def load_display_link(link_id)
+				@db_manager.load_display_link(link_id)
 			end
 			def load_exhibitions
 				@db_manager.load_displayelements(nil, 'exhibitions', 'title')
@@ -139,12 +156,21 @@ module DAVAZ
 			def load_multiples
 				@db_manager.load_artobjects('MUL')
 			end
+			def login(email, pass)
+				YUS_SERVER.login(email, pass, YUS_DOMAIN)
+			end
+			def remove_image_from_link(link_id, display_id)
+				@db_manager.remove_image_from_link(link_id, display_id)
+			end
 			def search_artobjects(query, artgroup_id)
 				if(query.nil?)
 					@db_manager.load_artobjects(artgroup_id)
 				else
 					@db_manager.search_artobjects(query, artgroup_id)
 				end
+			end
+			def update_displayelement(display_id, update_hash)
+				@db_manager.update_displayelement(display_id, update_hash)
 			end
 		end
 	end

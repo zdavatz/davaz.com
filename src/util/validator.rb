@@ -32,7 +32,6 @@ module DAVAZ
 				:home,
 				:images,
 				:image_chooser,
-				:init, 
 				:inspiration,
 				:lectures,
 				:life,

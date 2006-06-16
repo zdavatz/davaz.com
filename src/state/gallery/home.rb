@@ -27,14 +27,12 @@ class AjaxToggleRack < SBSM::State
 			'titles'			=>	titles,
 			'imageHeight'	=>	SLIDESHOW_IMAGE_HEIGHT,
 		}
-		super
 	end
 end
 class AjaxToggleSlideshow < AjaxToggleRack ; end
 class Home < State::Gallery::Global
 	VIEW = View::Gallery::Home
 	def init
-		super
 		@model = OpenStruct.new
 		@model.oneliner = @session.app.load_oneliner('index')
 		@model.series = @session.app.load_series

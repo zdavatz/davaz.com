@@ -11,7 +11,6 @@ class News < State::Communication::Global
 	VIEW = View::Communication::News
 	def init
 		@model = @session.app.load_news
-		super
 	end
 end
 		end

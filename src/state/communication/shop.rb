@@ -39,7 +39,6 @@ class Shop < State::Communication::Global
 		@model = OpenStruct.new
 		@model.items = @session.app.load_shop_items
 		@model.artgroups = @session.app.load_shop_artgroups
-		super
 	end
 	def remove_all_items
 		@session[:cart_items] = []

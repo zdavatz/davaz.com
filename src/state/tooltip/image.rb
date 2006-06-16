@@ -11,7 +11,6 @@ module DAVAZ
 class Image < State::ToolTip::Global
 	VIEW = View::ToolTip::Image
 	def init
-		super
 		link_id = @session.user_input(:link_id)
 		@model = @session.app.load_link_displayelement(link_id)
 	end

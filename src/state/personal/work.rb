@@ -14,7 +14,6 @@ class Work < State::Personal::Global
 		@model.text = @session.app.load_hiswork_text
 		@model.slideshow = @session.app.load_slideshow('morphopolis')
 		@model.oneliner = @session.app.load_oneliner('hiswork')
-		super
 	end
 end
 		end

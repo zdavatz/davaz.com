@@ -11,7 +11,6 @@ class Guestbook < State::Communication::Global
 	VIEW = View::Communication::Guestbook
 	def init
 		@model = @session.app.load_guests
-		super
 	end
 end
 		end

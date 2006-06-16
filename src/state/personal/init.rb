@@ -11,7 +11,6 @@ module DAVAZ
 class Init < State::Personal::Global
 	VIEW = View::Personal::Init
 	def init
-		super
 		@model = OpenStruct.new
 		@model.movies = @session.app.load_movies
 		@model.oneliner = @session.app.load_oneliner('index')

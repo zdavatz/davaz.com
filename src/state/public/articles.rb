@@ -14,13 +14,11 @@ class AjaxArticle < SBSM::State
 	def init
 		article_id = @session.user_input(:display_id)
 		@model = @session.load_article(article_id)
-		super
 	end
 end
 class Articles < State::Public::Global
 	VIEW = View::Public::Articles
 	def init
-		super
 		@model = @session.load_articles 
 	end
 end

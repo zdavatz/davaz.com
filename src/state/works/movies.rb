@@ -10,7 +10,6 @@ module DAVAZ
 class Movies < State::Works::Global
 	VIEW = View::Works::Movies
 	def init
-		super
 		@model = @session.load_movies()
 	end
 end

@@ -11,7 +11,6 @@ module DAVAZ
 class Poem < State::ToolTip::Global
 	VIEW = View::ToolTip::Poem
 	def init
-		super
 		display_id = @session.user_input(:display_id)
 		@model = @session.app.load_poem(display_id)
 	end

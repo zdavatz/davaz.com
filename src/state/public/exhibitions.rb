@@ -10,7 +10,6 @@ module DAVAZ
 class Exhibitions < State::Public::Global
 	VIEW = View::Public::Exhibitions
 	def init
-		super
 		@model = @session.load_exhibitions 
 	end
 end

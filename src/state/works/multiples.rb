@@ -10,7 +10,6 @@ module DAVAZ
 class Multiples < State::Works::Global
 	VIEW = View::Works::Multiples
 	def init
-		super
 		artobject_id = @session.user_input(:artobject_id) 
 		if(artobject_id.nil?)
 			multiples = @session.app.load_multiples

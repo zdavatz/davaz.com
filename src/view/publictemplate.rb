@@ -87,15 +87,6 @@ module DAVAZ
 					"content"			=>	"follow, index",
 				},
 			]
-			def init
-=begin
-				if(display_id = @session.user_input(:show))
-					script = "toggleHiddenDiv('#{display_id}-hidden-div')"
-					self.onload = script
-				end
-=end
-				super
-			end
 			def dojo_container(model)
 				divs = []
 				div = HtmlGrid::Div.new(model, @session, self)

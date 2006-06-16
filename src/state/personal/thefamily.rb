@@ -10,7 +10,6 @@ module DAVAZ
 class TheFamily < State::Personal::Global
 	VIEW = View::Personal::TheFamily
 	def init
-		super
 		@model = @session.app.load_thefamily_text
 	end
 end

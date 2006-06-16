@@ -10,7 +10,6 @@ module DAVAZ
 class ArtObject < State::Gallery::Global 
 	VIEW = View::Gallery::ArtObject	
 	def init
-		super
 		artobject_id = @session.user_input(:artobject_id)
 		artgroup_id = @session.user_input(:artgroup_id)
 		query = @session.user_input(:search_query)

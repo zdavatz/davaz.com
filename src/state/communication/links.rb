@@ -11,7 +11,6 @@ class Links < State::Communication::Global
 	VIEW = View::Communication::Links
 	def init
 		@model = @session.app.load_links
-		super
 	end
 end
 		end

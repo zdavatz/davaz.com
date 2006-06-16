@@ -27,7 +27,6 @@ class Life < State::Personal::Global
 			@model.slideshow_items['titles'].push(item.title)
 		}
 		@model.oneliner = @session.app.load_oneliner('hislife')
-		super
 	end
 end
 class AdminLife < State::Personal::Global
@@ -40,7 +39,6 @@ class AdminLife < State::Personal::Global
 			@model.biography_items = @session.app.load_biography_text("life_english") 
 		end
 		add_slideshow_items(@model, 'life')
-		super
 	end
 end
 		end

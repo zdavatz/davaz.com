@@ -11,7 +11,6 @@ module DAVAZ
 class ArtObject < State::ToolTip::Global
 	VIEW = View::ToolTip::ArtObject
 	def init
-		super
 		artobject_id = @session.user_input(:artobject_id)
 		@model = @session.app.load_artobject(artobject_id)
 	end

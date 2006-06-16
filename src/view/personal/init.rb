@@ -266,6 +266,9 @@ class Init < View::PublicTemplate
 			'language'	=>	'JavaScript',
 			'type'			=>	'text/javascript',
 		}
+		if(@model.movies.nil?)
+			puts @model.class
+		end
 		super << context.script(args) {
 			<<-EOS
 			function scrollDiv(elId) {

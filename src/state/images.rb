@@ -9,7 +9,6 @@ module DAVAZ
 		class Images < State::Global
 			VIEW = View::Images
 			def init
-				super
 				link_id = @session.user_input(:link_id)
 				@model = @session.app.load_link_displayelements(link_id) 
 			end

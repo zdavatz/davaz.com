@@ -13,7 +13,6 @@ class Family < State::Personal::Global
 		@model = OpenStruct.new
 		@model.family_text = @session.app.load_hisfamily_text
 		add_slideshow_items(@model, 'family')
-		super
 	end
 end
 		end

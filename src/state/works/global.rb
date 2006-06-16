@@ -17,7 +17,6 @@ class AjaxGlobal < Works::Global
 	VOLATILE = true
 	VIEW = View::AjaxResponse
 	def init
-		super
 		@model = @model.serie_items
 	end
 	def artgroup_id
@@ -64,7 +63,6 @@ class Global < State::Global
 			@model.serie_items['images'].push(image)
 			@model.serie_items['titles'].push(item.title)
 		}
-		super
 	end
 	def artgroup_id
 		self.class.const_get(:ARTGROUP_ID)

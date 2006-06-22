@@ -12,7 +12,7 @@ module DAVAZ
 class Global < State::Global
 	HOME_STATE = State::Personal::Init
 	ZONE = :public
-	GLOBAL_MAP = {
+	EVENT_MAP = {
 		:ajax_article					=>	State::Public::AjaxArticle,
 		:articles							=>	State::Public::Articles,
 		:exhibitions					=>	State::Public::Exhibitions,

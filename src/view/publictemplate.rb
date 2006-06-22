@@ -53,6 +53,7 @@ module DAVAZ
 				'dojo.fx.*',
 				'dojo.fx.html',
 				'ywesee.widget.*',
+				'ywesee.widget.Desk',
 				'ywesee.widget.OneLiner',
 				'ywesee.widget.SlideShow',
 				'ywesee.widget.Rack',

@@ -242,6 +242,7 @@ module DAVAZ
 				create_model_array(DAVAZ::Model::OneLiner, result) 
 			end
 			def load_serie(serie_id)
+=begin
 				sql = <<-SQL
 					SELECT artobjects.*,
 						artobjects_displayelements.display_id AS display_id,
@@ -252,7 +253,34 @@ module DAVAZ
 					WHERE serie_id='#{serie_id}'
 					ORDER BY serie_nr DESC
 				SQL
-				result = connection.query(sql)
+=end
+				query = <<-EOS
+					SELECT artobjects.*, 
+						artobjects_displayelements.display_id AS display_id,
+						displayelements.text AS comment,
+						artgroups.name AS artgroup,
+						materials.name AS material,
+						tools.name AS tool,
+						series.name AS serie,
+						countries.name AS country
+					FROM artobjects
+					LEFT OUTER JOIN artgroups USING (artgroup_id)
+					LEFT OUTER JOIN artobjects_displayelements
+						ON artobjects.artobject_id = artobjects_displayelements.artobject_id
+					LEFT OUTER JOIN displayelements 
+						ON artobjects_displayelements.display_id = displayelements.display_id
+					LEFT OUTER JOIN materials 
+						ON artobjects.material_id = materials.material_id
+					LEFT OUTER JOIN tools 
+						ON artobjects.tool_id = tools.tool_id
+					LEFT OUTER JOIN series 
+						ON artobjects.serie_id = series.serie_id
+					LEFT OUTER JOIN countries 
+						ON artobjects.country_id = countries.country_id
+					WHERE artobjects.serie_id='#{serie_id}'
+					ORDER BY serie_nr DESC
+				EOS
+				result = connection.query(query)
 				create_model_array(Model::ArtObject, result)
 			end
 			def load_series

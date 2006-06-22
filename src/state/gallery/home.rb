@@ -8,7 +8,15 @@ require 'view/ajax_response'
 module DAVAZ
 	module State
 		module Gallery 
-class AjaxToggleRack < SBSM::State
+class AjaxDesk < SBSM::State
+	VIEW = View::Gallery::RackResultListInnerComposite
+	VOLATILE = true
+	def init
+		serie_id = @session.user_input(:serie_id)
+		@model = @session.app.load_serie(serie_id)
+	end
+end
+class AjaxRack < SBSM::State
 	VOLATILE = true
 	#VIEW = View::SearchSlideShowRackComposite
 	VIEW = View::AjaxResponse
@@ -27,9 +35,12 @@ class AjaxToggleRack < SBSM::State
 			'titles'			=>	titles,
 			'imageHeight'	=>	SLIDESHOW_IMAGE_HEIGHT,
 		}
+		@filter = Proc.new { |model|
+			model.store('dataUrl', @request_path)
+			model
+		}
 	end
 end
-class AjaxToggleSlideshow < AjaxToggleRack ; end
 class Home < State::Gallery::Global
 	VIEW = View::Gallery::Home
 	def init

@@ -17,7 +17,7 @@ module DAVAZ
 class Global < State::Global
 	HOME_STATE = State::Personal::Init
 	ZONE = :personal
-	GLOBAL_MAP = {
+	EVENT_MAP = {
 		:home									=>	State::Personal::Init,
 		:family								=>	State::Personal::Family,
 		:inspiration					=>	State::Personal::Inspiration,

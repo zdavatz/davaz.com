@@ -85,8 +85,7 @@ function toggleShow(id, url, view, replace_id) {
 					show.destroy();	
 				}
 				var widget = dojo.widget.createWidget(view, data, container,
-																							'last');
-				widget.dataUrl = url;
+																								'last');
 				if(dojo.style.getStyle(wipearea, "display") == 'none') {
 					wipearea.style.overflow = 'hidden';
 					dojo.fx.html.wipeIn(wipearea, 1000);

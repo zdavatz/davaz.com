@@ -9,10 +9,12 @@ require 'state/works/photos'
 require 'state/works/schnitzenthesen'
 require 'state/works/movies'
 require 'view/ajax_response'
+require 'view/gallery/result'
 
 module DAVAZ
 	module State
 		module Works 
+=begin
 class AjaxGlobal < Works::Global
 	VOLATILE = true
 	VIEW = View::AjaxResponse
@@ -23,12 +25,12 @@ class AjaxGlobal < Works::Global
 		@session.user_input(:artgroup_id)
 	end
 end
+=end
 class Global < State::Global
 	HOME_STATE = State::Personal::Init
 	ZONE = :works
 	ARTGROUP_ID = nil
-	GLOBAL_MAP = {
-		:ajax_works_global		=>	State::Works::AjaxGlobal,
+	EVENT_MAP = {
 		:design								=>	State::Works::Design,
 		:drawings							=>	State::Works::Drawings,
 		:multiples						=>	State::Works::Multiples,
@@ -48,9 +50,11 @@ class Global < State::Global
 			end
 		end
 		#@model = @session.app.load_serie_objects(Model::ArtObject, artgroup_id, serie_id)
-		args = [ [ :serie_id, serie_id] ]
-		args = [ [ :artgroup_id, artgroup_id] ]
-		url = @session.lookandfeel.event_url(:works, :ajax_works_global, 
+		args = [ 
+			[ :serie_id, serie_id], 
+			[ :artgroup_id, artgroup_id], 
+		]
+		url = @session.lookandfeel.event_url(:gallery, :ajax_rack, 
 																				 args) 
 		@model.serie_items = {
 			'images'	=>	[],

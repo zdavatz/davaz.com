@@ -43,7 +43,7 @@ ywesee.widget.SlideShow = function(){
 	this.fadeAnim = null; 
 	this.critical = false;
 	this.loadedCallback = 'backgroundImageLoaded';
-	this.dataUrl = null;
+	this.dataUrl = "";
 
 	// our DOM nodes:
 	this.imagesContainer = null;

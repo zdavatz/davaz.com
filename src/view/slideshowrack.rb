@@ -34,6 +34,11 @@ module DAVAZ
 			def desk(model)
 				img = HtmlGrid::Image.new(:desk, model, @session, self)
 				img
+				link = HtmlGrid::Link.new(:desk, model, @session, self)
+				link.href = "javascript:void(0)"
+				link.attributes['onclick'] = "toggleShow('show',null,'Desk','show-wipearea');"
+				link.value = img
+				link
 			end
 		end
 		class MultimediaButtons < HtmlGrid::DivComposite

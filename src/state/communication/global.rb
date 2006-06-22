@@ -14,7 +14,7 @@ module DAVAZ
 class Global < State::Global
 	HOME_STATE = State::Personal::Init
 	ZONE = :communication
-	GLOBAL_MAP = {
+	EVENT_MAP = {
 		:guestbook						=>	State::Communication::Guestbook,
 		:guestbookentry				=>	State::Communication::GuestbookEntry,
 		:links								=>	State::Communication::Links,

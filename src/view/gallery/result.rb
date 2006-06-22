@@ -6,6 +6,7 @@ require 'htmlgrid/divform'
 require 'view/publictemplate'
 require 'view/list'
 require 'view/navigation'
+require 'view/slideshowrack'
 
 module DAVAZ
 	module View
@@ -143,6 +144,20 @@ class NewSearch < HtmlGrid::DivForm
 		button.set_attribute("onclick", script)
 		button
 	end
+end
+class RackResultListInnerComposite < HtmlGrid::DivComposite
+	COMPONENTS = {
+		[0,0]	=>	ResultColumnNames,
+		[0,1]	=>	ResultList,
+		#[0,2]	=>	MultimediaButtonsComposite,
+	}
+end
+class RackResultListComposite < HtmlGrid::DivComposite
+	CSS_ID = 'show-'
+	CSS_CLASS = 'content'
+	COMPONENTS = {
+		[0,0]	=>	RackResultListInnerComposite,
+	}
 end
 class ResultComposite < HtmlGrid::DivComposite
 	COMPONENTS = {

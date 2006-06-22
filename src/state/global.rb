@@ -20,6 +20,8 @@ module DAVAZ
 		class Global < SBSM::State
 			attr_reader :model
 			GLOBAL_MAP = {
+				:ajax_desk						=>	State::Gallery::AjaxDesk,
+				:ajax_rack						=>	State::Gallery::AjaxRack,
 				:home									=>	State::Personal::Init,
 				:images								=>	State::Images,
 				:tooltip_artobject		=>	State::ToolTip::ArtObject,

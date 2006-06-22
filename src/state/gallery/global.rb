@@ -12,11 +12,9 @@ module DAVAZ
 class Global < State::Global
 	HOME_STATE = State::Gallery::Home
 	ZONE = :gallery
-	GLOBAL_MAP = {
-		:artobject			=>	State::Gallery::ArtObject,
-		:ajax_toggle_rack	=>	State::Gallery::AjaxToggleRack,
-		:ajax_toggle_slideshow	=>	State::Gallery::AjaxToggleSlideshow,
-		:home						=>	State::Gallery::Home,
+	EVENT_MAP = {
+		:artobject		=>	State::Gallery::ArtObject,
+		:home					=>	State::Gallery::Home,
 	}
 end
 		end

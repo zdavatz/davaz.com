@@ -75,7 +75,7 @@ class SerieLinks < HtmlGrid::SpanList
 		link = HtmlGrid::Link.new('toggle-slideshow-rack', model, @session, self)
 		link.href = 'javascript:void(0)'
 		args = [ :serie_id, model.serie_id ]
-		url = @lookandfeel.event_url(:gallery, :ajax_toggle_rack, args)
+		url = @lookandfeel.event_url(:gallery, :ajax_rack, args)
 		link.value = model.name + @lookandfeel.lookup('comma_divider')
 		#script = "toggleSearchSlideShowRack(this, '#{url}')"
 		script = "toggleShow('show', '#{url}', null, 'upper-search-composite');"

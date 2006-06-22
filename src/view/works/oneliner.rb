@@ -8,6 +8,7 @@ module DAVAZ
 	module View
 		module Works
 class OneLiner < HtmlGrid::Component
+	CSS_ID = 'oneliner'
 	def to_html(context)
 		args = {
 			'messages'	=> [],

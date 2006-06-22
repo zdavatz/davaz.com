@@ -71,8 +71,7 @@ class WorkComposite < HtmlGrid::DivComposite
 end
 class Work < View::PersonalPublicTemplate
 	CONTENT = View::Personal::WorkComposite
-	TICKER = View::TickerContainer
-	SLIDESHOW_NAME = 'morphopolis'
+	TICKER = 'morphopolis'
 end
 		end
 	end

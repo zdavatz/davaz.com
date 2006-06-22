@@ -87,6 +87,7 @@ function toggleShow(id, url, view, replace_id) {
 																							'last');
 				widget.dataUrl = url;
 				if(dojo.style.getStyle(wipearea, "display") == 'none') {
+					wipearea.style.overflow = 'hidden';
 					dojo.fx.html.wipeIn(wipearea, 1000);
 				}
 			},

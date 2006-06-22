@@ -72,10 +72,6 @@ class ThumbImages < HtmlGrid::SpanList
 end
 class ThumbImagesDiv < HtmlGrid::Div
 	CSS_ID = 'thumb-images'
-	def init
-		super
-		puts @model.class
-	end
 end
 class MultiplesComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'content'

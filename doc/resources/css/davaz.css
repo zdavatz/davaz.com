@@ -162,6 +162,10 @@ div.thumb-container {
 	overflow: hidden;
 }
 
+div.thumb-container img {
+	margin: 5px;	
+}
+
 a.serie-link:link, a.serie-link:visited, a.serie-link:hover {
 	text-decoration: none;
 }
@@ -183,8 +187,8 @@ div#rack-slideshow {
 	display: none;
 }
 
-div#rack-container {
-	width: 700px;
+div.rack-container {
+	width: 770px;
 	height: 370px;
 	margin-left: auto; margin-right: auto;
 	overflow: hidden;

@@ -106,6 +106,9 @@ class HomeComposite < HtmlGrid::DivComposite
 		[0,1]	=>	:slideshow_rack,
 		[0,2]	=>	component(SerieLinks, :series),
 	}
+	CSS_STYLE_MAP = {
+		1	=>	'display:none;',
+	}
 	CSS_ID_MAP = {
 		0	=>	'upper-search-composite',
 		1	=>	'show-wipearea',

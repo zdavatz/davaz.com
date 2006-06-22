@@ -28,7 +28,7 @@ class InspirationComposite < HtmlGrid::DivComposite
 	CSS_ID = 'inner-content'
 	COMPONENTS = {
 		[0,0]	=>	InspirationTitle,
-		[1,0]	=>	component(OneLiner, :oneliner),
+		[1,0]	=>	component(View::Works::OneLiner, :oneliner),
 		[2,0]	=>	component(InspirationText, :text),	
 		[3,0]	=>	:india_ticker_link,
 	}
@@ -44,10 +44,8 @@ class InspirationComposite < HtmlGrid::DivComposite
 	end
 end
 class Inspiration < View::PersonalPublicTemplate
-	TICKER_SHOW = 'passage_through_india'
 	CONTENT = View::Personal::InspirationComposite
-	TICKER = View::TickerContainer
-	SLIDESHOW_NAME = 'passage_through_india'
+	TICKER = 'passage_through_india'
 end
 		end
 	end

@@ -231,6 +231,10 @@ class PayPalDiv < HtmlGrid::DivComposite
 end
 class OneLiner < HtmlGrid::Div
 	CSS_ID = 'oneliner'
+	def init
+		super
+		@value = View::Works::OneLiner.new(@model, @session, self)
+	end
 end
 class InitComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'init-container'
@@ -266,9 +270,6 @@ class Init < View::PublicTemplate
 			'language'	=>	'JavaScript',
 			'type'			=>	'text/javascript',
 		}
-		if(@model.movies.nil?)
-			puts @model.class
-		end
 		super << context.script(args) {
 			<<-EOS
 			function scrollDiv(elId) {

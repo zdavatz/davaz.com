@@ -10,11 +10,17 @@ module DAVAZ
 	module State
 		module Gallery 
 class AjaxDeskArtobject < SBSM::State
-	VIEW = View::Gallery::ArtObjectInnerComposite
+	VIEW = View::Gallery::RackArtObjectComposite
 	VOLATILE = true
 	def init
+		@model = OpenStruct.new
 		artobject_id = @session.user_input(:artobject_id)
-		@model = @session.app.load_artobject(artobject_id)
+		serie_id = @session.user_input(:serie_id)
+		@model.artobjects	= @session.load_serie(serie_id) 
+		object = @model.artobjects.find { |artobject| 
+			artobject.artobject_id == artobject_id
+		} 
+		@model.artobject = object 
 	end
 end
 class AjaxDesk < SBSM::State

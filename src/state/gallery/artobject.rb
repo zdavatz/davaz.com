@@ -13,11 +13,12 @@ class ArtObject < State::Gallery::Global
 		artobject_id = @session.user_input(:artobject_id)
 		artgroup_id = @session.user_input(:artgroup_id)
 		query = @session.user_input(:search_query)
-		@model = @session.app.search_artobjects(query, artgroup_id)
-		object = @model.find { |artobject| 
+		@model = OpenStruct.new
+		@model.artobjects = @session.app.search_artobjects(query, artgroup_id)
+		object = @model.artobjects.find { |artobject| 
 			artobject.artobject_id == artobject_id
 		} 
-		@session[:active_object] = object
+		@model.artobject = object
 	end
 end
 		end

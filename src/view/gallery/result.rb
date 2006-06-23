@@ -74,11 +74,12 @@ class RackResultList < ResultList
 		link = HtmlGrid::Link.new(:title, @model, @session, self)
 		link.href = "javascript:void(0)"
 		args = [ 
-			[ :artobject_id, model.artobject_id ]
+			[ :serie_id, @session.user_input(:serie_id) ],
+			[ :artobject_id, model.artobject_id ],
 		]
 		url = @lookandfeel.event_url(:gallery, :ajax_desk_artobject, args)
 		link.value = model.title
-		script = "toggleDeskContent('show', '#{url}')"
+		script = "toggleDeskContent('show', '#{url}', true)"
 		link.set_attribute('onclick', script)
 		link
 	end
@@ -159,10 +160,18 @@ class NewSearch < HtmlGrid::DivForm
 		button
 	end
 end
-class RackResultListComposite < HtmlGrid::DivComposite
+class RackResultListInnerComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	ResultColumnNames,
 		[0,1]	=>	RackResultList,
+	}
+end
+class RackResultListComposite < HtmlGrid::DivComposite
+	COMPONENTS = {
+		[0,0]	=>	RackResultListInnerComposite,
+	}
+	CSS_ID_MAP = {
+		0	=>	'rack-result-list-composite',
 	}
 end
 class ResultComposite < HtmlGrid::DivComposite

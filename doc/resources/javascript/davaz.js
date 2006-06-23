@@ -58,16 +58,26 @@ function replaceDiv(id, replace_id) {
 	dojo.fx.html.wipeOut(node, 100, callback);	
 }
 
-function toggleDeskContent(id, url) {
-	var desk = dojo.widget.byId(id);
-	
-	dojo.io.bind({
-		url: url,	
-		load: function(type, data, event) {
-			desk.toggleInnerHTML(data);
-		}, 
-		mimetype: "text/html"
-	});
+function toggleDeskContent(id, url, wipe) {
+	var reloadDesk = function() {
+		var desk = dojo.widget.byId(id);
+		dojo.io.bind({
+			url: url,	
+			load: function(type, data, event) {
+				desk.toggleInnerHTML(data);
+				if(wipe == true) {
+					dojo.fx.html.wipeIn('show-wipearea', 1000);
+				}
+			}, 
+			mimetype: "text/html"
+		});
+	}
+
+	if(wipe == true) {
+		dojo.fx.html.wipeOut('show-wipearea', 1000, reloadDesk);
+	} else {
+		reloadDesk();
+	}
 }
 
 function toggleShow(id, url, view, replace_id) {

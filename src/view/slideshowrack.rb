@@ -36,7 +36,8 @@ module DAVAZ
 				img
 				link = HtmlGrid::Link.new(:desk, model, @session, self)
 				link.href = "javascript:void(0)"
-				link.attributes['onclick'] = "toggleShow('show',null,'Desk','show-wipearea');"
+				script = "toggleShow('show',null,'Desk','show-wipearea');"
+				link.set_attribute('onclick', script) 
 				link.value = img
 				link
 			end

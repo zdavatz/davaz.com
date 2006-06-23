@@ -248,6 +248,11 @@ div#show-container {
 	margin-left: auto; margin-right: auto;
 }
 
+div#rack-result-list-composite {
+	width: 800px;
+	margin-left: -57px;
+}
+
 table#result-list-column-names {
 	padding-top: 20px;
 	width: 800px;
@@ -258,7 +263,7 @@ table#result-list-column-names {
 table#result-list-column-names td {
 	font-weight: bold;
 	color: white;
-	background-color: #990099;
+	/*background-color: #990099;*/
 }
 
 table.result-list {
@@ -269,7 +274,7 @@ table.result-list {
 
 table.result-list th {
 	font-weight: normal;
-	background-color: #FF33FF;
+	/*background-color: #FF33FF;*/
 	color : #FFFFFF;
 }
 
@@ -286,56 +291,28 @@ td.result-title, td.result-title-bg {
 	width: 200px;
 }
 
-td.result-title-bg {
-	background-color: #FFDCFF;
-}
-
 td.result-year, td.result-year-bg {
 	width: 40px;
-}
-
-td.result-year-bg {
-	background-color: #FFDCFF;
 }
 
 td.result-tool, td.result-tool-bg {
 	width: 110px;
 }
 
-td.result-tool-bg {
-	background-color: #FFDCFF;
-}
-
 td.result-material, td.result-material-bg {
 	width: 110px;
-}
-
-td.result-material-bg {
-	background-color: #FFDCFF;
 }
 
 td.result-size, td.result-size-bg {
 	width: 90px;
 }
 
-td.result-size-bg {
-	background-color: #FFDCFF;
-}
-
 td.result-country, td.result-country-bg {
 	width: 120px;
 }
 
-td.result-country-bg {
-	background-color: #FFDCFF;
-}
-
 td.result-serie, td.result-serie-bg {
 	width: 80px;
-}
-
-td.result-serie-bg {
-	background-color: #FFDCFF;
 }
 
 div#artobject-outer-composite {
@@ -359,6 +336,11 @@ div#artobject-back-link {
 	text-align: right;
 }
 
+div#artobject-back-link a:link, div#artobject-back-link a:visited,
+div#artobject-back-link a:hover {
+	text-decoration: none;
+}
+
 div#artobject-inner-composite {
 	width: 600px;
 	margin-left: auto; margin-right: auto;
@@ -368,7 +350,7 @@ div#artobject-title {
 	padding-top: 2px;
 	width: 100%;	
 	height: 18px;
-	background-color: #990099;
+	/*background-color: #990099;*/
 	font-weight: bold;
 	text-align: left;
 	color: white;
@@ -378,7 +360,7 @@ div#artobject-subtitle-left {
 	padding-top: 2px;
 	height: 18px;
 	float: left;
-	background-color: #FF33FF;
+	/*background-color: #FF33FF;*/
 	text-align: left;
 	color: white;
 	margin-right: -10px; 
@@ -388,7 +370,7 @@ div#artobject-subtitle-left {
 div#artobject-subtitle-right {
 	padding-top: 2px;
 	height: 18px;
-	background-color: #FF33FF;
+	/*background-color: #FF33FF;*/
 	text-align: right;
 	color: white;
 	margin-left: 0px;

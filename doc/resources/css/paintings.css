@@ -40,3 +40,25 @@ div#zone-image {
 	background-image: url("/resources/images/global/topleft_paintings.gif");
 	background-repeat: no-repeat;
 }
+
+table#result-list-column-names td {
+	background-color: #CC0066;
+}
+
+table.result-list th {
+	background-color: #F8409B;
+}
+
+td.result-title-bg, td.result-year-bg, td.result-tool-bg, 
+td.result-material-bg, td.result-size-bg, td.result-country-bg,
+td.result-serie-bg {
+	background-color: #FDDFEE;
+}
+
+div#artobject-title {
+	background-color: #CC0066;
+}
+
+div#artobject-subtitle-left, div#artobject-subtitle-right {
+	background-color: #F8409B;
+}

@@ -50,14 +50,15 @@ class Pager < HtmlGrid::SpanComposite
 		[0,2]	=>	:next,
 	}
 	def items(model)
-		"Item #{@model.index(@session[:active_object])+1} of #{model.size}"
+		"Item #{model.artobjects.index(model.artobject)+1} of #{model.artobjects.size}"
 	end
 	def next(model)
-		active_index = @model.index(@session[:active_object])
-		unless(active_index+1 == @model.size)
+		artobjects = model.artobjects
+		active_index = artobjects.index(model.artobject)
+		unless(active_index+1 == artobjects.size)
 			link = HtmlGrid::Link.new(:paging_next, model, @session, self)
 			args = [ 
-				[ :artobject_id, @model.at(active_index+1).artobject_id ],
+				[ :artobject_id, artobjects.at(active_index+1).artobject_id ],
 			]
 			unless((search_query = @session.user_input(:search_query)).nil?)
 				args.unshift([ :search_query, search_query])
@@ -74,11 +75,12 @@ class Pager < HtmlGrid::SpanComposite
 		end
 	end
 	def last(model)
-		active_index = @model.index(@session[:active_object])
+		artobjects = model.artobjects
+		active_index = artobjects.index(model.artobject)
 		unless(active_index-1 == -1)
 			link = HtmlGrid::Link.new(:paging_last, model, @session, self)
 			args = [ 
-				[ :artobject_id, @model.at(active_index-1).artobject_id ],
+				[ :artobject_id, artobjects.at(active_index-1).artobject_id ],
 			]
 			unless((search_query = @session.user_input(:search_query)).nil?)
 				args.unshift([ :search_query, search_query])
@@ -93,6 +95,50 @@ class Pager < HtmlGrid::SpanComposite
 			link.value = image 
 			link
 		end
+	end
+end
+class RackPager < Pager 
+	def pager_link(link)
+		artobject_id = link.attributes['href'].split("/").last
+		args = [ 
+			[ :serie_id, @session.user_input(:serie_id) ],
+			[ :artobject_id, artobject_id ],
+		]
+		url = @lookandfeel.event_url(:gallery, :ajax_desk_artobject, args)
+		link.href = "javascript:void(0)"
+		script = "toggleDeskContent('show', '#{url}', false)"
+		link.set_attribute('onclick', script)
+		link
+	end
+	def next(model)
+		unless((link = super).nil?)
+			link = super
+			pager_link(link)
+		end
+	end
+	def last(model)
+		unless((link = super).nil?)
+			link = super
+			pager_link(link)
+		end
+	end
+end
+class RackArtObjectOuterComposite < HtmlGrid::DivComposite
+	COMPONENTS = {
+		[0,0]	=>	RackPager,
+		[0,1]	=>	:back_to_overview,
+	}
+	CSS_ID_MAP = {
+		0	=>	'artobject-pager',
+		1	=>	'artobject-back-link',
+	}
+	def back_to_overview(model)
+		link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
+		link.href = "javascript:void(0)" 
+		script = 
+		script = "toggleShow('show',null,'Desk','show-wipearea');"
+		link.set_attribute('onclick', script) 
+		link
 	end
 end
 class ArtObjectOuterComposite < HtmlGrid::DivComposite
@@ -117,18 +163,25 @@ class ArtObjectOuterComposite < HtmlGrid::DivComposite
 		link
 	end
 end
-class ArtObjectComposite < HtmlGrid::DivComposite 
+class RackArtObjectComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
-		[0,0]	=>	ArtObjectOuterComposite,
-		[0,1]	=>	:artobject_inner_composite,
+		[0,0]	=>	RackArtObjectOuterComposite,
+		[0,1]	=>	component(ArtObjectInnerComposite, :artobject),
 	}
 	CSS_ID_MAP = {
 		0	=>	'artobject-outer-composite',
 		1	=>	'artobject-inner-composite',
 	}
-	def artobject_inner_composite(model)
-		ArtObjectInnerComposite.new(@session[:active_object], @session, self)
-	end
+end
+class ArtObjectComposite < HtmlGrid::DivComposite 
+	COMPONENTS = {
+		[0,0]	=>	ArtObjectOuterComposite,
+		[0,1]	=>	component(ArtObjectInnerComposite, :artobject),
+	}
+	CSS_ID_MAP = {
+		0	=>	'artobject-outer-composite',
+		1	=>	'artobject-inner-composite',
+	}
 end
 class ArtObject < View::GalleryPublicTemplate
 	CONTENT = View::Gallery::ArtObjectComposite

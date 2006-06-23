@@ -34,3 +34,25 @@ div#zone-image {
 div#copyright {
 	background: #70B878;
 }
+
+table#result-list-column-names td {
+	background: #70B878;
+}
+
+table.result-list th {
+	background-color: #90CF97;
+}
+
+td.result-title-bg, td.result-year-bg, td.result-tool-bg, 
+td.result-material-bg, td.result-size-bg, td.result-country-bg,
+td.result-serie-bg {
+	background-color: #DBFFDF;
+}
+
+div#artobject-title {
+	background: #70B878;
+}
+
+div#artobject-subtitle-left, div#artobject-subtitle-right {
+	background-color: #90CF97;
+}

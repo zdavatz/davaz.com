@@ -58,6 +58,18 @@ function replaceDiv(id, replace_id) {
 	dojo.fx.html.wipeOut(node, 100, callback);	
 }
 
+function toggleDeskContent(id, url) {
+	var desk = dojo.widget.byId(id);
+	
+	dojo.io.bind({
+		url: url,	
+		load: function(type, data, event) {
+			desk.toggleInnerHTML(data);
+		}, 
+		mimetype: "text/html"
+	});
+}
+
 function toggleShow(id, url, view, replace_id) {
 	var show = dojo.widget.byId(id);
 	var container = dojo.byId(id + "-container");

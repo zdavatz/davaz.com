@@ -35,6 +35,10 @@ ywesee.widget.Desk = function(){
 			mimetype: "text/html"
 		});
 	}
+
+	this.toggleInnerHTML = function(html) {
+		this.deskContent.innerHTML = html;		
+	}
 }
 
 dojo.inherits(ywesee.widget.Desk, dojo.widget.HtmlWidget);

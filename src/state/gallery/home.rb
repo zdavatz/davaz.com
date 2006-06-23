@@ -3,13 +3,22 @@
 
 require 'state/global_predefine'
 require 'view/gallery/home'
+require 'view/gallery/artobject'
 require 'view/ajax_response'
 
 module DAVAZ
 	module State
 		module Gallery 
+class AjaxDeskArtobject < SBSM::State
+	VIEW = View::Gallery::ArtObjectInnerComposite
+	VOLATILE = true
+	def init
+		artobject_id = @session.user_input(:artobject_id)
+		@model = @session.app.load_artobject(artobject_id)
+	end
+end
 class AjaxDesk < SBSM::State
-	VIEW = View::Gallery::RackResultListInnerComposite
+	VIEW = View::Gallery::RackResultListComposite
 	VOLATILE = true
 	def init
 		serie_id = @session.user_input(:serie_id)

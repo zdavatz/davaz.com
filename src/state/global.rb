@@ -21,6 +21,7 @@ module DAVAZ
 			attr_reader :model
 			GLOBAL_MAP = {
 				:ajax_desk						=>	State::Gallery::AjaxDesk,
+				:ajax_desk_artobject	=>	State::Gallery::AjaxDeskArtobject,
 				:ajax_rack						=>	State::Gallery::AjaxRack,
 				:home									=>	State::Personal::Init,
 				:images								=>	State::Images,

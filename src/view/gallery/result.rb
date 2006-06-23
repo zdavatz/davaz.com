@@ -69,6 +69,20 @@ class ResultList < View::List
 		resolve_offset(offset, [0,1])
 	end
 end
+class RackResultList < ResultList 
+	def title(model)
+		link = HtmlGrid::Link.new(:title, @model, @session, self)
+		link.href = "javascript:void(0)"
+		args = [ 
+			[ :artobject_id, model.artobject_id ]
+		]
+		url = @lookandfeel.event_url(:gallery, :ajax_desk_artobject, args)
+		link.value = model.title
+		script = "toggleDeskContent('show', '#{url}')"
+		link.set_attribute('onclick', script)
+		link
+	end
+end
 class ResultColumnNames < View::Composite
 	CSS_ID = 'result-list-column-names'
 	COMPONENTS = {
@@ -145,18 +159,10 @@ class NewSearch < HtmlGrid::DivForm
 		button
 	end
 end
-class RackResultListInnerComposite < HtmlGrid::DivComposite
+class RackResultListComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	ResultColumnNames,
-		[0,1]	=>	ResultList,
-		#[0,2]	=>	MultimediaButtonsComposite,
-	}
-end
-class RackResultListComposite < HtmlGrid::DivComposite
-	CSS_ID = 'show-'
-	CSS_CLASS = 'content'
-	COMPONENTS = {
-		[0,0]	=>	RackResultListInnerComposite,
+		[0,1]	=>	RackResultList,
 	}
 end
 class ResultComposite < HtmlGrid::DivComposite

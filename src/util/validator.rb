@@ -14,6 +14,7 @@ module DAVAZ
 				:ajax_desk,
 				:ajax_desk_artobject,
 				:ajax_home,
+				:ajax_movie_gallery,
 				:ajax_remove_image,
 				:ajax_rack,
 				:ajax_shop,

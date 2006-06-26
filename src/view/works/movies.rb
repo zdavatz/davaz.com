@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # View::Works::Movies -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
 
+require 'view/gallery/artobject'
 require 'view/publictemplate'
 require 'view/composite'
 require 'view/list'
@@ -40,7 +41,15 @@ class MovieImage < HtmlGrid::Div
 		img.attributes['src']	= url
 		img.attributes['width'] = MEDIUM_IMAGE_WIDTH 
 		#img.attributes['height'] = '150px'
-		@value = img
+		link = HtmlGrid::HttpLink.new(:google_video_url, @model, @session, self)
+		link.href = @model.google_video_url
+		link.set_attribute('target', '_blank')
+		link.value = img
+		if(@model.google_video_url.empty?)
+			@value = img
+		else
+			@value = link
+		end
 	end
 end
 class MovieComment < HtmlGrid::Div
@@ -55,56 +64,57 @@ class MovieComment < HtmlGrid::Div
 		@value = comment 
 	end
 end
-class MovieDetailsLink < HtmlGrid::Div
+class GoogleVideoLink < HtmlGrid::Div
+	def init
+		super
+		link = HtmlGrid::HttpLink.new(:google_video_url, @model, @session, self)
+		link.href = @model.google_video_url
+		link.value = @lookandfeel.lookup(:watch_movie)
+		unless(@model.google_video_url.empty?)
+			@value = link 
+		end
+	end
+end
+class MoreLink < HtmlGrid::Div
 	def init
 		super
 		link = HtmlGrid::Link.new(:more, @model, @session, self)
 		args = [
 			:artobject_id, @model.artobject_id	
 		]
-		event_url = @lookandfeel.event_url(:gallery, :view, args)
-		link.href = event_url 
+		url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, args)
+		link.href = "javascript:void(0)" 
 		link.value = @lookandfeel.lookup(:more)
+		replace_id = "movies-list"
+		div_id = "movies-gallery-view"
+		script = "showMovieGallery('#{div_id}', '#{replace_id}', '#{url}')"
+		link.set_attribute('onclick', script)
 		@value = link 
-	end
-end
-class MovieStreamingLink < HtmlGrid::SpanComposite
-	COMPONENTS = {
-		[0,0]	=>	:small_streaming_link,
-		[1,0]	=>	:large_streaming_link,
-	}
-	def streaming_link(model, size)
-		img_resource = "play_#{size}_movie".intern
-		img = HtmlGrid::Image.new(img_resource, model, @session, self)
-		link = HtmlGrid::Link.new(:movie_stream, model, @session, self)
-		link.href = @lookandfeel.stream_url(model.artobject_id, size)
-		unless(link.attributes['href'].nil?)
-			link.value = img
-		end
-		link
-	end
-	def small_streaming_link(model)
-		streaming_link(model, 'small')
-	end
-	def large_streaming_link(model)
-		streaming_link(model, 'large')
 	end
 end
 class MovieComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	MovieDetails,
 		[0,1]	=>	MovieImage,
-		[0,2]	=>	MovieStreamingLink,
+		[0,2]	=>	GoogleVideoLink,
 		[0,3]	=>	MovieComment,
-		[0,4]	=>	MovieDetailsLink,
+		[0,4]	=>	MoreLink,
 	}
 	CSS_MAP = {
 		0	=>	'movies-details',
 		1	=>	'movies-image',
-		2	=>	'movies-streaming-links',
+		2	=>	'movies-google-link',
 		3	=>	'movies-comment',
 		4	=>	'movies-details-link',
 	}
+	def movie_details_div(model)
+		""
+	end
+	def init
+		css_id_map.store(4, "movie-details-link-#{@model.artobject_id}")
+		css_id_map.store(5, "movie-details-div-#{@model.artobject_id}")
+		super
+	end
 end
 class MoviesList < HtmlGrid::DivList 
 	COMPONENTS = {
@@ -128,7 +138,15 @@ class MoviesComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'content'
 	COMPONENTS = {
 		[0,0]	=>	MoviesTitle,
-		[1,0]	=>	MoviesList,
+		[0,1]	=>	MoviesList,
+		[0,2]	=>	:movies_gallery_view,
+	}
+	CSS_ID_MAP = {
+		1	=>	'movies-list',
+		2	=>	'movies-gallery-view',
+	}
+	CSS_STYLE_MAP = {
+		2	=>	'display:none;',
 	}
 end
 class Movies < View::MoviesPublicTemplate

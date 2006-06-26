@@ -49,6 +49,35 @@ function removeFromShoppingCart(url, fieldId) {
 	});
 }
 
+function toggleInnerHTML(divId, url) {
+	var node = dojo.byId(divId);
+	dojo.io.bind({
+		url: url,
+		load: function(type, data, event) {
+			node.innerHTML = data;	
+		},
+		mimetype: 'text/html'
+	});
+}
+
+function showMovieGallery(divId, replaceDivId, url) {
+	var node = dojo.byId(divId);
+	display = dojo.style.getStyle(node, "display");
+	if(display=="none") {
+		dojo.io.bind({
+			url: url,
+			load: function(type, data, event) {
+				node.innerHTML = data;	
+				replaceDiv(replaceDivId, divId);
+			},
+			mimetype: 'text/html'
+		});
+	} else {
+		replaceDiv(divId, replaceDivId);
+		node.innerHTML = "";			
+	}
+}
+
 function replaceDiv(id, replace_id) {
 	var node = dojo.byId(id);	
 	var replace = dojo.byId(replace_id);

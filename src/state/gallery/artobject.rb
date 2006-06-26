@@ -7,6 +7,19 @@ require 'view/gallery/artobject'
 module DAVAZ
 	module State
 		module Gallery
+class AjaxMovieGallery < SBSM::State
+	VIEW = View::Gallery::MoviesArtObjectComposite
+	VOLATILE = true
+	def init
+		@model = OpenStruct.new
+		artobject_id = @session.user_input(:artobject_id)
+		@model.artobjects	= @session.load_movies
+		object = @model.artobjects.find { |artobject| 
+			artobject.artobject_id == artobject_id
+		} 
+		@model.artobject = object 
+	end
+end
 class ArtObject < State::Gallery::Global 
 	VIEW = View::Gallery::ArtObject	
 	def init

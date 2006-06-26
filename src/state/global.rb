@@ -5,6 +5,7 @@ require 'sbsm/state'
 require 'htmlgrid/link'
 require 'state/communication/global'
 require 'state/gallery/global'
+require 'state/gallery/artobject'
 require 'state/images'
 require 'state/personal/init' 
 require 'state/personal/global' 
@@ -20,6 +21,7 @@ module DAVAZ
 		class Global < SBSM::State
 			attr_reader :model
 			GLOBAL_MAP = {
+				:ajax_movie_gallery		=>	State::Gallery::AjaxMovieGallery,
 				:ajax_desk						=>	State::Gallery::AjaxDesk,
 				:ajax_desk_artobject	=>	State::Gallery::AjaxDeskArtobject,
 				:ajax_rack						=>	State::Gallery::AjaxRack,

@@ -382,6 +382,12 @@ div#artobject-image {
 	float: left;
 }
 
+div#artobject-google-video-url {
+	text-align: left;
+	color: black;
+	clear: both;
+}
+
 img#artobject-image {
 	max-width: 350px;
 	max-height: 350px;

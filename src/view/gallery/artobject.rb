@@ -15,7 +15,8 @@ class ArtobjectDetails < HtmlGrid::DivComposite
 		[0,4]	=>	:date,
 		[0,5]	=>	:location,
 		[0,6]	=>	:country,
-	}
+		[0,7]	=>	:language,
+	}	
 end
 class ArtObjectInnerComposite < HtmlGrid::DivComposite
 	CSS_ID = 'artobject-inner-composite'
@@ -25,7 +26,8 @@ class ArtObjectInnerComposite < HtmlGrid::DivComposite
 		[0,2]	=>	:tool,
 		[0,3]	=>	:image,
 		[0,4]	=>	ArtobjectDetails,
-		[0,5]	=>	:comment,
+		[0,5]	=>	:google_video_url,
+		[0,6]	=>	:comment,
 	}
 	CSS_ID_MAP = {
 		0	=>	'artobject-title',	
@@ -33,14 +35,32 @@ class ArtObjectInnerComposite < HtmlGrid::DivComposite
 		2	=>	'artobject-subtitle-right',	
 		3	=>	'artobject-image',	
 		4	=>	'artobject-details',	
-		5	=>	'artobject-comment',	
+		5	=>	'artobject-google-video-url',	
+		6	=>	'artobject-comment',	
 	}
 	def image(model)
 		img = HtmlGrid::Image.new(model.display_id, model, @session, self)
 		url = DAVAZ::Util::ImageHelper.image_path(model.display_id)
 		img.set_attribute('src', url)
 		img.css_id = 'artobject-image'
-		img 
+		link = HtmlGrid::HttpLink.new(:google_video_url, @model, @session, self)
+		link.href = model.google_video_url
+		link.value = img
+		link.set_attribute('target', '_blank')
+		if(model.google_video_url.empty?)
+			img
+		else
+			link
+		end
+	end
+	def google_video_url(model)
+		unless((url = model.google_video_url).empty?)
+			link = HtmlGrid::HttpLink.new(:google_video_link, model, @session, self)
+			link.href = url
+			link.value = @lookandfeel.lookup(:watch_movie) 
+			link.set_attribute('target', '_blank')
+			link
+		end
 	end
 end
 class Pager < HtmlGrid::SpanComposite
@@ -123,6 +143,31 @@ class RackPager < Pager
 		end
 	end
 end
+class MoviesPager < Pager 
+	def pager_link(link)
+		artobject_id = link.attributes['href'].split("/").last
+		args = [ 
+			[ :artobject_id, artobject_id ],
+		]
+		url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, args)
+		link.href = "javascript:void(0)"
+		script = "toggleInnerHTML('movies-gallery-view', '#{url}')"
+		link.set_attribute('onclick', script)
+		link
+	end
+	def next(model)
+		unless((link = super).nil?)
+			link = super
+			pager_link(link)
+		end
+	end
+	def last(model)
+		unless((link = super).nil?)
+			link = super
+			pager_link(link)
+		end
+	end
+end
 class RackArtObjectOuterComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	RackPager,
@@ -135,8 +180,24 @@ class RackArtObjectOuterComposite < HtmlGrid::DivComposite
 	def back_to_overview(model)
 		link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
 		link.href = "javascript:void(0)" 
-		script = 
 		script = "toggleShow('show',null,'Desk','show-wipearea');"
+		link.set_attribute('onclick', script) 
+		link
+	end
+end
+class MoviesArtObjectOuterComposite < HtmlGrid::DivComposite
+	COMPONENTS = {
+		[0,0]	=>	MoviesPager,
+		[0,1]	=>	:back_to_overview,
+	}
+	CSS_ID_MAP = {
+		0	=>	'artobject-pager',
+		1	=>	'artobject-back-link',
+	}
+	def back_to_overview(model)
+		link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
+		link.href = "javascript:void(0)" 
+		script = "showMovieGallery('movies-gallery-view','movies-list','');"
 		link.set_attribute('onclick', script) 
 		link
 	end
@@ -172,6 +233,24 @@ class RackArtObjectComposite < HtmlGrid::DivComposite
 		0	=>	'artobject-outer-composite',
 		1	=>	'artobject-inner-composite',
 	}
+	HTTP_HEADERS = {
+		"type"		=>	"text/html",
+		"charset"	=>	"UTF-8",
+	}			
+end
+class MoviesArtObjectComposite < HtmlGrid::DivComposite
+	COMPONENTS = {
+		[0,0]	=>	MoviesArtObjectOuterComposite,
+		[0,1]	=>	component(ArtObjectInnerComposite, :artobject),
+	}
+	CSS_ID_MAP = {
+		0	=>	'artobject-outer-composite',
+		1	=>	'artobject-inner-composite',
+	}
+	HTTP_HEADERS = {
+		"type"		=>	"text/html",
+		"charset"	=>	"UTF-8",
+	}			
 end
 class ArtObjectComposite < HtmlGrid::DivComposite 
 	COMPONENTS = {

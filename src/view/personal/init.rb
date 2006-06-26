@@ -132,7 +132,7 @@ class CommunicationLinksComposite < View::Composite
 	end
 	def movies(model)
 		link = HtmlGrid::Link.new(:movies, model, @session, self)
-		link.href = @lookandfeel.event_url(:communication, :movies)
+		link.href = @lookandfeel.event_url(:works, :movies)
 		link.css_class = 'communication-link'
 		link
 	end

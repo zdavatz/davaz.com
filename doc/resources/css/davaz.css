@@ -76,6 +76,7 @@ div#tooltip-container {
 	padding: 5px;
 	z-index: 10;
 	text-align: center; */
+	padding-top: 20px;
 	border: 2px #990099 solid;
 	background-color: #FFFFCC;
 	text-align: center;

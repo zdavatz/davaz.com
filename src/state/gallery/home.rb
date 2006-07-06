@@ -40,18 +40,23 @@ class AjaxRack < SBSM::State
 	def init
 		serie_id = @session.user_input(:serie_id)
 		#@model = @session.load_serie(serie_id)
+		artobject_ids = []	
 		images = []	
 		titles = []	
 		@session.load_serie(serie_id).artobjects.each { |artobject|
-			image = DAVAZ::Util::ImageHelper.image_path(artobject.artobject_id, 'slideshow')
-			images.push(image)
-			titles.push(artobject.title)
+			if(Util::ImageHelper.has_image?(artobject.artobject_id))
+				image = Util::ImageHelper.image_path(artobject.artobject_id, 'slideshow')
+				images.push(image)
+				titles.push(artobject.title)
+				artobject_ids.push(artobject.artobject_id)
+			end
 		}
 		@model = {
-			'images'			=>	images,
-			'titles'			=>	titles,
-			'imageHeight'	=>	SLIDESHOW_IMAGE_HEIGHT,
-			'serieId'			=>	serie_id,
+			'artObjectIds'	=>	artobject_ids,
+			'images'				=>	images,
+			'titles'				=>	titles,
+			'imageHeight'		=>	SLIDESHOW_IMAGE_HEIGHT,
+			'serieId'				=>	serie_id,
 		}
 		@filter = Proc.new { |model|
 			model.store('dataUrl', @request_path)

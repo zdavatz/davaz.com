@@ -210,8 +210,9 @@ module DAVAZ
 				context.div({'class', link.css_class}) { link.to_html(context) }
 			end
 			def to_html(context)
-				html = add_edit_link(context)
-				html << super
+				#html = add_edit_link(context)
+				#html << super
+				super
 			end
 		end
 =begin

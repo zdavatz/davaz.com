@@ -71,7 +71,8 @@ class AdminArticlesList < ArticlesList
 		style = 'color: red; font-weight: normal;'
 		link.set_attribute('style', style)
 		link.href = url
-		[ title, link ]
+		#[ title, link ]
+		title
 	end
 end
 class AdminArticlesComposite < HtmlGrid::DivComposite

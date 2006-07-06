@@ -227,6 +227,14 @@ a.admin-action:link, a.admin-action:visited, a.admin-action:hover {
 	font-weight: normal;
 }
 
+a.edit-link:link, a.edit-link:hover, a.edit-link:visited {
+	display: block;
+	position: relative;
+	left: -30px;
+	width: 30px;
+	bottom: 16px;
+}
+
 div.edit-displayelement {
 	color: black;
 	width: 700px;

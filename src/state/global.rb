@@ -48,12 +48,16 @@ module DAVAZ
 					[	:personal, :home ],
 				]
 			end
-			def search
+			def search_result
 				artgroup_id = @session.user_input(:artgroup_id)
 				query = @session.user_input(:search_query)
 				model = OpenStruct.new
 				model.result = @session.app.search_artobjects(query, artgroup_id)
 				model.artgroups = @session.app.load_artgroups 
+				model
+			end
+			def search
+				model = search_result
 				State::Gallery::Result.new(@session, model)
 			end
 			def switch_zone(zone)

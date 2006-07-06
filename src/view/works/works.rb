@@ -25,7 +25,7 @@ class Works < HtmlGrid::DivComposite
 		[0,0]	=>	WorksTitle,
 		[0,1]	=>	SlideShowRackComposite,
 		[0,2]	=>	component(SerieLinks, :series),
-		[0,3] =>	View::AddOnloadShow,
+		[0,3] =>	component(View::AddOnloadShow, :serie_id),
 	}
 	CSS_ID_MAP = {
 		1	=>	'show-wipearea',

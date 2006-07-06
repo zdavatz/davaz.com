@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# View::AddOnloadRack -- davaz.com -- 05.07.2006 -- mhuggler@ywesee.com
+# View::AddOnloadShow -- davaz.com -- 05.07.2006 -- mhuggler@ywesee.com
 
 require 'htmlgrid/javascript'
 
@@ -17,7 +17,9 @@ module DAVAZ
 							var show_type = bookmarkId.split('_')[0];
 							var serie_id = bookmarkId.split('_')[1];
 							toggleShow('show', '#{url}' + serie_id, show_type, 'upper-search-composite', serie_id);
-						}	
+						}	else {
+							location.hash = 'Rack_#{@model}';
+						}
 					})
 				EOS
 				@value = script

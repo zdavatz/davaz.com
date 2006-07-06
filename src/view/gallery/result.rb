@@ -82,7 +82,11 @@ class RackResultList < ResultList
 			[ :artobject_id, model.artobject_id ],
 		]
 		url = @lookandfeel.event_url(:gallery, :ajax_desk_artobject, args)
-		link.value = model.title
+		if(model.title.empty?)
+			link.value = model.artobject_id
+		else
+			link.value = model.title
+		end
 		script = "toggleDeskContent('show', '#{url}', true)"
 		link.set_attribute('onclick', script)
 		link
@@ -205,6 +209,7 @@ end
 class Result < View::GalleryPublicTemplate
 	CONTENT = View::Gallery::ResultComposite
 end
+class AdminResult < Result; end
 		end
 	end
 end

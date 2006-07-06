@@ -57,7 +57,7 @@ div#zone-image {
 }
 
 div.dojo-tooltip {
-	border: 1px black solid;
+	border: 1px red solid;
 	width: 400px;
 	height: 300px;
 	position: absolute;
@@ -75,9 +75,9 @@ div#tooltip-container {
 	max-width: 400px;
 	padding: 5px;
 	z-index: 10;
+	text-align: center; */
 	border: 2px #990099 solid;
 	background-color: #FFFFCC;
-	text-align: center; */
 	text-align: center;
 }
 
@@ -86,21 +86,12 @@ img.image-tooltip-image {
 	display: inline;
 }
 
-div#poem-tooltip-container {
-	width: 250px;
-	padding: 5px;
-	z-index: 10;
-	border: 2px #990099 solid;
-	background-color: #FFFFCC;
-	text-align: center;
-}
-
-div.poem-tooltip-title {
+div.tooltip-title {
 	font-weight: bold;
 	padding-bottom: 10px;
 }
 
-div.poem-tooltip-author {
+div.tooltip-author {
 	color: blue;
 	padding-top: 10px;
 }

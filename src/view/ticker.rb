@@ -23,8 +23,8 @@ module DAVAZ
 					'componentHeight'	=>	@component_height,
 				}
 				model.each { |item| 
-					unless(item.display_id.nil?)
-						path = DAVAZ::Util::ImageHelper.image_path(item.display_id, 'medium')
+					unless(item.artobject_id.nil?)
+						path = DAVAZ::Util::ImageHelper.image_path(item.artobject_id, 'medium')
 						args['images'].push(path)
 						if(item.class == DAVAZ::Model::ArtObject)
 							event_args = {
@@ -32,7 +32,7 @@ module DAVAZ
 							}
 						else
 							event_args = {
-								'display_id'	=>	item.display_id,
+								'artobject_id'	=>	item.artobject_id,
 							}
 						end
 						event_url = @lookandfeel.event_url(:gallery, :view, \

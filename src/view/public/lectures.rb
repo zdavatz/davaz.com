@@ -12,7 +12,7 @@ module DAVAZ
 class LecturesList < HtmlGrid::DivList
 	CSS_CLASS = 'lectures'
 	COMPONENTS = {
-		[0,0]	=>	View::LectureTextBlock,
+		[0,0]	=>	View::TextBlock,
 	}
 end
 class LecturesTitle < HtmlGrid::Div

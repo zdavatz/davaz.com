@@ -26,100 +26,95 @@ module DAVAZ
 					}
 				}
 			end
-			def insert_displayelement(values)
-				@db_manager.insert_displayelement(values)
+			def add_element(link_id, artobject_id)
+				@db_manager.add_element(link_id, artobject_id)
+			end
+			def add_link(artobject_id, link_word)
+				@db_manager.add_link(artobject_id, link_word)
+			end
+			def store_upload_image(image_file, artobject_id)
+				Util::ImageHelper.store_upload_image(image_file, artobject_id)
+			end
+			def delete_image(artobject_id)
+				Util::ImageHelper.delete_image(artobject_id)
+			end
+			def delete_link(link_id)
+				@db_manager.delete_link(link_id)
 			end
 			def insert_guest(values_hsh)
 				@db_manager.insert_guest(values_hsh)
 			end
-			def add_image_to_link(link_id, display_id)
-				@db_manager.add_image_to_link(link_id, display_id)
+			def load_artgroup_artobjects(artgroup_id)
+				@db_manager.load_artobjects_by_artgroup(artgroup_id)
 			end
 			def load_artgroups
 				@db_manager.load_artgroups
 			end
 			def load_articles
-				@db_manager.load_displayelements(nil, 'articles', 'position', 'ASC')
+					@db_manager.load_serie_artobjects('site_articles', 'series.name')
 			end
-			def load_article(display_id)
-				@db_manager.load_displayelement('display_id', display_id)
-			end
-			def load_artobject(artobject_id)
+			def load_article(artobject_id)
 				@db_manager.load_artobject(artobject_id)
 			end
-			def load_biography_text(lang)
-				@db_manager.load_displayelements(nil, lang, 'title', 'DESC')
+			def load_artobject(artobject_id, select_by='artobject_id')
+				@db_manager.load_artobject(artobject_id, select_by)
+			end
+			def load_tag_artobjects(location)
+				@db_manager.load_tag_artobjects(location)
 			end
 			def load_country(id)
 				@db_manager.load_country(id)
 			end
-			def load_cv(title)
-				@db_manager.load_displayelement('title', title)	
-			end
 			def load_currency_rates(model)
 				@db_manager.load_currency_rates(model)
 			end
-			def load_displayelement(display_id)
-				@db_manager.load_displayelement('display_id', display_id)
-			end
-			def load_display_images
-				@db_manager.load_display_images
-			end
-			def load_display_link(link_id)
-				@db_manager.load_display_link(link_id)
+			def load_images_by_tags(active_tags)
+				@db_manager.load_images_by_tags(active_tags)
 			end
 			def load_exhibitions
-				@db_manager.load_displayelements(nil, 'exhibitions', 'title')
+				@db_manager.load_serie_artobjects('site_exhibitions', 'series.name')
 			end
 			def load_thefamily_text
-				@db_manager.load_displayelements(nil, 'thefamily', 'position', 'ASC')
+				@db_manager.load_serie_artobjects('site_thefamily', 'series.name')
 			end
 			def load_guests
 				@db_manager.load_guests
 			end
 			def load_hisfamily_text
-				@db_manager.load_displayelements(nil, 'hisfamily', 'position', 'ASC')
+				@db_manager.load_serie_artobjects('site_hisfamily', 'series.name')
 			end
 			def load_hisinspiration_text
-				@db_manager.load_displayelements(nil, 'hisinspiration', 'position', 'ASC')
+				@db_manager.load_serie_artobjects('site_hisinspiration', 'series.name')
+			end
+			def load_hislife(lang)
+				@db_manager.load_serie_artobjects("site_life_#{lang}", 'series.name')
 			end
 			def load_hiswork_text
-				@db_manager.load_displayelements(nil, 'hiswork', 'position', 'ASC')
+				@db_manager.load_serie_artobjects('site_hiswork', 'series.name')
 			end
-			def load_link_displayelement(link_id)
-				@db_manager.load_link_displayelement(link_id)
-			end
-			def load_link_displayelements(link_id)
-				@db_manager.load_link_displayelements(link_id)
-			end
-			def load_lectures
-				@db_manager.load_displayelements(nil, 'lectures', 
-					'title DESC,', 'position ASC')
+			def load_image_tags
+				@db_manager.load_image_tags
 			end
 			def load_links
-				@db_manager.load_displayelements(nil, 'links', 'position', 'ASC')
+				@db_manager.load_serie_artobjects('site_links', 'series.name')
+			end
+			def load_lectures
+				@db_manager.load_serie_artobjects('site_lectures', 'series.name')
 			end
 			def load_material(id)
 				@db_manager.load_material(id)
 			end
 			def load_news
-				@db_manager.load_news
+				@db_manager.load_serie_artobjects('site_news', 'series.name')
 			end
 			def load_oneliner(location)
 				@db_manager.load_oneliner(location)
 			end
-			def load_poem(link_id)
-				if(link_id.to_i == 0)
-					@db_manager.load_displayelement('title', link_id)
-				else
-					@db_manager.load_link_displayelements(link_id)
-				end
-			end
-			def load_serie(serie_id)
-				@db_manager.load_serie(serie_id)
+			def load_serie(serie_id, select_by='serie_id')
+				@db_manager.load_serie(serie_id, select_by)
 			end
 			def load_series
-				@db_manager.load_series
+				@db_manager.load_series("", load_artobjects=false)
 			end
 			def load_series_by_artgroup(artgroup_id)
 				@db_manager.load_series_by_artgroup(artgroup_id)
@@ -135,14 +130,11 @@ module DAVAZ
 			def load_shop_items
 				@db_manager.load_shop_items
 			end
-			def load_shop_artobject(artobject_id)
-				@db_manager.load_shop_artobject(artobject_id)
-			end
 			def load_shop_item(id)
 				@db_manager.load_shop_item(id)
 			end
-			def load_slideshow(title)
-				@db_manager.load_slideshow(title)
+			def load_tag_artobjects(tag)
+				@db_manager.load_tag_artobjects(tag)
 			end
 			def load_tool(id)
 				@db_manager.load_tool(id)
@@ -151,26 +143,23 @@ module DAVAZ
 				@db_manager.load_movie(id)
 			end
 			def load_movies
-				@db_manager.load_artobjects('MOV')
+				@db_manager.load_artobjects_by_artgroup('MOV', true)
 			end
 			def load_multiples
-				@db_manager.load_artobjects('MUL')
+				@db_manager.load_artobjects_by_artgroup('MUL')
 			end
 			def login(email, pass)
 				YUS_SERVER.login(email, pass, YUS_DOMAIN)
 			end
-			def remove_image_from_link(link_id, display_id)
-				@db_manager.remove_image_from_link(link_id, display_id)
+			def remove_element(artobject_id, link_id)
+				@db_manager.remove_element(artobject_id, link_id)
 			end
 			def search_artobjects(query, artgroup_id)
 				if(query.nil?)
-					@db_manager.load_artobjects(artgroup_id)
+					@db_manager.load_artobjects_by_artgroup(artgroup_id)
 				else
-					@db_manager.search_artobjects(query, artgroup_id)
+					@db_manager.search_artobjects(query)
 				end
-			end
-			def update_displayelement(display_id, update_hash)
-				@db_manager.update_displayelement(display_id, update_hash)
 			end
 		end
 	end

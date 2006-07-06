@@ -7,9 +7,10 @@ require 'view/works/multiples'
 module DAVAZ
 	module State
 		module Works
-class Multiples < State::Works::Global
+class Multiples < State::Works::RackState
 	VIEW = View::Works::Multiples
 	def init
+		@model = OpenStruct.new
 		artobject_id = @session.user_input(:artobject_id) 
 		if(artobject_id.nil?)
 			multiples = @session.app.load_multiples

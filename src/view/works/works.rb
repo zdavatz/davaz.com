@@ -2,8 +2,9 @@
 # View::Works::Works -- davaz.com -- 05.05.2006 -- mhuggler@ywesee.com
 
 require 'htmlgrid/divcomposite'
-require 'view/serielinks'
+require 'view/serie_links'
 require 'view/slideshowrack'
+require 'view/add_onload_show'
 
 module DAVAZ
 	module View
@@ -24,6 +25,7 @@ class Works < HtmlGrid::DivComposite
 		[0,0]	=>	WorksTitle,
 		[0,1]	=>	SlideShowRackComposite,
 		[0,2]	=>	component(SerieLinks, :series),
+		[0,3] =>	View::AddOnloadShow,
 	}
 	CSS_ID_MAP = {
 		1	=>	'show-wipearea',

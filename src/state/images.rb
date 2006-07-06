@@ -10,7 +10,7 @@ module DAVAZ
 			VIEW = View::Images
 			def init
 				link_id = @session.user_input(:link_id)
-				@model = @session.app.load_link_displayelements(link_id) 
+				#@model = @session.app.load_link_displayelements(link_id) 
 			end
 		end
 	end

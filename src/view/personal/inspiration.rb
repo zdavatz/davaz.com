@@ -45,7 +45,7 @@ class InspirationComposite < HtmlGrid::DivComposite
 end
 class Inspiration < View::PersonalPublicTemplate
 	CONTENT = View::Personal::InspirationComposite
-	TICKER = 'passage_through_india'
+	TICKER = 'A passage through India'
 end
 		end
 	end

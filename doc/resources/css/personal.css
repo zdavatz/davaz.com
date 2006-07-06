@@ -126,10 +126,17 @@ div.back-link {
 	padding-top: 20px;
 }
 
-h1.block-title {
+div.block-title {
 	font-size: 10pt;
 	background: #990099;
 	color: white;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+div.block-image {
+	float: left;
+	padding-right: 10px;
 }
 
 ul#biography {

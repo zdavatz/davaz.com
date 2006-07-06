@@ -12,7 +12,7 @@ dojo.provide("ywesee.widget.SlideShow");
 
 dojo.require("dojo.event");
 dojo.require("dojo.widget.*");
-dojo.require("dojo.fx.html");
+dojo.require("dojo.lfx.html");
 dojo.require("dojo.style");
 
 ywesee.widget.SlideShow = function(){
@@ -44,6 +44,7 @@ ywesee.widget.SlideShow = function(){
 	this.critical = false;
 	this.loadedCallback = 'backgroundImageLoaded';
 	this.dataUrl = "";
+	this.serieId = "";
 
 	// our DOM nodes:
 	this.imagesContainer = null;
@@ -100,10 +101,10 @@ ywesee.widget.SlideShow = function(){
 		var callback2 = function() { 
 			_this[_this.foreground].style.display = "none";
 			_this[_this.background].style.display = "block";
-			dojo.fx.html.fadeIn(_this[_this.background], _this.transitionInterval,
-			callback1);
+			dojo.lfx.html.fadeIn(_this[_this.background], _this.transitionInterval, null,
+			callback1).play();
 		};
-		dojo.fx.html.fadeOut(this[this.foreground], this.transitionInterval, callback2);
+		dojo.lfx.html.fadeOut(this[this.foreground], this.transitionInterval, null, callback2).play();
 	}
 	
 	this.endTransition = function(){

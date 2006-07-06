@@ -7,7 +7,7 @@ require 'view/works/photos'
 module DAVAZ
 	module State
 		module Works
-class Photos < State::Works::Global
+class Photos < State::Works::RackState
 	VIEW = View::Works::Photos
 	ARTGROUP_ID = 'PHO'
 end

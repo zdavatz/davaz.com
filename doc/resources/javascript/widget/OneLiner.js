@@ -1,7 +1,7 @@
 dojo.provide("ywesee.widget.OneLiner");
 
 dojo.require("dojo.widget.*");
-dojo.require("dojo.fx.*");
+dojo.require("dojo.lfx.*");
 
 ywesee.widget.OneLiner = function() {
 
@@ -32,10 +32,10 @@ ywesee.widget.OneLiner = function() {
 		var callback2 = function() { 
 			_this[_this.nodeOut].style.display = 'none';
 			_this[_this.nodeIn].style.display = 'inline';
-			dojo.fx.html.fadeIn(_this[_this.nodeIn], _this.delay,
-			callback1);
+			dojo.lfx.html.fadeIn(_this[_this.nodeIn], _this.delay, null,
+			callback1).play();
 		};
-		dojo.fx.html.fadeOut(this[this.nodeOut], this.delay, callback2);
+		dojo.lfx.html.fadeOut(this[this.nodeOut], this.delay, null, callback2).play();
 	}
 
 	this.display = function() {

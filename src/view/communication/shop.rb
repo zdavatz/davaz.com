@@ -75,8 +75,11 @@ class ShopList < View::List
 	end
 	def object_title(model)
 		link = HtmlGrid::Link.new(:artobject_link, model, @session, self)
-		args = [ :artobject_id, model.artobject_id ]
-		link.href = @lookandfeel.event_url(:gallery, :artobject, args)
+		args = [ 
+			[ :artgroup_id, model.artgroup_id ],
+			[ :artobject_id, model.artobject_id ],
+		]
+		link.href = @lookandfeel.event_url(:works, :art_object, args)
 		link.value = model.title
 		link
 	end

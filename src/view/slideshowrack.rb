@@ -19,7 +19,7 @@ module DAVAZ
 				img = HtmlGrid::Image.new(:rack, model, @session, self)
 				link = HtmlGrid::Link.new(:slideshow, model, @session, self)
 				link.href = "javascript:void(0)"
-				link.attributes['onclick'] = "toggleShow('show',null,'Rack', 'show-wipearea');"
+				link.attributes['onclick'] = "toggleShow('show', null, 'Rack', 'show-wipearea', null);"
 				link.value = img
 				link
 			end
@@ -27,7 +27,7 @@ module DAVAZ
 				img = HtmlGrid::Image.new(:show, model, @session, self)
 				link = HtmlGrid::Link.new(:slideshow, model, @session, self)
 				link.href = "javascript:void(0)"
-				link.attributes['onclick'] = "toggleShow('show',null,'SlideShow','show-wipearea');"
+				link.attributes['onclick'] = "toggleShow('show',null,'SlideShow','show-wipearea', null);"
 				link.value = img
 				link
 			end
@@ -36,7 +36,7 @@ module DAVAZ
 				img
 				link = HtmlGrid::Link.new(:desk, model, @session, self)
 				link.href = "javascript:void(0)"
-				script = "toggleShow('show',null,'Desk','show-wipearea');"
+				script = "toggleShow('show',null,'Desk','show-wipearea',null);"
 				link.set_attribute('onclick', script) 
 				link.value = img
 				link

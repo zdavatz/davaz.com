@@ -7,7 +7,7 @@ require 'view/works/paintings'
 module DAVAZ
 	module State
 		module Works
-class Paintings < State::Works::Global
+class Paintings < State::Works::RackState
 	VIEW = View::Works::Paintings
 	ARTGROUP_ID = "PAI"
 end

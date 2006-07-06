@@ -6,12 +6,10 @@ require 'date'
 require 'mysql'
 require 'yaml'
 require 'model/artgroup'
-require 'model/displayelement'
 require 'model/guest'
 require 'model/link'
 require 'model/oneliner'
 require 'model/serie'
-require 'model/slideshow_item'
 
 module DAVAZ
 	module Util
@@ -28,12 +26,13 @@ module DAVAZ
 			def connection
 				@connection ||= connect
 			end
-			def add_image_to_link(link_id, display_id)
-				query = <<-EOS
-					INSERT INTO links_displayelements
-					VALUES ('#{link_id}', '#{display_id}')
-				EOS
-				connection.query(query)
+			def set_values(model, row)
+				row.each { |key, value|
+					method = key.to_s + "="
+					if(model.respond_to?(method))
+						model.send(method, value)
+					end
+				}
 			end
 			def load_artgroups(order_by='artgroup_id')
 				query = <<-EOS
@@ -52,73 +51,107 @@ module DAVAZ
 				}		
 				artgroups
 			end
-			def load_artobject(artobject_id)
+			def load_artobject_links(artobject_id)
+				query = <<-EOS
+					SELECT links.*, artobjects.* 
+					FROM links
+					JOIN links_artobjects USING (link_id) 
+					JOIN artobjects
+						ON links_artobjects.artobject_id = artobjects.artobject_id
+					WHERE links.artobject_id = '#{artobject_id}'
+					ORDER BY links.word
+				EOS
+				result = connection.query(query)
+				links = {}
+				result.each_hash { |row|
+					link_id = row['link_id'] 
+					if(links.has_key?(link_id))
+						link = links[link_id]
+					else
+						link = Model::Link.new
+						links.store(link_id, link)
+					end
+					artobject = Model::ArtObject.new
+					set_values(link, row)
+					set_values(artobject, row)
+					link.artobjects.push(artobject)
+				}
+				links.values
+			end
+			def load_artobject_series(artobject_id)
+				query = <<-EOS
+					SELECT series.* 
+					FROM series_artobjects
+					LEFT OUTER JOIN series
+						ON series_artobjects.serie_id = series.serie_id
+					WHERE series_artobjects.artobject_id = '#{artobject_id}'
+				EOS
+				result = connection.query(query)
+				series = []
+				result.each_hash { |row|
+					serie = Model::Serie.new
+					serie.serie_id = row['serie_id']
+					serie.name = row['name']
+					series.push(serie)
+				}
+				series
+			end
+			def load_artobjects(where, reverse=false)
 				query = <<-EOS
 					SELECT artobjects.*, 
-						artobjects_displayelements.display_id AS display_id,
 						artgroups.name AS artgroup,
 						materials.name AS material,
-						tools.name AS tool,
 						series.name AS serie,
+						tools.name AS tool,
 						countries.name AS country
 					FROM artobjects
-					LEFT OUTER JOIN artobjects_displayelements
-						ON artobjects.artobject_id = artobjects_displayelements.artobject_id
 					LEFT OUTER JOIN artgroups
 						ON artobjects.artgroup_id = artgroups.artgroup_id
 					LEFT OUTER JOIN materials 
 						ON artobjects.material_id = materials.material_id
-					LEFT OUTER JOIN tools 
-						ON artobjects.tool_id = tools.tool_id
 					LEFT OUTER JOIN series 
 						ON artobjects.serie_id = series.serie_id
+					LEFT OUTER JOIN tools 
+						ON artobjects.tool_id = tools.tool_id
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
-					WHERE artobjects.artobject_id='#{artobject_id}';
+					#{where}
+					ORDER BY artobjects.title #{"DESC" if reverse}
 				EOS
 				result = connection.query(query)
-				artobject = nil
+				artobjects = []
 				result.each_hash { |key, value| 
 					model = DAVAZ::Model::ArtObject.new
 					key.each { |column_name, column_value| 
 						model.send(column_name.to_s + '=', column_value)
 					}
-					artobject = model
+					model.links.concat(load_artobject_links(model.artobject_id))
+					artobjects.push(model)
 				}
-				artobject
+				artobjects
 			end
-			def load_artobjects(artgroup_id)
-				if(artgroup_id.nil?)
-					by_artgroup = ""
-				else
-					by_artgroup = "WHERE artobjects.artgroup_id='#{artgroup_id}'"
-				end
+			def load_artobject(artobject_id, select_by='artobject_id')
+				where = "WHERE artobjects.#{select_by}='#{artobject_id}'"
+				load_artobjects(where).first
+			end
+			def load_artobjects_by_artgroup(artgroup_id, reverse=false)
+				where = "WHERE artobjects.artgroup_id='#{artgroup_id}'"
+				load_artobjects(where, reverse)
+			end
+			def load_artobjects_by_location(location)
 				query = <<-EOS
-					SELECT artobjects.*, 
-						artobjects_displayelements.display_id AS display_id,
-						artgroups.name AS artgroup,
-						materials.name AS material,
-						tools.name AS tool,
-						series.name AS serie,
-						countries.name AS country
-					FROM artobjects
-					LEFT OUTER JOIN artobjects_displayelements
-						ON artobjects.artobject_id = artobjects_displayelements.artobject_id
-					LEFT OUTER JOIN artgroups
-						ON artobjects.artgroup_id = artgroups.artgroup_id
-					LEFT OUTER JOIN materials 
-						ON artobjects.material_id = materials.material_id
-					LEFT OUTER JOIN tools 
-						ON artobjects.tool_id = tools.tool_id
-					LEFT OUTER JOIN series 
-						ON artobjects.serie_id = series.serie_id
-					LEFT OUTER JOIN countries 
-						ON artobjects.country_id = countries.country_id
-					#{by_artgroup}
-					ORDER BY artobjects.title DESC 
+					SELECT locations.*
+					FROM locations
+					WHERE locations.location = '#{location}' 
 				EOS
 				result = connection.query(query)
-				create_model_array(DAVAZ::Model::ArtObject, result)
+				artobjects = []
+				result.each_hash { |row|
+					artobject = load_artobject(row['artobject_id'])
+					artobject.position = row['position']
+					artobjects.push(artobject)
+				}
+				artobjects.sort { |a, b| a.position <=> b.position }
 			end
 			def load_country(id)
 			end
@@ -134,82 +167,6 @@ module DAVAZ
 				}
 				rates
 			end
-			def load_display_images
-				query = <<-EOS
-					SELECT displayelements.*
-					FROM displayelements
-					WHERE display_type = 'image'
-					LIMIT 30
-				EOS
-				result = connection.query(query)
-				create_model_array(DAVAZ::Model::DisplayElement, result)
-			end
-			def load_display_link(link_id)
-				query = <<-EOS
-					SELECT links.*, 
-						links_displayelements.display_id AS image_id 
-					FROM links
-					LEFT OUTER JOIN links_displayelements
-						USING (link_id)
-					WHERE links.link_id = '#{link_id}'
-				EOS
-				result = connection.query(query)
-				link = nil
-				result.each_hash { |row| 
-					if(link.nil?)
-						link = DAVAZ::Model::Link.new
-						row.each { |key, value|
-							method = "#{key}=".to_sym
-							if(link.respond_to?(method) && method!='image_id=')
-								link.send(method, value)
-							end
-						}
-					end
-					link.add_displayelement(row['image_id'])
-				}
-				link
-			end
-			def compose_displayelements_result(result)
-				elements = []
-				element = nil
-				last_id = nil
-				result.each_hash { |row|
-					display_id = row.delete('display_id')
-					if(display_id != last_id)
-						element = DAVAZ::Model::DisplayElement.new
-						row.each { |key, value|
-							method = "#{key}=".to_sym
-							if(element.respond_to?(method))
-								element.send(method, value)
-							end
-						}
-						element.send(:display_id=, display_id)
-						elements.push(element)
-						last_id = display_id
-					end
-					link = DAVAZ::Model::Link.new
-					row.each { |key, value|
-						method = "#{key}=".to_sym
-						if(link.respond_to?(method))
-							link.send(method, value) unless value.nil?
-						end
-					}
-					old_link = element.links.select { |old_lnk| 
-						old_lnk.link_id == link.link_id	
-					}
-					to_element = load_displayelement('display_id', \
-						row['link_display_id'])
-					if(old_link.empty?)
-						to_element.link_id = link.link_id unless to_element.nil?
-						link.add_displayelement(to_element) unless to_element.nil?
-						element.links.push(link) unless link.word.nil?
-					else
-						to_element.link_id = old_link.first.link_id unless to_element.nil?
-						old_link.first.add_displayelement(to_element) unless to_element.nil?
-					end
-				}
-				elements
-			end
 			def load_exhibitions
 			end
 			def load_guests
@@ -221,18 +178,18 @@ module DAVAZ
 				result = connection.query(query)
 				create_model_array(DAVAZ::Model::Guest, result) 
 			end
-			def load_news
-				query = <<-EOS
-					SELECT displayelements.*,
-						displayelements_displayelements.to_display_id AS to_display_id
-					FROM displayelements
-					LEFT OUTER JOIN displayelements_displayelements
-						USING (display_id)
-					WHERE location='news'
-					ORDER BY date ASC;
-				EOS
-				result = connection.query(query)
-				create_model_array(DAVAZ::Model::DisplayElement, result)
+			def load_image_tags
+				sql = <<-SQL
+					SELECT tag FROM tags;
+				SQL
+				tags = []
+				result = connection.query(sql)
+				result.each_hash { |key, value|
+					key.each { |colname, colval|
+						tags.push(colval)
+					}
+				}
+				tags.uniq!
 			end
 			def load_oneliner(location)
 				sql = <<-SQL
@@ -241,92 +198,84 @@ module DAVAZ
 				result = connection.query(sql)
 				create_model_array(DAVAZ::Model::OneLiner, result) 
 			end
-			def load_serie(serie_id)
-=begin
-				sql = <<-SQL
-					SELECT artobjects.*,
-						artobjects_displayelements.display_id AS display_id,
-						displayelements.text AS comment
-					FROM artobjects
-					LEFT JOIN artobjects_displayelements USING (artobject_id)
-					LEFT JOIN displayelements USING (display_id)
-					WHERE serie_id='#{serie_id}'
-					ORDER BY serie_nr DESC
-				SQL
-=end
+			def load_series(where, load_artobjects=true)
+				query = <<-EOS
+					SELECT series.*
+					FROM series
+					#{where}
+				EOS
+				result = connection.query(query)
+				series = []
+				result.each_hash { |row|
+					serie = Model::Serie.new		
+					serie.serie_id = row['serie_id']
+					serie.name = row['name']
+					if(load_artobjects)
+						artobjects = load_serie_artobjects(serie.serie_id)
+						serie.artobjects.concat(artobjects)
+					end
+					series.push(serie) unless serie.name.match(/^site_/)
+				}
+				series
+			end
+			def load_serie(serie_id, select_by='serie_id')
+				where = <<-EOS
+					WHERE #{select_by}='#{serie_id}'
+				EOS
+				load_series(where).first
+			end
+			def load_serie_artobjects(serie_id, select_by='series.serie_id')
 				query = <<-EOS
 					SELECT artobjects.*, 
-						artobjects_displayelements.display_id AS display_id,
-						displayelements.text AS comment,
 						artgroups.name AS artgroup,
 						materials.name AS material,
-						tools.name AS tool,
 						series.name AS serie,
+						tools.name AS tool,
 						countries.name AS country
-					FROM artobjects
-					LEFT OUTER JOIN artgroups USING (artgroup_id)
-					LEFT OUTER JOIN artobjects_displayelements
-						ON artobjects.artobject_id = artobjects_displayelements.artobject_id
-					LEFT OUTER JOIN displayelements 
-						ON artobjects_displayelements.display_id = displayelements.display_id
+					FROM series
+					JOIN artobjects USING (serie_id)
+					LEFT OUTER JOIN artgroups
+						ON artobjects.artgroup_id = artgroups.artgroup_id
 					LEFT OUTER JOIN materials 
 						ON artobjects.material_id = materials.material_id
 					LEFT OUTER JOIN tools 
 						ON artobjects.tool_id = tools.tool_id
-					LEFT OUTER JOIN series 
-						ON artobjects.serie_id = series.serie_id
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
-					WHERE artobjects.serie_id='#{serie_id}'
-					ORDER BY serie_nr DESC, artobjects.title DESC
+					WHERE #{select_by}='#{serie_id}'
+					ORDER BY artobjects.serie_position
 				EOS
 				result = connection.query(query)
-				create_model_array(Model::ArtObject, result)
-			end
-			def load_series
-				sql = <<-SQL
-					SELECT * 
-					FROM series	
-				SQL
-				result = connection.query(sql)
-				array = [] 
-				result.each_hash { |key, value|
-					model = DAVAZ::Model::Serie.new
+				artobjects = []
+				result.each_hash { |key, value| 
+					model = DAVAZ::Model::ArtObject.new
 					key.each { |column_name, column_value| 
 						model.send(column_name.to_s + '=', column_value)
 					}
-					array.push(model)
+					model.links.concat(load_artobject_links(model.artobject_id))
+					artobjects.push(model)
 				}
-				array
+				artobjects
 			end
 			def load_series_by_artgroup(artgroup_id)
 				sql = <<-SQL
-					SELECT series.serie_id,series.name FROM artobjects
+					SELECT series.serie_id,series.name 
+					FROM artobjects
 					JOIN series USING (serie_id)
 					WHERE artobjects.artgroup_id='#{artgroup_id}' 
 				SQL
 				result = connection.query(sql)
-				create_unique_model_array(Model::Serie, result, 'serie_id')
-			end
-			def load_slideshow(title)
-				sql = <<-SQL
-					SELECT 
-						slideshow_items.display_id AS display_id,
-						slideshow_items.position, 
-						displayelements.title AS title 
-					FROM slideshow_items
-					LEFT JOIN displayelements USING (display_id)
-					WHERE slideshow_items.slideshow='#{title}'
-					ORDER BY slideshow_items.position;
-				SQL
-				result = connection.query(sql)
-				array = [] 
-				result.each_hash { |key, value|
-					model = DAVAZ::Model::SlideShowItem.new
+				array = []
+				key_array = []
+				result.each_hash { |key, value| 
+					model = Model::Serie.new 
 					key.each { |column_name, column_value| 
 						model.send(column_name.to_s + '=', column_value)
 					}
-					array.push(model) unless model.display_id == '0'
+					unless(key_array.include?(key))
+						array.push(model)
+						key_array.push(key)
+					end
 				}
 				array
 			end
@@ -353,161 +302,40 @@ module DAVAZ
 				}
 				items
 			end
-			def load_shop_artobject(artobject_id)
+			def load_tag_artobjects(tag)
 				query = <<-EOS
 					SELECT artobjects.*, 
-					artobjects_displayelements.display_id AS display_id
-					FROM artobjects
-					LEFT OUTER JOIN artobjects_displayelements
-					ON artobjects.artobject_id = artobjects_displayelements.artobject_id
-					WHERE artobjects.artobject_id='#{artobject_id}';
+						artgroups.name AS artgroup,
+						materials.name AS material,
+						series.name AS serie,
+						tools.name AS tool,
+						countries.name AS country
+					FROM tags
+					LEFT OUTER JOIN tags_artobjects
+						ON tags.tag_id = tags_artobjects.tag_id
+					LEFT OUTER JOIN artobjects
+						ON tags_artobjects.artobject_id = artobjects.artobject_id
+					LEFT OUTER JOIN artgroups
+						ON artobjects.artgroup_id = artgroups.artgroup_id
+					LEFT OUTER JOIN materials 
+						ON artobjects.material_id = materials.material_id
+					LEFT OUTER JOIN series 
+						ON artobjects.serie_id = series.serie_id
+					LEFT OUTER JOIN tools 
+						ON artobjects.tool_id = tools.tool_id
+					LEFT OUTER JOIN countries 
+						ON artobjects.country_id = countries.country_id
+					WHERE tags.name = '#{tag}' OR series.name = '#{tag}'
 				EOS
 				result = connection.query(query)
-				item = nil
-				result.each_hash { |key, value| 
-					artobject = DAVAZ::Model::ArtObject.new 
-					key.each { |column_name, column_value| 
-						artobject.send(column_name.to_s + '=', column_value)
-					}
-					rates = load_currency_rates
-					artobject.dollar_price = (rates['USD'] * artobject.price.to_i).round
-					artobject.euro_price = (rates['EURO'] * artobject.price.to_i).round
-					item = artobject
-				}
-				item
-			end
-			def load_displayelements(type, location, order="display_id", order_direction="ASC")
-				where = []
-				where.push("displayelements.display_type='#{type}'") unless type.nil?
-				where.push("displayelements.location='#{location}'") unless location.nil?
-				query = <<-EOS
-					SELECT displayelements.*, 
-					links.word, links.link_id,
-					links.href, links.link_type, 
-					links_displayelements.display_id AS link_display_id
-					FROM displayelements 
-					LEFT OUTER JOIN links 
-					ON displayelements.display_id = links.display_id
-					LEFT OUTER JOIN links_displayelements
-					ON links_displayelements.link_id = links.link_id
-					WHERE #{where.join(" AND ")}
-					ORDER BY #{order} #{order_direction}
-				EOS
-				result = connection.query(query)
-				array = compose_displayelements_result(result)
-			end
-			def load_displayelement(select_by, value)
-				query = <<-EOS
-					SELECT displayelements.*,
-					links.word, links.link_id,
-					links.href, links.link_type,
-					links_displayelements.display_id AS link_display_id
-					FROM displayelements 
-					LEFT OUTER JOIN links 
-					ON displayelements.display_id = links.display_id
-					LEFT OUTER JOIN links_displayelements
-					ON links_displayelements.link_id = links.link_id
-					WHERE displayelements.#{select_by}='#{value}'
-				EOS
-				result = connection.query(query)
-				compose_displayelements_result(result).first
-			end
-			def compose_displayelements_result(result)
-				elements = []
-				element = nil
-				last_id = nil
+				artobjects = []
 				result.each_hash { |row|
-					display_id = row.delete('display_id')
-					if(display_id != last_id)
-						element = DAVAZ::Model::DisplayElement.new
-						row.each { |key, value|
-							method = "#{key}=".to_sym
-							if(element.respond_to?(method))
-								element.send(method, value)
-							end
-						}
-						element.send(:display_id=, display_id)
-						elements.push(element)
-						last_id = display_id
-					end
-					link = DAVAZ::Model::Link.new
-					row.each { |key, value|
-						method = "#{key}=".to_sym
-						if(link.respond_to?(method))
-							link.send(method, value) unless value.nil?
-						end
-					}
-					old_link = element.links.select { |old_lnk| 
-						old_lnk.link_id == link.link_id	
-					}
-					to_element = load_displayelement('display_id', \
-						row['link_display_id'])
-					if(old_link.empty?)
-						to_element.link_id = link.link_id unless to_element.nil?
-						link.add_displayelement(to_element) unless to_element.nil?
-						element.links.push(link) unless link.word.nil?
-					else
-						to_element.link_id = old_link.first.link_id unless to_element.nil?
-						old_link.first.add_displayelement(to_element) unless to_element.nil?
-					end
+					artobject = Model::ArtObject.new
+					set_values(artobject, row)
+					artobjects.push(artobject)
 				}
-				elements
-			end
-			def load_link_displayelement(link_id)
-				query = <<-EOS
-					SELECT displayelements.*, links.link_id
-					FROM links 
-					JOIN links_displayelements USING (link_id)
-					JOIN displayelements USING (display_id)
-					WHERE links.link_id='#{link_id}'
-				EOS
-				result = connection.query(query) 
-				elements = []
-				result.each_hash { |row|
-					element = DAVAZ::Model::DisplayElement.new
-					row.each { |key, value|
-						method = "#{key}=".to_sym
-						if(element.respond_to?(method))
-							element.send(method, value)
-						end
-					}
-					elements.push(element)
-				}
-				elements.first
-			end
-			def load_link_displayelements(link_id)
-				query = <<-EOS
-					SELECT displayelements.*, links.link_id
-					FROM links 
-					JOIN links_displayelements USING (link_id)
-					JOIN displayelements USING (display_id)
-					WHERE links.link_id='#{link_id}'
-				EOS
-				result = connection.query(query) 
-				elements = []
-				result.each_hash { |row|
-					element = DAVAZ::Model::DisplayElement.new
-					row.each { |key, value|
-						method = "#{key}=".to_sym
-						if(element.respond_to?(method))
-							element.send(method, value)
-						end
-					}
-					elements.push(element)
-				}
-				elements
-			end
-			def insert_displayelement(values)
-				values_array = []
-				values.each { |key, value|
-					values_array.push("#{key} = '#{value}'")	
-				}
-				query = <<-EOS
-					INSERT INTO displayelements
-					SET #{values_array.join(',')} 
-				EOS
-				connection.query(query)
-				connection.insert_id
+				artobjects.concat(load_serie_artobjects(tag, 'series.name'))
+				artobjects
 			end
 			def insert_guest(user_values)
 				values = [
@@ -535,21 +363,6 @@ module DAVAZ
 				}
 				array
 			end
-			def create_unique_model_array(model_class, result, key)
-				array = []
-				key_array = []
-				result.each_hash { |key, value| 
-					model = model_class.new
-					key.each { |column_name, column_value| 
-						model.send(column_name.to_s + '=', column_value)
-					}
-					unless(key_array.include?(key))
-						array.push(model)
-						key_array.push(key)
-					end
-				}
-				array
-			end
 			def create_model_hash(model_class, result, hsh_key)
 				hash = {}	
 				result.each_hash { |key, value| 
@@ -561,71 +374,30 @@ module DAVAZ
 				}
 				hash
 			end
-			def remove_image_from_link(link_id, display_id)
-				query = <<-EOS
-					DELETE FROM links_displayelements
-					WHERE links_displayelements.link_id = '#{link_id}'
-					AND links_displayelements.display_id = '#{display_id}'
-				EOS
-				connection.query(query)
-			end
-			def search_artobjects(search_pattern, artgroup_id)
-				if(artgroup_id.nil?)
-					artgroup = ""
-				else
-					artgroup = "AND artobjects.artgroup_id='#{artgroup_id}'"
-				end
-				query = <<-EOS
-					SELECT artobjects.*, 
-						artobjects_displayelements.display_id AS display_id,
-						artgroups.name AS artgroup,
-						materials.name AS material,
-						tools.name AS tool,
-						series.name AS serie,
-						countries.name AS country
-					FROM artobjects
-					LEFT OUTER JOIN artgroups USING (artgroup_id)
-					LEFT OUTER JOIN artobjects_displayelements
-						ON artobjects.artobject_id = artobjects_displayelements.artobject_id
-					LEFT OUTER JOIN materials 
-						ON artobjects.material_id = materials.material_id
-					LEFT OUTER JOIN tools 
-						ON artobjects.tool_id = tools.tool_id
-					LEFT OUTER JOIN series 
-						ON artobjects.serie_id = series.serie_id
-					LEFT OUTER JOIN countries 
-						ON artobjects.country_id = countries.country_id
+			def search_artobjects(search_pattern)
+				series = search_serie(search_pattern)
+				serie_artobjects = series.collect { |serie|
+					serie.artobjects	
+				}
+				where = <<-EOS
 					WHERE artobjects.title
 						REGEXP "#{search_pattern}"
-						#{artgroup}
-					OR series.name
-						REGEXP "#{search_pattern}"
-						#{artgroup}
-					ORDER BY artobjects.title	DESC
 				EOS
-				result = connection.query(query)
-				create_model_array(DAVAZ::Model::ArtObject, result)
+				artobjects = load_artobjects(where)
+				serie_artobjects.flatten.concat(artobjects)
+			end
+			def search_serie(search_pattern)
+				where = <<-EOS
+					WHERE series.name 
+						REGEXP "#{search_pattern}"
+				EOS
+				load_series(where)
 			end
 			def update_currency(origin, target, rate)
 				query = <<-EOS
 					UPDATE currencies
 					SET rate='#{rate}'
 					WHERE origin='#{origin}' AND target='#{target}';
-				EOS
-				result = connection.query(query)
-				connection.affected_rows
-			end
-			def update_displayelement(display_id, update_hash)
-				update_array = []
-				update_hash.each { |key, value|
-					unless(value.nil?)
-						update_array.push("#{key}='#{value}'")
-					end
-				}
-				query = <<-EOS
-					UPDATE displayelements
-					SET #{update_array.join(', ')}
-					WHERE display_id='#{display_id}'
 				EOS
 				result = connection.query(query)
 				connection.affected_rows

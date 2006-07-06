@@ -2,7 +2,7 @@ dojo.provide("ywesee.widget.Ticker");
 
 dojo.require("dojo.event");
 dojo.require("dojo.widget.*");
-dojo.require("dojo.fx.html");
+dojo.require("dojo.lfx.html");
 dojo.require("dojo.style");
 
 ywesee.widget.Ticker = function() {
@@ -71,7 +71,7 @@ ywesee.widget.Ticker = function() {
 			_this.endTransition();
 		};
 		var wipeOutDiv = dojo.dom.firstElement(this.tickerWindow, 'div');
-		this.wipe(wipeOutDiv, 5000, this.componentWidth, 0, callback);
+		this.wipe(wipeOutDiv, 5000, this.componentWidth, 0, callback).play();
 		if(this.imagePosition == (this.images.length-1)) {
 			this.imagePosition = 0;
 		} else {
@@ -104,18 +104,17 @@ ywesee.widget.Ticker = function() {
 	}
 
 	this.wipe = function(node, duration, startWidth, endWidth, callback) {
-		var anim = new dojo.animation.Animation([[startWidth], [endWidth]], duration||dojo.fx.duration, 0)
+		var _this = this;
 		var link = dojo.dom.firstElement(node, 'a');
 		var img = dojo.dom.firstElement(link, 'img');
-		var _this = this;
-		dojo.event.connect(anim, "onAnimate", function(e) {
-			node.style.width = e.x + "px";
-			img.style.marginLeft = (e.x - _this.componentWidth) + "px";	
-		});
-		dojo.event.connect(anim, "onEnd", function() {
-			if(callback) { callback(node, anim); }
-		})
-		anim.play();
+		var anim = new dojo.lfx.Animation({
+			onAnimate: function(e) {
+				node.style.width = e + "px";
+				img.style.marginLeft = (e - _this.componentWidth) + "px";	
+			},
+			onEnd: function() {
+				if(callback) { callback(node, anim); }
+			} }, duration, [startWidth, endWidth]);
 		return anim;
 	}
 }

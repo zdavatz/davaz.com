@@ -40,8 +40,8 @@ class PhotoDavaz < HtmlGrid::Div
 	def init 
 		super
 		img = HtmlGrid::Image.new(:photo_davaz, model, @session, self)
-		args = [ :display_id, 'Power' ]
-		@dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip_poem, args)
+		args = [ :title, 'Power' ]
+		@dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip, args)
 		@value = img
 	end
 end
@@ -73,8 +73,8 @@ class PicBottleneck < HtmlGrid::Div
 	def init 
 		super
 		img = HtmlGrid::Image.new(:pic_bottleneck, model, @session, self)
-		args = [ :display_id, 'Bottleneck' ]
-		@dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip_poem, args)
+		args = [ :title, 'Bottleneck' ]
+		@dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip, args)
 		@value = img
 	end
 end
@@ -274,7 +274,7 @@ class Init < View::PublicTemplate
 			<<-EOS
 			function scrollDiv(elId) {
 				var node = document.getElementById(elId);
-				dojo.fx.html.slideTo(node, [-#{@model.movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_WIDTH)},0], #{@model.movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_SPEED)})
+				dojo.lfx.html.slideTo(node, [-#{@model.movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_WIDTH)},0], #{@model.movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_SPEED)})
 			}
 			EOS
 		}

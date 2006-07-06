@@ -7,6 +7,7 @@ require 'htmlgrid/link'
 module DAVAZ
 	module View
 		class SerieLinks < HtmlGrid::SpanList
+			REPLACE_ID = 'null'	
 			COMPONENTS = {
 				[0,0]	=>	:serie_link,
 			}
@@ -19,10 +20,13 @@ module DAVAZ
 				link.css_class = 'serie-link'
 				args = [ :serie_id, model.serie_id ]
 				url = @lookandfeel.event_url(:gallery, :ajax_rack, args)
-				script = "toggleShow('show', '#{url}', null);"
+				script = "toggleShow('show', '#{url}', null, '#{self.class::REPLACE_ID}', '#{model.serie_id}');"
 				link.set_attribute('onclick', script);
 				link
 			end
+		end
+		class GallerySerieLinks < SerieLinks
+			REPLACE_ID = 'upper-search-composite'	
 		end
 	end
 end

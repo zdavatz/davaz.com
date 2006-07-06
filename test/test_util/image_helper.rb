@@ -6,22 +6,26 @@ $: << File.expand_path("../../src", File.dirname(__FILE__))
 
 require 'test/unit'
 require 'fileutils'
-require 'util/image_helper'
 require 'util/davazconfig'
+require 'util/image_helper'
 require 'RMagick'
 
 module DAVAZ
 	module Util
 		class ImageHelper
 			UPLOAD_IMAGES_PATH = '../../test/data/uploads/images'
-			attr_reader :geometries
+			def ImageHelper.geometries
+				GEOMETRIES
+			end
 		end
 	end
 end
 
 class ImageHelper < Test::Unit::TestCase
 	def setup
-		@helper = DAVAZ::Util::ImageHelper.new
+		@helper = DAVAZ::Util::ImageHelper
+		path = File.expand_path('../data/images/test_image.png', File.dirname(__FILE__))
+		@image_file = File.open(path)
 		@images_path = File.expand_path('../data/uploads/images', File.dirname(__FILE__))
 		@small_image_width = DAVAZ::SMALL_IMAGE_WIDTH.to_i
 		@medium_image_width = DAVAZ::MEDIUM_IMAGE_WIDTH.to_i
@@ -29,13 +33,13 @@ class ImageHelper < Test::Unit::TestCase
 		@slideshow_image_height = DAVAZ::SLIDESHOW_IMAGE_HEIGHT.to_i
 	end
 	def test_add_image 
-		@helper.add_image('311')
-		name = @helper.class.abs_image_path('311')
+		@helper.store_upload_image(@image_file, '311')
+		name = @helper.abs_image_path('311')
 		image = Magick::Image.read(name).first
-		assert_equal(349, image.columns)
-		assert_equal(300, image.rows)
+		assert_equal(200, image.columns)
+		assert_equal(20, image.rows)
 		@helper.geometries.each { |key, value|
-			path = File.join(@images_path, key.to_s, '1/311.jpeg')
+			path = File.join(@images_path, key.to_s, '1/311.png')
 			assert(File.exists?(path))
 			image = Magick::Image.read(path).first
 			case key
@@ -54,7 +58,7 @@ class ImageHelper < Test::Unit::TestCase
 			FileUtils.rm(path)
 		}	
 		@helper.geometries.each { |key, value|
-			path = File.join(@images_path, key.to_s, '1/311.jpeg')
+			path = File.join(@images_path, key.to_s, '1/311.png')
 			assert(!File.exists?(path))
 		}
 	end
@@ -62,16 +66,16 @@ class ImageHelper < Test::Unit::TestCase
 		path = "/resources/../../test/data/uploads/images"
 		file_path = File.expand_path("../data/uploads/images", \
 			File.dirname(__FILE__))
-		file = File.join(file_path, 'small', '1', '311.jpeg')
+		file = File.join(file_path, 'small', '1', '311.png')
 		File.open(file, 'w') { |file| file << "abcd" }
-		result = @helper.class.image_path('311')
-		expected = File.join(path, "1/311.jpeg")
+		result = @helper.image_path('311')
+		expected = File.join(path, "1/311.png")
 		assert_equal(expected, result)
 		@helper.geometries.each { |key, value|
-			result = @helper.class.image_path('311', key.to_s)
+			result = @helper.image_path('311', key.to_s)
 			case key
 			when :small
-				expected = File.join(path, key.to_s, "1/311.jpeg")
+				expected = File.join(path, key.to_s, "1/311.png")
 			else
 				expected = nil
 			end
@@ -79,9 +83,9 @@ class ImageHelper < Test::Unit::TestCase
 		}
 	end
 	def test_abs_image_path
-		result = @helper.class.abs_image_path('311')
+		result = @helper.abs_image_path('311')
 		expected = File.expand_path("../../doc/", File.dirname(__FILE__))
-		expected << "/resources/../../test/data/uploads/images/1/311.jpeg"
+		expected << "/resources/../../test/data/uploads/images/1/311.png"
 		assert_equal(expected, result)
 	end
 	def teardown

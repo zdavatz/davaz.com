@@ -72,11 +72,12 @@ div.dojo-tooltip {
 
 div#tooltip-container {
 	/* width: 400px; 
-	max-width: 400px; */
+	max-width: 400px;
 	padding: 5px;
 	z-index: 10;
 	border: 2px #990099 solid;
 	background-color: #FFFFCC;
+	text-align: center; */
 	text-align: center;
 }
 
@@ -220,6 +221,11 @@ div#login-form {
 	width: 300px;
 	padding-top: 100px;
 	margin-left: auto; margin-right: auto;
+}
+
+div.admin-action {
+ 	position: absolute;
+ 	margin-left: -40px;
 }
 
 a.admin-action:link, a.admin-action:visited, a.admin-action:hover {
@@ -400,9 +406,16 @@ div#artobject-details {
 	text-align: right; 
 }
 
-div#artobject-comment {
+div#artobject-text {
 	padding-top: 10px;
 	text-align: left;
 	clear: both;
 	color: black;
+}
+
+span.breadcrumbs a:link, span.breadcrumbs a:visited,
+span.breadcrumbs a:hover {
+	color: white;
+	font-weight: bold;
+	text-decoration: none;
 }

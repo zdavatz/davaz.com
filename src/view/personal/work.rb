@@ -51,13 +51,17 @@ class WorkText < HtmlGrid::DivList
 	}
 end
 class WorkComposite < HtmlGrid::DivComposite
+	WORK_TEXT = component(WorkText, :text)
 	CSS_CLASS = 'content'
 	COMPONENTS = {
 		[0,0]	=>	WorkTitle,	
 		[1,0]	=>	component(View::Works::OneLiner, :oneliner),
-		[2,0]	=>	component(WorkText, :text),
 		[3,0]	=>	:morphopolis_ticker_link,
 	}
+	def init
+		components[[2,0]] = self.class::WORK_TEXT	
+		super
+	end
 	def morphopolis_ticker_link(model)
 		link = HtmlGrid::Link.new(:morphopolis_ticker_link, model, @session, self)
 		link.href = "javascript:void(0)"
@@ -72,6 +76,17 @@ end
 class Work < View::PersonalPublicTemplate
 	CONTENT = View::Personal::WorkComposite
 	TICKER = 'morphopolis'
+end
+class AdminWorkText < WorkText 
+	COMPONENTS = {
+		[0,0]	=>	View::AdminTextBlock,
+	}
+end
+class AdminWorkComposite < WorkComposite 
+	WORK_TEXT = component(AdminWorkText, :text)
+end
+class AdminWork < Work 
+	CONTENT = View::Personal::AdminWorkComposite
 end
 		end
 	end

@@ -7,7 +7,7 @@ require 'view/works/schnitzenthesen'
 module DAVAZ
 	module State
 		module Works
-class Schnitzenthesen < State::Works::Global
+class Schnitzenthesen < State::Works::RackState
 	VIEW = View::Works::Schnitzenthesen
 	ARTGROUP_ID = 'SCH'
 end

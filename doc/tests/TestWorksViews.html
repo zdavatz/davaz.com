@@ -25,7 +25,7 @@
 </tr>
 <tr>
 	<td>mouseOver</td>
-	<td>439</td>
+	<td>201</td>
 	<td></td>
 </tr>
 <tr>
@@ -43,6 +43,7 @@
 	<td>Heuhaufen, body plans</td>
 	<td></td>
 </tr>
+<!--
 <tr>
 	<td>clickAndWait</td>
 	<td>link=body plans,</td>
@@ -53,6 +54,7 @@
 	<td>/en/works/drawings/serie_id/ABE</td>
 	<td></td>
 </tr>
+-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Paintings</td>
@@ -68,6 +70,7 @@
 	<td>Varanasi</td>
 	<td></td>
 </tr>
+<!--
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Varanasi,</td>
@@ -78,6 +81,7 @@
 	<td>/en/works/paintings/serie_id/AAT</td>
 	<td></td>
 </tr>
+-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Multiples</td>
@@ -109,6 +113,41 @@
 	<td></td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>//a[@name='more' and @onclick="showMovieGallery('movies-gallery-view', 'movies-list', 'http://davaz.hal/en/gallery/ajax_movie_gallery/artobject_id/663')"]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Damascus, Syria</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>paging_next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>All of my family watched Humus</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Back To Overview</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>5000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTitle</td>
+	<td>Da Vaz - Abstract Artist from Switzerland | Works | Movies</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>link=Photos</td>
 	<td></td>
@@ -123,6 +162,7 @@
 	<td>Ancestors</td>
 	<td></td>
 </tr>
+<!--
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Ancestors,</td>
@@ -133,6 +173,7 @@
 	<td>/en/works/photos/serie_id/ABT</td>
 	<td></td>
 </tr>
+-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Design</td>
@@ -163,6 +204,7 @@
 	<td>collage</td>
 	<td></td>
 </tr>
+<!--
 <tr>
 	<td>clickAndWait</td>
 	<td>link=collage,</td>
@@ -173,6 +215,7 @@
 	<td>/en/works/schnitzenthesen/serie_id/AAR</td>
 	<td></td>
 </tr>
+-->
 </tbody></table>
 </body>
 </html>

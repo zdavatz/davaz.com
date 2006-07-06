@@ -2,7 +2,7 @@ dojo.provide("ywesee.widget.Desk");
 
 dojo.require("dojo.event");
 dojo.require("dojo.widget.*");
-dojo.require("dojo.fx.html");
+dojo.require("dojo.lfx.html");
 dojo.require("dojo.style");
 
 ywesee.widget.Desk = function(){
@@ -19,6 +19,7 @@ ywesee.widget.Desk = function(){
 	this.images = [];	
 	this.titles = [];
 	this.dataUrl = "";
+	this.serieId = "";
 	this.deskContainer = null;
 	this.deskContent = null;
 

@@ -3,17 +3,13 @@
 
 require 'sbsm/state'
 require 'htmlgrid/link'
+require 'state/art_object'
 require 'state/communication/global'
 require 'state/gallery/global'
-require 'state/gallery/artobject'
 require 'state/images'
 require 'state/personal/init' 
 require 'state/personal/global' 
-require 'state/tooltip/global'
-require 'state/tooltip/artobject'
-require 'state/tooltip/image'
-require 'state/tooltip/global'
-require 'state/tooltip/poem'
+require 'state/tooltip'
 require 'state/works/global'
 
 module DAVAZ
@@ -21,24 +17,18 @@ module DAVAZ
 		class Global < SBSM::State
 			attr_reader :model
 			GLOBAL_MAP = {
-				:ajax_movie_gallery		=>	State::Gallery::AjaxMovieGallery,
+				:art_object						=>	State::ArtObject,
+				:ajax_movie_gallery		=>	State::AjaxMovieGallery,
 				:ajax_desk						=>	State::Gallery::AjaxDesk,
 				:ajax_desk_artobject	=>	State::Gallery::AjaxDeskArtobject,
 				:ajax_rack						=>	State::Gallery::AjaxRack,
 				:home									=>	State::Personal::Init,
 				:images								=>	State::Images,
-				:tooltip_artobject		=>	State::ToolTip::ArtObject,
 			}	
 			HOME_STATE = State::Personal::Init
 			VIEW = View::Personal::Init
-			def tooltip_artobject
-				State::ToolTip::ArtObject.new(@session, @model)
-			end
-			def tooltip_image
-				State::ToolTip::Image.new(@session, @model)
-			end
-			def tooltip_poem
-				State::ToolTip::Poem.new(@session, @model)
+			def tooltip
+				State::Tooltip.new(@session, @model)
 			end
 			def error_check_and_store(key, value, mandatory=[])
 				if(value.is_a? RuntimeError)

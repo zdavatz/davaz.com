@@ -17,7 +17,7 @@ module DAVAZ
 class LifeList < HtmlGrid::UlList
 	CSS_ID = 'biography'
 	COMPONENTS = {
-		[0,0]	=>	View::TitleTextBlock,
+		[0,0]	=>	View::TextBlock,
 	}
 =begin
 	OFFSET_STEP = [0,2]
@@ -150,12 +150,12 @@ class LifeComposite < HtmlGrid::DivComposite
 end
 class Life < View::PersonalPublicTemplate
 	CONTENT = View::Personal::LifeComposite
-	TICKER = 'passage_through_india'
+	TICKER = 'A passage through India'
 end
 class AdminLifeList < HtmlGrid::UlList
 	CSS_ID = 'biography'
 	COMPONENTS = {
-		[0,0]	=>	View::AdminTitleTextBlock,
+		[0,0]	=>	View::AdminTextBlock,
 	}
 end
 class AdminLifeComposite < LifeComposite 

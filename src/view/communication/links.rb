@@ -42,7 +42,7 @@ end
 class LinksList < HtmlGrid::DivList
 	CSS_CLASS = 'links'
 	COMPONENTS = {
-		[0,0]	=>	View::LinkTextBlock,
+		[0,0]	=>	View::TextBlock,
 	}	
 end
 class LinksTitle < HtmlGrid::Div

@@ -2,7 +2,7 @@ dojo.provide("ywesee.widget.Rack");
 
 dojo.require("dojo.event");
 dojo.require("dojo.widget.*");
-dojo.require("dojo.fx.html");
+dojo.require("dojo.lfx.html");
 dojo.require("dojo.style");
 
 ywesee.widget.Rack = function(){
@@ -15,9 +15,11 @@ ywesee.widget.Rack = function(){
 	this.isContainer = false;
 	this.widgetType = "Rack";
 
+	this.artObjectIds = [];	
 	this.images = [];	
 	this.titles = [];
 	this.dataUrl = "";
+	this.serieId = "";
 
 	this.imageContainer = null;
 	this.thumbContainer = null;
@@ -51,9 +53,9 @@ ywesee.widget.Rack = function(){
 			_this.displayImage.src = img.src;
 			_this.displayImage.alt = img.alt;
 			_this.imageTitle.innerHTML = img.alt;
-			dojo.fx.fadeIn(_this.displayImage, 200, callback2);
+			dojo.lfx.fadeIn(_this.displayImage, 200, null, callback2).play();
 		}
-		dojo.fx.fadeOut(this.displayImage, 200, callback1);
+		dojo.lfx.fadeOut(this.displayImage, 200, null, callback1).play();
 	}
 
 	this.fillInThumbContainer = function(imageCount, cWidth, rHeight) {
@@ -64,6 +66,7 @@ ywesee.widget.Rack = function(){
 			div.style.overflow = 'hidden';
 			div.style.cssFloat = 'left';
 			var img = document.createElement("img")
+			img.name = this.artObjectIds[idx];
 			img.src = this.images[idx];
 			img.alt = this.titles[idx];
 			_this = this;

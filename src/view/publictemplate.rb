@@ -4,6 +4,8 @@
 require 'htmlgrid/divtemplate'
 require 'htmlgrid/dojotoolkit'
 require 'htmlgrid/form'
+require 'htmlgrid/link'
+require 'htmlgrid/spanlist'
 require 'view/navigation'
 require 'view/ticker'
 
@@ -39,19 +41,28 @@ module DAVAZ
 			include HtmlGrid::DojoToolkit::DojoTemplate
 			CSS_FILES = [ :navigation_css ]
 			JAVASCRIPTS = [ 
-				'davaz',
+				'davaz', #'historyAndBookmarking'
 			]
 			MOVIES_DIV_IMAGE_WIDTH = 185
 			MOVIES_DIV_IMAGE_SPEED = 4000
 			DOJO_DEBUG = true 
+			DOJO_BACK_BUTTON = false 
 			DOJO_PREFIX = {
 				'ywesee'	=>	'../javascript',
 			}
 			DOJO_REQUIRE = [
 				'dojo.widget.*',
 				'dojo.widget.Tooltip',
-				'dojo.fx.*',
-				'dojo.fx.html',
+				'dojo.lfx.*',
+				'dojo.lfx.html',
+				'dojo.io.IframeIO',
+				'dojo.lang.*',
+				'dojo.undo.browser',
+				'dojo.widget.Tree',
+				'dojo.widget.TreeRPCController',
+				'dojo.widget.TreeSelector',
+				'dojo.widget.TreeNode',
+				'dojo.widget.TreeContextMenu',
 				'ywesee.widget.*',
 				'ywesee.widget.Desk',
 				'ywesee.widget.OneLiner',
@@ -93,8 +104,8 @@ module DAVAZ
 				div = HtmlGrid::Div.new(model, @session, self)
 				value = []
 				if(ticker = self.class::TICKER)
-					slides = @session.app.load_slideshow(ticker)
-					value <<  __standard_component(slides, View::TickerContainer) 
+					artobjects = @session.app.load_tag_artobjects(ticker)
+					value <<  __standard_component(artobjects, View::TickerContainer) 
 				end
 				value <<  __standard_component(model, self::class::CONTENT)
 				div.value = value
@@ -112,14 +123,21 @@ module DAVAZ
 				context.title { 
 					[
 						@lookandfeel.lookup(:html_title),
-						@session.state.zone.to_s.capitalize,
-						title_event
+						title_zone,
+						title_event,
 					].compact.join(@lookandfeel.lookup(:title_divider))
 				}
 			end
 			def title_event
 				event = @session.state.direct_event || @session.event
 				@lookandfeel.lookup(event)
+			end
+			def title_zone
+				zone = @session.state.zone
+				if(zone.nil?)
+					zone = @session.user_input(:zone)
+				end
+				zone.to_s.capitalize
 			end
 			def logo(model)
 				img = HtmlGrid::Image.new(:logo_ph, model, @session, self)
@@ -183,6 +201,20 @@ module DAVAZ
 		end
 		class ImagesPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :images_css ]
+		end
+		class Breadcrumbs < HtmlGrid::SpanList
+			CSS_CLASS = 'breadcrumbs'
+			COMPONENTS = {
+				[0,0]	=> 'slash_divider',
+				[1,0]	=> :link,
+			}
+			def link(model)
+				link = HtmlGrid::Link.new(:step_link, model, @session, self)
+				link.href = model.href
+				link.value = model.value
+				link.css_class = 'breadcrumb-step'
+				link
+			end
 		end
 		class AdminPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :admin_css ]

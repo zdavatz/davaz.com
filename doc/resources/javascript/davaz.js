@@ -1,11 +1,31 @@
+function submitForm(form, dataDivId, formDivId, keepForm) {
+	var formDiv = dojo.byId(formDivId);
+	var dataDiv = dojo.byId(dataDivId);
+	document.body.style.cursor = 'progress';
+	dojo.io.bind({
+		url: form.action,
+		formNode: form,
+		transport: 'IframeTransport',
+		load: function(type, data, event) {
+			dataDiv.innerHTML = data.body.innerHTML;	
+			if(!keepForm) {
+				formDiv.innerHTML = "";
+			}	
+			document.body.style.cursor = 'auto';
+		},
+		mimetype: 'text/html'
+	});
+}
+
 function toggleTicker() {
 	var node = dojo.byId('ticker-container');
 	display = dojo.style.getStyle(node, "display");
 	if(display=="none" || display=='') {
-		node.style.overflow = 'hidden';
-		dojo.fx.html.wipeIn('ticker-container', 300);	
+		dojo.style.hide(node); //setStyle(node, 'display', 'none');
+		var anim = dojo.lfx.html.wipeIn('ticker-container', 300);	
+		anim.play();
 	} else {
-		dojo.fx.html.wipeOut('ticker-container', 300);	
+		dojo.lfx.html.wipeOut('ticker-container', 300).play();	
 	}
 }
 
@@ -13,10 +33,23 @@ function toggleHiddenDiv(divId) {
 	var node = dojo.byId(divId);
 	display = dojo.style.getStyle(node, "display");
 	if(display=="none") {
-		dojo.fx.html.wipeIn(node, 300);	
+		dojo.lfx.html.wipeIn(node, 300).play();	
 	} else {
-		dojo.fx.html.wipeOut(node, 300);	
+		dojo.lfx.html.wipeOut(node, 300).play();	
 	}
+}
+
+function toggleInnerHTML(divId, url) {
+	var node = dojo.byId(divId);
+	document.body.style.cursor = 'progress';
+	dojo.io.bind({
+		url: url,
+		load: function(type, data, event) {
+			node.innerHTML = data;
+			document.body.style.cursor = 'auto';
+		},
+		mimetype: 'text/html'
+	});
 }
 
 function reloadShoppingCart(url, count) {
@@ -49,17 +82,6 @@ function removeFromShoppingCart(url, fieldId) {
 	});
 }
 
-function toggleInnerHTML(divId, url) {
-	var node = dojo.byId(divId);
-	dojo.io.bind({
-		url: url,
-		load: function(type, data, event) {
-			node.innerHTML = data;	
-		},
-		mimetype: 'text/html'
-	});
-}
-
 function showMovieGallery(divId, replaceDivId, url) {
 	var node = dojo.byId(divId);
 	display = dojo.style.getStyle(node, "display");
@@ -82,9 +104,9 @@ function replaceDiv(id, replace_id) {
 	var node = dojo.byId(id);	
 	var replace = dojo.byId(replace_id);
 	var callback = function() {
-		dojo.fx.html.wipeIn(replace, 100);
+		dojo.lfx.html.wipeIn(replace, 100).play();
 	}
-	dojo.fx.html.wipeOut(node, 100, callback);	
+	dojo.lfx.html.wipeOut(node, 1000, dojo.lfx.easeInOut, callback).play();
 }
 
 function toggleDeskContent(id, url, wipe) {
@@ -95,7 +117,7 @@ function toggleDeskContent(id, url, wipe) {
 			load: function(type, data, event) {
 				desk.toggleInnerHTML(data);
 				if(wipe == true) {
-					dojo.fx.html.wipeIn('show-wipearea', 1000);
+					dojo.lfx.html.wipeIn('show-wipearea', 1000).play();
 				}
 			}, 
 			mimetype: "text/html"
@@ -103,13 +125,14 @@ function toggleDeskContent(id, url, wipe) {
 	}
 
 	if(wipe == true) {
-		dojo.fx.html.wipeOut('show-wipearea', 1000, reloadDesk);
+		dojo.lfx.html.wipeOut('show-wipearea', 1000, dojo.lfx.easeInOut, 
+																								reloadDesk).play();
 	} else {
 		reloadDesk();
 	}
 }
 
-function toggleShow(id, url, view, replace_id) {
+function toggleShow(id, url, view, replace_id, serie_id) {
 	var show = dojo.widget.byId(id);
 	var container = dojo.byId(id + "-container");
 	var wipearea = dojo.byId(id + "-wipearea");
@@ -123,9 +146,16 @@ function toggleShow(id, url, view, replace_id) {
 			view = 'Rack';	
 		}
 	}
+
 	if(url == null) {
 		url = show.dataUrl;	
 	}
+
+	if(serie_id == null) {
+		serie_id = show.serieId;	
+	}
+
+	var fragmentIdentifier = view + "_" + serie_id;
 	
 	var loadShow = function() {
 		dojo.io.bind({
@@ -139,14 +169,16 @@ function toggleShow(id, url, view, replace_id) {
 																								'last');
 				if(dojo.style.getStyle(wipearea, "display") == 'none') {
 					wipearea.style.overflow = 'hidden';
-					dojo.fx.html.wipeIn(wipearea, 1000);
+					dojo.lfx.html.wipeIn(wipearea, 1000, 
+																					dojo.lfx.easeInOut).play();
 				}
 			},
+			changeUrl: fragmentIdentifier,
 			mimetype: "text/json"
 		});
 	}
 	if(replace && dojo.style.getStyle(replace, "display") != 'none') {
-		dojo.fx.html.wipeOut(replace, 1000, loadShow);
+		dojo.lfx.html.wipeOut(replace, 1000, dojo.lfx.easeInOut, loadShow).play();
 	} else {
 		loadShow.call();	
 	}
@@ -162,7 +194,7 @@ function toggleArticle(link, articleId, url) {
 			url: url,
 			load: function(type, data, event) { 
 				node.innerHTML = data;
-				dojo.fx.html.wipeIn(node, 1000, function() {
+				dojo.lfx.html.wipeIn(node, 1000, dojo.lfx.easeInOut, function() {
 					/*
 					The following code does not work with ie.
 					It is a nice-to-have feature:
@@ -177,12 +209,12 @@ function toggleArticle(link, articleId, url) {
 					document.location.hash = articleId; */
 					document.body.style.cursor = 'auto';
 					link.style.cursor = 'auto';
-				});
+				}).play();
 			},
 			mimetype: "text/html"
 		});
 	} else {
-		dojo.fx.html.wipeOut(node, 100);	
+		dojo.lfx.html.wipeOut(node, 100).play();	
 	}
 }
 
@@ -190,7 +222,7 @@ function jumpTo(nodeId) {
 	document.location.hash = nodeId;
 }
 
-function removeImage(url) {
+function reloadLinkListComposite(url) {
 	var node = dojo.byId('links-list-container');
 	document.body.style.cursor = 'progress';
 	dojo.io.bind({
@@ -204,10 +236,23 @@ function removeImage(url) {
 }
 
 function addImage(url) {
-	var node = dojo.byId('links-list-container');
+	var node = dojo.byId('displayelement-form');
 	document.body.style.cursor = 'progress';
 	dojo.io.bind({
 		url: url,	
+		load: function(type, data, event) {
+			node.innerHTML = data;
+			document.body.style.cursor = 'auto';
+		},
+		mimetype: 'text/html'
+	});
+}
+
+function addLink(url) {
+	var node = dojo.byId('links-list-container');
+	var linkWord = dojo.byId('link-word').value;
+	dojo.io.bind({
+		url: url + linkWord,	
 		load: function(type, data, event) {
 			node.innerHTML = data;
 			document.body.style.cursor = 'auto';
@@ -240,7 +285,7 @@ function showImageChooser(url) {
 			var callback = function() {
 				document.body.style.cursor = 'auto';
 			};
-			dojo.fx.html.wipeIn(node, 300, callback);
+			dojo.lfx.html.wipeIn(node, 300, callback);
 		},
 		mimetype: 'text/html'
 	});

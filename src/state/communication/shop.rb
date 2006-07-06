@@ -24,7 +24,7 @@ class AjaxShop < SBSM::State
 				item.artobject_id == artobject_id	
 			}
 			if(items.empty?)
-				new_item = @session.load_shop_artobject(artobject_id)
+				new_item = @session.load_artobject(artobject_id)
 				new_item.count = count
 				@session[:cart_items].push(new_item)
 			else

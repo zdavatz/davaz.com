@@ -3,12 +3,11 @@
 
 require 'state/global_predefine'
 require 'view/works/drawings'
-require 'model/artobject'
 
 module DAVAZ
 	module State
 		module Works
-class Drawings < State::Works::Global
+class Drawings < State::Works::RackState
 	VIEW = View::Works::Drawings
 	ARTGROUP_ID = 'DRA'
 end

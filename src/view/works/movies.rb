@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # View::Works::Movies -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
 
-require 'view/gallery/artobject'
 require 'view/publictemplate'
 require 'view/composite'
 require 'view/list'
@@ -37,15 +36,15 @@ class MovieImage < HtmlGrid::Div
 	def init
 		super
 		img = HtmlGrid::Image.new(:movie_image, @model, @session, self) 
-		url = DAVAZ::Util::ImageHelper.image_path(@model.display_id, 'large')
+		url = DAVAZ::Util::ImageHelper.image_path(@model.artobject_id, 'large')
 		img.attributes['src']	= url
 		img.attributes['width'] = MEDIUM_IMAGE_WIDTH 
 		#img.attributes['height'] = '150px'
-		link = HtmlGrid::HttpLink.new(:google_video_url, @model, @session, self)
-		link.href = @model.google_video_url
+		link = HtmlGrid::HttpLink.new(:url, @model, @session, self)
+		link.href = @model.url
 		link.set_attribute('target', '_blank')
 		link.value = img
-		if(@model.google_video_url.empty?)
+		if(@model.url.empty?)
 			@value = img
 		else
 			@value = link
@@ -55,7 +54,7 @@ end
 class MovieComment < HtmlGrid::Div
 	def init
 		super
-		comment = @model.comment.gsub(/\n/, "[[>>]]")
+		comment = @model.text.gsub(/\n/, "[[>>]]")
 		comment_arr = comment.split(" ")
 		comment = comment_arr.slice(0,50).join(" ").gsub(/\[\[>>\]\]/, "\n")
 		if(comment.size > 0)
@@ -67,10 +66,10 @@ end
 class GoogleVideoLink < HtmlGrid::Div
 	def init
 		super
-		link = HtmlGrid::HttpLink.new(:google_video_url, @model, @session, self)
-		link.href = @model.google_video_url
+		link = HtmlGrid::HttpLink.new(:url, @model, @session, self)
+		link.href = @model.url
 		link.value = @lookandfeel.lookup(:watch_movie)
-		unless(@model.google_video_url.empty?)
+		unless(@model.url.empty?)
 			@value = link 
 		end
 	end

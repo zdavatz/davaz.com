@@ -7,7 +7,7 @@ require 'view/works/design'
 module DAVAZ
 	module State
 		module Works
-class Design < State::Works::Global
+class Design < State::Works::RackState
 	VIEW = View::Works::Design
 	ARTGROUP_ID = 'DES'
 end

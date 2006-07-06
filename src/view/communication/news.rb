@@ -3,6 +3,7 @@
 
 require 'view/list'
 require 'view/publictemplate'
+require 'view/textblock'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/value'
 require 'util/image_helper'
@@ -10,37 +11,11 @@ require 'util/image_helper'
 module DAVAZ
 	module View
 		module Communication
-class NewsList < View::List
-	DEFAULT_CLASS = HtmlGrid::Value
-	OMIT_HEADER = true
-	OFFSET_STEP = [0,2]
-	STRIPED_BG = false
-	CSS_ID = 'news-list'
+class NewsList < HtmlGrid::DivList
+	CSS_CLASS = 'news'
 	COMPONENTS = {
-		[0,0]	=>	:title,
-		[1,0]	=>	:date,
-		[0,1]	=>	:text,
-		[1,1]	=>	:image,
+		[0,0]	=>	View::TextBlock,
 	}
-	CSS_MAP = {
-		[0,0]	=>	'news-title',
-		[1,0]	=>	'news-date',
-		[0,1]	=>	'news-text',
-		[1,1]	=>	'news-image',
-	}
-	def image(model)
-		unless(model.to_display_id.nil?)
-			img = HtmlGrid::Image.new('news-image', model, @session, self) 
-			url = DAVAZ::Util::ImageHelper.image_path(model.to_display_id, 'medium')
-			img.set_attribute('src', url)
-			img.set_attribute('width', MEDIUM_IMAGE_WIDTH)
-			img
-		end
-	end
-	def date(model)
-		#model.date.strftime("%d.%m.%Y")
-		model.date
-	end
 end
 class NewsTitle < HtmlGrid::Div
 	CSS_CLASS = 'table-title'

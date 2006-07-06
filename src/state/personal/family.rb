@@ -12,8 +12,11 @@ class Family < State::Personal::Global
 	def init
 		@model = OpenStruct.new
 		@model.family_text = @session.app.load_hisfamily_text
-		add_slideshow_items(@model, 'family')
+		add_slideshow_items(@model, 'hisfamily_show')
 	end
+end
+class AdminFamily < State::Personal::Family
+	#VIEW = View::Personal::AdminFamily
 end
 		end
 	end

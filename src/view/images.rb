@@ -17,11 +17,11 @@ module DAVAZ
 				1	=>	'comment',
 			}
 			def image(model)
-				display_id = model.display_id
-				img = HtmlGrid::Image.new(display_id, model, @session, self)
-				url = DAVAZ::Util::ImageHelper.image_path(display_id)
+				artobject_id = model.artobject_id
+				img = HtmlGrid::Image.new(artobject_id, model, @session, self)
+				url = DAVAZ::Util::ImageHelper.image_path(artobject_id)
 				img.attributes['src'] = url
-				img.css_class = 'image-tooltip-image'
+				img.css_class = 'tooltip-image'
 				img
 			end
 		end

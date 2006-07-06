@@ -11,7 +11,6 @@ module DAVAZ
 class Global < State::Global; end
 class Home < State::Admin::Global; end
 class ImageChooser < State::Admin::Global; end
-class DisplayElement < State::Admin::Global; end
 		end
 		module Communication
 class Global < State::Global; end
@@ -39,13 +38,14 @@ class Work < State::Personal::Global; end
 		end
 		module Works
 class Global < State::Global; end
-class Design < State::Works::Global; end
-class Drawings < State::Works::Global; end
+class RackState < State::Works::Global; end
+class Design < State::Works::RackState; end
+class Drawings < State::Works::RackState; end
 class Movies < State::Works::Global; end
-class Multiples < State::Works::Global; end
-class Paintings < State::Works::Global; end
-class Photos < State::Works::Global; end
-class Schnitzenthesen < State::Works::Global; end
+class Multiples < State::Works::RackState; end
+class Paintings < State::Works::RackState; end
+class Photos < State::Works::RackState; end
+class Schnitzenthesen < State::Works::RackState; end
 		end
 		module Public
 class Global < State::Global; end

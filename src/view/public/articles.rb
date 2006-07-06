@@ -24,16 +24,17 @@ class ArticlesList < HtmlGrid::DivList
 	def title(model)
 		link = HtmlGrid::Link.new('toggle-article', model, @session, self)
 		link.href = 'javascript:void(0)'
-		args = [ :display_id, model.display_id ]
+		args = [ :artobject_id, model.artobject_id ]
 		url = @lookandfeel.event_url(:article, :ajax_article, args)
-		link.set_attribute('onclick', "toggleArticle(this, '#{model.display_id}', '#{url}')")
+		link.set_attribute('onclick', "toggleArticle(this, '#{model.artobject_id}', '#{url}')")
 		link.value = model.title 
 		link
 	end
 	def article(model)
 		div = HtmlGrid::Div.new(model, @session, self)
-		div.css_id = model.display_id
+		div.css_id = model.artobject_id
 		div.set_attribute('style', 'display: none;')
+		div.value = model.text
 		div
 	end
 end
@@ -58,18 +59,19 @@ class Articles < View::ArticlesPublicTemplate
 end
 class AdminArticlesList < ArticlesList 
 	def title(model)
-		span = HtmlGrid::Span.new(model, @session, self)
-		span.css_class = 'article-title' 
-		span.css_id = [ span.css_class, model.display_id ].join("-")
-		span.value = model.title
-		span
-	end
-	def author(model)
-		span = HtmlGrid::Span.new(model, @session, self)
-		span.css_class = 'article-author' 
-		span.css_id = [ span.css_class, model.display_id ].join("-")
-		span.value = model.author
-		span
+		title = super
+		link = HtmlGrid::Link.new(:edit_link, model, @session, self)
+		link.css_class = 'admin-action'
+		link.value = @session.lookandfeel.lookup(:edit)
+		args = [
+			[ :artobject_id, model.artobject_id ],
+			[ :state_id, @session.state.object_id],
+		]
+		url = @lookandfeel.event_url(:admin, :edit, args)
+		style = 'color: red; font-weight: normal;'
+		link.set_attribute('style', style)
+		link.href = url
+		[ title, link ]
 	end
 end
 class AdminArticlesComposite < HtmlGrid::DivComposite

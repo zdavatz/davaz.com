@@ -12,7 +12,7 @@ class AjaxArticle < SBSM::State
 	VOLATILE = true
 	VIEW = View::Public::ArticleComposite
 	def init
-		article_id = @session.user_input(:display_id)
+		article_id = @session.user_input(:artobject_id)
 		@model = @session.load_article(article_id)
 	end
 end
@@ -20,6 +20,9 @@ class Articles < State::Public::Global
 	VIEW = View::Public::Articles
 	def init
 		@model = @session.load_articles 
+		@model.each { |article|
+			article.text = ""
+		}
 	end
 end
 class AdminArticles < Articles

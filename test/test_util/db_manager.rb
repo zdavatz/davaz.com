@@ -4,6 +4,7 @@
 $: << File.expand_path('..', File.dirname(__FILE__))
 $: << File.expand_path("../../src", File.dirname(__FILE__))
 
+require 'util/davazconfig'
 require 'test/unit'
 require 'util/db_manager'
 require 'mysql'
@@ -80,12 +81,5 @@ class DbManager < Test::Unit::TestCase
 		@manager.connection.result = :artgroups_result
 		result = @manager.load_artgroups
 		assert_equal(['DRA', 'MOV'], result.collect{ |x| x.artgroup_id }.sort)
-	end
-	def test_load_slideshow
-		@manager.connection.result = :slideshow_result
-		result = @manager.load_slideshow('life')
-		assert_equal(1, result.size)
-		assert_equal('25', result.first.artobject_id)
-		assert_equal(DAVAZ::Model::SlideShowItem, result.first.class)
 	end
 end

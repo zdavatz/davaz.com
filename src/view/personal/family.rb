@@ -65,6 +65,15 @@ end
 class Family < View::PersonalPublicTemplate
 	CONTENT = View::Personal::FamilyComposite
 end
+class AdminFamilyComposite < FamilyComposite 
+	COMPONENTS = {
+		[0,0]	=>	FamilyTitle,
+		[1,0]	=>	FamilyInfoComposite,
+	}
+end
+class AdminFamily < Family
+	CONTENT = View::Personal::AdminFamilyComposite
+end
 		end
 	end
 end

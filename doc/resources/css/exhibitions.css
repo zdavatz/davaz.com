@@ -53,9 +53,14 @@ div.exhibitions a:visited {
 	text-decoration: none;
 }
 
-h1.block-title {
-	display: inline;
+div.block-title {
+	float: left;
 	font-size: 10pt;
-	font-weight: normal;
 	padding-right: 5px;
+	padding-top: 5px;
+}
+
+div.block-text {
+	padding-top: 5px;
+	font-size: 10pt;
 }

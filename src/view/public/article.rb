@@ -20,12 +20,12 @@ class ArticleComposite < HtmlGrid::DivComposite
 		"charset"	=>	"UTF-8",
 	}			
 	def anchor(model)
-		HtmlGrid::Link.new(model.display_id, model, @session, self)
+		HtmlGrid::Link.new(model.artobject_id, model, @session, self)
 	end
 	def close_article(model)
 		link = HtmlGrid::Link.new('toggle-article', model, @session, self)
 		link.href = 'javascript:void(0)'
-		div_id = model.display_id
+		div_id = model.artobject_id
 		url = @lookandfeel.event_url(:article, :ajax_article, div_id)
 		link.set_attribute('onclick', "toggleArticle(this, '#{div_id}', '#{url}')")
 		link.value = @lookandfeel.lookup(:close_article) 

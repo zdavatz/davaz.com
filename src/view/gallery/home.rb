@@ -4,7 +4,9 @@
 require 'view/publictemplate'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/spanlist'
+require 'view/add_onload_show'
 require 'view/serie_widget'
+require 'view/serie_links'
 require 'view/works/oneliner'
 
 module DAVAZ
@@ -67,23 +69,6 @@ class SearchBar < HtmlGrid::Form
 		button
 	end
 end
-class SerieLinks < HtmlGrid::SpanList
-	COMPONENTS = {
-		[0,0]	=>	:serie_link,
-	}
-	def serie_link(model)
-		link = HtmlGrid::Link.new('toggle-slideshow-rack', model, @session, self)
-		link.href = 'javascript:void(0)'
-		args = [ :serie_id, model.serie_id ]
-		url = @lookandfeel.event_url(:gallery, :ajax_rack, args)
-		link.value = model.name + @lookandfeel.lookup('comma_divider')
-		#script = "toggleSearchSlideShowRack(this, '#{url}')"
-		script = "toggleShow('show', '#{url}', null, 'upper-search-composite');"
-		link.set_attribute('onclick', script)
-		link.css_class = 'serie-link'
-		link
-	end
-end
 class UpperHomeComposite < HtmlGrid::DivComposite
 	CSS_ID = 'upper-search-composite'
 	COMPONENTS = {
@@ -104,7 +89,8 @@ class HomeComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	UpperHomeComposite,
 		[0,1]	=>	:slideshow_rack,
-		[0,2]	=>	component(SerieLinks, :series),
+		[0,2]	=>	component(GallerySerieLinks, :series),
+		[0,3] =>	View::AddOnloadShow,
 	}
 	CSS_STYLE_MAP = {
 		1	=>	'display:none;',

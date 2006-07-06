@@ -2,7 +2,6 @@
 # State::Gallery::Global -- davaz.com -- 06.06.2006 -- mhuggler@ywesee.com
 
 require 'state/global'
-require 'state/gallery/artobject'
 require 'state/gallery/result'
 require 'state/gallery/home'
 
@@ -13,7 +12,6 @@ class Global < State::Global
 	HOME_STATE = State::Gallery::Home
 	ZONE = :gallery
 	EVENT_MAP = {
-		:artobject		=>	State::Gallery::ArtObject,
 		:home					=>	State::Gallery::Home,
 	}
 end

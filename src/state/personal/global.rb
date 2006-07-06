@@ -30,11 +30,11 @@ class Global < State::Global
 			'images'	=>	[],
 			'titles'	=>	[],
 		}
-		slideshow_items = @session.app.load_slideshow(name)
-		slideshow_items.each { |item|
-			image = DAVAZ::Util::ImageHelper.image_path(item.display_id, 'slideshow')
-			ostruct.slideshow_items['images'].push(image)
-			ostruct.slideshow_items['titles'].push(item.title)
+		artobjects = @session.app.load_tag_artobjects(name)
+		artobjects.each { |artobject|
+			image = DAVAZ::Util::ImageHelper.image_path(artobject.artobject_id, 'slideshow')
+			@model.slideshow_items['images'].push(image)
+			@model.slideshow_items['titles'].push(artobject.title)
 		}
 		ostruct
 	end

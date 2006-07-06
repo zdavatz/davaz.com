@@ -45,13 +45,17 @@ class ResultList < View::List
 		unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
 			args.unshift([ :artgroup_id, artgroup_id])
 		end
-		if((video_url = model.google_video_url).empty?)
-			link.href = @lookandfeel.event_url(:gallery, :artobject, args)
+		if((video_url = model.url).empty?)
+			link.href = @lookandfeel.event_url(:gallery, :art_object, args)
 		else
 			link.href = video_url 
 			link.set_attribute('target', '_blank')
 		end
-		link.value = model.title
+		if(model.title.empty?)
+			link.value = model.artobject_id
+		else
+			link.value = model.title
+		end
 		link
 	end
 	def year(model)
@@ -187,8 +191,8 @@ class ResultComposite < HtmlGrid::DivComposite
 	}
 	def result_list(model)
 		tables = []
-		@model.artgroups.each { |artgroup|
-			artgroup_items = @model.result.select { |item|
+		model.artgroups.each { |artgroup|
+			artgroup_items = model.result.select { |item|
 				item.artgroup_id == artgroup.artgroup_id
 			}
 			unless(artgroup_items.empty?)

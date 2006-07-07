@@ -62,9 +62,13 @@ ywesee.widget.SlideShow = function(){
 		dojo.style.setOpacity(this.container2, 0.9999);
 		//if(this.images.length>1){
 			this.title2.innerHTML = this.titles[this.imageIdx];
-			this.img2.style.height = this.imageHeight;
-			this.img2.style.maxWidth = this.imageHeight;
 			this.img2.src = this.images[this.imageIdx];
+			if(this.img2.width > 600) {
+				this.img2.style.height = 'auto';
+				this.img2.style.width = '600px';
+			} else {
+				this.img2.style.height = this.imageHeight;
+			}
 			this.imageIdx++;
 			this.endTransition();
 		//}else{
@@ -138,8 +142,12 @@ ywesee.widget.SlideShow = function(){
 		dojo.style.setOpacity(this[this.background], 0);
 		this[this.background_title].innerHTML = this.titles[this.imageIdx];
 		this[this.background_image].src = this.images[this.imageIdx++];
-		this[this.background_image].style.height = this.imageHeight;
-		this[this.background_image].style.maxWidth = this.imageHeight;
+		if(this[this.background_image].width > 600) {
+			this[this.background_image].style.width = '600px';
+			this[this.background_image].style.height = 'auto';
+		} else {
+			this[this.background_image].style.height = this.imageHeight;
+		}
 		if(this.imageIdx>(this.images.length-1)){
 			this.imageIdx = 0;
 		}

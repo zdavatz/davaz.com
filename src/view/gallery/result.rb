@@ -209,7 +209,6 @@ end
 class Result < View::GalleryPublicTemplate
 	CONTENT = View::Gallery::ResultComposite
 end
-class AdminResult < Result; end
 		end
 	end
 end

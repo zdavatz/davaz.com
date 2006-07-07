@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # State::Admin::Admin -- davaz.com -- 08.06.2006 -- mhuggler@ywesee.com
 
+require 'state/art_object'
 require 'state/public/articles'
 require 'state/gallery/result'
 require 'state/personal/life'
@@ -15,6 +16,7 @@ module DAVAZ
 module Admin
 	VIRAL = true
 	EVENT_MAP = {
+		:art_object							=>	State::AdminArtObject,
 		:articles								=>	State::Public::AdminArticles,
 		#:ajax_add_element				=>	State::Admin::AjaxAddElement,
 		#:ajax_add_link					=>	State::Admin::AjaxAddLink,
@@ -28,7 +30,6 @@ module Admin
 		:login_form							=>	State::Admin::LoginForm,
 		:life										=>	State::Personal::AdminLife,	
 		:personal_life					=>	State::Personal::AdminLife,
-		:result									=>	State::Gallery::AdminResult,
 		:work										=>	State::Personal::AdminWork,
 	}
 	def edit 

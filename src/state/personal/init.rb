@@ -12,7 +12,7 @@ class Init < State::Personal::Global
 	VIEW = View::Personal::Init
 	def init
 		@model = OpenStruct.new
-		@model.movies = @session.app.load_movies
+		@model.movies = @session.app.load_movies_ticker
 		@model.oneliner = @session.app.load_oneliner('index')
 	end
 end

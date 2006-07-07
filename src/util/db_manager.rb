@@ -130,6 +130,21 @@ module DAVAZ
 				}
 				artobjects
 			end
+			def load_artobject_ids(artgroup_id)
+				query = <<-EOS
+					SELECT artobject_id
+					FROM artobjects
+					WHERE artgroup_id = '#{artgroup_id}'
+				EOS
+				result = connection.query(query) 
+				ids = []
+				result.each_hash { |row| 
+					model = Model::ArtObject.new
+					model.artobject_id = row['artobject_id']
+					ids.push(model)
+				}
+				ids
+			end
 			def load_artobject(artobject_id, select_by='artobject_id')
 				where = "WHERE artobjects.#{select_by}='#{artobject_id}'"
 				load_artobjects(where).first

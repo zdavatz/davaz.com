@@ -207,5 +207,11 @@ module DAVAZ
 		class ArtObject < View::GalleryPublicTemplate
 			CONTENT = View::ArtObjectComposite
 		end
+		class AdminArtObject < ArtObject
+			def init
+				super
+				puts "admin view"
+			end
+		end
 	end
 end

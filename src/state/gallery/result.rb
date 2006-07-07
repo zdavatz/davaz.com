@@ -10,9 +10,6 @@ module DAVAZ
 class Result < State::Gallery::Global
 	VIEW = View::Gallery::Result	
 end
-class AdminResult < State::Gallery::Global
-	VIEW = View::Gallery::AdminResult	
-end
 		end
 	end
 end

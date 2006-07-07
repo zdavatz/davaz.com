@@ -145,6 +145,9 @@ module DAVAZ
 			def load_movies
 				@db_manager.load_artobjects_by_artgroup('MOV', true)
 			end
+			def load_movies_ticker
+				@db_manager.load_artobject_ids('MOV')
+			end
 			def load_multiples
 				@db_manager.load_artobjects_by_artgroup('MUL')
 			end

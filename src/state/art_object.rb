@@ -33,5 +33,8 @@ module DAVAZ
 				@model.artobject = object
 			end
 		end
+		class AdminArtObject < ArtObject
+			VIEW = View::AdminArtObject
+		end
 	end
 end

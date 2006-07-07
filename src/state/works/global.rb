@@ -31,6 +31,7 @@ class Global < State::Global
 	HOME_STATE = State::Personal::Init
 	ZONE = :works
 	EVENT_MAP = {
+		:ajax_multiples				=>	State::Works::AjaxMultiples,
 		:design								=>	State::Works::Design,
 		:drawings							=>	State::Works::Drawings,
 		:multiples						=>	State::Works::Multiples,

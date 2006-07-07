@@ -19,11 +19,10 @@ class MultiplesTitle < HtmlGrid::Div
 		@value = span
 	end
 end
-class JavaAppletDiv < HtmlGrid::Div
-	CSS_ID = "java-applet"
+class JavaApplet < HtmlGrid::Component 
 	def init
 		super
-		image = DAVAZ::Util::ImageHelper.image_path(@model.artobject_id)
+		image = Util::ImageHelper.image_path(@model)
 		@value = <<-EOS
 			<applet name="ptviewer" valign=bottom border=0 hspace=0 vspace=0 archive="/resources/java/ptviewer.jar" code=ptviewer.class width="380" height="200" mayscript=true>
         <param name=file 		value="ptviewer:0">
@@ -52,15 +51,21 @@ class JavaAppletDiv < HtmlGrid::Div
 		EOS
 	end
 end
+class JavaAppletDiv < HtmlGrid::Div
+	CSS_ID = "java-applet"
+end
 class ThumbImages < HtmlGrid::SpanList 
 	COMPONENTS = {
 		[0,0]	=>	:image,
 	}
 	def image(model)
 		link = HtmlGrid::Link.new(:serie_link, model, @session, self)
-		args = { 'artobject_id'	=>	model.artobject_id }
-		link.href = @lookandfeel.event_url(:works, @session.event, args)
+		args =[ [ :artobject_id, '' ] ]
+		url = @lookandfeel.event_url(:works, :ajax_multiples, args)
+		link.href = "javascript:void(0);" 
 		artobject_id = model.artobject_id
+		script = "location.hash='#{artobject_id}'; toggleJavaApplet('#{url}');"
+		link.set_attribute('onclick', script)
 		img = HtmlGrid::Image.new(artobject_id, model, @session, self)
 		url = DAVAZ::Util::ImageHelper.image_path(artobject_id, 'medium')
 		img.attributes['width']	= SMALL_IMAGE_WIDTH 
@@ -77,7 +82,7 @@ class MultiplesComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'content'
 	COMPONENTS = {
 		[0,0]	=>	MultiplesTitle,
-		[0,1]	=>	component(JavaAppletDiv, :artobject),
+		[0,1]	=>	JavaAppletDiv,
 		[0,2]	=>	component(ThumbImages, :multiples),
 	}
 	CSS_ID_MAP = {
@@ -86,6 +91,18 @@ class MultiplesComposite < HtmlGrid::DivComposite
 end
 class Multiples < View::MultiplesPublicTemplate
 	CONTENT = View::Works::MultiplesComposite 
+	def init
+		super
+		args =[ [ :artobject_id, '' ] ]
+		url = @lookandfeel.event_url(:works, :ajax_multiples, args)
+		script = <<-EOS
+			if(!location.hash) {
+				location.hash = #{@model.artobject_id};
+			} 
+			toggleJavaApplet('#{url}');
+		EOS
+		self.onload = script
+	end
 end
 		end
 	end

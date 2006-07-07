@@ -20,6 +20,7 @@ module DAVAZ
 				:ajax_image_browser,
 				:ajax_reload_tag_images,
 				:ajax_movie_gallery,
+				:ajax_multiples,
 				:ajax_rack,
 				:ajax_remove_element,
 				:ajax_shop,

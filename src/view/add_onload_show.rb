@@ -6,6 +6,13 @@ require 'htmlgrid/javascript'
 module DAVAZ
 	module View
 		class AddOnloadShow < HtmlGrid::JavaScript
+			def add_location_hash
+				if(@model.serie_id)
+					"location.hash = 'Rack_#{@model.serie_id}';"
+				else
+					""
+				end
+			end
 			def init
 				args = [ :serie_id, nil ]
 				url = @lookandfeel.event_url(:gallery, :ajax_rack, args)
@@ -18,7 +25,7 @@ module DAVAZ
 							var serie_id = bookmarkId.split('_')[1];
 							toggleShow('show', '#{url}' + serie_id, show_type, 'upper-search-composite', serie_id);
 						}	else {
-							location.hash = 'Rack_#{@model}';
+							#{add_location_hash}
 						}
 					})
 				EOS

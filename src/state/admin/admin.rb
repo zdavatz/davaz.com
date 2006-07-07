@@ -42,10 +42,6 @@ module Admin
 			#State::Admin::DisplayElementForm.new(@session, self)
 		end
 	end
-	def search
-		model = search_result
-		State::Gallery::AdminResult.new(@session, model)
-	end
 	def switch_zone(zone)
 		infect(super)
 	end

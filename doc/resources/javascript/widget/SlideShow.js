@@ -63,6 +63,7 @@ ywesee.widget.SlideShow = function(){
 		//if(this.images.length>1){
 			this.title2.innerHTML = this.titles[this.imageIdx];
 			this.img2.style.height = this.imageHeight;
+			this.img2.style.maxWidth = this.imageHeight;
 			this.img2.src = this.images[this.imageIdx];
 			this.imageIdx++;
 			this.endTransition();
@@ -138,6 +139,7 @@ ywesee.widget.SlideShow = function(){
 		this[this.background_title].innerHTML = this.titles[this.imageIdx];
 		this[this.background_image].src = this.images[this.imageIdx++];
 		this[this.background_image].style.height = this.imageHeight;
+		this[this.background_image].style.maxWidth = this.imageHeight;
 		if(this.imageIdx>(this.images.length-1)){
 			this.imageIdx = 0;
 		}

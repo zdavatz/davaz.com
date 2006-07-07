@@ -2,6 +2,7 @@
 # View::ArtObject -- davaz.com -- 07.06.2006 -- mhuggler@ywesee.com
 
 require 'view/publictemplate'
+require 'htmlgrid/divform'
 
 module DAVAZ
 	module View
@@ -22,7 +23,7 @@ module DAVAZ
 			COMPONENTS = {
 				[0,0]	=>	:title,
 				[0,1]	=>	:artgroup,
-				[0,2]	=>	:tool,
+				[0,2]	=>	:artcode,
 				[0,3]	=>	:image,
 				[0,4]	=>	ArtobjectDetails,
 				[0,5]	=>	:url,
@@ -207,11 +208,23 @@ module DAVAZ
 		class ArtObject < View::GalleryPublicTemplate
 			CONTENT = View::ArtObjectComposite
 		end
+		class AdminArtObjectInnerComposite < HtmlGrid::DivForm 
+			COMPONENTS = {
+				[0,0]	=>	:artcode,
+			}
+		end
+		class AdminArtObjectComposite < HtmlGrid::DivComposite 
+			COMPONENTS = {
+				[0,0]	=>	ArtObjectOuterComposite,
+				[0,1]	=>	component(AdminArtObjectInnerComposite, :artobject),
+			}
+			CSS_ID_MAP = {
+				0	=>	'artobject-outer-composite',
+				1	=>	'artobject-inner-composite',
+			}
+		end
 		class AdminArtObject < ArtObject
-			def init
-				super
-				puts "admin view"
-			end
+			CONTENT = View::AdminArtObjectComposite
 		end
 	end
 end

@@ -26,6 +26,20 @@ module DAVAZ
 					true
 				end
 			end
+			def artcode
+				components = [
+					artgroup_id,
+					tool_id.rjust(2, "0"),
+					material_id.rjust(2, "0"),
+					'-',
+					country_id.ljust(3, "_"),
+					Date.parse(date).year,
+					'-',
+					serie_id,
+					serie_position.rjust(4, "0"),
+				]	
+				components.join("")
+			end
 		end
 	end
 end

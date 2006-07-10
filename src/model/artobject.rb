@@ -27,13 +27,18 @@ module DAVAZ
 				end
 			end
 			def artcode
+				begin
+					Date.parse(model.date).year
+				rescue ArgumentError
+					'0000'
+				end
 				components = [
 					artgroup_id,
 					tool_id.rjust(2, "0"),
 					material_id.rjust(2, "0"),
 					'-',
 					country_id.ljust(3, "_"),
-					Date.parse(date).year,
+					date,
 					'-',
 					serie_id,
 					serie_position.rjust(4, "0"),

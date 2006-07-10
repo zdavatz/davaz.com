@@ -36,5 +36,26 @@ module DAVAZ
 				@value = script
 			end
 		end
+		class AddOnloadMovies < HtmlGrid::JavaScript
+			def init
+				replace_id = "movies-list"
+				div_id = "movies-gallery-view"
+				args = [
+					:artobject_id, ""
+				]
+				url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, args)
+				script = <<-EOS
+					dojo.addOnLoad(function() {
+						var artobjectId = location.hash;
+						if(artobjectId){
+							artobjectId = artobjectId.substring(1, artobjectId.length);
+							var url = '#{url}' + artobjectId
+							showMovieGallery('#{div_id}', '#{replace_id}', url)
+						}
+					})
+				EOS
+				@value = script
+			end
+		end
 	end
 end

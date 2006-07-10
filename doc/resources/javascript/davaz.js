@@ -19,13 +19,17 @@ function submitForm(form, dataDivId, formDivId, keepForm) {
 
 function toggleTicker() {
 	var node = dojo.byId('ticker-container');
+	var ticker = dojo.widget.byId('ticker');
 	display = dojo.style.getStyle(node, "display");
 	if(display=="none" || display=='') {
 		dojo.style.hide(node); //setStyle(node, 'display', 'none');
 		var anim = dojo.lfx.html.wipeIn('ticker-container', 300);	
 		anim.play();
+		ticker.pause = false;
+		ticker.playTicker();
 	} else {
 		dojo.lfx.html.wipeOut('ticker-container', 300).play();	
+		ticker.pause = true;
 	}
 }
 
@@ -133,7 +137,18 @@ function toggleDeskContent(id, url, wipe) {
 }
 
 function toggleShow(id, url, view, replace_id, serie_id) {
+	//serieLink.style.color = 'black';
 	var show = dojo.widget.byId(id);
+	var lastUrl = show.dataUrl;
+	var lastId = lastUrl.split("/").pop();
+	if(serie_id) {
+		var serieLink = dojo.byId(serie_id);
+		serieLink.style.color = 'black';
+		if(lastId != serie_id) {
+			var lastSerieLink = dojo.byId(lastId);	
+			lastSerieLink.style.color = 'blue';
+		} 
+	}
 	var container = dojo.byId(id + "-container");
 	var wipearea = dojo.byId(id + "-wipearea");
 	var display;
@@ -148,7 +163,7 @@ function toggleShow(id, url, view, replace_id, serie_id) {
 	}
 
 	if(url == null) {
-		url = show.dataUrl;	
+		url = lastUrl;	
 	}
 
 	if(serie_id == null) {

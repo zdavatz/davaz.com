@@ -135,6 +135,7 @@ module DAVAZ
 					SELECT artobject_id
 					FROM artobjects
 					WHERE artgroup_id = '#{artgroup_id}'
+					ORDER BY title DESC
 				EOS
 				result = connection.query(query) 
 				ids = []

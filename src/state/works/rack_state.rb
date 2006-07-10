@@ -18,8 +18,8 @@ class RackState < State::Works::Global
 		end
 		@model.serie_id = serie_id
 		args = [ 
-			[ :serie_id, serie_id], 
 			[ :artgroup_id, artgroup_id], 
+			[ :serie_id, serie_id], 
 		]
 		url = @session.lookandfeel.event_url(:gallery, :ajax_rack, 
 																				 args) 

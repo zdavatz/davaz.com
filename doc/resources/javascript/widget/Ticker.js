@@ -21,6 +21,7 @@ ywesee.widget.Ticker = function() {
 	this.componentHeight = 180;
 	this.tickerSpeed = 4000;
 	this.imagePosition = 0;
+	this.pause = false;
 
 	this.tickerWindow = null;
 
@@ -45,6 +46,9 @@ ywesee.widget.Ticker = function() {
 			this.updateImageDiv(div);
 			this.tickerWindow.appendChild(div);
 		}
+	}
+
+	this.playTicker = function() {
 		this.endTransition();
 	}
 
@@ -68,7 +72,11 @@ ywesee.widget.Ticker = function() {
 			div = _this.tickerWindow.removeChild(firstDiv);
 			_this.updateImageDiv(div);
 			_this.tickerWindow.appendChild(div);
-			_this.endTransition();
+			if(_this.pause) {
+				return;
+			} else {
+				_this.endTransition();
+			}
 		};
 		var wipeOutDiv = dojo.dom.firstElement(this.tickerWindow, 'div');
 		this.wipe(wipeOutDiv, 5000, this.componentWidth, 0, callback).play();

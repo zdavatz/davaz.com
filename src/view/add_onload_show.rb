@@ -8,7 +8,11 @@ module DAVAZ
 		class AddOnloadShow < HtmlGrid::JavaScript
 			def add_location_hash
 				if(@model.serie_id)
-					"location.hash = 'Rack_#{@model.serie_id}';"
+					script = <<-EOS
+						location.hash = 'Rack_#{@model.serie_id}';
+						var serieLink = dojo.byId('#{@model.serie_id}');
+						serieLink.style.color = 'black';
+					EOS
 				else
 					""
 				end

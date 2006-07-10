@@ -18,6 +18,7 @@ module DAVAZ
 				link.href = 'javascript:void(0)'
 				link.value = model.name + @lookandfeel.lookup('comma_divider')
 				link.css_class = 'serie-link'
+				link.css_id = model.serie_id
 				args = [ :serie_id, model.serie_id ]
 				url = @lookandfeel.event_url(:gallery, :ajax_rack, args)
 				script = "toggleShow('show', '#{url}', null, '#{self.class::REPLACE_ID}', '#{model.serie_id}');"

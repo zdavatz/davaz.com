@@ -28,7 +28,7 @@ module DAVAZ
 			end
 			def artcode
 				begin
-					Date.parse(model.date).year
+					Date.parse(date).year
 				rescue ArgumentError
 					'0000'
 				end

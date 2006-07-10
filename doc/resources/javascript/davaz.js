@@ -43,7 +43,12 @@ function toggleHiddenDiv(divId) {
 	}
 }
 
-function toggleInnerHTML(divId, url) {
+function toggleInnerHTML(divId, url, changeUrl) {
+	if(changeUrl) {
+		var fragmentidentifier = changeUrl;
+	} else {
+		var fragmentidentifier = "";
+	}
 	var node = dojo.byId(divId);
 	document.body.style.cursor = 'progress';
 	dojo.io.bind({
@@ -52,6 +57,7 @@ function toggleInnerHTML(divId, url) {
 			node.innerHTML = data;
 			document.body.style.cursor = 'auto';
 		},
+		changeUrl: fragmentidentifier,
 		mimetype: 'text/html'
 	});
 }
@@ -88,6 +94,7 @@ function removeFromShoppingCart(url, fieldId) {
 
 function showMovieGallery(divId, replaceDivId, url) {
 	var node = dojo.byId(divId);
+	var artobjectId = url.split("/").pop();
 	display = dojo.style.getStyle(node, "display");
 	if(display=="none") {
 		dojo.io.bind({
@@ -96,6 +103,7 @@ function showMovieGallery(divId, replaceDivId, url) {
 				node.innerHTML = data;	
 				replaceDiv(replaceDivId, divId);
 			},
+			changeUrl: artobjectId,
 			mimetype: 'text/html'
 		});
 	} else {

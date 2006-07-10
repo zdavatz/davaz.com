@@ -125,7 +125,7 @@ module DAVAZ
 				]
 				url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, args)
 				link.href = "javascript:void(0)"
-				script = "toggleInnerHTML('movies-gallery-view', '#{url}')"
+				script = "toggleInnerHTML('movies-gallery-view', '#{url}', '#{artobject_id}')"
 				link.set_attribute('onclick', script)
 				link
 			end

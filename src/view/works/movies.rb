@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # View::Works::Movies -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
 
+require 'view/add_onload'
 require 'view/publictemplate'
 require 'view/composite'
 require 'view/list'
@@ -143,6 +144,7 @@ class MoviesComposite < HtmlGrid::DivComposite
 		[0,0]	=>	MoviesTitle,
 		[0,1]	=>	MoviesList,
 		[0,2]	=>	:movies_gallery_view,
+		[0,3] =>	AddOnloadMovies,
 	}
 	CSS_ID_MAP = {
 		1	=>	'movies-list',

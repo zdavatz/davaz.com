@@ -4,7 +4,7 @@
 require 'view/publictemplate'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/spanlist'
-require 'view/add_onload_show'
+require 'view/add_onload'
 require 'view/serie_widget'
 require 'view/serie_links'
 require 'view/works/oneliner'

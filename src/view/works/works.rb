@@ -4,7 +4,7 @@
 require 'htmlgrid/divcomposite'
 require 'view/serie_links'
 require 'view/slideshowrack'
-require 'view/add_onload_show'
+require 'view/add_onload'
 
 module DAVAZ
 	module View

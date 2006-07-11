@@ -19,12 +19,11 @@ module DAVAZ
 				#@state.extend(State::Admin::Admin)
 			end
 			def active_state
-				active = super
-				if(zone == @zone)
-					active
-				else
-					active.switch_zone(zone)
-				end
+        if(state_id = @valid_input[:state_id])
+          @attended_states[state_id]
+				elsif(zone != @zone)
+					@active_state.switch_zone(zone)
+        end || @active_state
 			end
 			def cap_max_states
 				# ignore

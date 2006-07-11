@@ -380,6 +380,21 @@ module DAVAZ
 				}
 				items
 			end
+			def load_tags
+				query = <<-EOS
+					SELECT *
+					FROM tags
+				EOS
+				result = connection.query(query)
+				tags = []
+				result.each_hash { |row|
+					tag = Model::Tag.new 
+					tag.tag_id = row['tag_id']
+					tag.name = row['name']
+					tags.push(tag)
+				}
+				tags
+			end
 			def load_tag_artobjects(tag)
 				query = <<-EOS
 					SELECT artobjects.*, 

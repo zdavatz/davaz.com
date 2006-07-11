@@ -11,6 +11,7 @@ module DAVAZ
 				:add_entry,
 				:ajax_add_element,
 				:ajax_add_link,
+				:ajax_all_tags,
 				:ajax_article,
 				:ajax_delete_image,
 				:ajax_delete_link,

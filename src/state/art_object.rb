@@ -6,13 +6,22 @@ require 'view/art_object'
 
 module DAVAZ
 	module State
+		class AjaxAllTags < SBSM::State
+			VIEW = View::ShowAllTags
+			VOLATILE = true
+			def init
+				@model = @session.app.load_tags
+			end
+		end
 		class AjaxUploadImage < SBSM::State
 			VIEW = View::ImageDiv
 			VOLATILE = true
 			def init 
 				string_io = @session.user_input(:image_file)
-				artobject_id = @session.user_input(:artobject_id)
-				Util::ImageHelper.store_upload_image(string_io, artobject_id)
+				unless(string_io.nil?)
+					artobject_id = @session.user_input(:artobject_id)
+					Util::ImageHelper.store_upload_image(string_io, artobject_id)
+				end
 				model = OpenStruct.new
 				model.artobject = @session.app.load_artobject(artobject_id)
 			end

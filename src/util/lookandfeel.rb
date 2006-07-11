@@ -161,6 +161,7 @@ module DAVAZ
 					:shop_mail_bye						=>	"Thank you very much for your interest in my site and your order.\n\nWith best regards\n\nJ. Davatz",
 					:shop_thanks							=>	'Your order has been succesfully sent.<br>Thank you very much.',
 					:shopping_cart						=>	'Shopping Cart',
+					:show_tags								=>	'Show All Tags',
 					:signature								=>	'Signature',
 					:size											=>	'Size',
 					:slash_divider						=>	'&nbsp;/&nbsp;',

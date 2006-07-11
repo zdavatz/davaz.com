@@ -3,8 +3,8 @@
 
 require 'view/publictemplate'
 require 'view/form'
+require 'view/select'
 require 'htmlgrid/divform'
-require 'htmlgrid/select'
 require 'htmlgrid/inputfile'
 
 module DAVAZ
@@ -211,6 +211,22 @@ module DAVAZ
 		class ArtObject < View::GalleryPublicTemplate
 			CONTENT = View::ArtObjectComposite
 		end
+		class ShowAllTagsLink < HtmlGrid::Div
+			def init
+				super
+				link = HtmlGrid::Link.new(:show_tags, @model, @session, self)
+				link.href = "javascript:void(0)"
+				url = @lookandfeel.event_url(:gallery, :ajax_all_tags)
+				script = "toggleInnerHTML('all-tags', '#{url}')" 
+				link.set_attribute('onclick', script)
+				@value = link
+			end
+		end
+		class ShowAllTags < HtmlGrid::SpanList
+			COMPONENTS = {
+				[0,0]	=>	:name,
+			}
+		end
 		class AdminArtobjectDetails < View::Form
 			CSS_ID = 'artobject-details'
 			DEFAULT_CLASS = HtmlGrid::InputText
@@ -219,24 +235,25 @@ module DAVAZ
 			LABELS = true
 			COMPONENTS = {
 				[0,0]	=>	:title,
-				[0,1]	=>	component(HtmlGrid::DynSelect, :select_artgroup, 'artgroup'),
+				[0,1]	=>	component(View::DynSelect, :select_artgroup, 'artgroup'),
 				[2,1]	=>	component(HtmlGrid::Div, :artobject),
-				[0,2]	=>	component(HtmlGrid::DynSelect, :select_serie, 'serie'),
+				[0,2]	=>	component(View::DynSelect, :select_serie, 'serie'),
 				[0,3]	=>	:tags,
-				[0,4]	=>	component(HtmlGrid::DynSelect, :select_tool, 'tool'),
-				[0,5]	=>	component(HtmlGrid::DynSelect, :select_material, 'material'),
-				[0,6]	=>	:size,
-				[0,7]	=>	:day,
-				[2,7]	=>	:month,
-				[4,7]	=>	:year,
-				[0,8]	=>	:location,
-				[0,9]	=>	component(HtmlGrid::DynSelect, :select_country, 'country'),
-				[0,10]	=>	:language,
-				[0,11]	=>	:url,
-				[0,12]	=>	:text_label,
-				[1,12]	=>	:text,
-				[1,13]	=>	:submit,
-				[1,13,1]	=>	:reset,
+				[1,4]	=>	ShowAllTagsLink,
+				[0,5]	=>	component(View::DynSelect, :select_tool, 'tool'),
+				[0,6]	=>	component(View::DynSelect, :select_material, 'material'),
+				[0,7]	=>	:size,
+				[0,8]	=>	:day,
+				[2,8]	=>	:month,
+				[4,8]	=>	:year,
+				[0,9]	=>	:location,
+				[0,10]	=>	component(View::DynSelect, :select_country, 'country'),
+				[0,11]	=>	:language,
+				[0,12]	=>	:url,
+				[0,13]	=>	:text_label,
+				[1,14]	=>	:text,
+				[1,15]	=>	:submit,
+				[1,15,1]	=>	:reset,
 			}	
 			COLSPAN_MAP = {
 				[1,0]	=>	5,			
@@ -246,12 +263,16 @@ module DAVAZ
 				[1,4]	=>	5,			
 				[1,5]	=>	5,			
 				[1,6]	=>	5,			
-				[1,8]	=>	5,			
+				[1,7]	=>	5,			
 				[1,9]	=>	5,			
 				[1,10]	=>	5,			
 				[1,11]	=>	5,			
 				[1,12]	=>	5,			
 				[1,13]	=>	5,			
+				[1,14]	=>	5,			
+			}
+			CSS_ID_MAP = {
+				[1,4]	=>	'all-tags',
 			}
 			def hidden_fields(context)
 				''<<

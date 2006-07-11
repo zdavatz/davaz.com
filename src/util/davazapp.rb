@@ -59,9 +59,6 @@ module DAVAZ
 			def load_artobject(artobject_id, select_by='artobject_id')
 				@db_manager.load_artobject(artobject_id, select_by)
 			end
-			def load_tag_artobjects(location)
-				@db_manager.load_tag_artobjects(location)
-			end
 			def load_country(id)
 				@db_manager.load_country(id)
 			end
@@ -138,6 +135,9 @@ module DAVAZ
 			end
 			def load_shop_item(id)
 				@db_manager.load_shop_item(id)
+			end
+			def load_tags
+				@db_manager.load_tags
 			end
 			def load_tag_artobjects(tag)
 				@db_manager.load_tag_artobjects(tag)

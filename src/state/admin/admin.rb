@@ -20,6 +20,7 @@ module Admin
 		:articles								=>	State::Public::AdminArticles,
 		#:ajax_add_element				=>	State::Admin::AjaxAddElement,
 		#:ajax_add_link					=>	State::Admin::AjaxAddLink,
+		:ajax_all_tags					=>	State::AjaxAllTags,
 		#:ajax_delete_image			=>	State::Admin::AjaxDeleteImage,
 		#:ajax_delete_link				=>	State::Admin::AjaxDeleteLink,
 		:ajax_image_browser			=>	State::Admin::AjaxImageBrowser,

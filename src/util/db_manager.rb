@@ -319,7 +319,7 @@ module DAVAZ
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
 					WHERE #{select_by}='#{serie_id}'
-					ORDER BY artobjects.serie_position
+					ORDER BY artobjects.serie_position, artobjects.title DESC
 				EOS
 				result = connection.query(query)
 				artobjects = []
@@ -501,6 +501,25 @@ module DAVAZ
 						REGEXP "#{search_pattern}"
 				EOS
 				load_series(where)
+			end
+			def update_artobject(artobject_id, update_hash)
+				update_array = []
+				update_hash.delete(:tags)
+				if(date = update_hash.delete(:date))
+					update_array.push("date='#{date.year}-#{date.month}-#{date.day}'")
+				end
+				update_hash.each { |key, value|
+					unless(value.nil?)
+						update_array.push("#{key}='#{Mysql.quote(value)}'")
+					end
+				}
+				query = <<-EOS
+					UPDATE artobjects
+					SET #{update_array.join(', ')}
+					WHERE artobject_id='#{artobject_id}'
+				EOS
+				result = connection.query(query)
+				connection.affected_rows
 			end
 			def update_currency(origin, target, rate)
 				query = <<-EOS

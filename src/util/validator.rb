@@ -7,6 +7,9 @@ require 'cgi'
 module DAVAZ
 	module Util
 		class Validator < SBSM::Validator
+			DATES = [
+				:date,
+			]
 			EVENTS = [ 
 				:add_entry,
 				:ajax_add_element,
@@ -86,15 +89,12 @@ module DAVAZ
 			]
 			STRINGS = [
 				:address,
-				:artgroup,
 				:artgroup_id,
 				:author,
 				:breadcrumbs,
 				:city,
 				:charset,
-				:country,
-				:date,
-				:day,
+				:country_id,
 				#:email,
 				:image_title,
 				:messagetxt,
@@ -102,11 +102,11 @@ module DAVAZ
 				:language,
 				:link_word,
 				:location,
-				:material,
-				:month,
+				:material_id,
 				:name,
+				:object_type,
 				:search_query,
-				:serie,
+				:serie_id,
 				:size,
 				:street,
 				:surname,
@@ -115,9 +115,8 @@ module DAVAZ
 				:target,
 				:text,
 				:title,
-				:tool,
+				:tool_id,
 				:url,
-				:year,
 			]
 			NUMERIC = [
 				:artobject_id,

@@ -45,12 +45,7 @@ class ResultList < View::List
 		unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
 			args.unshift([ :artgroup_id, artgroup_id])
 		end
-		if((video_url = model.url).empty?)
-			link.href = @lookandfeel.event_url(:gallery, :art_object, args)
-		else
-			link.href = video_url 
-			link.set_attribute('target', '_blank')
-		end
+		link.href = @lookandfeel.event_url(:gallery, :art_object, args)
 		if(model.title.empty?)
 			link.value = model.artobject_id
 		else

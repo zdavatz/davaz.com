@@ -47,10 +47,6 @@ module Admin
 	def switch_zone(zone)
 		infect(super)
 	end
-	def update
-		puts "updating"
-		State::AdminArtObject.new(@session, "")
-	end
 end
 		end
 	end

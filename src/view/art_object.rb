@@ -5,7 +5,9 @@ require 'view/publictemplate'
 require 'view/form'
 require 'view/select'
 require 'htmlgrid/divform'
+require 'htmlgrid/divlist'
 require 'htmlgrid/inputfile'
+require 'htmlgrid/errormessage'
 
 module DAVAZ
 	module View
@@ -223,7 +225,7 @@ module DAVAZ
 				@value = link
 			end
 		end
-		class ShowAllTagsList < HtmlGrid::SpanList
+		class ShowAllTagsList < HtmlGrid::DivList
 			COMPONENTS = {
 				[0,0]	=>	:tag,
 				[1,0]	=>	'pipe_divider',
@@ -232,7 +234,19 @@ module DAVAZ
 				link = HtmlGrid::Link.new(model.name, model, @session, self)
 				link.value = model.name
 				link.href = "javascript:void(0)"
-				script = "alert('#{model.name}')"
+				script = <<-EOS
+					var values = document.artobjectform.tags_to_s.value.split(',')
+					var has_value = false
+					for (idx = 0; idx < values.length; idx++) {
+						if(values[idx] == '#{model.name}') {
+							has_value = true;
+						}
+					}	
+					if(!has_value) {
+						values[values.length] = '#{model.name}';
+					}
+					document.artobjectform.tags_to_s.value = values.join(",");
+				EOS
 				link.set_attribute('onclick', script)
 				link
 			end
@@ -241,6 +255,10 @@ module DAVAZ
 			COMPONENTS = {
 				[0,0]	=> ShowAllTagsList,
 				[0,1]	=> :close,
+			}
+			CSS_ID_MAP = {
+				0	=>	'all-tags',
+				1	=>	'close-all-tags',
 			}
 			def close(model)
 				link = HtmlGrid::Link.new(:close, model, @session, self)
@@ -252,6 +270,7 @@ module DAVAZ
 			end
 		end
 		class AdminArtobjectDetails < View::Form
+			include HtmlGrid::ErrorMessage
 			CSS_ID = 'artobject-details'
 			DEFAULT_CLASS = HtmlGrid::InputText
 			EVENT = :update
@@ -259,45 +278,38 @@ module DAVAZ
 			FORM_NAME = 'artobjectform'
 			LABELS = true
 			COMPONENTS = {
-				[0,0]	=>	:title,
-				[0,1]	=>	component(View::DynSelect, :select_artgroup, 'artgroup'),
-				[2,1]	=>	component(HtmlGrid::Div, :artobject),
-				[0,2]	=>	component(View::DynSelect, :select_serie, 'serie'),
-				[0,3]	=>	:tags,
-				[1,4]	=>	ShowAllTagsLink,
-				[0,5]	=>	component(View::DynSelect, :select_tool, 'tool'),
-				[0,6]	=>	component(View::DynSelect, :select_material, 'material'),
-				[0,7]	=>	:size,
-				[0,8]	=>	:day,
-				[2,8]	=>	:month,
-				[4,8]	=>	:year,
-				[0,9]	=>	:location,
-				[0,10]	=>	component(View::DynSelect, :select_country, 'country'),
-				[0,11]	=>	:language,
-				[0,12]	=>	:url,
-				[0,13]	=>	:text_label,
-				[1,14]	=>	:text,
-				[1,15]	=>	:submit,
-				[1,15,1]	=>	:reset,
+				[0,0]		=>	:title,
+				[0,1]		=>	component(View::DynSelect, :select_artgroup, 'artgroup_id'),
+				[1,2]		=>	:artgroup_edit,
+				[0,3]		=>	component(View::DynSelect, :select_serie, 'serie_id'),
+				[0,4]		=>	:tags,
+				[1,5]		=>	ShowAllTagsLink,
+				[0,6]		=>	component(View::DynSelect, :select_tool, 'tool_id'),
+				[0,7]		=>	component(View::DynSelect, :select_material, 'material_id'),
+				[0,8]		=>	:size,
+				[0,9]		=>	:date,
+				[0,10]	=>	:location,
+				[0,11]	=>	component(View::DynSelect, :select_country, 'country_id'),
+				[0,12]	=>	:language,
+				[0,13]	=>	:url,
+				[0,14]	=>	:text_label,
+				[1,15]	=>	:text,
+				[1,16]	=>	:submit,
+				[1,16,1]	=>	:reset,
 			}	
-			COLSPAN_MAP = {
-				[1,0]	=>	5,			
-				[2,1]	=>	3,			
-				[1,2]	=>	5,			
-				[1,3]	=>	5,			
-				[1,4]	=>	5,			
-				[1,5]	=>	5,			
-				[1,6]	=>	5,			
-				[1,7]	=>	5,			
-				[1,9]	=>	5,			
-				[1,10]	=>	5,			
-				[1,11]	=>	5,			
-				[1,12]	=>	5,			
-				[1,13]	=>	5,			
-				[1,14]	=>	5,			
-			}
+			def init
+				super
+				error_message
+			end
 			def hidden_fields(context)
-				''<<
+				string = super
+				unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
+					string.concat(context.hidden('artgroup_id', artgroup_id))
+				end
+				unless((query = @session.user_input(:search_query)).nil?)
+					string.concat(context.hidden('search_query', query))
+				end
+				string<< 
 				context.hidden('artobject_id', @model.artobject.artobject_id)
 			end
 			def input_text(symbol)
@@ -306,38 +318,19 @@ module DAVAZ
 				input.set_attribute('size', '50')
 				input
 			end
-			def day(model)
-				begin
-					day = Date.parse(model.artobject.date).day
-					input = HtmlGrid::InputText.new(:day, model, @session, self)
-					input.value = day 
-					input.set_attribute('size', '2')
-					input
-				rescue ArgumentError
-					''
-				end
-			end
-			def month(model)
-				begin
-					month = Date.parse(model.artobject.date).month
-					input = HtmlGrid::InputText.new(:month, model, @session, self)
-					input.value = month 
-					input.set_attribute('size', '2')
-					input
-				rescue ArgumentError
-					''
-				end
-			end
-			def year(model)
+			def date(model)
+				input = HtmlGrid::InputText.new(:date, model, @session, self)
 				begin
 					year = Date.parse(model.artobject.date).year
-					input = HtmlGrid::InputText.new(:year, model, @session, self)
-					input.value = year 
-					input.set_attribute('size', '4')
-					input
+					month = Date.parse(model.artobject.date).month
+					day = Date.parse(model.artobject.date).day
+					input.value = "#{day}.#{month}.#{year}"
 				rescue ArgumentError
-					''
+					input.value = '01.01.1970'
 				end
+				input.set_attribute('size', '10')
+				input.set_attribute('maxlength', '10')
+				input
 			end
 			def language(model)
 				input_text(:language)

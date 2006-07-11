@@ -173,6 +173,9 @@ module DAVAZ
 					@db_manager.search_artobjects(query)
 				end
 			end
+			def update_artobject(artobject_id, update_hash)
+				@db_manager.update_artobject(artobject_id, update_hash)
+			end
 		end
 	end
 end

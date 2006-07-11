@@ -30,6 +30,10 @@ a.no-decoration:link,a.no-decoration:hover,a.no-decoration:visited {
 	color: blue;
 }
 
+.black {
+	color: black;
+}
+
 #container {
 	clear: both;
 	padding-left: 200px;
@@ -407,6 +411,18 @@ div#artobject-details {
 	color: black;
 }
 
+div#all-tags {
+	width: 500px;
+}
+
+div#all-tags div {
+	float: left;
+}
+
+div#close-all-tags {
+	clear: both;
+}
+
 div#artobject-text {
 	padding-top: 10px;
 	text-align: left;
@@ -419,4 +435,10 @@ span.breadcrumbs a:hover {
 	color: white;
 	font-weight: bold;
 	text-decoration: none;
+}
+
+.processingerror, .error {
+	font-weight: bold;
+	font-size: 10pt;
+	color: red;
 }

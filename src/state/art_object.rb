@@ -85,6 +85,33 @@ module DAVAZ
 				sid = @model.artobject.country_id
 				@model.select_country = build_selection(sid, "countries")
 			end
+			def update
+				artobject_id = @session.user_input(:artobject_id)
+				mandatory = [
+					:title,
+					:artgroup_id,
+					:serie_id,
+					:tool_id,
+					:material_id,
+					:date,
+					:country_id,
+				]
+				keys = [
+					:tags,
+					:size,
+					:location,
+					:language,
+					:url,
+					:text,
+				].concat(mandatory)
+				update_hash = user_input(keys, mandatory)
+				unless(error?)
+					@session.app.update_artobject(artobject_id, update_hash)
+					search
+				else
+					self
+				end
+			end
 		end
 	end
 end

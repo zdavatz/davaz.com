@@ -46,10 +46,9 @@ ywesee.widget.Ticker = function() {
 			this.updateImageDiv(div);
 			this.tickerWindow.appendChild(div);
 		}
-	}
-
-	this.playTicker = function() {
-		this.endTransition();
+		if(!this.pause) {
+			this.endTransition();
+		}
 	}
 
 /*

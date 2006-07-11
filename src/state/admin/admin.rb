@@ -25,7 +25,7 @@ module Admin
 		:ajax_image_browser			=>	State::Admin::AjaxImageBrowser,
 		:ajax_reload_tag_images	=>	State::Admin::AjaxReloadTagImages,
 		#:ajax_remove_element		=>	State::Admin::AjaxRemoveElement,
-		#:ajax_upload_image			=>	State::Admin::AjaxUploadImage,
+		:ajax_upload_image			=>	State::AjaxUploadImage,
 		#:ajax_upload_image_form	=>	State::Admin::AjaxUploadImageForm,
 		:login_form							=>	State::Admin::LoginForm,
 		:life										=>	State::Personal::AdminLife,	
@@ -44,6 +44,10 @@ module Admin
 	end
 	def switch_zone(zone)
 		infect(super)
+	end
+	def update
+		puts "updating"
+		State::AdminArtObject.new(@session, "")
 	end
 end
 		end

@@ -65,6 +65,9 @@ module DAVAZ
 			def load_country(id)
 				@db_manager.load_country(id)
 			end
+			def load_countries
+				@db_manager.load_countries
+			end
 			def load_currency_rates(model)
 				@db_manager.load_currency_rates(model)
 			end
@@ -104,6 +107,9 @@ module DAVAZ
 			def load_material(id)
 				@db_manager.load_material(id)
 			end
+			def load_materials
+				@db_manager.load_materials
+			end
 			def load_news
 				@db_manager.load_serie_artobjects('site_news', 'series.name')
 			end
@@ -138,6 +144,9 @@ module DAVAZ
 			end
 			def load_tool(id)
 				@db_manager.load_tool(id)
+			end
+			def load_tools
+				@db_manager.load_tools
 			end
 			def load_movie(id)
 				@db_manager.load_movie(id)

@@ -26,7 +26,7 @@ function toggleTicker() {
 		var anim = dojo.lfx.html.wipeIn('ticker-container', 300);	
 		anim.play();
 		ticker.pause = false;
-		ticker.playTicker();
+		ticker.endTransition();
 	} else {
 		dojo.lfx.html.wipeOut('ticker-container', 300).play();	
 		ticker.pause = true;
@@ -147,9 +147,11 @@ function toggleDeskContent(id, url, wipe) {
 function toggleShow(id, url, view, replace_id, serie_id) {
 	//serieLink.style.color = 'black';
 	var show = dojo.widget.byId(id);
-	var lastUrl = show.dataUrl;
-	var lastId = lastUrl.split("/").pop();
-	if(serie_id) {
+	if(show) {
+		var lastUrl = show.dataUrl;
+		var lastId = lastUrl.split("/").pop();
+	}
+	if(serie_id && show) {
 		var serieLink = dojo.byId(serie_id);
 		serieLink.style.color = 'black';
 		if(lastId != serie_id) {
@@ -170,7 +172,7 @@ function toggleShow(id, url, view, replace_id, serie_id) {
 		}
 	}
 
-	if(url == null) {
+	if(url == null && show) {
 		url = lastUrl;	
 	}
 

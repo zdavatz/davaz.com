@@ -170,3 +170,41 @@ div#image-browser {
 div.display-element-form-title {
 	clear: both;
 }
+
+div#artobject-details {
+	clear: both;
+	padding-left: 10px;
+	text-align: left; 
+}
+
+div#artobject-details label {
+	border: black solid 1pt;
+	width: 80px;
+}
+
+div#artobject-inner-composite {
+	width: 900px;
+}
+
+div#artobject-admin-image {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+div#artobject-admin-details {
+	width: 100%;
+}
+
+div#artobject-image-upload-form {
+	color: black;
+	margin-left: auto; margin-right: auto;
+	text-align: center;
+	width: 520px;
+	padding-bottom: 20px;
+}
+
+table#artobject-details td {
+	text-align: left;	
+	color: black;
+	padding-bottom: 5px;
+}

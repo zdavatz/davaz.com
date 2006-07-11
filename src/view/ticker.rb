@@ -22,6 +22,7 @@ module DAVAZ
 					'componentWidth'	=>	@component_width,
 					'componentHeight'	=>	@component_height,
 					'widgetId'				=>	'ticker',	
+					'pause'						=>	true,
 				}
 				model.each { |item| 
 					unless(item.artobject_id.nil?)

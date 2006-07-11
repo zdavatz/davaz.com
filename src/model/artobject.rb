@@ -17,9 +17,10 @@ module DAVAZ
 			attr_accessor :text, :author, :charset, :position
 			attr_accessor :price, :dollar_price, :euro_price, :count
 			attr_accessor :linked_to
-			attr_reader	:count, :links
+			attr_reader	:links, :tags #, :count 
 			def initialize
 				@links = []
+				@tags = []
 			end
 			def is_url?
 				if(!url.empty? && title.empty? && text.empty?)
@@ -44,6 +45,10 @@ module DAVAZ
 					serie_position.rjust(4, "0"),
 				]	
 				components.join("")
+			end
+			def tags_to_s
+				array = tags.collect { |tag| tag.name }
+				array.join(',')
 			end
 		end
 	end

@@ -6,10 +6,14 @@ require 'date'
 require 'mysql'
 require 'yaml'
 require 'model/artgroup'
+require 'model/country'
 require 'model/guest'
 require 'model/link'
+require 'model/material'
 require 'model/oneliner'
 require 'model/serie'
+require 'model/tag'
+require 'model/tool'
 
 module DAVAZ
 	module Util
@@ -96,6 +100,26 @@ module DAVAZ
 				}
 				series
 			end
+			def load_artobject_tags(artobject_id)
+				query = <<-EOS
+					SELECT tags.*
+					FROM artobjects
+					LEFT OUTER JOIN tags_artobjects USING (artobject_id) 
+					LEFT OUTER JOIN tags
+						ON tags.tag_id = tags_artobjects.tag_id
+					WHERE artobjects.artobject_id = '#{artobject_id}'
+					ORDER BY tags.name
+				EOS
+				result = connection.query(query)
+				tags = []
+				result.each_hash { |row|
+					tag = Model::Tag.new	
+					tag.tag_id = row['tag_id']
+					tag.name = row['name']
+					tags.push(tag)
+				}
+				tags
+			end
 			def load_artobjects(where, reverse=false)
 				query = <<-EOS
 					SELECT artobjects.*, 
@@ -126,6 +150,7 @@ module DAVAZ
 						model.send(column_name.to_s + '=', column_value)
 					}
 					model.links.concat(load_artobject_links(model.artobject_id))
+					model.tags.concat(load_artobject_tags(model.artobject_id))
 					artobjects.push(model)
 				}
 				artobjects
@@ -171,6 +196,22 @@ module DAVAZ
 			end
 			def load_country(id)
 			end
+			def load_countries
+				query = <<-EOS
+					SELECT *
+					FROM countries
+					ORDER BY name
+				EOS
+				result = connection.query(query)
+				countries = []
+				result.each_hash { |row|
+					model = Model::Country.new
+					model.country_id = row['country_id']
+					model.name = row['name']
+					countries.push(model)
+				}
+				countries
+			end
 			def load_currency_rates
 				query = <<-EOS
 					SELECT * 
@@ -207,6 +248,22 @@ module DAVAZ
 				}
 				tags.uniq!
 			end
+			def load_materials
+				query = <<-EOS
+					SELECT *
+					FROM materials
+					ORDER BY name
+				EOS
+				result = connection.query(query)
+				materials = []
+				result.each_hash { |row|
+					model = Model::Material.new
+					model.material_id = row['material_id']
+					model.name = row['name']
+					materials.push(model)
+				}
+				materials
+			end
 			def load_oneliner(location)
 				sql = <<-SQL
 					SELECT * FROM oneliner WHERE location='#{location}'; 
@@ -219,6 +276,7 @@ module DAVAZ
 					SELECT series.*
 					FROM series
 					#{where}
+					ORDER BY name
 				EOS
 				result = connection.query(query)
 				series = []
@@ -230,7 +288,9 @@ module DAVAZ
 						artobjects = load_serie_artobjects(serie.serie_id)
 						serie.artobjects.concat(artobjects)
 					end
-					series.push(serie) unless serie.name.match(/^site_/)
+					unless(serie.name.match(/^site_/) || serie.serie_id == 'AAA')
+						series.push(serie)
+					end
 				}
 				series
 			end
@@ -289,8 +349,10 @@ module DAVAZ
 						model.send(column_name.to_s + '=', column_value)
 					}
 					unless(key_array.include?(key))
-						array.push(model)
-						key_array.push(key)
+						unless(model.name.match(/^site_/) || model.serie_id == 'AAA')
+							array.push(model)
+							key_array.push(key)
+						end
 					end
 				}
 				array
@@ -352,6 +414,22 @@ module DAVAZ
 				}
 				artobjects.concat(load_serie_artobjects(tag, 'series.name'))
 				artobjects
+			end
+			def load_tools
+				query = <<-EOS
+					SELECT *
+					FROM tools
+					ORDER BY name
+				EOS
+				result = connection.query(query)
+				tools = []
+				result.each_hash { |row|
+					model = Model::Tool.new
+					model.tool_id = row['tool_id']
+					model.name = row['name']
+					tools.push(model)
+				}
+				tools
 			end
 			def insert_guest(user_values)
 				values = [

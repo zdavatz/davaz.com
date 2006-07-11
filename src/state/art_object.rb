@@ -6,6 +6,17 @@ require 'view/art_object'
 
 module DAVAZ
 	module State
+		class AjaxUploadImage < SBSM::State
+			VIEW = View::ImageDiv
+			VOLATILE = true
+			def init 
+				string_io = @session.user_input(:image_file)
+				artobject_id = @session.user_input(:artobject_id)
+				Util::ImageHelper.store_upload_image(string_io, artobject_id)
+				model = OpenStruct.new
+				model.artobject = @session.app.load_artobject(artobject_id)
+			end
+		end
 		class AjaxMovieGallery < SBSM::State
 			VIEW = View::MoviesArtObjectComposite
 			VOLATILE = true
@@ -35,6 +46,29 @@ module DAVAZ
 		end
 		class AdminArtObject < ArtObject
 			VIEW = View::AdminArtObject
+			def build_selection(selected_id, selection)
+				select = OpenStruct.new
+				select.selection = @session.app.send("load_#{selection}".intern)
+				select.selection.each { |sel| 
+					if(selected_id == sel.sid)
+						select.selected = sel
+					end
+				}
+				select.dup
+			end
+			def init
+				super
+				sid = @model.artobject.artgroup_id
+				@model.select_artgroup = build_selection(sid, "artgroups")
+				sid = @model.artobject.serie_id
+				@model.select_serie = build_selection(sid, "series")
+				sid = @model.artobject.tool_id
+				@model.select_tool = build_selection(sid, "tools")
+				sid = @model.artobject.material_id
+				@model.select_material = build_selection(sid, "materials")
+				sid = @model.artobject.country_id
+				@model.select_country = build_selection(sid, "countries")
+			end
 		end
 	end
 end

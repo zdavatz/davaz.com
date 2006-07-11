@@ -13,6 +13,13 @@ module DAVAZ
 				@model = @session.app.load_tags
 			end
 		end
+		class AjaxAllTagsLink < SBSM::State
+			VIEW = View::ShowAllTagsLink
+			VOLATILE = true
+			def init
+				@model = [] 
+			end
+		end
 		class AjaxUploadImage < SBSM::State
 			VIEW = View::ImageDiv
 			VOLATILE = true

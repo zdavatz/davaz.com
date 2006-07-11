@@ -212,20 +212,36 @@ module DAVAZ
 			CONTENT = View::ArtObjectComposite
 		end
 		class ShowAllTagsLink < HtmlGrid::Div
+			CSS_ID = 'all-tags-link'
 			def init
 				super
 				link = HtmlGrid::Link.new(:show_tags, @model, @session, self)
 				link.href = "javascript:void(0)"
 				url = @lookandfeel.event_url(:gallery, :ajax_all_tags)
-				script = "toggleInnerHTML('all-tags', '#{url}')" 
+				script = "toggleInnerHTML('all-tags-link', '#{url}')" 
 				link.set_attribute('onclick', script)
 				@value = link
 			end
 		end
-		class ShowAllTags < HtmlGrid::SpanList
+		class ShowAllTagsList < HtmlGrid::SpanList
 			COMPONENTS = {
 				[0,0]	=>	:name,
+				[1,0]	=>	'pipe_divider',
 			}
+		end
+		class ShowAllTags < HtmlGrid::DivComposite
+			COMPONENTS = {
+				[0,0]	=> ShowAllTagsList,
+				[0,1]	=> :close,
+			}
+			def close(model)
+				link = HtmlGrid::Link.new(:close, model, @session, self)
+				link.href = "javascript:void(0)"
+				url = @lookandfeel.event_url(:gallery, :ajax_all_tags_link)
+				script = "toggleInnerHTML('all-tags-link', '#{url}')" 
+				link.set_attribute('onclick', script)
+				link
+			end
 		end
 		class AdminArtobjectDetails < View::Form
 			CSS_ID = 'artobject-details'
@@ -270,9 +286,6 @@ module DAVAZ
 				[1,12]	=>	5,			
 				[1,13]	=>	5,			
 				[1,14]	=>	5,			
-			}
-			CSS_ID_MAP = {
-				[1,4]	=>	'all-tags',
 			}
 			def hidden_fields(context)
 				''<<

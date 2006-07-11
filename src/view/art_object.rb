@@ -225,9 +225,17 @@ module DAVAZ
 		end
 		class ShowAllTagsList < HtmlGrid::SpanList
 			COMPONENTS = {
-				[0,0]	=>	:name,
+				[0,0]	=>	:tag,
 				[1,0]	=>	'pipe_divider',
 			}
+			def tag(model)
+				link = HtmlGrid::Link.new(model.name, model, @session, self)
+				link.value = model.name
+				link.href = "javascript:void(0)"
+				script = "alert('#{model.name}')"
+				link.set_attribute('onclick', script)
+				link
+			end
 		end
 		class ShowAllTags < HtmlGrid::DivComposite
 			COMPONENTS = {

@@ -58,7 +58,6 @@ div.lectures a:hover {
 }
 
 div.block-title {
-	float: left;
 	font-size: 10pt;
 	padding-right: 5px;
 	padding-top: 5px;
@@ -66,5 +65,6 @@ div.block-title {
 
 div.block-text {
 	padding-top: 5px;
+	padding-bottom: 15px;
 	font-size: 10pt;
 }

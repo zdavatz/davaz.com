@@ -256,6 +256,7 @@ module DAVAZ
 			DEFAULT_CLASS = HtmlGrid::InputText
 			EVENT = :update
 			FORM_METHOD = 'POST'
+			FORM_NAME = 'artobjectform'
 			LABELS = true
 			COMPONENTS = {
 				[0,0]	=>	:title,

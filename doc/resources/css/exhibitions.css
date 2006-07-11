@@ -43,7 +43,7 @@ div#zone-image {
 
 div.exhibitions {
 	color: black;
-	width: 600px;
+	width: 740px;
 	text-align: left;
 	margin-left: auto; margin-right: auto;
 }
@@ -55,6 +55,7 @@ div.exhibitions a:visited {
 
 div.block-title {
 	float: left;
+	width: 35px;
 	font-size: 10pt;
 	padding-right: 5px;
 	padding-top: 5px;
@@ -62,5 +63,6 @@ div.block-title {
 
 div.block-text {
 	padding-top: 5px;
+	margin-left: 45px;
 	font-size: 10pt;
 }

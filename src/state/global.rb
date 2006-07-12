@@ -75,6 +75,16 @@ module DAVAZ
 					[	:personal, :family ],
 				]
 			end
+			def foot_navigation
+				[
+					[	:communication, :guestbook ],
+					[	:communication, :shop ],
+					[	:email_link ],
+					[	:communication, :news ],
+					[	:communication, :links ],
+					[	:personal, :home ],
+				]
+			end
 =begin
 				klass = case zone
 								when :personal

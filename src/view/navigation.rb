@@ -29,7 +29,11 @@ module DAVAZ
 				@zone_links = @lookandfeel.send(self::class::NAV_METHOD)
 				@zone_links.each_with_index { |ary, idx| 
 					pos = [idx*2,0]
-					components.store(pos, :navigation_link)
+					unless(ary.size == 1)
+						components.store(pos, :navigation_link)
+					else
+						components.store(pos, ary.first)
+					end
 					components.store([idx*2-1,0], 'pipe_divider') if idx > 0
 				}
 			end
@@ -38,13 +42,17 @@ module DAVAZ
 				@link_idx += 1
 				link = HtmlGrid::Link.new(event, model, @session, self)
 				link.href = @lookandfeel.event_url(zone, event)
-				link.css_class = self::class::CSS_CLASS 
+				if(@session.event && @session.event == event)
+					link.css_class = self::class::CSS_CLASS + "-active"
+				else
+					link.css_class = self::class::CSS_CLASS 
+				end
 				link
 			end
 			def email_link(model) 
 				link = DAVAZ::View::MailLink.new(:contact_email, model, @session, self)
 				link.mailto = @lookandfeel.lookup(:email_juerg)
-				link.css_class = 'communication-link'
+				link.css_class = self::class::CSS_CLASS 
 				link
 			end
 		end
@@ -64,8 +72,10 @@ module DAVAZ
 			CSS_CLASS = "top-navigation"
 			NAV_METHOD = :top_navigation
 		end
-		class FootNavigation < HtmlGrid::SpanComposite
+		class FootNavigation < View::NavigationComposite 
 			CSS_CLASS = 'foot-navigation'
+			NAV_METHOD = :foot_navigation
+=begin
 			COMPONENTS = {
 				0	=>	:guestbook,
 				1	=>	'pipe_divider',
@@ -115,6 +125,7 @@ module DAVAZ
 				link.css_class = 'foot-navigation'
 				link
 			end
+=end
 		end
 		class LeftNavigation < HtmlGrid::UlComposite 
 			CSS_ID = 'left-navigation'

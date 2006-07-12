@@ -99,6 +99,14 @@ a.top-navigation:hover {
 	text-align: center;
 }
 
+a.top-navigation-active:link, a.top-navigation-active:visited,
+a.top-navigation-active:hover {
+	color: white;
+	font: bold 10pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	text-align: center;
+}
+
 div#logo {
 	position: absolute;
 	top: 5px;

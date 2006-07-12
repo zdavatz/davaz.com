@@ -46,7 +46,7 @@ div#zone-image {
 }
 
 div.oneliner {
-	padding-top: 30px;
+	padding-top: 15px;
 	font: bold 16pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
 	text-align: center;
 }
@@ -57,7 +57,7 @@ div.oneliner {
 }
 
 div#gallery-navigation {
-	margin-top: -20px;
+	margin-top: -10px;
 	padding-bottom: 40px;
 	width: 600px;
 	height: 40px;

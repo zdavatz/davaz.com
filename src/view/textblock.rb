@@ -70,7 +70,7 @@ module DAVAZ
 				}
 				txt.gsub(/(#{map.keys.join(')|(')})/) { |match|
 					if(link = map[match])
-						linkify(link, context) + "\n"
+						linkify(link, context)
 					end.to_s
 				}
 			end

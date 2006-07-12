@@ -70,7 +70,6 @@ class SearchBar < HtmlGrid::Form
 	end
 end
 class UpperHomeComposite < HtmlGrid::DivComposite
-	CSS_ID = 'upper-search-composite'
 	COMPONENTS = {
 		[0,0]	=>	SearchTitle,
 		[0,1]	=>	View::GalleryNavigation,
@@ -80,6 +79,7 @@ class UpperHomeComposite < HtmlGrid::DivComposite
 	}
 	CSS_ID_MAP = {
 		0	=>	'search-title',
+		1	=>	'gallery-navigation',
 		2	=>	'search-bar',
 		3	=>	'search-oneliner',
 	}

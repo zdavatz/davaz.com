@@ -117,6 +117,7 @@ div#slideshow {
 div.multimedia-buttons {
 	clear: both;
 	margin-top: 20px;
+	padding-bottom: 20px;
 }
 
 div.image-container {
@@ -170,9 +171,9 @@ a.serie-link:link, a.serie-link:visited, a.serie-link:hover {
 div#serie-links {
 	text-align: center;
 	margin: 0 auto;
-	padding-top: 20px;
 	text-align: center;
 	width: 780px;
+	padding-bottom: 10px;
 }
 
 img.slideshow-control-image {

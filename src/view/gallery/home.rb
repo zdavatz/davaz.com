@@ -85,11 +85,12 @@ class UpperHomeComposite < HtmlGrid::DivComposite
 	}
 end
 class HomeComposite < HtmlGrid::DivComposite
+	include SerieLinks
 	CSS_ID = 'inner-content'
 	COMPONENTS = {
 		[0,0]	=>	UpperHomeComposite,
 		[0,1]	=>	:slideshow_rack,
-		[0,2]	=>	component(GallerySerieLinks, :series),
+		[0,2]	=>	:series, #component(GallerySerieLinks, :series),
 		[0,3] =>	View::AddOnloadShow,
 	}
 	CSS_STYLE_MAP = {
@@ -102,6 +103,11 @@ class HomeComposite < HtmlGrid::DivComposite
 	}
 	def slideshow_rack(model)
 		GallerySlideShowRackComposite.new([], @session, self)
+	end
+	def series(model)
+		model.series.collect { |name|
+			serie_link(name, 'upper-search-composite')
+		}
 	end
 end
 class Home < View::GalleryPublicTemplate

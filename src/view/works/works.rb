@@ -20,17 +20,23 @@ class WorksTitle < HtmlGrid::Div
 	end
 end
 class Works < HtmlGrid::DivComposite
+	include SerieLinks
 	CSS_CLASS = 'content'
 	COMPONENTS = {
 		[0,0]	=>	WorksTitle,
 		[0,1]	=>	SlideShowRackComposite,
-		[0,2]	=>	component(SerieLinks, :series),
+		[0,2]	=>	:series,
 		[0,3] =>	AddOnloadShow,
 	}
 	CSS_ID_MAP = {
 		1	=>	'show-wipearea',
 		2	=>	'serie-links',
 	}
+	def series(model)
+		model.series.collect { |name|
+			serie_link(name, 'null')
+		}
+	end
 end
 		end
 	end

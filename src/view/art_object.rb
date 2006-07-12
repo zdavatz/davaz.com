@@ -269,8 +269,59 @@ module DAVAZ
 				link
 			end
 		end
+		class AddFormComposite < HtmlGrid::DivComposite
+			COMPONENTS = {
+				[0,0]	=>	:input_field,
+				[0,0]	=>	:submit,
+			}
+			def input_field(model)
+				input = HtmlGrid::InputText.new('add-form-input', model, @session, self)
+				input
+			end
+			def submit(model)
+				link = HtmlGrid::Link.new("submit", model, @session, self)
+				link.href = "javascript:void(0)"
+				link
+			end
+		end
+		class EditLinks < HtmlGrid::DivComposite
+			COMPONENTS = {
+				[0,0]	=>	:add,
+				[1,0]	=>	'pipe_divider',
+				[2,0]	=>	:remove,
+				[0,1]	=>	:add_form,
+			}
+			def init(model)
+				super
+				css_id_map.store(1, "add-form-#{model}")
+			end
+			def add(model)
+				link = HtmlGrid::Link.new("add_#{model}", model, @session, self)
+				link.href = "javascript:void(0)"
+				script = "toggleInnerHTML(add-form-#{})"
+				link.set_attribute('onclick', script)
+				link
+			end
+			def add_form(model)
+				''
+			end
+			def remove(model)
+				link = HtmlGrid::Link.new("remove_#{model}", model, @session, self)
+				link.href = "javascript:void(0)"
+				script = "alert(document.artobjectform.#{model}_id.value);"
+				link.set_attribute('onclick', script)
+				link
+			end
+		end
 		class AdminArtobjectDetails < View::Form
 			include HtmlGrid::ErrorMessage
+			def AdminArtobjectDetails.edit_links(*args)
+				args.each { |key|
+					define_method(key) { |model|
+						EditLinks.new(key.to_s, @session, self)
+					}
+				}
+			end
 			CSS_ID = 'artobject-details'
 			DEFAULT_CLASS = HtmlGrid::InputText
 			EVENT = :update
@@ -280,23 +331,27 @@ module DAVAZ
 			COMPONENTS = {
 				[0,0]		=>	:title,
 				[0,1]		=>	component(View::DynSelect, :select_artgroup, 'artgroup_id'),
-				[1,2]		=>	:artgroup_edit,
-				[0,3]		=>	component(View::DynSelect, :select_serie, 'serie_id'),
+				[0,2]		=>	component(View::DynSelect, :select_serie, 'serie_id'),
+				[1,3]		=>	:serie,
 				[0,4]		=>	:tags,
 				[1,5]		=>	ShowAllTagsLink,
 				[0,6]		=>	component(View::DynSelect, :select_tool, 'tool_id'),
-				[0,7]		=>	component(View::DynSelect, :select_material, 'material_id'),
-				[0,8]		=>	:size,
-				[0,9]		=>	:date,
-				[0,10]	=>	:location,
-				[0,11]	=>	component(View::DynSelect, :select_country, 'country_id'),
-				[0,12]	=>	:language,
-				[0,13]	=>	:url,
-				[0,14]	=>	:text_label,
-				[1,15]	=>	:text,
-				[1,16]	=>	:submit,
-				[1,16,1]	=>	:reset,
+				[1,7]		=>	:tool,
+				[0,8]		=>	component(View::DynSelect, :select_material, 'material_id'),
+				[1,9]		=>	:material,
+				[0,10]	=>	:size,
+				[0,11]	=>	:date,
+				[0,12]	=>	:location,
+				[0,13]	=>	component(View::DynSelect, :select_country, 'country_id'),
+				[1,14]	=>	:country,
+				[0,15]	=>	:language,
+				[0,16]	=>	:url,
+				[0,17]	=>	:text_label,
+				[1,18]	=>	:text,
+				[1,19]	=>	:submit,
+				[1,19,1]	=>	:reset,
 			}	
+			edit_links :serie, :tool, :material, :country
 			def init
 				super
 				error_message

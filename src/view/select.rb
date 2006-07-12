@@ -7,6 +7,10 @@ require 'htmlgrid/select'
 module DAVAZ
 	module View
 		class DynSelect < HtmlGrid::AbstractSelect
+			def init
+				super
+				#self.onselect = 'alert("selected");'
+			end
 			private
 			def selection(context)
 				@model.selection.collect { |value|
@@ -15,17 +19,6 @@ module DAVAZ
 					attributes.store("selected", true) if(value == @model.selected)
 					context.option(attributes) { value.name }
 				}
-			end
-		end
-		class DynSelectComposite < HtmlGrid::DivComposite
-			COMPONENTS = {
-				[0,0]	=>	:dyn_select,
-				[0,1]	=>	:add,
-				[1,1]	=>	:delete,
-			}
-			def dyn_select(model)
-				klass = model.selected.class.to_s.split("::").last.downcase
-				DynSelect.new(klass, model, @session, self)
 			end
 		end
 	end

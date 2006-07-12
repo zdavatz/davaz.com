@@ -168,10 +168,11 @@ a.serie-link:link, a.serie-link:visited, a.serie-link:hover {
 }
 
 div#serie-links {
-	margin: auto;
+	text-align: center;
+	margin: 0 auto;
 	padding-top: 20px;
 	text-align: center;
-	width: 650px;
+	width: 700px;
 }
 
 img.slideshow-control-image {

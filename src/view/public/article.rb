@@ -22,6 +22,9 @@ class ArticleComposite < HtmlGrid::DivComposite
 	def anchor(model)
 		HtmlGrid::Link.new(model.artobject_id, model, @session, self)
 	end
+	def text(model)
+		model.text
+	end
 	def close_article(model)
 		link = HtmlGrid::Link.new('toggle-article', model, @session, self)
 		link.href = 'javascript:void(0)'

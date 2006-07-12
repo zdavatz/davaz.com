@@ -10,20 +10,22 @@
 }
 
 #foot-navigation {
-	padding-top: 4px;
 	height: 20px;
+	line-height: 20px;
 	width: 100%;
 	text-align: right; 
 	color: white;
 	background: #990099;
+	vertical-align: middle;
 }
 
 div#copyright {
 	width: 180px;
 	right: 180px;
 	margin-left: -100%;
-	padding-top: 4px;
 	height: 20px;
+	line-height: 20px;
+	vertical-align: middle;
 	text-align: left;
 	color: white;
 	background: #990099;

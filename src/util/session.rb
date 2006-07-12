@@ -39,9 +39,6 @@ module DAVAZ
 			def top_navigation
 				@active_state.top_navigation
 			end
-			def foot_navigation
-				@active_state.foot_navigation
-			end
 			def update_breadcrumbs
 				breadcrumbs = user_input(:breadcrumbs)
 				if(breadcrumbs.nil?)

@@ -27,27 +27,30 @@ module DAVAZ
 			def build_navigation
 				@link_idx = 0
 				@zone_links = @lookandfeel.send(self::class::NAV_METHOD)
+				puts @zone_links.inspect
 				@zone_links.each_with_index { |ary, idx| 
+					puts idx
+					puts ary.inspect
 					pos = [idx*2,0]
-					unless(ary.size == 1)
-						components.store(pos, :navigation_link)
-					else
-						components.store(pos, ary.first)
-					end
+					components.store(pos, :navigation_link)
 					components.store([idx*2-1,0], 'pipe_divider') if idx > 0
 				}
 			end
 			def navigation_link(model)
 				zone, event = *(@zone_links.at(@link_idx))
 				@link_idx += 1
-				link = HtmlGrid::Link.new(event, model, @session, self)
-				link.href = @lookandfeel.event_url(zone, event)
-				if(@session.event && @session.event == event)
-					link.css_class = self::class::CSS_CLASS + "-active"
+				if(event.nil?)
+					self.send(zone, model)
 				else
-					link.css_class = self::class::CSS_CLASS 
+					link = HtmlGrid::Link.new(event, model, @session, self)
+					link.href = @lookandfeel.event_url(zone, event)
+					if(@session.event && @session.event == event)
+						link.css_class = self::class::CSS_CLASS + "-active"
+					else
+						link.css_class = self::class::CSS_CLASS 
+					end
+					link
 				end
-				link
 			end
 			def email_link(model) 
 				link = DAVAZ::View::MailLink.new(:contact_email, model, @session, self)

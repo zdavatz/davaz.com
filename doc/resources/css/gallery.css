@@ -57,7 +57,6 @@ div.oneliner {
 }
 
 div#gallery-navigation {
-	margin-top: -10px;
 	padding-bottom: 40px;
 	width: 600px;
 	height: 40px;
@@ -120,4 +119,8 @@ div#artobject-title {
 
 div#artobject-subtitle-left, div#artobject-subtitle-right {
 	background-color: #F96C70;
+}
+
+div.gallery-table-title {
+	padding-top: 20px;
 }

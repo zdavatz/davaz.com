@@ -13,7 +13,7 @@ module DAVAZ
 	module View
 		module Gallery 
 class SearchTitle < HtmlGrid::Div
-	CSS_CLASS = 'table-title center'
+	CSS_CLASS = 'gallery-table-title center'
 	def init
 		super
 		img = HtmlGrid::Image.new(:gallery_search_title, model, @session, self)
@@ -21,7 +21,7 @@ class SearchTitle < HtmlGrid::Div
 	end
 end
 class SeriesTitle < HtmlGrid::Div
-	CSS_CLASS = 'table-title center'
+	CSS_CLASS = 'gallery-table-title center'
 	def init
 		super
 		img = HtmlGrid::Image.new(:series_title, model, @session, self)

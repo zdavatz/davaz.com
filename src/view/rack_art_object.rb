@@ -8,13 +8,14 @@ module DAVAZ
 		class RackPager < Pager 
 			def pager_link(link)
 				artobject_id = link.attributes['href'].split("/").last
+				serie_id = @session.user_input(:serie_id) 
 				args = [ 
-					[ :serie_id, @session.user_input(:serie_id) ],
+					[ :serie_id, serie_id ],
 					[ :artobject_id, artobject_id ],
 				]
-				url = @lookandfeel.event_url(:gallery, :ajax_desk_artobject, args)
+				url = @lookandfeel.event_url(:gallery, :ajax_rack, args)
 				link.href = "javascript:void(0)"
-				script = "toggleDeskContent('show', '#{url}', false)"
+				script = "toggleShow('show', '#{url}', 'Desk', null, '#{serie_id}', '#{artobject_id}');"
 				link.set_attribute('onclick', script)
 				link
 			end
@@ -43,7 +44,12 @@ module DAVAZ
 			def back_to_overview(model)
 				link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
 				link.href = "javascript:void(0)" 
-				script = "toggleShow('show',null,'Desk','show-wipearea');"
+				serie_id = @session.user_input(:serie_id) 
+				args = [ 
+					[ :serie_id, serie_id ],
+				]
+				url = @lookandfeel.event_url(:gallery, :ajax_rack, args)
+				script = "toggleShow('show','#{url}','Desk','show-wipearea');"
 				link.set_attribute('onclick', script) 
 				link
 			end

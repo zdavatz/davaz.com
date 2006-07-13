@@ -144,7 +144,8 @@ function replaceDiv(id, replace_id) {
 	dojo.lfx.html.wipeOut(node, 1000, dojo.lfx.easeInOut, callback).play();
 }
 
-function toggleDeskContent(id, url, wipe) {
+function toggleDeskContent(id, serieId, objectId, url, wipe) {
+	var fragmentIdentifier = 'Detail_' + serieId + '_' + objectId;
 	var reloadDesk = function() {
 		var desk = dojo.widget.byId(id);
 		dojo.io.bind({
@@ -155,6 +156,7 @@ function toggleDeskContent(id, url, wipe) {
 					dojo.lfx.html.wipeIn('show-wipearea', 1000).play();
 				}
 			}, 
+			changeUrl: fragmentIdentifier,
 			mimetype: "text/html"
 		});
 	}
@@ -167,7 +169,7 @@ function toggleDeskContent(id, url, wipe) {
 	}
 }
 
-function toggleShow(id, url, view, replace_id, serie_id) {
+function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
 	//serieLink.style.color = 'black';
 	var show = dojo.widget.byId(id);
 	if(show) {
@@ -179,7 +181,9 @@ function toggleShow(id, url, view, replace_id, serie_id) {
 		serieLink.style.color = 'black';
 		if(lastId != serie_id) {
 			var lastSerieLink = dojo.byId(lastId);	
-			lastSerieLink.style.color = 'blue';
+			if(lastSerieLink) {
+				lastSerieLink.style.color = 'blue';
+			}
 		} 
 	}
 	var container = dojo.byId(id + "-container");
@@ -204,7 +208,11 @@ function toggleShow(id, url, view, replace_id, serie_id) {
 	}
 
 	var fragmentIdentifier = view + "_" + serie_id;
-	
+
+	if(artobject_id) {
+		fragmentIdentifier = fragmentIdentifier + "_" + artobject_id;
+	}
+
 	var loadShow = function() {
 		dojo.io.bind({
 			url: url,

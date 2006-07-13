@@ -68,25 +68,6 @@ class ResultList < View::List
 		resolve_offset(offset, [0,1])
 	end
 end
-class RackResultList < ResultList 
-	def title(model)
-		link = HtmlGrid::Link.new(:title, @model, @session, self)
-		link.href = "javascript:void(0)"
-		args = [ 
-			[ :serie_id, @session.user_input(:serie_id) ],
-			[ :artobject_id, model.artobject_id ],
-		]
-		url = @lookandfeel.event_url(:gallery, :ajax_desk_artobject, args)
-		if(model.title.empty?)
-			link.value = model.artobject_id
-		else
-			link.value = model.title
-		end
-		script = "toggleDeskContent('show', '#{url}', true)"
-		link.set_attribute('onclick', script)
-		link
-	end
-end
 class ResultColumnNames < View::Composite
 	CSS_ID = 'result-list-column-names'
 	COMPONENTS = {
@@ -163,20 +144,6 @@ class NewSearch < HtmlGrid::DivForm
 		button
 	end
 end
-class RackResultListInnerComposite < HtmlGrid::DivComposite
-	COMPONENTS = {
-		[0,0]	=>	ResultColumnNames,
-		[0,1]	=>	RackResultList,
-	}
-end
-class RackResultListComposite < HtmlGrid::DivComposite
-	COMPONENTS = {
-		[0,0]	=>	RackResultListInnerComposite,
-	}
-	CSS_ID_MAP = {
-		0	=>	'rack-result-list-composite',
-	}
-end
 class ResultComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	View::GalleryNavigation,
@@ -203,6 +170,42 @@ class ResultComposite < HtmlGrid::DivComposite
 end
 class Result < View::GalleryPublicTemplate
 	CONTENT = View::Gallery::ResultComposite
+end
+class RackResultList < ResultList 
+	def title(model)
+		link = HtmlGrid::Link.new(:title, @model, @session, self)
+		link.href = "javascript:void(0)"
+		serie_id = @session.user_input(:serie_id)
+		artobject_id = model.artobject_id
+		args = [ 
+			[ :serie_id, serie_id ],
+			[ :artobject_id, artobject_id ],
+		]
+		url = @lookandfeel.event_url(:gallery, :ajax_rack, args)
+		if(model.title.empty?)
+			link.value = model.artobject_id
+		else
+			link.value = model.title
+		end
+		#script = "toggleDeskContent('show', '#{serie_id}', '#{artobject_id}', '#{url}', true)"
+		script = "toggleShow('show', '#{url}', 'Desk', 'upper-search-composite', '#{serie_id}', '#{artobject_id}');"
+		link.set_attribute('onclick', script)
+		link
+	end
+end
+class RackResultListInnerComposite < HtmlGrid::DivComposite
+	COMPONENTS = {
+		[0,0]	=>	ResultColumnNames,
+		[0,1]	=>	RackResultList,
+	}
+end
+class RackResultListComposite < HtmlGrid::DivComposite
+	COMPONENTS = {
+		[0,0]	=>	RackResultListInnerComposite,
+	}
+	CSS_ID_MAP = {
+		0	=>	'rack-result-list-composite',
+	}
 end
 		end
 	end

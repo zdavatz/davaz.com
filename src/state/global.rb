@@ -19,14 +19,21 @@ module DAVAZ
 			GLOBAL_MAP = {
 				:art_object						=>	State::ArtObject,
 				:ajax_movie_gallery		=>	State::AjaxMovieGallery,
-				:ajax_desk						=>	State::Gallery::AjaxDesk,
-				:ajax_desk_artobject	=>	State::Gallery::AjaxDeskArtobject,
+				#:ajax_desk						=>	State::Gallery::AjaxDesk,
+				#:ajax_desk_artobject	=>	State::Gallery::AjaxDeskArtobject,
 				:ajax_rack						=>	State::Gallery::AjaxRack,
 				:home									=>	State::Personal::Init,
 				:images								=>	State::Images,
 			}	
 			HOME_STATE = State::Personal::Init
 			VIEW = View::Personal::Init
+			def ajax_desk
+				if(@session.user_input(:artobject_id))
+					State::Gallery::AjaxDeskArtobject.new(@session, [])
+				else
+					State::Gallery::AjaxDesk.new(@session, [])
+				end
+			end
 			def tooltip
 				State::Tooltip.new(@session, @model)
 			end

@@ -27,7 +27,13 @@ module DAVAZ
 							bookmarkId = bookmarkId.substring(1, bookmarkId.length);
 							var show_type = bookmarkId.split('_')[0];
 							var serie_id = bookmarkId.split('_')[1];
-							toggleShow('show', '#{url}' + serie_id, show_type, 'upper-search-composite', serie_id);
+							var artobject_id = bookmarkId.split('_')[2];
+							if(artobject_id) {
+								var url = '#{url}' + serie_id + '/artobject_id/' + artobject_id;
+								toggleShow('show', url, show_type, 'upper-search-composite', serie_id, artobject_id);
+							} else {
+								toggleShow('show', '#{url}' + serie_id, show_type, 'upper-search-composite', serie_id);
+							}
 						}	else {
 							#{add_location_hash}
 						}

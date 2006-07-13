@@ -146,8 +146,6 @@ module DAVAZ
 					zone = @session.zone
 					if(@evt == key)
 						css_id << '-active'
-					elsif(key == :gallery && zone == :gallery && @evt == :home)
-						css_id << '-active'
 					end
 					if(@small_links.include?(key))
 						css_class << '-small'
@@ -182,16 +180,7 @@ module DAVAZ
 				''
 			end
 			def gallery(model)
-				link = HtmlGrid::Link.new(:gallery, model, @session, self)
-				link.href = @lookandfeel.event_url(:gallery, :home)
-				css = 'small-lnavlink'
-				if(@session.zone == :gallery && @evt == :home)
-					css << '-active'
-				end
-				link.css_class = css
-				link.css_id = 'gallery'
-				link.value = @lookandfeel.lookup(:gallery) 
-				link
+				navigation_link(model, :gallery, :gallery)
 			end
 			def articles(model)
 				navigation_link(model, :public, :articles)

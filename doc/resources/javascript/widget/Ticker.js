@@ -21,7 +21,8 @@ ywesee.widget.Ticker = function() {
 	this.componentHeight = 180;
 	this.tickerSpeed = 4000;
 	this.imagePosition = 0;
-	this.pause = false;
+	this.stopped = false;
+	this.critical = false;
 
 	this.tickerWindow = null;
 
@@ -46,7 +47,7 @@ ywesee.widget.Ticker = function() {
 			this.updateImageDiv(div);
 			this.tickerWindow.appendChild(div);
 		}
-		if(!this.pause) {
+		if(!this.stopped) {
 			this.endTransition();
 		}
 	}
@@ -71,7 +72,8 @@ ywesee.widget.Ticker = function() {
 			div = _this.tickerWindow.removeChild(firstDiv);
 			_this.updateImageDiv(div);
 			_this.tickerWindow.appendChild(div);
-			if(_this.pause) {
+			if(_this.stopped) {
+				_this.critical = false;
 				return;
 			} else {
 				_this.endTransition();
@@ -83,6 +85,18 @@ ywesee.widget.Ticker = function() {
 			this.imagePosition = 0;
 		} else {
 			this.imagePosition += 1;	
+		}
+	}
+
+	this.togglePaused = function() {
+		if(this.stopped){
+			this.stopped = false;
+			if(!this.critical) {
+				this.endTransition();
+			}
+		} else {
+			this.critical = true;
+			this.stopped = true;
 		}
 	}
 

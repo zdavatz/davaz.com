@@ -25,11 +25,10 @@ function toggleTicker() {
 		dojo.style.hide(node); //setStyle(node, 'display', 'none');
 		var anim = dojo.lfx.html.wipeIn('ticker-container', 300);	
 		anim.play();
-		ticker.pause = false;
-		ticker.endTransition();
+		ticker.togglePaused();
 	} else {
 		dojo.lfx.html.wipeOut('ticker-container', 300).play();	
-		ticker.pause = true;
+		ticker.togglePaused();
 	}
 }
 

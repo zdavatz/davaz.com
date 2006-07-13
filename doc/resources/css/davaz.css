@@ -444,3 +444,9 @@ span.breadcrumbs a:hover {
 	font-size: 10pt;
 	color: red;
 }
+
+div#empty-result-list {
+	padding-top: 20px;
+	color: black;
+	font-weight: bold;
+}

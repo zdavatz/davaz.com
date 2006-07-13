@@ -126,6 +126,7 @@ module DAVAZ
 					:news											=>	'News',
 					:news_from_davaz					=>	'News from Da Vaz',
 					:next											=>	'Next >>',
+					:no_items									=>	'No Items found.',
 					:no_name									=>	'',
 					:no_works									=>	'There are no works in this category yet.',
 					:order_item								=>	'Order Item(s)',

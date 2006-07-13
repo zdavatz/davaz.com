@@ -144,6 +144,13 @@ class NewSearch < HtmlGrid::DivForm
 		button
 	end
 end
+class EmptyResultList < HtmlGrid::Div
+	CSS_ID = 'empty-result-list'
+	def init
+		super
+		@value = @lookandfeel.lookup(:no_items)
+	end
+end
 class ResultComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	View::GalleryNavigation,
@@ -165,7 +172,11 @@ class ResultComposite < HtmlGrid::DivComposite
 				tables.push(ResultList.new(artgroup_items, @session, self))
 			end
 		}
-		tables	
+		if(tables.size > 0)
+			tables
+		else
+			EmptyResultList.new(model, @session, self)
+		end
 	end
 end
 class Result < View::GalleryPublicTemplate
@@ -196,8 +207,15 @@ end
 class RackResultListInnerComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	ResultColumnNames,
-		[0,1]	=>	RackResultList,
+		[0,1]	=>	:result_list,
 	}
+	def result_list(model)	
+		if(model.size > 0)
+			RackResultList.new(model, @session, self)
+		else
+			EmptyResultList.new(model, @session, self)
+		end
+	end
 end
 class RackResultListComposite < HtmlGrid::DivComposite
 	COMPONENTS = {

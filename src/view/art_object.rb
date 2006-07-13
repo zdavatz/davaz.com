@@ -272,15 +272,29 @@ module DAVAZ
 		class AddFormComposite < HtmlGrid::DivComposite
 			COMPONENTS = {
 				[0,0]	=>	:input_field,
-				[0,0]	=>	:submit,
+				[1,0]	=>	:submit,
+				[2,0]	=>	'pipe_divider',
+				[3,0]	=>	:cancel,
 			}
 			def input_field(model)
-				input = HtmlGrid::InputText.new('add-form-input', model, @session, self)
+				name = "#{model}_add_form_inut"
+				input = HtmlGrid::InputText.new(name, model, @session, self)
 				input
 			end
 			def submit(model)
-				link = HtmlGrid::Link.new("submit", model, @session, self)
+				name = "#{model}_add_form_inut"
+				link = HtmlGrid::Link.new(:submit, model, @session, self)
 				link.href = "javascript:void(0)"
+				script = "alert(document.artobjectform.#{name}.value)"
+				link.set_attribute('onclick', script)
+				link
+			end
+			def cancel(model)
+				name = "#{model}_add_form_inut"
+				link = HtmlGrid::Link.new(:cancel, model, @session, self)
+				link.href = "javascript:void(0)"
+				script = "toggleInnerHTML('#{model}-add-form', 'null')"
+				link.set_attribute('onclick', script)
 				link
 			end
 		end
@@ -289,28 +303,34 @@ module DAVAZ
 				[0,0]	=>	:add,
 				[1,0]	=>	'pipe_divider',
 				[2,0]	=>	:remove,
-				[0,1]	=>	:add_form,
+				[0,1]	=>	:add_form,	
 			}
-			def init(model)
+			def init
+				css_id_map.store(1, "#{@model}-add-form")
 				super
-				css_id_map.store(1, "add-form-#{model}")
 			end
 			def add(model)
 				link = HtmlGrid::Link.new("add_#{model}", model, @session, self)
 				link.href = "javascript:void(0)"
-				script = "toggleInnerHTML(add-form-#{})"
+				args = [
+					[ :model, model ],
+				]
+				url = @lookandfeel.event_url(:gallery, :ajax_add_form, args)
+				script = "toggleInnerHTML('#{model}-add-form', '#{url}')"
 				link.set_attribute('onclick', script)
 				link
-			end
-			def add_form(model)
-				''
 			end
 			def remove(model)
 				link = HtmlGrid::Link.new("remove_#{model}", model, @session, self)
 				link.href = "javascript:void(0)"
 				script = "alert(document.artobjectform.#{model}_id.value);"
+				link.css_id = "#{model}-remove-link"
 				link.set_attribute('onclick', script)
+				link.set_attribute('style', 'color: grey;')
 				link
+			end
+			def add_form(model)
+				""
 			end
 		end
 		class AdminArtobjectDetails < View::Form

@@ -27,10 +27,7 @@ module DAVAZ
 			def build_navigation
 				@link_idx = 0
 				@zone_links = @lookandfeel.send(self::class::NAV_METHOD)
-				puts @zone_links.inspect
 				@zone_links.each_with_index { |ary, idx| 
-					puts idx
-					puts ary.inspect
 					pos = [idx*2,0]
 					components.store(pos, :navigation_link)
 					components.store([idx*2-1,0], 'pipe_divider') if idx > 0

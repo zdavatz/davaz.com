@@ -9,7 +9,9 @@ module DAVAZ
 		class DynSelect < HtmlGrid::AbstractSelect
 			def init
 				super
-				#self.onselect = 'alert("selected");'
+				args = [ "select_name", @name, "selected_id", nil ]
+				url = @lookandfeel.event_url(:gallery, :ajax_check_removal_status, args)
+				set_attribute('onchange', "checkRemovalStatus(this.value, '#{url}');")
 			end
 			private
 			def selection(context)

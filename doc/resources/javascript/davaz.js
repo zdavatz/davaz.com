@@ -43,6 +43,25 @@ function toggleHiddenDiv(divId) {
 	}
 }
 
+function checkRemovalStatus(selectValue, url) {
+	document.body.style.cursor = 'progress';
+	url = url + selectValue; 
+	dojo.io.bind({
+		url: url,
+		load: function(type, data, event) { 
+			var removalStatus = data['removalStatus'];
+			if(removalStatus == 'goodForRemoval') {
+				var removeLink = dojo.byId(data['removeLinkId']);
+				if(removeLink) {
+					removeLink.style.color = 'blue';
+				}
+			}
+			document.body.style.cursor = 'auto';
+		},
+		mimetype: "text/json"
+	});
+}
+
 function toggleInnerHTML(divId, url, changeUrl) {
 	if(changeUrl) {
 		var fragmentidentifier = changeUrl;
@@ -50,6 +69,10 @@ function toggleInnerHTML(divId, url, changeUrl) {
 		var fragmentidentifier = "";
 	}
 	var node = dojo.byId(divId);
+	if(url == 'null') {
+		node.innerHTML = '';
+		return;
+	}
 	document.body.style.cursor = 'progress';
 	dojo.io.bind({
 		url: url,

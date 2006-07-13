@@ -6,6 +6,14 @@ require 'view/art_object'
 
 module DAVAZ
 	module State
+		class AjaxAddForm < SBSM::State
+			VIEW = View::AddFormComposite
+			VOLATILE = true
+			def init
+				super
+				@model = @session.user_input(:model)
+			end
+		end
 		class AjaxAllTags < SBSM::State
 			VIEW = View::ShowAllTags
 			VOLATILE = true

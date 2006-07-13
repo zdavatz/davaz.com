@@ -38,6 +38,19 @@ module DAVAZ
 					end
 				}
 			end
+			def count_artobjects(by, id)
+				query = <<-EOS
+					SELECT count(*)	
+					FROM artobjects
+					WHERE #{by}='#{id}'
+				EOS
+				result = connection.query(query)
+				count = ""
+				result.each_hash { |row|
+					count = row['count(*)']
+				}
+				count
+			end
 			def load_artgroups(order_by='artgroup_id')
 				query = <<-EOS
 					SELECT *

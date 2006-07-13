@@ -35,6 +35,18 @@ module DAVAZ
 			def store_upload_image(image_file, artobject_id)
 				Util::ImageHelper.store_upload_image(image_file, artobject_id)
 			end
+			def count_serie_artobjects(serie_id)
+				@db_manager.count_artobjects('serie_id', serie_id)
+			end
+			def count_tool_artobjects(tool_id)
+				@db_manager.count_tool_artobjects(tool_id)
+			end
+			def count_material_artobjects(material_id)
+				@db_manager.count_material_artobjects(material_id)
+			end
+			def count_country_artobjects(country_id)
+				@db_manager.count_country_artobjects(country_id)
+			end
 			def delete_image(artobject_id)
 				Util::ImageHelper.delete_image(artobject_id)
 			end

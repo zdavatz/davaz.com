@@ -198,9 +198,6 @@ class RackResultListInnerComposite < HtmlGrid::DivComposite
 		[0,0]	=>	ResultColumnNames,
 		[0,1]	=>	RackResultList,
 	}
-	HTTP_HEADERS = {
-		"Content-Type"	=>	"text/html; charset=UTF-8",
-	}			
 end
 class RackResultListComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
@@ -209,6 +206,9 @@ class RackResultListComposite < HtmlGrid::DivComposite
 	CSS_ID_MAP = {
 		0	=>	'rack-result-list-composite',
 	}
+	HTTP_HEADERS = {
+		"Content-Type"	=>	"text/html; charset=UTF-8",
+	}			
 end
 		end
 	end

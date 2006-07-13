@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
-# State::Gallery::Home -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
+# State::Gallery::Gallery -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
 
 require 'state/global_predefine'
-require 'view/gallery/home'
+require 'view/gallery/gallery'
 require 'view/art_object'
 require 'view/rack_art_object'
 require 'view/ajax_response'
@@ -64,8 +64,8 @@ class AjaxRack < SBSM::State
 		}
 	end
 end
-class Home < State::Gallery::Global
-	VIEW = View::Gallery::Home
+class Gallery < State::Gallery::Global
+	VIEW = View::Gallery::Gallery
 	def init
 		@model = OpenStruct.new
 		@model.oneliner = @session.app.load_oneliner('index')

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# View::Gallery::Home -- davaz.com -- 28.09.2005 -- mhuggler@ywesee.com
+# View::Gallery::Gallery -- davaz.com -- 28.09.2005 -- mhuggler@ywesee.com
 
 require 'view/publictemplate'
 require 'htmlgrid/divcomposite'
@@ -69,7 +69,7 @@ class SearchBar < HtmlGrid::Form
 		button
 	end
 end
-class UpperHomeComposite < HtmlGrid::DivComposite
+class UpperGalleryComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	SearchTitle,
 		[0,1]	=>	View::GalleryNavigation,
@@ -84,11 +84,11 @@ class UpperHomeComposite < HtmlGrid::DivComposite
 		3	=>	'search-oneliner',
 	}
 end
-class HomeComposite < HtmlGrid::DivComposite
+class GalleryComposite < HtmlGrid::DivComposite
 	include SerieLinks
 	CSS_ID = 'inner-content'
 	COMPONENTS = {
-		[0,0]	=>	UpperHomeComposite,
+		[0,0]	=>	UpperGalleryComposite,
 		[0,1]	=>	:slideshow_rack,
 		[0,2]	=>	:series, #component(GallerySerieLinks, :series),
 		[0,3] =>	View::AddOnloadShow,
@@ -110,8 +110,8 @@ class HomeComposite < HtmlGrid::DivComposite
 		}
 	end
 end
-class Home < View::GalleryPublicTemplate
-	CONTENT = View::Gallery::HomeComposite 
+class Gallery < View::GalleryPublicTemplate
+	CONTENT = View::Gallery::GalleryComposite 
 end
 		end
 	end

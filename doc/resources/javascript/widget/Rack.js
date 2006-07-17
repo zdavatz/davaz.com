@@ -46,6 +46,7 @@ ywesee.widget.Rack = function(){
 	this.toggleDisplay = function(img) {
 		if(this.toggleBusy) return;
 		if(this.displayImage.src == img.src) return;
+		/* Code with fade
 		this.toggleBusy = true;
 		_this = this;
 		var callback2 = function() { _this.toggleBusy = false; }
@@ -56,6 +57,11 @@ ywesee.widget.Rack = function(){
 			dojo.lfx.fadeIn(_this.displayImage, 200, null, callback2).play();
 		}
 		dojo.lfx.fadeOut(this.displayImage, 200, null, callback1).play();
+		*/
+		/* No fading desired */
+		this.displayImage.src = img.src;
+		this.displayImage.alt = img.alt;
+		this.imageTitle.innerHTML = img.alt;
 	}
 
 	this.fillInThumbContainer = function(imageCount, cWidth, rHeight) {

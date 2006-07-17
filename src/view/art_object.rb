@@ -276,21 +276,35 @@ module DAVAZ
 				[2,0]	=>	'pipe_divider',
 				[3,0]	=>	:cancel,
 			}
+			def build_script(model)
+				name = "#{model}_add_form_input"
+				args = [ 
+					[ :select_name,  model ],
+					[ :select_value, '' ],
+				]
+				url = @lookandfeel.event_url(:gallery, :ajax_add_element, args)
+				select_id = "#{model}_id_select"
+				script = "var value = document.artobjectform.#{name}.value;"
+				script << "var inputSelect = document.artobjectform.#{select_id};"
+				script <<	"addElement(inputSelect, '#{url}', value);"
+				script
+			end
 			def input_field(model)
-				name = "#{model}_add_form_inut"
+				name = "#{model}_add_form_input"
 				input = HtmlGrid::InputText.new(name, model, @session, self)
+				script = "if(event.keyCode == '13') { #{build_script(model)} return false; }"
+				puts script
+				input.set_attribute('onkeypress', script)
 				input
 			end
 			def submit(model)
-				name = "#{model}_add_form_inut"
 				link = HtmlGrid::Link.new(:submit, model, @session, self)
 				link.href = "javascript:void(0)"
-				script = "alert(document.artobjectform.#{name}.value)"
-				link.set_attribute('onclick', script)
+				link.set_attribute('onclick', build_script(model))
 				link
 			end
 			def cancel(model)
-				name = "#{model}_add_form_inut"
+				name = "#{model}_add_form_input"
 				link = HtmlGrid::Link.new(:cancel, model, @session, self)
 				link.href = "javascript:void(0)"
 				script = "toggleInnerHTML('#{model}-add-form', 'null')"
@@ -323,7 +337,13 @@ module DAVAZ
 			def remove(model)
 				link = HtmlGrid::Link.new("remove_#{model}", model, @session, self)
 				link.href = "javascript:void(0)"
-				script = "alert(document.artobjectform.#{model}_id.value);"
+				args = [
+					[ :select_name, model ],
+					[ :selected_id, '' ],
+				]
+				url = @lookandfeel.event_url(:gallery, :ajax_remove_element, args)
+				script = "var inputSelect = document.artobjectform.#{model}_id;"
+				script <<	"toggleSelectInnerHTML(inputSelect, '#{url}');"
 				link.css_id = "#{model}-remove-link"
 				link.set_attribute('onclick', script)
 				link.set_attribute('style', 'color: grey;')
@@ -353,28 +373,29 @@ module DAVAZ
 				[0,1]		=>	component(View::DynSelect, :select_artgroup, 'artgroup_id'),
 				[0,2]		=>	component(View::DynSelect, :select_serie, 'serie_id'),
 				[1,3]		=>	:serie,
-				[0,4]		=>	:tags,
-				[1,5]		=>	ShowAllTagsLink,
-				[0,6]		=>	component(View::DynSelect, :select_tool, 'tool_id'),
-				[1,7]		=>	:tool,
-				[0,8]		=>	component(View::DynSelect, :select_material, 'material_id'),
-				[1,9]		=>	:material,
-				[0,10]	=>	:size,
-				[0,11]	=>	:date,
-				[0,12]	=>	:location,
-				[0,13]	=>	component(View::DynSelect, :select_country, 'country_id'),
-				[1,14]	=>	:country,
+				[0,4]		=>	:serie_position,
+				[0,5]		=>	:tags,
+				[1,6]		=>	ShowAllTagsLink,
+				[0,7]		=>	component(View::DynSelect, :select_tool, 'tool_id'),
+				[1,8]		=>	:tool,
+				[0,9]		=>	component(View::DynSelect, :select_material, 'material_id'),
+				[1,10]	=>	:material,
+				[0,11]	=>	:size,
+				[0,12]	=>	:date,
+				[0,13]	=>	:location,
+				[0,14]	=>	component(View::DynSelect, :select_country, 'country_id'),
 				[0,15]	=>	:language,
 				[0,16]	=>	:url,
-				[0,17]	=>	:text_label,
-				[1,18]	=>	:text,
-				[1,19]	=>	:submit,
-				[1,19,1]	=>	:reset,
+				[0,17]	=>	:price,
+				[0,18]	=>	:text_label,
+				[1,19]	=>	:text,
+				[1,20]	=>	:submit,
+				[1,20,1]	=>	:reset,
 			}	
-			edit_links :serie, :tool, :material, :country
+			edit_links :serie, :tool, :material
 			def init
 				super
-				error_message
+				error_message()
 			end
 			def hidden_fields(context)
 				string = super
@@ -387,10 +408,11 @@ module DAVAZ
 				string<< 
 				context.hidden('artobject_id', @model.artobject.artobject_id)
 			end
-			def input_text(symbol)
+			def input_text(symbol, size='50')
 				input = HtmlGrid::InputText.new(symbol, model, @session, self)
 				input.value = model.artobject.send(symbol)
-				input.set_attribute('size', '50')
+				input.set_attribute('size', size)
+				input.set_attribute('maxlength', size)
 				input
 			end
 			def date(model)
@@ -413,10 +435,16 @@ module DAVAZ
 			def location(model)
 				input_text(:location)
 			end
+			def price(model)
+				input_text(:price, '10')
+			end
 			def reset(model)
 				button = HtmlGrid::Button.new(:reset, model, @session, self)
 				button.set_attribute("type", "reset")
 				button
+			end
+			def serie_position(model)
+				input_text(:serie_position, '4')
 			end
 			def size(model)
 				input_text(:size)
@@ -434,11 +462,11 @@ module DAVAZ
 				input.set_attribute('rows', '15')
 				input
 			end
-			def url(model)
-				input_text(:url)
-			end
 			def tags(model)
 				input_text(:tags_to_s)
+			end
+			def url(model)
+				input_text(:url)
 			end
 		end
 		class UploadForm < View::Form

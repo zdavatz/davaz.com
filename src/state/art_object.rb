@@ -6,6 +6,24 @@ require 'view/art_object'
 
 module DAVAZ
 	module State
+		class AjaxAddElement < SBSM::State
+			VOLATILE = true
+			def init
+				@select_name = @session.user_input(:select_name)
+				select_value = @session.user_input(:select_value)
+				@session.app.send("add_#@select_name", select_value)
+				@model = OpenStruct.new
+				@model.selection = @session.app.send("load_#{@select_name}s".intern)
+				@model.selection.each { |sel| 
+					if(select_value == sel.name)
+						@model.selected = sel
+					end
+				}
+			end
+			def view
+				View::DynSelect.new("#{@select_name}_id", @model, @session, self)
+			end
+		end
 		class AjaxAddForm < SBSM::State
 			VIEW = View::AddFormComposite
 			VOLATILE = true
@@ -54,6 +72,48 @@ module DAVAZ
 				@model.artobject = object 
 			end
 		end
+		class AjaxRemoveElement < SBSM::State
+			VOLATILE = true
+=begin
+	def init
+		select_name = @session.user_input(:select_name)
+		selected_id = @session.user_input(:selected_id)
+		select_class = select_name.split("_").first
+		method = "count_#{select_class}_artobjects".intern
+		@model = {
+			'removalStatus'	=>	'unknown',
+		} 
+		if(@session.app.respond_to?(method))
+			count = @session.app.send(method, selected_id)
+			if(count.to_i > 0)
+				@model['removalStatus'] = "notGoodForRemoval"
+			else
+				@model['removalStatus'] = "goodForRemoval"
+				@model['removeLinkId'] = "#{select_class}-remove-link"
+			end
+		end
+	end
+=end
+			def init
+				@select_name = @session.user_input(:select_name)
+				selected_id = @session.user_input(:selected_id)
+				select_class = @select_name.split("_").first
+				method = "count_#{select_class}_artobjects".intern
+				if(@session.app.send(method, selected_id).to_i > 0)
+					msg = 'e_not_good_for_removal'
+					error = create_error(msg, @select_name, selected_id)
+					@errors.store(@select_name, error)
+					self
+				else
+					@session.app.send("remove_#@select_name", selected_id)
+				end
+				@model = OpenStruct.new
+				@model.selection = @session.app.send("load_#{@select_name}s".intern)
+			end
+			def view
+				View::DynSelect.new("#{@select_name}_id", @model, @session, self)
+			end
+		end
 		class ArtObject < State::Global 
 			VIEW = View::ArtObject	
 			def init
@@ -99,6 +159,7 @@ module DAVAZ
 					:title,
 					:artgroup_id,
 					:serie_id,
+					:serie_position,
 					:tool_id,
 					:material_id,
 					:date,
@@ -106,11 +167,12 @@ module DAVAZ
 				]
 				keys = [
 					:tags,
-					:size,
 					:location,
 					:language,
-					:url,
+					:price,
+					:size,
 					:text,
+					:url,
 				].concat(mandatory)
 				update_hash = user_input(keys, mandatory)
 				unless(error?)

@@ -32,6 +32,15 @@ module DAVAZ
 			def add_link(artobject_id, link_word)
 				@db_manager.add_link(artobject_id, link_word)
 			end
+			def add_serie(serie_name)
+				@db_manager.add_serie(serie_name)
+			end
+			def add_tool(tool_name)
+				@db_manager.add_tool(tool_name)
+			end
+			def add_material(material_name)
+				@db_manager.add_material(material_name)
+			end
 			def store_upload_image(image_file, artobject_id)
 				Util::ImageHelper.store_upload_image(image_file, artobject_id)
 			end
@@ -39,13 +48,10 @@ module DAVAZ
 				@db_manager.count_artobjects('serie_id', serie_id)
 			end
 			def count_tool_artobjects(tool_id)
-				@db_manager.count_tool_artobjects(tool_id)
+				@db_manager.count_artobjects('tool_id', tool_id)
 			end
 			def count_material_artobjects(material_id)
-				@db_manager.count_material_artobjects(material_id)
-			end
-			def count_country_artobjects(country_id)
-				@db_manager.count_country_artobjects(country_id)
+				@db_manager.count_artobjects('material_id', material_id)
 			end
 			def delete_image(artobject_id)
 				Util::ImageHelper.delete_image(artobject_id)
@@ -177,6 +183,15 @@ module DAVAZ
 			end
 			def remove_element(artobject_id, link_id)
 				@db_manager.remove_element(artobject_id, link_id)
+			end
+			def remove_serie(serie_id)
+				@db_manager.remove_serie(serie_id)
+			end
+			def remove_tool(tool_id)
+				@db_manager.remove_tool(tool_id)
+			end
+			def remove_material(material_id)
+				@db_manager.remove_material(material_id)
 			end
 			def search_artobjects(query, artgroup_id)
 				if(query.nil?)

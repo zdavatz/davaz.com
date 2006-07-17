@@ -14,7 +14,7 @@ module DAVAZ
 			attr_accessor :serie, :size, :location
 			attr_accessor :language, :title, :public
 			attr_accessor :date, :movie_type, :url
-			attr_accessor :text, :author, :charset, :position
+			attr_accessor :text, :author, :charset
 			attr_accessor :price, :dollar_price, :euro_price, :count
 			attr_accessor :linked_to
 			attr_reader	:links, :tags #, :count 

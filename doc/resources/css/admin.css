@@ -148,20 +148,6 @@ div#links-list-container {
 	padding-top: 5px;
 }
 
-div#displayelement-form {
-	width: 700px;
-	color: black;
-	text-align: left;
-	margin-left: auto; margin-right: auto;
-	padding-top: 5px;
-}
-
-div#displayelement-form label {
-	display: block;
-	float: left;
-	width: 110px;
-}
-
 div#image-browser {
 	padding-top: 20px;
 	padding-bottom: 20px;
@@ -205,6 +191,5 @@ div#artobject-image-upload-form {
 
 table#artobject-details td {
 	text-align: left;	
-	color: black;
 	padding-bottom: 5px;
 }

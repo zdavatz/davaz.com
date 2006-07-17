@@ -61,6 +61,17 @@ function checkRemovalStatus(selectValue, url) {
 	});
 }
 
+function addElement(inputSelect, url, value) {
+	url += value;	
+	toggleInnerHTML(inputSelect.parentNode, url);
+}
+
+function toggleSelectInnerHTML(inputSelect, url) {
+	var selectedId = inputSelect.value;
+	url += selectedId;
+	toggleInnerHTML(inputSelect.parentNode, url);
+}
+
 function toggleInnerHTML(divId, url, changeUrl) {
 	if(changeUrl) {
 		var fragmentidentifier = changeUrl;

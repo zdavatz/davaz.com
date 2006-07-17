@@ -1,6 +1,6 @@
 body {
 	font: 9pt Verdana, Geneva, Arial, Helvetica, sans-serif;
-	color: #A80030;
+	color: black;
 	margin: 0px;
 	padding: 0px;
 	min-width: 360px;
@@ -27,6 +27,7 @@ a.no-decoration:link,a.no-decoration:hover,a.no-decoration:visited {
 }
 
 .blue {
+	display: inline;
 	color: blue;
 }
 
@@ -241,20 +242,6 @@ a.edit-link:link, a.edit-link:hover, a.edit-link:visited {
 	bottom: 16px;
 }
 
-div.edit-displayelement {
-	color: black;
-	width: 700px;
-	text-align: left;
-	margin-left: auto; margin-right: auto;
-	padding-top: 5px;
-}
-
-div.edit-displayelement label {
-	display: block;
-	float: left;
-	width: 110px;
-}
-
 div#show-container {
 	width: 700px;
 	margin-left: auto; margin-right: auto;
@@ -410,7 +397,6 @@ img#artobject-image {
 
 div#artobject-details {
 	text-align: right; 
-	color: black;
 }
 
 div#all-tags {

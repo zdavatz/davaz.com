@@ -133,7 +133,7 @@ module DAVAZ
 						span = HtmlGrid::Span.new(@model, @session, self)
 						span.value = link.word
 						span.css_class = 'blue'
-						span.css_id = [link.link_id, @link_id].join('_')
+						span.css_id = ['connect', link.link_id, @link_id].join('-')
 						span.dojo_tooltip = url 
 						span.to_html(context)
 					end

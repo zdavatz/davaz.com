@@ -38,6 +38,39 @@ module DAVAZ
 					end
 				}
 			end
+			def add_serie(serie_name)
+				query = <<-EOS
+					SELECT serie_id FROM series
+				EOS
+				result = connection.query(query)
+				keys = []
+				result.each_hash { |row| 
+					keys.push(row['serie_id'])	
+				}
+				puts keys.sort.last
+				query = <<-EOS
+					INSERT INTO series
+					VALUES ('#{keys.sort.last.succ}', '#{serie_name}')
+				EOS
+				connection.query(query)
+				connection.affected_rows
+			end
+			def add_tool(tool_name)
+				query = <<-EOS
+					INSERT INTO tools
+					VALUES ('', '#{tool_name}')
+				EOS
+				connection.query(query)
+				connection.affected_rows
+			end
+			def add_material(material_name)
+				query = <<-EOS
+					INSERT INTO materials
+					VALUES ('', '#{material_name}')
+				EOS
+				connection.query(query)
+				connection.affected_rows
+			end
 			def count_artobjects(by, id)
 				query = <<-EOS
 					SELECT count(*)	
@@ -202,10 +235,10 @@ module DAVAZ
 				artobjects = []
 				result.each_hash { |row|
 					artobject = load_artobject(row['artobject_id'])
-					artobject.position = row['position']
+					artobject.serie_position = row['position']
 					artobjects.push(artobject)
 				}
-				artobjects.sort { |a, b| a.position <=> b.position }
+				artobjects.sort { |a, b| a.serie_position <=> b.serie_position }
 			end
 			def load_country(id)
 			end
@@ -495,6 +528,27 @@ module DAVAZ
 					hash.store(model.send(hsh_key), model)
 				}
 				hash
+			end
+			def remove_serie(serie_id)
+				query = <<-EOS
+					DELETE FROM series WHERE serie_id='#{serie_id}'
+				EOS
+				connection.query(query)
+				connection.affected_rows
+			end
+			def remove_tool(tool_id)
+				query = <<-EOS
+					DELETE FROM tools WHERE tool_id='#{tool_id}'
+				EOS
+				connection.query(query)
+				connection.affected_rows
+			end
+			def remove_material(material_id)
+				query = <<-EOS
+					DELETE FROM materials WHERE material_id='#{material_id}'
+				EOS
+				connection.query(query)
+				connection.affected_rows
 			end
 			def search_artobjects(search_pattern)
 				series = search_serie(search_pattern)

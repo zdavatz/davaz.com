@@ -4,7 +4,6 @@
 require 'state/global_predefine'
 require 'view/art_object'
 require 'model/artobject'
-require 'digest/md5'
 
 module DAVAZ
 	module State

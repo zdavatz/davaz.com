@@ -99,6 +99,7 @@ module DAVAZ
 				) 
 				image.write(path)
 				ImageHelper.resize_image(artobject_id.to_s, image)
+				File.delete(tmp_path)
 			end
 		end
 	end

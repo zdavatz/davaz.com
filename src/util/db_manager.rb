@@ -47,7 +47,6 @@ module DAVAZ
 				result.each_hash { |row| 
 					keys.push(row['serie_id'])	
 				}
-				puts keys.sort.last
 				query = <<-EOS
 					INSERT INTO series
 					VALUES ('#{keys.sort.last.succ}', '#{serie_name}')
@@ -83,6 +82,23 @@ module DAVAZ
 					count = row['count(*)']
 				}
 				count
+			end
+			def delete_artobject(artobject_id)
+				query = <<-EOS
+					DELETE FROM artobjects
+					WHERE artobject_id='#{artobject_id}'
+				EOS
+				connection.query(query)
+				query = <<-EOS
+					DELETE FROM links_artobjects
+					WHERE artobject_id='#{artobject_id}'
+				EOS
+				connection.query(query)
+				query = <<-EOS
+					DELETE FROM tags_artobjects
+					WHERE artobject_id='#{artobject_id}'
+				EOS
+				connection.query(query)
 			end
 			def load_artgroups(order_by='artgroup_id')
 				query = <<-EOS
@@ -269,6 +285,17 @@ module DAVAZ
 					rates.store(key['target'], key['rate'].to_f)
 				}
 				rates
+			end
+			def load_element_artobject_id(element, element_id)
+				query = <<-EOS
+					SELECT artobject_id
+					FROM artobjects
+					WHERE #{element} = '#{element_id}'
+				EOS
+				result = connection.query(query)
+				result.each_hash { |row|
+					return row['artobject_id']
+				}
 			end
 			def load_exhibitions
 			end
@@ -492,6 +519,46 @@ module DAVAZ
 				}
 				tools
 			end
+			def insert_artobject(values_hash)
+				values_array = []
+				tags = values_hash.delete(:tags_to_s).split(',')
+				unless tags.empty?
+					query = <<-EOS
+						DELETE FROM tags_artobjects
+						WHERE artobject_id = '#{artobject_id}'
+					EOS
+					connection.query(query)
+				end
+				tags.each { |tag| 
+					unless tag.empty?
+						query = <<-EOS
+							INSERT INTO tags SET name='#{tag}'
+							ON DUPLICATE KEY UPDATE name='#{tag}'
+						EOS
+						connection.query(query)
+						tag_id = connection.insert_id
+						query = <<-EOS
+							INSERT INTO tags_artobjects
+							SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
+						EOS
+						connection.query(query)
+					end
+				}
+				if(date = values_hash.delete(:date))
+					values_array.push("date='#{date.year}-#{date.month}-#{date.day}'")
+				end
+				values_hash.each { |key, value|
+					unless(value.nil?)
+						values_array.push("#{key}='#{Mysql.quote(value)}'")
+					end
+				}
+				query = <<-EOS
+					INSERT INTO artobjects
+					SET #{values_array.join(', ')}
+				EOS
+				result = connection.query(query)
+				connection.insert_id
+			end
 			def insert_guest(user_values)
 				values = [
 					Time.now.strftime("%Y-%m-%d"),
@@ -571,7 +638,29 @@ module DAVAZ
 			end
 			def update_artobject(artobject_id, update_hash)
 				update_array = []
-				update_hash.delete(:tags)
+				tags = update_hash.delete(:tags_to_s).split(',')
+				unless tags.empty?
+					query = <<-EOS
+						DELETE FROM tags_artobjects
+						WHERE artobject_id = '#{artobject_id}'
+					EOS
+					connection.query(query)
+				end
+				tags.each { |tag| 
+					unless tag.empty?
+						query = <<-EOS
+							INSERT INTO tags SET name='#{tag}'
+							ON DUPLICATE KEY UPDATE name='#{tag}'
+						EOS
+						connection.query(query)
+						tag_id = connection.insert_id
+						query = <<-EOS
+							INSERT INTO tags_artobjects
+							SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
+						EOS
+						connection.query(query)
+					end
+				}
 				if(date = update_hash.delete(:date))
 					update_array.push("date='#{date.year}-#{date.month}-#{date.day}'")
 				end

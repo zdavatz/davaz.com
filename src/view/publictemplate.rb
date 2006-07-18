@@ -31,10 +31,11 @@ module DAVAZ
 				1	=>	'column',
 			}
 			def copyright(model)
-				span = HtmlGrid::Span.new(model, @session, self)
-				span.value = @lookandfeel.lookup(:copyright)
-				span.css_id = 'copyright'
-				span
+				link = HtmlGrid::Link.new(:copyright, model, @session, self)
+				link.href = @lookandfeel.event_url(:admin, :login_form)
+				link.value = @lookandfeel.lookup(:copyright)
+				link.css_id = 'copyright'
+				link
 			end
 		end
 		class PublicTemplate < HtmlGrid::DivTemplate
@@ -201,20 +202,6 @@ module DAVAZ
 		end
 		class ImagesPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :images_css ]
-		end
-		class Breadcrumbs < HtmlGrid::SpanList
-			CSS_CLASS = 'breadcrumbs'
-			COMPONENTS = {
-				[0,0]	=> 'slash_divider',
-				[1,0]	=> :link,
-			}
-			def link(model)
-				link = HtmlGrid::Link.new(:step_link, model, @session, self)
-				link.href = model.href
-				link.value = model.value
-				link.css_class = 'breadcrumb-step'
-				link
-			end
 		end
 		class AdminGalleryPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :gallery_css, :admin_css ]

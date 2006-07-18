@@ -8,13 +8,23 @@ require 'htmlgrid/errormessage'
 module DAVAZ
 	module View
 		class DynSelect < HtmlGrid::AbstractSelect
-			include HtmlGrid::ErrorMessage
 			def init
 				super
-				error_message()
-				args = [ "select_name", @name, "selected_id", nil ]
+				args = [ 
+					[ :artobject_id, @model.artobject_id ],
+					[ :select_name, @name ],
+					[ :selected_id, nil ] 
+				]
 				url = @lookandfeel.event_url(:gallery, :ajax_check_removal_status, args)
-				set_attribute('onchange', "checkRemovalStatus(this.value, '#{url}');")
+				script = "checkRemovalStatus(this.value, '#{url}');"
+				set_attribute('onchange', script)
+				selected_id = if(@model.selected)
+					@model.selected.send(@name.intern)
+				else
+					''
+				end
+				script = "checkRemovalStatus('#{selected_id}', '#{url}');"
+				self.onload = script 
 				set_attribute('id', @name + '_select')
 			end
 			private
@@ -30,17 +40,16 @@ module DAVAZ
 				selection.unshift(context.option(attrs) { title } )
 			end
 		end
-=begin
-		class DynSelect < HtmlGrid::Composite
+		class AjaxDynSelect < DynSelect
 			include HtmlGrid::ErrorMessage
-			COMPONENTS = {
-				[0,0]	=>	DynSelectContent,
-			}
-			def init
-				super
-				error_message()
+			def to_html(context)
+				html = super
+				@session.error(@name).inspect
+				if(error = @session.error(@name))
+					html << context.br << error_text(error).to_html(context)
+				end
+				html
 			end
 		end
-=end
 	end
 end

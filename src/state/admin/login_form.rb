@@ -16,7 +16,7 @@ class LoginForm < State::Admin::Global
 			self.extend(State::Admin::Admin)
 		end
 		State::Admin::AdminHome.new(@session, @model)
-	#rescue Yus::YusError
+		#rescue Yus::YusError
 	end
 end
 		end

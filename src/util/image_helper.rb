@@ -8,6 +8,7 @@ module DAVAZ
 		class ImageHelper
 			include Magick	
 			UPLOAD_IMAGES_PATH = 'uploads/images'
+			TMP_IMAGES_PATH = 'uploads/tmp/images'
 			GEOMETRIES = {
 				:small			=>	Geometry.new(SMALL_IMAGE_WIDTH.to_i),
 				:medium			=>	Geometry.new(MEDIUM_IMAGE_WIDTH.to_i),
@@ -37,6 +38,14 @@ module DAVAZ
 				else
 					true
 				end
+			end
+			def ImageHelper.abs_tmp_path
+				dir_components = [
+					DOCUMENT_ROOT,
+					"resources",
+					TMP_IMAGES_PATH,
+				]
+				dir_components.join("/")
 			end
 			def ImageHelper.images_path(size=nil)
 				dir_components = [
@@ -77,6 +86,22 @@ module DAVAZ
 				extension = image.format.downcase
 				path = File.join(ImageHelper.images_path, \
 					artobject_id.to_s[-1,1], artobject_id.to_s + "." + extension) 
+				image.write(path)
+				ImageHelper.resize_image(artobject_id.to_s, image)
+			end
+			def ImageHelper.store_tmp_image(object_id, artobject_id)
+				pattern = File.join(
+					ImageHelper.abs_tmp_path,
+					object_id.to_s + ".*"
+				) 
+				tmp_path = Dir.glob(pattern).first
+				extension = tmp_path.split(".").last
+				image = Image.read(tmp_path).first
+				path = File.join(
+					ImageHelper.images_path,
+					artobject_id.to_s[-1,1], 
+					artobject_id.to_s + "." + extension
+				) 
 				image.write(path)
 				ImageHelper.resize_image(artobject_id.to_s, image)
 			end

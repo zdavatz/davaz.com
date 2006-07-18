@@ -18,6 +18,7 @@ class AjaxCheckRemovalStatus < SBSM::State
 	VIEW = View::AjaxResponse
 	VOLATILE = true
 	def init
+		artobject_id = @session.user_input(:artobject_id)
 		select_name = @session.user_input(:select_name)
 		selected_id = @session.user_input(:selected_id)
 		select_class = select_name.split("_").first
@@ -26,9 +27,18 @@ class AjaxCheckRemovalStatus < SBSM::State
 			'removalStatus'	=>	'unknown',
 		} 
 		if(@session.app.respond_to?(method))
-			count = @session.app.send(method, selected_id)
-			if(count.to_i > 0)
+			count = @session.app.send(method, selected_id).to_i
+			@model['removeLinkId'] = "#{select_class}-remove-link"
+			if(count > 1)
 				@model['removalStatus'] = "notGoodForRemoval"
+			elsif(count == 1)
+				method = "load_#{select_class}_artobject_id".intern
+				art_id = @session.app.send(method, selected_id)
+				if(art_id == artobject_id)
+					@model['removalStatus'] = "goodForRemoval"
+				else
+					@model['removalStatus'] = "notGoodForRemoval"
+				end
 			else
 				@model['removalStatus'] = "goodForRemoval"
 				@model['removeLinkId'] = "#{select_class}-remove-link"
@@ -40,7 +50,7 @@ module Admin
 	VIRAL = true
 	EVENT_MAP = {
 		:art_object							=>	State::AdminArtObject,
-		:articles								=>	State::Public::AdminArticles,
+		#:articles								=>	State::Public::AdminArticles,
 		#:ajax_add_element				=>	State::Admin::AjaxAddElement,
 		:ajax_add_element				=>	State::AjaxAddElement,
 		:ajax_add_form					=>	State::AjaxAddForm,
@@ -55,9 +65,10 @@ module Admin
 		:ajax_upload_image			=>	State::AjaxUploadImage,
 		#:ajax_upload_image_form	=>	State::Admin::AjaxUploadImageForm,
 		:login_form							=>	State::Admin::LoginForm,
-		:life										=>	State::Personal::AdminLife,	
-		:personal_life					=>	State::Personal::AdminLife,
-		:work										=>	State::Personal::AdminWork,
+		#:life										=>	State::Personal::AdminLife,	
+		:new_art_object					=>	State::AdminArtObject,
+		#:personal_life					=>	State::Personal::AdminLife,
+		#:work										=>	State::Personal::AdminWork,
 	}
 	def ajax_check_removal_status
 		AjaxCheckRemovalStatus.new(@session, [])	
@@ -67,10 +78,21 @@ module Admin
 			#State::Admin::DisplayElementForm.new(@session, self)
 		end
 	end
-	def new
-		if(@session.user_input(:table) == 'displayelements')
-			#State::Admin::DisplayElementForm.new(@session, self)
-		end
+	def foot_navigation
+		[
+			[ :admin, :logout ],
+			[ :gallery, :new_art_object ],
+			[	:communication, :guestbook ],
+			[	:communication, :shop ],
+			:email_link,
+			[	:communication, :news ],
+			[	:communication, :links ],
+			[	:personal, :home ],
+		]
+	end
+	def logout
+		@session.logout
+		State::Personal::Init.new(@session, [])
 	end
 	def switch_zone(zone)
 		infect(super)

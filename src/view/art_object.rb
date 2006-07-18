@@ -8,6 +8,7 @@ require 'htmlgrid/divform'
 require 'htmlgrid/divlist'
 require 'htmlgrid/inputfile'
 require 'htmlgrid/errormessage'
+require 'RMagick'
 
 module DAVAZ
 	module View
@@ -164,9 +165,22 @@ module DAVAZ
 				link
 			end
 		end
+		module Breadcrumbs
+			def breadcrumbs
+				if(bcstring = @session.user_input(:breadcrumbs))
+					bcstring.split(',', 2)
+				else
+					[
+						@session.user_input(:artgroup_id),
+						@session.user_input(:search_query)
+					]
+				end
+			end
+		end
 		class ArtObjectOuterComposite < HtmlGrid::DivComposite
+			include Breadcrumbs
 			COMPONENTS = {
-				[0,0]	=>	Pager,
+				[0,0]	=>	:pager,
 				[0,1]	=>	:back_to_overview,
 			}
 			CSS_ID_MAP = {
@@ -174,16 +188,16 @@ module DAVAZ
 				1	=>	'artobject-back-link',
 			}
 			def back_to_overview(model)
+				return "" if @model.artobjects.empty?
 				link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
-				args = []
-				unless((search_query = @session.user_input(:search_query)).nil?)
-					args.push([ :search_query, search_query])
-				end
-				unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
-					args.push([ :artgroup_id, artgroup_id])
-				end
+				args = [:artgroup_id, :search_query].zip(breadcrumbs())
 				link.href = @lookandfeel.event_url(:gallery, :search, args)
 				link
+			end
+			def pager(model)
+				unless(@model.artobjects.empty?)
+					Pager.new(model, @session, self)
+				end
 			end
 		end
 		class MoviesArtObjectComposite < HtmlGrid::DivComposite
@@ -277,23 +291,22 @@ module DAVAZ
 				[3,0]	=>	:cancel,
 			}
 			def build_script(model)
-				name = "#{model}_add_form_input"
+				name = "#{model.name}_add_form_input"
 				args = [ 
-					[ :select_name,  model ],
+					[ :select_name,  model.name ],
 					[ :select_value, '' ],
 				]
 				url = @lookandfeel.event_url(:gallery, :ajax_add_element, args)
-				select_id = "#{model}_id_select"
+				select_id = "#{model.name}_id_select"
 				script = "var value = document.artobjectform.#{name}.value;"
 				script << "var inputSelect = document.artobjectform.#{select_id};"
-				script <<	"addElement(inputSelect, '#{url}', value);"
+				script <<	"addElement(inputSelect, '#{url}', value, '#{model.name}-add-form', '#{model.name}-remove-link');"
 				script
 			end
 			def input_field(model)
-				name = "#{model}_add_form_input"
+				name = "#{model.name}_add_form_input"
 				input = HtmlGrid::InputText.new(name, model, @session, self)
 				script = "if(event.keyCode == '13') { #{build_script(model)} return false; }"
-				puts script
 				input.set_attribute('onkeypress', script)
 				input
 			end
@@ -304,10 +317,10 @@ module DAVAZ
 				link
 			end
 			def cancel(model)
-				name = "#{model}_add_form_input"
+				name = "#{model.name}_add_form_input"
 				link = HtmlGrid::Link.new(:cancel, model, @session, self)
 				link.href = "javascript:void(0)"
-				script = "toggleInnerHTML('#{model}-add-form', 'null')"
+				script = "toggleInnerHTML('#{model.name}-add-form', 'null')"
 				link.set_attribute('onclick', script)
 				link
 			end
@@ -320,33 +333,34 @@ module DAVAZ
 				[0,1]	=>	:add_form,	
 			}
 			def init
-				css_id_map.store(1, "#{@model}-add-form")
+				css_id_map.store(1, "#{@model.name}-add-form")
 				super
 			end
 			def add(model)
-				link = HtmlGrid::Link.new("add_#{model}", model, @session, self)
+				link = HtmlGrid::Link.new("add_#{model.name}", model, @session, self)
 				link.href = "javascript:void(0)"
 				args = [
-					[ :model, model ],
+					[ :artobject_id, model.artobject.artobject_id ],
+					[ :name, model.name ],
 				]
 				url = @lookandfeel.event_url(:gallery, :ajax_add_form, args)
-				script = "toggleInnerHTML('#{model}-add-form', '#{url}')"
+				script = "toggleInnerHTML('#{model.name}-add-form', '#{url}')"
 				link.set_attribute('onclick', script)
 				link
 			end
 			def remove(model)
-				link = HtmlGrid::Link.new("remove_#{model}", model, @session, self)
+				link = HtmlGrid::Link.new("remove_#{model.name}", model, @session, self)
 				link.href = "javascript:void(0)"
 				args = [
-					[ :select_name, model ],
+					[ :artobject_id, model.artobject.artobject_id ],
+					[ :select_name, model.name ],
 					[ :selected_id, '' ],
 				]
 				url = @lookandfeel.event_url(:gallery, :ajax_remove_element, args)
-				script = "var inputSelect = document.artobjectform.#{model}_id;"
-				script <<	"toggleSelectInnerHTML(inputSelect, '#{url}');"
-				link.css_id = "#{model}-remove-link"
+				link.css_id = "#{model.name}-remove-link"
+				script = "var inputSelect = document.artobjectform.#{model.name}_id;"
+				script <<	"removeElement(inputSelect, '#{url}', '#{link.css_id}');"
 				link.set_attribute('onclick', script)
-				link.set_attribute('style', 'color: grey;')
 				link
 			end
 			def add_form(model)
@@ -355,10 +369,12 @@ module DAVAZ
 		end
 		class AdminArtobjectDetails < View::Form
 			include HtmlGrid::ErrorMessage
+			include Breadcrumbs
 			def AdminArtobjectDetails.edit_links(*args)
 				args.each { |key|
 					define_method(key) { |model|
-						EditLinks.new(key.to_s, @session, self)
+						model.name = key.to_s
+						EditLinks.new(model, @session, self)
 					}
 				}
 			end
@@ -387,10 +403,11 @@ module DAVAZ
 				[0,15]	=>	:language,
 				[0,16]	=>	:url,
 				[0,17]	=>	:price,
-				[0,18]	=>	:text_label,
+				[0,19]	=>	:text_label,
 				[1,19]	=>	:text,
 				[1,20]	=>	:submit,
 				[1,20,1]	=>	:reset,
+				[1,21]	=>	:delete,
 			}	
 			edit_links :serie, :tool, :material
 			def init
@@ -399,14 +416,8 @@ module DAVAZ
 			end
 			def hidden_fields(context)
 				string = super
-				unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
-					string.concat(context.hidden('artgroup_id', artgroup_id))
-				end
-				unless((query = @session.user_input(:search_query)).nil?)
-					string.concat(context.hidden('search_query', query))
-				end
-				string<< 
-				context.hidden('artobject_id', @model.artobject.artobject_id)
+				string.concat(context.hidden('breadcrumbs', 
+																		 breadcrumbs.join(',')))
 			end
 			def input_text(symbol, size='50')
 				input = HtmlGrid::InputText.new(symbol, model, @session, self)
@@ -424,10 +435,32 @@ module DAVAZ
 					input.value = "#{day}.#{month}.#{year}"
 				rescue ArgumentError
 					input.value = '01.01.1970'
+				rescue NoMethodError
+					input.value = '00.00.0000'
 				end
 				input.set_attribute('size', '10')
 				input.set_attribute('maxlength', '10')
 				input
+			end
+			def delete(model)
+				if(artobject_id = model.artobject.artobject_id)
+					button = HtmlGrid::Button.new(:delete, model, @session, self)
+					args = [:artgroup_id, :search_query].zip(breadcrumbs())
+					args.push(
+						[ 'state_id', @session.state.object_id.to_s ]
+					)
+					url = @lookandfeel.event_url(:admin, :delete, args)
+					script = <<-EOS
+						var msg = 'Do you really want to delete this artobject?'
+						if(confirm(msg)) { 
+							window.location.href='#{url}';
+						}
+					EOS
+					button.set_attribute('onclick', script)
+					button
+				else
+					''
+				end
 			end
 			def language(model)
 				input_text(:language)
@@ -495,11 +528,9 @@ module DAVAZ
 			end
 		end
 		class ImageDiv < HtmlGrid::Div
-			def init
-				super
-				artobject = model.artobject
-				img = HtmlGrid::Image.new(artobject.artobject_id, artobject, @session, self)
-				url = DAVAZ::Util::ImageHelper.image_path(artobject.artobject_id)
+			include Magick
+			def image(artobject, url)
+				img = HtmlGrid::Image.new('artobject_image', artobject, @session, self)
 				img.set_attribute('src', url)
 				img.css_id = 'artobject-image'
 				link = HtmlGrid::HttpLink.new(:url, artobject, @session, self)
@@ -510,6 +541,25 @@ module DAVAZ
 					@value = img
 				else
 					@value = link
+				end
+				img
+			end
+			def init
+				super
+				artobject = model.artobject
+				if(artobject_id = artobject.artobject_id)
+					url = DAVAZ::Util::ImageHelper.image_path(artobject_id)
+					image(artobject, url)
+				elsif(string_io = artobject.image_string_io)
+					image = Image.from_blob(string_io.read).first
+					extension = image.format.downcase
+					path = File.join(
+						DAVAZ::Util::ImageHelper.abs_tmp_path,
+						artobject.object_id.to_s + "." + extension
+					)
+					image.write(path)
+					path.slice!(DOCUMENT_ROOT)
+					image(artobject, path)
 				end
 			end
 		end

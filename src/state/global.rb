@@ -3,6 +3,7 @@
 
 require 'sbsm/state'
 require 'htmlgrid/link'
+require 'state/admin/login_form'
 require 'state/art_object'
 require 'state/communication/global'
 require 'state/gallery/global'
@@ -24,6 +25,7 @@ module DAVAZ
 				:ajax_rack						=>	State::Gallery::AjaxRack,
 				:home									=>	State::Personal::Init,
 				:images								=>	State::Images,
+				:login_form						=>	State::Admin::LoginForm,
 			}	
 			HOME_STATE = State::Personal::Init
 			VIEW = View::Personal::Init

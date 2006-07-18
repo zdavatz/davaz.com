@@ -163,11 +163,6 @@ div#artobject-details {
 	text-align: left; 
 }
 
-div#artobject-details label {
-	border: black solid 1pt;
-	width: 80px;
-}
-
 div#artobject-inner-composite {
 	width: 900px;
 }

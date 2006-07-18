@@ -53,11 +53,17 @@ module DAVAZ
 			def count_material_artobjects(material_id)
 				@db_manager.count_artobjects('material_id', material_id)
 			end
+			def delete_artobject(artobject_id)
+				@db_manager.delete_artobject(artobject_id)
+			end
 			def delete_image(artobject_id)
 				Util::ImageHelper.delete_image(artobject_id)
 			end
 			def delete_link(link_id)
 				@db_manager.delete_link(link_id)
+			end
+			def insert_artobject(values_hash)
+				@db_manager.insert_artobject(values_hash)
 			end
 			def insert_guest(values_hsh)
 				@db_manager.insert_guest(values_hsh)
@@ -160,8 +166,8 @@ module DAVAZ
 			def load_tag_artobjects(tag)
 				@db_manager.load_tag_artobjects(tag)
 			end
-			def load_tool(id)
-				@db_manager.load_tool(id)
+			def load_tool_artobject_id(tool_id)
+				@db_manager.load_element_artobject_id('tool_id', tool_id)
 			end
 			def load_tools
 				@db_manager.load_tools
@@ -181,6 +187,9 @@ module DAVAZ
 			def login(email, pass)
 				YUS_SERVER.login(email, pass, YUS_DOMAIN)
 			end
+			def logout(yus_session)
+				YUS_SERVER.logout(yus_session)
+			end
 			def remove_element(artobject_id, link_id)
 				@db_manager.remove_element(artobject_id, link_id)
 			end
@@ -194,7 +203,7 @@ module DAVAZ
 				@db_manager.remove_material(material_id)
 			end
 			def search_artobjects(query, artgroup_id)
-				if(query.nil?)
+				if(query.nil? || query.empty?)
 					@db_manager.load_artobjects_by_artgroup(artgroup_id)
 				else
 					@db_manager.search_artobjects(query)

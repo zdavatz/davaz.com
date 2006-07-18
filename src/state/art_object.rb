@@ -3,6 +3,7 @@
 
 require 'state/global_predefine'
 require 'view/art_object'
+require 'model/artobject'
 
 module DAVAZ
 	module State
@@ -21,7 +22,7 @@ module DAVAZ
 				}
 			end
 			def view
-				View::DynSelect.new("#{@select_name}_id", @model, @session, self)
+				View::AjaxDynSelect.new("#{@select_name}_id", @model, @session, self)
 			end
 		end
 		class AjaxAddForm < SBSM::State
@@ -29,7 +30,9 @@ module DAVAZ
 			VOLATILE = true
 			def init
 				super
-				@model = @session.user_input(:model)
+				@model = OpenStruct.new
+				@model.artobject_id = @session.user_input(:artobject_id)
+				@model.name = @session.user_input(:name)
 			end
 		end
 		class AjaxAllTags < SBSM::State
@@ -53,10 +56,15 @@ module DAVAZ
 				string_io = @session.user_input(:image_file)
 				unless(string_io.nil?)
 					artobject_id = @session.user_input(:artobject_id)
-					Util::ImageHelper.store_upload_image(string_io, artobject_id)
+					if artobject_id
+						Util::ImageHelper.store_upload_image(string_io, 
+																								 artobject_id)
+						model = OpenStruct.new
+						model.artobject = @session.app.load_artobject(artobject_id)
+					else
+						@model.artobject.image_string_io = string_io
+					end
 				end
-				model = OpenStruct.new
-				model.artobject = @session.app.load_artobject(artobject_id)
 			end
 		end
 		class AjaxMovieGallery < SBSM::State
@@ -74,44 +82,44 @@ module DAVAZ
 		end
 		class AjaxRemoveElement < SBSM::State
 			VOLATILE = true
-=begin
-	def init
-		select_name = @session.user_input(:select_name)
-		selected_id = @session.user_input(:selected_id)
-		select_class = select_name.split("_").first
-		method = "count_#{select_class}_artobjects".intern
-		@model = {
-			'removalStatus'	=>	'unknown',
-		} 
-		if(@session.app.respond_to?(method))
-			count = @session.app.send(method, selected_id)
-			if(count.to_i > 0)
-				@model['removalStatus'] = "notGoodForRemoval"
-			else
-				@model['removalStatus'] = "goodForRemoval"
-				@model['removeLinkId'] = "#{select_class}-remove-link"
+			def add_error(select_name, selected_id)
+				msg = 'e_not_good_for_removal'
+				error = create_error(msg, select_name, selected_id)
+				@errors.store("#{@select_name}_id", error)
 			end
-		end
-	end
-=end
 			def init
+				artobject_id = @session.user_input(:artobject_id)
 				@select_name = @session.user_input(:select_name)
 				selected_id = @session.user_input(:selected_id)
 				select_class = @select_name.split("_").first
 				method = "count_#{select_class}_artobjects".intern
-				if(@session.app.send(method, selected_id).to_i > 0)
-					msg = 'e_not_good_for_removal'
-					error = create_error(msg, @select_name, selected_id)
-					@errors.store(@select_name, error)
+				count = @session.app.send(method, selected_id).to_i 
+				if(count > 1)
+					add_error(@select_name, selected_id)
 					self
+				elsif(count == 1)
+					method = "load_#{select_class}_artobject_id".intern
+					art_id = @session.send(method, selected_id)
+					if(art_id == artobject_id)
+						@session.app.send("remove_#@select_name", selected_id)
+					else
+						add_error(@select_name, selected_id)
+					end
 				else
 					@session.app.send("remove_#@select_name", selected_id)
 				end
 				@model = OpenStruct.new
+				@model.artobject = @session.app.load_artobject(artobject_id)
+				selected_id = @model.artobject.send("#{@select_name}_id".intern)
 				@model.selection = @session.app.send("load_#{@select_name}s".intern)
+				@model.selection.each { |sel| 
+					if(selected_id == sel.sid)
+						@model.selected = sel
+					end
+				}
 			end
 			def view
-				View::DynSelect.new("#{@select_name}_id", @model, @session, self)
+				View::AjaxDynSelect.new("#{@select_name}_id", @model, @session, self)
 			end
 		end
 		class ArtObject < State::Global 
@@ -130,8 +138,11 @@ module DAVAZ
 		end
 		class AdminArtObject < ArtObject
 			VIEW = View::AdminArtObject
-			def build_selection(selected_id, selection)
+			def build_selection(selection, args)
+				artobject_id = args[:aid]	
+				selected_id = args[:sid]	
 				select = OpenStruct.new
+				select.artobject_id = artobject_id
 				select.selection = @session.app.send("load_#{selection}".intern)
 				select.selection.each { |sel| 
 					if(selected_id == sel.sid)
@@ -140,21 +151,35 @@ module DAVAZ
 				}
 				select.dup
 			end
+			def build_selections
+				args = { :aid => nil, :sid => nil }
+				args[:aid] = @model.artobject.artobject_id if @model.artobject
+				args[:sid] = @model.artobject.artgroup_id if @model.artobject
+				@model.select_artgroup = build_selection("artgroups", args)
+				args[:sid] = @model.artobject.serie_id if @model.artobject
+				@model.select_serie = build_selection("series", args)
+				args[:sid] = @model.artobject.tool_id if @model.artobject
+				@model.select_tool = build_selection("tools", args)
+				args[:sid] = @model.artobject.material_id if @model.artobject
+				@model.select_material = build_selection("materials", args)
+				args[:sid] = @model.artobject.country_id if @model.artobject
+				@model.select_country = build_selection("countries", args)
+			end
 			def init
 				super
-				sid = @model.artobject.artgroup_id
-				@model.select_artgroup = build_selection(sid, "artgroups")
-				sid = @model.artobject.serie_id
-				@model.select_serie = build_selection(sid, "series")
-				sid = @model.artobject.tool_id
-				@model.select_tool = build_selection(sid, "tools")
-				sid = @model.artobject.material_id
-				@model.select_material = build_selection(sid, "materials")
-				sid = @model.artobject.country_id
-				@model.select_country = build_selection(sid, "countries")
+				build_selections
+				if @model.artobject.nil?
+					@model.artobjects = []
+					@model.artobject = Model::ArtObject.new
+				end
+			end
+			def delete
+				artobject_id = @model.artobject.artobject_id	
+				@session.app.delete_artobject(artobject_id)
+				search
 			end
 			def update
-				artobject_id = @session.user_input(:artobject_id)
+				artobject_id = @model.artobject.artobject_id
 				mandatory = [
 					:title,
 					:artgroup_id,
@@ -166,7 +191,7 @@ module DAVAZ
 					:country_id,
 				]
 				keys = [
-					:tags,
+					:tags_to_s,
 					:location,
 					:language,
 					:price,
@@ -176,10 +201,29 @@ module DAVAZ
 				].concat(mandatory)
 				update_hash = user_input(keys, mandatory)
 				unless(error?)
-					@session.app.update_artobject(artobject_id, update_hash)
-					search
+					if(artobject_id)
+						@session.app.update_artobject(artobject_id, update_hash)
+						search
+					else
+						insert_id = @session.app.insert_artobject(update_hash)
+						object_id = @model.artobject.object_id
+						Util::ImageHelper.store_tmp_image(object_id, insert_id)
+						search	
+					end
 				else
-					self
+					update_hash.each { |key, value|
+						if key == :tags_to_s
+							@model.artobject.tags= value.split(',')
+						elsif key == :date
+							date_str = "#{value.year}-#{value.month}-#{value.day}"
+							@model.artobject.date= date_str
+						else
+							method = (key.to_s + "=").intern
+							@model.artobject.send(method, value)
+						end
+					}
+					build_selections
+					self 
 				end
 			end
 		end

@@ -49,11 +49,11 @@ function checkRemovalStatus(selectValue, url) {
 		url: url,
 		load: function(type, data, event) { 
 			var removalStatus = data['removalStatus'];
+			var removeLink = dojo.byId(data['removeLinkId']);
 			if(removalStatus == 'goodForRemoval') {
-				var removeLink = dojo.byId(data['removeLinkId']);
-				if(removeLink) {
-					removeLink.style.color = 'blue';
-				}
+				if(removeLink) removeLink.style.color = 'blue';
+			} else {
+				if(removeLink) removeLink.style.color = 'grey';
 			}
 			document.body.style.cursor = 'auto';
 		},
@@ -61,18 +61,25 @@ function checkRemovalStatus(selectValue, url) {
 	});
 }
 
-function addElement(inputSelect, url, value) {
+function addElement(inputSelect, url, value, addFormId, removeLinkId) {
 	url += value;	
-	toggleInnerHTML(inputSelect.parentNode, url);
+	toggleInnerHTML(inputSelect.parentNode, url, '', function() {
+		dojo.byId(addFormId).innerHTML='&nbsp;';
+		var removeLink = dojo.byId(removeLinkId);
+		removeLink.style.color = 'blue';
+	});
 }
 
-function toggleSelectInnerHTML(inputSelect, url) {
+function removeElement(inputSelect, url, removeLinkId) {
 	var selectedId = inputSelect.value;
 	url += selectedId;
-	toggleInnerHTML(inputSelect.parentNode, url);
+	toggleInnerHTML(inputSelect.parentNode, url, '', function() {
+		var removeLink = dojo.byId(removeLinkId);
+		removeLink.style.color = 'grey';
+	});
 }
 
-function toggleInnerHTML(divId, url, changeUrl) {
+function toggleInnerHTML(divId, url, changeUrl, callback) {
 	if(changeUrl) {
 		var fragmentidentifier = changeUrl;
 	} else {
@@ -88,6 +95,7 @@ function toggleInnerHTML(divId, url, changeUrl) {
 		url: url,
 		load: function(type, data, event) {
 			node.innerHTML = data;
+			if(callback) callback();
 			document.body.style.cursor = 'auto';
 		},
 		changeUrl: fragmentidentifier,

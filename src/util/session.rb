@@ -36,20 +36,12 @@ module DAVAZ
 					@user = user
 				end
 			end
+			def logout
+				@app.logout(@user)
+				super
+			end
 			def top_navigation
 				@active_state.top_navigation
-			end
-			def update_breadcrumbs
-				breadcrumbs = user_input(:breadcrumbs)
-				if(breadcrumbs.nil?)
-						zone = @active_state.zone 
-						event = @active_state.direct_event
-						steps = [ "#{zone.to_s}_#{event.to_s}" ]
-				else
-					steps = breadcrumbs.split(",")
-					steps.push(user_input(:display_id))
-				end
-				steps.join(",")
 			end
 		end
 	end

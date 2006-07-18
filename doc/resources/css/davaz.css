@@ -436,3 +436,12 @@ div#empty-result-list {
 	color: black;
 	font-weight: bold;
 }
+
+label {
+	font-weight: bold;
+}
+
+a#copyright:link, a#copyright:visited, a#copyright:hover {
+	text-decoration: none;
+	color: white;
+}

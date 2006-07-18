@@ -189,3 +189,7 @@ div.ticker-window div {
 div.ticker-window div img {
 	padding: 2px;
 }
+
+div.block-date {
+	display:none;
+}

@@ -74,6 +74,7 @@ ywesee.widget.Rack = function(){
 			var img = document.createElement("img")
 			img.name = this.artObjectIds[idx];
 			img.src = this.images[idx];
+			img.style.width = '100px';
 			img.alt = this.titles[idx];
 			_this = this;
 			img.onmouseover = function() {

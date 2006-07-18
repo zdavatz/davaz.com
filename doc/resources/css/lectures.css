@@ -70,3 +70,7 @@ div.block-text {
 	font-size: 10pt;
 	margin-left: 45px;
 }
+
+div.block-date {
+	display:none;
+}

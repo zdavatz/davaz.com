@@ -12,11 +12,11 @@ class LoginForm < State::Admin::Global
 	VIEW = View::Admin::LoginForm
 	def login
 		@session.login
+		newstate = State::Admin::AdminHome.new(@session, @model)
 		if(@session.user.allowed?('edit', 'com.davaz'))
-			self.extend(State::Admin::Admin)
+			newstate.extend(State::Admin::Admin)
 		end
-		State::Admin::AdminHome.new(@session, @model)
-		#rescue Yus::YusError
+		newstate
 	end
 end
 		end

@@ -9,7 +9,8 @@ require 'state/personal/work'
 require 'state/admin/login_form'
 require 'state/admin/admin_home'
 require 'state/admin/image_browser'
-require 'src/view/ajax_response'
+require 'view/ajax_response'
+require 'sbsm/viralstate'
 
 module DAVAZ
 	module State
@@ -47,7 +48,7 @@ class AjaxCheckRemovalStatus < SBSM::State
 	end
 end
 module Admin
-	VIRAL = true
+	include SBSM::ViralState
 	EVENT_MAP = {
 		:art_object							=>	State::AdminArtObject,
 		#:articles								=>	State::Public::AdminArticles,
@@ -65,6 +66,7 @@ module Admin
 		:ajax_upload_image			=>	State::AjaxUploadImage,
 		#:ajax_upload_image_form	=>	State::Admin::AjaxUploadImageForm,
 		:login_form							=>	State::Admin::LoginForm,
+		:logout									=>	State::Personal::Init,
 		#:life										=>	State::Personal::AdminLife,	
 		:new_art_object					=>	State::AdminArtObject,
 		#:personal_life					=>	State::Personal::AdminLife,
@@ -89,10 +91,6 @@ module Admin
 			[	:communication, :links ],
 			[	:personal, :home ],
 		]
-	end
-	def logout
-		@session.logout
-		State::Personal::Init.new(@session, [])
 	end
 	def switch_zone(zone)
 		infect(super)

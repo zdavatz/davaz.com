@@ -89,14 +89,9 @@ module DAVAZ
 				image.write(path)
 				ImageHelper.resize_image(artobject_id.to_s, image)
 			end
-			def ImageHelper.store_tmp_image(object_id, artobject_id)
-				pattern = File.join(
-					ImageHelper.abs_tmp_path,
-					object_id.to_s + ".*"
-				) 
-				tmp_path = Dir.glob(pattern).first
-				extension = tmp_path.split(".").last
+			def ImageHelper.store_tmp_image(tmp_path, artobject_id)
 				image = Image.read(tmp_path).first
+				extension = image.format.downcase
 				path = File.join(
 					ImageHelper.images_path,
 					artobject_id.to_s[-1,1], 

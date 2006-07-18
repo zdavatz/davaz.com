@@ -400,7 +400,7 @@ module DAVAZ
 				[0,12]	=>	:date,
 				[0,13]	=>	:location,
 				[0,14]	=>	component(View::DynSelect, :select_country, 'country_id'),
-				[0,15]	=>	:language,
+				[0,15]	=>	:form_language,
 				[0,16]	=>	:url,
 				[0,17]	=>	:price,
 				[0,19]	=>	:text_label,
@@ -419,11 +419,11 @@ module DAVAZ
 				string.concat(context.hidden('breadcrumbs', 
 																		 breadcrumbs.join(',')))
 			end
-			def input_text(symbol, size='50')
+			def input_text(symbol, maxlength='50', size='50') 
 				input = HtmlGrid::InputText.new(symbol, model, @session, self)
 				input.value = model.artobject.send(symbol)
 				input.set_attribute('size', size)
-				input.set_attribute('maxlength', size)
+				input.set_attribute('maxlength', maxlength)
 				input
 			end
 			def date(model)
@@ -462,8 +462,8 @@ module DAVAZ
 					''
 				end
 			end
-			def language(model)
-				input_text(:language)
+			def form_language(model)
+				input_text(:language, '150')
 			end
 			def location(model)
 				input_text(:location)
@@ -483,7 +483,7 @@ module DAVAZ
 				input_text(:size)
 			end
 			def title(model)
-				input_text(:title)
+				input_text(:title, '150')
 			end
 			def text_label(model)
 				@lookandfeel.lookup(:text)
@@ -499,7 +499,7 @@ module DAVAZ
 				input_text(:tags_to_s)
 			end
 			def url(model)
-				input_text(:url)
+				input_text(:url, '150')
 			end
 		end
 		class UploadForm < View::Form
@@ -528,7 +528,6 @@ module DAVAZ
 			end
 		end
 		class ImageDiv < HtmlGrid::Div
-			include Magick
 			def image(artobject, url)
 				img = HtmlGrid::Image.new('artobject_image', artobject, @session, self)
 				img.set_attribute('src', url)
@@ -550,16 +549,8 @@ module DAVAZ
 				if(artobject_id = artobject.artobject_id)
 					url = DAVAZ::Util::ImageHelper.image_path(artobject_id)
 					image(artobject, url)
-				elsif(string_io = artobject.image_string_io)
-					image = Image.from_blob(string_io.read).first
-					extension = image.format.downcase
-					path = File.join(
-						DAVAZ::Util::ImageHelper.abs_tmp_path,
-						artobject.object_id.to_s + "." + extension
-					)
-					image.write(path)
-					path.slice!(DOCUMENT_ROOT)
-					image(artobject, path)
+				elsif(artobject.abs_tmp_image_path)
+					image(artobject, artobject.rel_tmp_image_path)
 				end
 			end
 		end

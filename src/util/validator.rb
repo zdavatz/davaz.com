@@ -102,6 +102,7 @@ module DAVAZ
 				:charset,
 				:country_id,
 				#:email,
+				:form_language,
 				:image_title,
 				:messagetxt,
 				:lang,

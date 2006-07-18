@@ -19,13 +19,11 @@ module DAVAZ
 	module Util
 		class DbManager
 			DB_CONNECTION_DATA = File.expand_path('../../etc/db_connection_data.yml', File.dirname(__FILE__))
-			def initialize
-				@connection = connect
-				@connection.reconnect = true
-			end
 			def connect
 				db_data = YAML.load(File.read(DB_CONNECTION_DATA))
-				Mysql.new(db_data['host'], db_data['user'], db_data['password'], db_data['db'])
+				connect = Mysql.new(db_data['host'], db_data['user'], db_data['password'], db_data['db'])
+				connect.reconnect = true
+				connect
 			end
 			def connection
 				@connection ||= connect
@@ -361,9 +359,9 @@ module DAVAZ
 						artobjects = load_serie_artobjects(serie.serie_id)
 						serie.artobjects.concat(artobjects)
 					end
-					unless(serie.name.match(/^site_/) || serie.serie_id == 'AAA')
+					#unless(serie.name.match(/^site_/) || serie.serie_id == 'AAA')
 						series.push(serie)
-					end
+					#end
 				}
 				series
 			end
@@ -521,14 +519,7 @@ module DAVAZ
 			end
 			def insert_artobject(values_hash)
 				values_array = []
-				tags = values_hash.delete(:tags_to_s).split(',')
-				unless tags.empty?
-					query = <<-EOS
-						DELETE FROM tags_artobjects
-						WHERE artobject_id = '#{artobject_id}'
-					EOS
-					connection.query(query)
-				end
+				tags = values_hash[:tags]
 				tags.each { |tag| 
 					unless tag.empty?
 						query = <<-EOS
@@ -544,11 +535,8 @@ module DAVAZ
 						connection.query(query)
 					end
 				}
-				if(date = values_hash.delete(:date))
-					values_array.push("date='#{date.year}-#{date.month}-#{date.day}'")
-				end
 				values_hash.each { |key, value|
-					unless(value.nil?)
+					unless(value.nil? || key == :tags)
 						values_array.push("#{key}='#{Mysql.quote(value)}'")
 					end
 				}
@@ -638,14 +626,12 @@ module DAVAZ
 			end
 			def update_artobject(artobject_id, update_hash)
 				update_array = []
-				tags = update_hash.delete(:tags_to_s).split(',')
-				unless tags.empty?
-					query = <<-EOS
-						DELETE FROM tags_artobjects
-						WHERE artobject_id = '#{artobject_id}'
-					EOS
-					connection.query(query)
-				end
+				tags = update_hash[:tags]
+				query = <<-EOS
+					DELETE FROM tags_artobjects
+					WHERE artobject_id = '#{artobject_id}'
+				EOS
+				connection.query(query)
 				tags.each { |tag| 
 					unless tag.empty?
 						query = <<-EOS
@@ -661,11 +647,8 @@ module DAVAZ
 						connection.query(query)
 					end
 				}
-				if(date = update_hash.delete(:date))
-					update_array.push("date='#{date.year}-#{date.month}-#{date.day}'")
-				end
 				update_hash.each { |key, value|
-					unless(value.nil?)
+					unless(value.nil? || key == :tags)
 						update_array.push("#{key}='#{Mysql.quote(value)}'")
 					end
 				}

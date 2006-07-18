@@ -4,6 +4,7 @@
 require 'state/global_predefine'
 require 'view/art_object'
 require 'model/artobject'
+require 'digest/md5'
 
 module DAVAZ
 	module State
@@ -50,6 +51,7 @@ module DAVAZ
 			end
 		end
 		class AjaxUploadImage < SBSM::State
+			include Magick
 			VIEW = View::ImageDiv
 			VOLATILE = true
 			def init 
@@ -62,7 +64,15 @@ module DAVAZ
 						model = OpenStruct.new
 						model.artobject = @session.app.load_artobject(artobject_id)
 					else
-						@model.artobject.image_string_io = string_io
+						img_name = Time.now.to_i.to_s 
+						image = Image.from_blob(string_io.read).first
+						extension = image.format.downcase
+						path = File.join(
+							DAVAZ::Util::ImageHelper.abs_tmp_path,
+							img_name + "." + extension
+						)
+						image.write(path)
+						@model.artobject.abs_tmp_image_path = path
 					end
 				end
 			end
@@ -193,34 +203,42 @@ module DAVAZ
 				keys = [
 					:tags_to_s,
 					:location,
-					:language,
+					:form_language,
 					:price,
 					:size,
 					:text,
 					:url,
 				].concat(mandatory)
-				update_hash = user_input(keys, mandatory)
+				update_hash = {}
+				user_input(keys, mandatory).each { |key, value|
+					if(match = key.to_s.match(/(form_)(.*)/))
+						update_hash.store(match[2].intern, value)
+					elsif(key == :tags_to_s)
+						if(value.nil?)
+							update_hash.store(:tags, [])	
+						else
+							update_hash.store(:tags, value.split(','))	
+						end
+					elsif(key == :date)
+						update_hash.store(:date, "#{value.year}-#{value.month}-#{value.day}")
+					else
+						update_hash.store(key, value)
+					end	
+				}
 				unless(error?)
 					if(artobject_id)
 						@session.app.update_artobject(artobject_id, update_hash)
 						search
 					else
 						insert_id = @session.app.insert_artobject(update_hash)
-						object_id = @model.artobject.object_id
-						Util::ImageHelper.store_tmp_image(object_id, insert_id)
+						image_path = @model.artobject.abs_tmp_image_path
+						Util::ImageHelper.store_tmp_image(image_path, insert_id)
 						search	
 					end
 				else
 					update_hash.each { |key, value|
-						if key == :tags_to_s
-							@model.artobject.tags= value.split(',')
-						elsif key == :date
-							date_str = "#{value.year}-#{value.month}-#{value.day}"
-							@model.artobject.date= date_str
-						else
-							method = (key.to_s + "=").intern
-							@model.artobject.send(method, value)
-						end
+						method = (key.to_s + "=").intern
+						@model.artobject.send(method, value)
 					}
 					build_selections
 					self 

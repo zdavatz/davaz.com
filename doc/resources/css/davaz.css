@@ -450,3 +450,7 @@ td.label {
 	font-weight: bold;
 	vertical-align: top;
 }
+
+a:link, a:visited, a:hover {
+	text-decoration: none;
+}

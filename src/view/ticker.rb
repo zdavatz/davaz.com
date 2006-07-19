@@ -28,17 +28,16 @@ module DAVAZ
 					unless(item.artobject_id.nil?)
 						path = DAVAZ::Util::ImageHelper.image_path(item.artobject_id, 'medium')
 						args['images'].push(path)
-						if(item.class == DAVAZ::Model::ArtObject)
-							event_args = {
-								'artobject_id'	=>	item.artobject_id,
-							}
+						event_args = [
+							[ 'artgroup_id' , item.artgroup_id ],
+							[ 'artobject_id', item.artobject_id ]
+						]
+						unless(item.url.nil? || item.url.empty?)
+							event_url = item.url
 						else
-							event_args = {
-								'artobject_id'	=>	item.artobject_id,
-							}
+							event_url = @lookandfeel.event_url(:gallery, :art_object, \
+																														event_args)
 						end
-						event_url = @lookandfeel.event_url(:gallery, :view, \
-							event_args)
 						args['eventUrls'].push(event_url)
 					end
 				}

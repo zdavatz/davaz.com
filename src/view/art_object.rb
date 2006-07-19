@@ -410,6 +410,9 @@ module DAVAZ
 				[1,21]		=>	:delete,
 				[1,21,1]	=>	:new_art_object,
 			}	
+			CSS_MAP = {
+				[0,19]	=>	'label',
+			}
 			edit_links :serie, :tool, :material
 			def init
 				super

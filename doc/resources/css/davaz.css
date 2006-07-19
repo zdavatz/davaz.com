@@ -445,3 +445,8 @@ a#copyright:link, a#copyright:visited, a#copyright:hover {
 	text-decoration: none;
 	color: white;
 }
+
+td.label {
+	font-weight: bold;
+	vertical-align: top;
+}

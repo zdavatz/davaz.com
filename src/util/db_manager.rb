@@ -217,7 +217,7 @@ module DAVAZ
 			end
 			def load_artobject_ids(artgroup_id)
 				query = <<-EOS
-					SELECT artobject_id, artgroup_id
+					SELECT artobject_id, artgroup_id, url
 					FROM artobjects
 					WHERE artgroup_id = '#{artgroup_id}'
 					ORDER BY title DESC
@@ -228,6 +228,7 @@ module DAVAZ
 					model = Model::ArtObject.new
 					model.artobject_id = row['artobject_id']
 					model.artgroup_id = row['artgroup_id']
+					model.url = row['url']
 					ids.push(model)
 				}
 				ids

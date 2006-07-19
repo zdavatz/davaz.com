@@ -407,8 +407,8 @@ module DAVAZ
 				[1,19]	=>	:text,
 				[1,20]	=>	:submit,
 				[1,20,1]	=>	:reset,
-				[1,21]		=>	:delete,
-				[1,21,1]	=>	:new_art_object,
+				[1,21]		=>	:new_art_object,
+				[1,21,1]	=>	:delete,
 			}	
 			CSS_MAP = {
 				[0,19]	=>	'label',

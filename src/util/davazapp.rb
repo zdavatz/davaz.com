@@ -75,7 +75,7 @@ module DAVAZ
 				@db_manager.load_artgroups
 			end
 			def load_articles
-					@db_manager.load_serie_artobjects('site_articles', 'series.name')
+        @db_manager.load_serie_artobjects('site_articles', 'series.name')
 			end
 			def load_article(artobject_id)
 				@db_manager.load_artobject(artobject_id)

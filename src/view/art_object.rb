@@ -413,6 +413,9 @@ module DAVAZ
 			CSS_MAP = {
 				[0,19]	=>	'label',
 			}
+      LOOKANDFEEL_MAP = {
+        :form_language => :language,
+      }
 			edit_links :serie, :tool, :material
 			def init
 				super
@@ -424,8 +427,8 @@ module DAVAZ
 																		 breadcrumbs.join(',')))
 			end
 			def input_text(symbol, maxlength='50', size='50') 
-				input = HtmlGrid::InputText.new(symbol, model, @session, self)
-				input.value = model.artobject.send(symbol)
+				input = HtmlGrid::InputText.new(symbol, model.artobject, @session, self)
+				#input.value = model.artobject.send(symbol)
 				input.set_attribute('size', size)
 				input.set_attribute('maxlength', maxlength)
 				input
@@ -467,7 +470,9 @@ module DAVAZ
 				end
 			end
 			def form_language(model)
-				input_text(:language, '150')
+				input = input_text(:language, '150')
+        input.set_attribute('name', 'form_language')
+        input
 			end
 			def location(model)
 				input_text(:location)

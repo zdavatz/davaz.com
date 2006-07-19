@@ -39,7 +39,6 @@ class AjaxRack < SBSM::State
 	VIEW = View::AjaxResponse
 	def init
 		serie_id = @session.user_input(:serie_id)
-		#@model = @session.load_serie(serie_id)
 		artobject_ids = []	
 		images = []	
 		titles = []	

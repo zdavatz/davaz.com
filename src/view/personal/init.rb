@@ -247,7 +247,7 @@ class InitComposite < HtmlGrid::DivComposite
 		[5,0]		=>	PicFamily,
 		[6,0]		=>	PicBottleneck,
 		[7,0]		=>	CommunicationLinks,
-		[8,0]		=>	Copyright,
+		#[8,0]		=>	Copyright,
 		[9,0]		=>	component(OneLiner, :oneliner),
 		[10,0]	=>	MovieLinks,
 		[11,0]	=>	PayPalDiv,

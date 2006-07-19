@@ -407,7 +407,8 @@ module DAVAZ
 				[1,19]	=>	:text,
 				[1,20]	=>	:submit,
 				[1,20,1]	=>	:reset,
-				[1,21]	=>	:delete,
+				[1,21]		=>	:delete,
+				[1,21,1]	=>	:new_art_object,
 			}	
 			edit_links :serie, :tool, :material
 			def init
@@ -467,6 +468,15 @@ module DAVAZ
 			end
 			def location(model)
 				input_text(:location)
+			end
+			def new_art_object(model)
+				button = HtmlGrid::Button.new(:new_art_object, model, @session, self)
+				url = @lookandfeel.event_url(:gallery, :new_art_object)
+				script = <<-EOS
+						window.location.href='#{url}';
+				EOS
+				button.set_attribute('onclick', script)
+				button
 			end
 			def price(model)
 				input_text(:price, '10')

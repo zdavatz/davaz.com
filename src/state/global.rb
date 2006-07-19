@@ -49,6 +49,7 @@ module DAVAZ
 			end
 			def foot_navigation
 				[
+					[	:admin, :login_form ],
 					[	:communication, :guestbook ],
 					[	:communication, :shop ],
 					:email_link,

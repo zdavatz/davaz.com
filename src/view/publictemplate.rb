@@ -32,7 +32,7 @@ module DAVAZ
 			}
 			def copyright(model)
 				link = HtmlGrid::Link.new(:copyright, model, @session, self)
-				link.href = @lookandfeel.event_url(:admin, :login_form)
+				link.href = @lookandfeel.lookup(:copyright_url)
 				link.value = @lookandfeel.lookup(:copyright)
 				link.css_id = 'copyright'
 				link
@@ -46,7 +46,7 @@ module DAVAZ
 			]
 			MOVIES_DIV_IMAGE_WIDTH = 185
 			MOVIES_DIV_IMAGE_SPEED = 4000
-			DOJO_DEBUG = true 
+			DOJO_DEBUG = false 
 			DOJO_BACK_BUTTON = false 
 			DOJO_PREFIX = {
 				'ywesee'	=>	'../javascript',

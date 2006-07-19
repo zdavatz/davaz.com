@@ -83,6 +83,7 @@ module Admin
 	def foot_navigation
 		[
 			[ :admin, :logout ],
+			[ :gallery, :new_art_object ],
 			[	:communication, :guestbook ],
 			[	:communication, :shop ],
 			:email_link,

@@ -634,21 +634,23 @@ module DAVAZ
 					WHERE artobject_id = '#{artobject_id}'
 				EOS
 				connection.query(query)
-				tags.each { |tag| 
-					unless tag.empty?
-						query = <<-EOS
-							INSERT INTO tags SET name='#{tag}'
-							ON DUPLICATE KEY UPDATE name='#{tag}'
-						EOS
-						connection.query(query)
-						tag_id = connection.insert_id
-						query = <<-EOS
-							INSERT INTO tags_artobjects
-							SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
-						EOS
-						connection.query(query)
-					end
-				}
+				if(tags)
+					tags.each { |tag| 
+						unless tag.empty?
+							query = <<-EOS
+								INSERT INTO tags SET name='#{tag}'
+								ON DUPLICATE KEY UPDATE name='#{tag}'
+							EOS
+							connection.query(query)
+							tag_id = connection.insert_id
+							query = <<-EOS
+								INSERT INTO tags_artobjects
+								SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
+							EOS
+							connection.query(query)
+						end
+					}
+				end
 				update_hash.each { |key, value|
 					unless(value.nil? || key == :tags)
 						update_array.push("#{key}='#{Mysql.quote(value)}'")

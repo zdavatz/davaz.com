@@ -95,6 +95,12 @@ end
 class Guestbook < View::CommunicationPublicTemplate
 	CONTENT = View::Communication::GuestbookComposite
 end
+class AdminGuestbookComposite < View::Communication::GuestbookComposite
+	
+end
+class AdminGuestbook < View::Communication::Guestbook
+	CONTENT = View::Communication::AdminGuestbookComposite
+end
 		end
 	end
 end

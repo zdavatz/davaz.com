@@ -46,12 +46,13 @@ module DAVAZ
 			]
 			MOVIES_DIV_IMAGE_WIDTH = 185
 			MOVIES_DIV_IMAGE_SPEED = 4000
-			DOJO_DEBUG = false 
+			DOJO_DEBUG = true 
 			DOJO_BACK_BUTTON = false 
 			DOJO_PREFIX = {
 				'ywesee'	=>	'../javascript',
 			}
 			DOJO_REQUIRE = [
+				'dojo.debug.Firebug',
 				'dojo.widget.*',
 				'dojo.widget.Tooltip',
 				'dojo.lfx.*',
@@ -69,7 +70,8 @@ module DAVAZ
 				'ywesee.widget.OneLiner',
 				'ywesee.widget.SlideShow',
 				'ywesee.widget.Rack',
-				'ywesee.widget.Ticker'
+				'ywesee.widget.Ticker',
+				'ywesee.widget.LiveEdit',
 			]
 			CONTENT = nil
 			TICKER = nil

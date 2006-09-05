@@ -380,3 +380,9 @@ function showImageChooser(url) {
 		mimetype: 'text/html'
 	});
 }
+
+function loginLogout(link) {
+	var hash = document.location.hash;
+	var href = link.href + "fragment/" + hash.replace(/#/, '');
+	link.href = href;
+}

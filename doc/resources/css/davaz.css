@@ -6,6 +6,15 @@ body {
 	min-width: 360px;
 }
 
+.admin {
+	border: blue 1pt solid;
+	background-color: #99FFFF;
+}
+
+div#live-edit-form {
+	background-color: #ecedc2;
+}
+
 div.table-title {
 	padding-top: 20px;
 	padding-bottom: 20px;

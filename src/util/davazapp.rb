@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # Util::DavazApp -- davaz.com -- 26.08.2005 -- mhuggler@ywesee.com
 
-#require 'yus/session'
+require 'yus/session'
 require 'util/updater'
 
 module DAVAZ

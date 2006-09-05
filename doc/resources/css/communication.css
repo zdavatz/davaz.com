@@ -289,7 +289,6 @@ div.block-url, div.block-title {
 	/*float: left;*/
 	background-color: #990099;
 	text-align: left;
-	z-index: 0;
 }
 
 div.block-url a:link, div.block-url a:visited, 
@@ -307,7 +306,6 @@ div.block-date {
 	/*float: right;*/
 	background-color: #990099;
 	text-align: right;
-	z-index: 1;
 }
 
 div.block-text {

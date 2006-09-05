@@ -3,7 +3,7 @@
 
 require 'sbsm/state'
 require 'htmlgrid/link'
-require 'state/admin/login_form'
+require 'state/admin/login'
 require 'state/art_object'
 require 'state/communication/global'
 require 'state/gallery/global'
@@ -16,7 +16,9 @@ require 'state/works/global'
 module DAVAZ
 	module State
 		class Global < SBSM::State
+			include Admin::LoginMethods
 			attr_reader :model
+			attr_accessor :switched_zone
 			GLOBAL_MAP = {
 				:art_object						=>	State::ArtObject,
 				:ajax_movie_gallery		=>	State::AjaxMovieGallery,
@@ -25,7 +27,7 @@ module DAVAZ
 				:ajax_rack						=>	State::Gallery::AjaxRack,
 				:home									=>	State::Personal::Init,
 				:images								=>	State::Images,
-				:login_form						=>	State::Admin::LoginForm,
+				:login_form						=>	State::Admin::Login,
 			}	
 			HOME_STATE = State::Personal::Init
 			VIEW = View::Personal::Init
@@ -49,7 +51,7 @@ module DAVAZ
 			end
 			def foot_navigation
 				[
-					[	:admin, :login_form ],
+					:login_form,
 					[	:communication, :guestbook ],
 					[	:communication, :shop ],
 					:email_link,
@@ -73,7 +75,11 @@ module DAVAZ
 			def switch_zone(zone)
 				name = zone.to_s.split('_').collect { |word| 
 					word.capitalize }.join
-				State.const_get(name).const_get('Global').new(@session, @model)
+				newstate = State.const_get(name).const_get('Global').new(@session, @model)
+				newstate.unset_previous
+				newstate.switched_zone = true
+				newstate.previous = self
+				newstate
 			rescue NameError
 				self
 			end
@@ -84,6 +90,14 @@ module DAVAZ
 					[	:personal, :inspiration ],
 					[	:personal, :family ],
 				]
+			end
+			def trigger(event)
+				newstate = super
+				if(@switched_zone)
+					newstate.unset_previous
+					newstate.previous = @previous
+				end
+				newstate
 			end
 =begin
 				klass = case zone

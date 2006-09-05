@@ -55,6 +55,18 @@ module DAVAZ
 				link.css_class = self::class::CSS_CLASS 
 				link
 			end
+			def login_form(model)
+				link = HtmlGrid::Link.new(:login_form, model, @session, self)
+				link.set_attribute('onclick', "loginLogout(this);")
+				link.href = @lookandfeel.event_url(:admin, :login_form)
+				link
+			end
+			def logout(model)
+				link = HtmlGrid::Link.new(:logout, model, @session, self)
+				link.set_attribute('onclick', "loginLogout(this);")
+				link.href = @lookandfeel.event_url(:admin, :logout)
+				link
+			end
 		end
 		module TopNavigationModule
 			class Composite < View::NavigationComposite 

@@ -65,6 +65,20 @@ end
 class Links < View::CommunicationPublicTemplate
 	CONTENT = View::Communication::LinksComposite
 end
+class AdminLinksList < View::Communication::LinksList
+	COMPONENTS = {
+		[0,0]	=>	View::AdminTextBlock,
+	}
+end
+class AdminLinksComposite < View::Communication::LinksComposite
+	COMPONENTS = {
+		[0,0]	=>	LinksTitle,
+		[1,0]	=>	AdminLinksList,
+	}
+end
+class AdminLinks < View::Communication::Links
+	CONTENT = View::Communication::AdminLinksComposite
+end
 		end
 	end
 end

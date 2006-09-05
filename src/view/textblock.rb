@@ -6,14 +6,54 @@ require 'htmlgrid/namedcomponent'
 require 'htmlgrid/span'
 require 'htmlgrid/link'
 require 'util/image_helper'
+require 'view/live_edit'
 
 module DAVAZ 
 	module View
-		class TextBlock < HtmlGrid::Component
-			def initialize(model, session, container)
-				super
-				@images = []
+		module TextBlockLinksMethods
+			def add_links(txt, context)
+				map = {}
+				@model.links.each { |link|
+					map.store(link.word, link)
+				}
+				txt.gsub(/(#{map.keys.join(')|(')})/) { |match|
+					if(link = map[match])
+						linkify(link, context)
+					end.to_s
+				}
 			end
+			def linkify(link, context)
+				if(link.artobjects.size == 1)
+					artobject = link.artobjects.first
+					if(artobject.is_url?)
+						lnk = HtmlGrid::Link.new(link.word, @model, @session, self)
+						lnk.href = artobject.url 
+						lnk.value = link.word
+						lnk.to_html(context)
+					else
+						@link_id ||= 0
+						@link_id += 1
+						args = [ :artobject_id, artobject.artobject_id  ]
+						url = @lookandfeel.event_url(:tooltip, :tooltip, args)
+						span = HtmlGrid::Span.new(@model, @session, self)
+						span.value = link.word
+						span.css_class = 'blue'
+						span.css_id = ['connect', link.link_id, @link_id].join('-')
+						span.dojo_tooltip = url 
+						span.to_html(context)
+					end
+				elsif(link.artobjects.size > 1)
+					lnk = HtmlGrid::Link.new(link.word, @model, @session, self)
+					lnk.href = 'javascript:void(0)'
+					lnk.value = link.word
+					script = "toggleHiddenDiv('#{link.link_id}-hidden-div')"
+					lnk.set_attribute('onclick', script)
+					lnk.to_html(context)
+				end
+			end
+		end
+		class TextBlock < HtmlGrid::Component
+			include TextBlockLinksMethods
 			def add_hidden_divs(html, context)
 				links = @model.links
 				links.each { |link|
@@ -63,17 +103,6 @@ module DAVAZ
 					""
 				end
 			end
-			def add_links(txt, context)
-				map = {}
-				@model.links.each { |link|
-					map.store(link.word, link)
-				}
-				txt.gsub(/(#{map.keys.join(')|(')})/) { |match|
-					if(link = map[match])
-						linkify(link, context)
-					end.to_s
-				}
-			end
 			def author_to_html(context)
 				if(@model.author.empty?)
 					""
@@ -116,35 +145,6 @@ module DAVAZ
 				script = "toggleHiddenDiv('#{link.link_id}-hidden-div')"
 				hide_link.set_attribute('onclick', script)
 				hide_link.to_html(context)
-			end
-			def linkify(link, context)
-				if(link.artobjects.size == 1)
-					artobject = link.artobjects.first
-					if(artobject.is_url?)
-						lnk = HtmlGrid::Link.new(link.word, @model, @session, self)
-						lnk.href = artobject.url 
-						lnk.value = link.word
-						lnk.to_html(context)
-					else
-						@link_id ||= 0
-						@link_id += 1
-						args = [ :artobject_id, artobject.artobject_id  ]
-						url = @lookandfeel.event_url(:tooltip, :tooltip, args)
-						span = HtmlGrid::Span.new(@model, @session, self)
-						span.value = link.word
-						span.css_class = 'blue'
-						span.css_id = ['connect', link.link_id, @link_id].join('-')
-						span.dojo_tooltip = url 
-						span.to_html(context)
-					end
-				elsif(link.artobjects.size > 1)
-					lnk = HtmlGrid::Link.new(link.word, @model, @session, self)
-					lnk.href = 'javascript:void(0)'
-					lnk.value = link.word
-					script = "toggleHiddenDiv('#{link.link_id}-hidden-div')"
-					lnk.set_attribute('onclick', script)
-					lnk.to_html(context)
-				end
 			end
 			def text_to_html(context)
 				if(@model.text.empty?)
@@ -195,87 +195,51 @@ module DAVAZ
 				add_hidden_divs(html, context)
 			end
 		end
-		class AdminTextBlock < TextBlock 
-			def add_edit_link(context)
-				breadcrumbs = @session.update_breadcrumbs
-				link = HtmlGrid::Link.new(:edit_link, @model, @session, self) 
-				link.css_class = 'admin-action'
-				link.value = @session.lookandfeel.lookup(:edit)
-				args = [
-					[ :artobject_id, @model.artobject_id ],
-					[	:breadcrumbs, breadcrumbs ],
-				]
-				url = @lookandfeel.event_url(:admin, :edit, args) 
-				link.href = url
-				context.div({'class', link.css_class}) { link.to_html(context) }
-			end
-			def to_html(context)
-				#html = add_edit_link(context)
-				#html << super
-				super
-			end
-		end
 =begin
-		class LinkTextBlock < View::TextBlock
-			def link_to_html(context) 
-				link = @model.title
-				date = @model.date
-				date_args = {
-					'class'		=>	'link-title',
+		class LiveEdit < HtmlGrid::NamedComponent
+			include TextBlockLinksMethods
+			def to_html(context)
+				field_key = @name
+				field_value = @model.send(field_key)
+				text = context.p() {add_links(field_value, context)}
+				node_id = "#{@model.artobject_id}-#{field_key.to_s}"
+				args = {
+					'artobject_id'	=>	@model.artobject_id,
+					'field_value'		=>	field_value,
+					'field_key'			=>	field_key.to_s,
+					'node_id'				=>	node_id,
 				}
-				link_args = {
-					'class'		=>	'link-title',
-					'href'		=>	link,
-					'target'	=>	'_blank',
+			url = @lookandfeel.event_url(:admin, :ajax_live_edit_form, args)
+			args = {
+					'class'		=>	'live-edit',
+					'id'			=>	node_id,
+					'onclick'	=>	"liveEdit('#{url}', '#{node_id}');",
 				}
-				div_link_args = { 'class'	=>	'link-title-link' }
-				div_date_args = { 'class'	=>	'link-title-date' }
-				args = { 'class'		=>	'link-title', }
-				link = context.a(link_args) { link }
-				date = context.span(date_args) { date }
-				div_link = context.div(div_link_args) { link }
-				div_date = context.div(div_date_args) { date }
-				context.div(args) { [ div_link, div_date] }
-			end
-			def text_to_html(context)
-				text = @model.text
-				args = { 'class' => 'link-text' }
-				context.div(args){ text }
-			end
-			def to_html(context)
-				html = link_to_html(context) 
-				html << text_to_html(context)
-				add_hidden_divs(html, context)
+				context.div(args) { context.p() { field_value } }
 			end
 		end
-		class TitleTextBlock < View::TextBlock
-			def to_html(context)
-				html = anchor_title_to_html(context)
-				html << text_to_html(context)
-				add_hidden_divs(html, context)
-			end
-		end
-		class AdminTitleTextBlock < View::AdminTextBlock
-			def to_html(context)
-				html = anchor_title_to_html(context)
-				html << text_to_html(context)
-				add_hidden_divs(html, context)
-			end
-		end
-		class LectureTextBlock < View::TextBlock
-			def to_html(context)
-				html = title_to_html(context)
-				html << text_to_html(context)
-				add_hidden_divs(html, context)
-			end
-		end
-		class ExhibitionTextBlock < View::TextBlock
-			def to_html(context)
-				html = title_to_html(context)
-				html << text_to_html(context)
-				add_hidden_divs(html, context)
+		class CancelLiveEdit < View::Composite
+			COMPONENTS = {
+				[0,0]	=>	:live_edit,
+			}
+			def live_edit(model)
+				LiveEdit.new(@model.field_key, @model.artobject, @session, self)
 			end
 		end
 =end
+		class AdminTextBlock < TextBlock 
+			def date_to_html(context)
+				LiveEdit.new(:date, @model, @session, self).to_html(context)
+			end
+			def text_to_html(context)
+				LiveEdit.new(:text, @model, @session, self).to_html(context)
+			end
+			def title_to_html(context)
+				LiveEdit.new(:title, @model, @session, self).to_html(context)
+			end
+			def url_to_html(context)
+				LiveEdit.new(:url, @model, @session, self).to_html(context)
+			end
+		end
 	end
 end

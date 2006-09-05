@@ -5,11 +5,13 @@ require 'view/publictemplate'
 require 'view/form'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/pass'
+require 'htmlgrid/errormessage'
 
 module DAVAZ
 	module View
 		module Admin
 class LoginFormForm < View::Form
+	include HtmlGrid::ErrorMessage
 	COMPONENTS = {
 		[0,0]   =>  :email,
 		[0,1]   =>  :pass,
@@ -32,6 +34,14 @@ class LoginFormForm < View::Form
 		input
 	end
 =end
+	def init
+		super
+		error_message()
+	end
+	def hidden_fields(context)
+		super <<
+		context.hidden('fragment', "#{@model.fragment}")
+	end
 end
 class LoginFormComposite < HtmlGrid::DivComposite
 	COMPONENTS = {

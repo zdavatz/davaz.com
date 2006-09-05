@@ -16,6 +16,7 @@ module DAVAZ
 			LOOKANDFEEL = DAVAZ::Util::Lookandfeel
 			def initialize(*args)
 				super
+				#@state.extend(State::Admin::Admin)
 			end
 			def active_state
         if(state_id = @valid_input[:state_id])
@@ -31,9 +32,8 @@ module DAVAZ
 				@active_state.foot_navigation
 			end
 			def login
-				if(user = @app.login(user_input(:email), user_input(:pass)))
-					@user = user
-				end
+				# @app.login raises Yus::YusError
+				@user = @app.login(user_input(:email), user_input(:pass))
 			end
 			def logout
 				@app.logout(@user)

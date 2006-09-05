@@ -13,6 +13,9 @@ class Links < State::Communication::Global
 		@model = @session.app.load_links
 	end
 end
+class AdminLinks < State::Communication::Links
+	VIEW = View::Communication::AdminLinks
+end
 		end
 	end
 end

@@ -3,7 +3,6 @@
 
 require 'state/global'
 require 'state/admin/admin_home'
-require 'state/admin/login_form'
 require 'state/admin/image_browser'
 
 module DAVAZ

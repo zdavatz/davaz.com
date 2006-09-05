@@ -13,6 +13,9 @@ class Guestbook < State::Communication::Global
 		@model = @session.app.load_guests
 	end
 end
+class AdminGuestbook < State::Communication::Guestbook
+	VIEW = View::Communication::AdminGuestbook
+end
 		end
 	end
 end

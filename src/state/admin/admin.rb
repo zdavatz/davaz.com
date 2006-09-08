@@ -3,6 +3,7 @@
 
 require 'state/art_object'
 require 'state/communication/links'
+require 'state/communication/news'
 require 'state/public/articles'
 require 'state/gallery/result'
 require 'state/personal/life'
@@ -25,6 +26,7 @@ module Admin
 		:ajax_add_element				=>	State::AjaxAddElement,
 		:ajax_add_form					=>	State::AjaxAddForm,
 		#:ajax_add_link					=>	State::Admin::AjaxAddLink,
+		#:ajax_add_new_element		=>	State::Admin::AjaxAddNewElement,
 		:ajax_all_tags					=>	State::AjaxAllTags,
 		:ajax_all_tags_link			=>	State::AjaxAllTagsLink,
 		#:ajax_cancel_live_edit	=>	State::Admin::AjaxCancelLiveEdit,
@@ -43,6 +45,7 @@ module Admin
 		#:logout									=>	State::Personal::Init,
 		#:life										=>	State::Personal::AdminLife,	
 		:new_art_object					=>	State::AdminArtObject,
+		:news										=>	State::Communication::AdminNews,
 		#:personal_life					=>	State::Personal::AdminLife,
 		#:work										=>	State::Personal::AdminWork,
 	}

@@ -14,7 +14,7 @@ ywesee.widget.LiveEdit = function() {
 	this.templateCssPath = 
 		dojo.uri.dojoUri("../javascript/widget/templates/HtmlLiveEdit.css");
 
-	this.isContainer = false;
+	this.isContainer = true;
 	this.widgetType = "LiveEdit";
 
 	this.artobject_id = "";
@@ -22,10 +22,11 @@ ywesee.widget.LiveEdit = function() {
 	this.css_class = "";
 	this.update_url = "";
 	this.field_key = "";
+	this.className = "";
 	this.liveEditContainer = null;
 	this.liveEditDiv = null;
 	this.liveEditForm = null;
-	this.leSpan = null;
+	this.leText = null;
 	this.leInput = null;
 
 
@@ -33,19 +34,29 @@ ywesee.widget.LiveEdit = function() {
 		if(this.value == '') {
 			return 0;
 		} else {
+			this.className = this.liveEditDiv.className;
 			this.liveEditContainer.className = this.css_class;
-			this.addSpanToDiv();
+			dojo.event.connect(this.liveEditContainer, "onclick", this, "toggleInput");
+			this.addTextToDiv();
 			dojo.event.connect(this.liveEditForm, "onblur", this, "saveChanges");
 			this.addHiddenFieldsToForm();
 		}
 	}
 
-	this.addSpanToDiv = function() {
-		this.leSpan = document.createElement("span");
-		this.leSpan.innerHTML = this.value;
+	this.keyDown = function(evt){
+		if (evt.keyCode == 27) { // escape key
+			this.liveEditDiv.className = this.className;
+			this.liveEditForm.removeChild(this.leInput);
+			this.addTextToDiv();
+		}
+	}
+
+	this.addTextToDiv = function() {
+		this.leText = document.createElement("span");
+		this.leText.innerHTML = this.value;
 		var _this = this;
-		dojo.event.connect(this.leSpan, "onclick", this, "toggleInput");
-		this.liveEditDiv.appendChild(this.leSpan);
+		dojo.event.connect(this.leText, "onclick", this, "toggleInput");
+		this.liveEditDiv.appendChild(this.leText);
 	}
 
 	this.addInputToForm = function() {
@@ -54,13 +65,16 @@ ywesee.widget.LiveEdit = function() {
 		this.leInput.name = "update_value";
 		this.leInput.value = this.value;
 		this.leInput.size = this.value.length + 10;
-		this.leInput.className = 'live-edit-input';
+		this.leInput.className = this.css_class;
 		dojo.event.connect(this.leInput, "onblur", this, "saveChanges");
+		dojo.event.connect(this.leInput, "onkeydown", this, "keyDown");
 		this.liveEditForm.appendChild(this.leInput);
+		this.leInput.focus();
 	}
 
 	this.toggleInput = function() {
-		this.liveEditDiv.removeChild(this.leSpan);
+		this.liveEditDiv.className = this.className + " active";
+		this.liveEditDiv.removeChild(this.leText);
 		this.addInputToForm();
 	}
 
@@ -75,6 +89,11 @@ ywesee.widget.LiveEdit = function() {
 		fkey.name = "field_key";
 		fkey.value = this.field_key;
 		this.liveEditForm.appendChild(fkey);
+		var oldvalue = document.createElement("input");
+		oldvalue.type = "hidden";
+		oldvalue.name = "old_value";
+		oldvalue.value = this.value;
+		this.liveEditForm.appendChild(oldvalue);
 	}
 
 	this.saveChanges = function(evt) {
@@ -83,12 +102,12 @@ ywesee.widget.LiveEdit = function() {
 		dojo.io.bind({
 			url: this.update_url,
 			formNode: form,
-		//	transport: 'IframeTransport',
 			load: function(type, data, event) {
 				_this.liveEditForm.removeChild(_this.leInput);
 				_this.value = data['updated_value'];
-				_this.leSpan.innerHTML = data['updated_value'];
-				_this.liveEditDiv.appendChild(_this.leSpan);
+				_this.leText.innerHTML = data['updated_value'];
+				_this.liveEditDiv.appendChild(_this.leText);
+				_this.liveEditDiv.className = _this.className;
 			},
 			mimetype: "text/json"
 		});	

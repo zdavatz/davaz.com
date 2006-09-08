@@ -12,13 +12,50 @@ module DAVAZ
 				args = [
 					[ 'artobject_id', @model.artobject_id ],
 					[ 'field_key', @name ],
-					[ 'value', @model.send(@name) ],
+					[ 'old_value', @model.send(@name) ],
 					[ 'css_class', "block-#{@name.to_s}" ],
 					[ 'update_url', url ],
 				]
-				dojo_tag('liveedit', args)
+			end
+		end
+		class LiveInputText < LiveEdit 
+			def to_html(context)
+				args = super
+				unless(@model.send(@name).empty?)
+					dojo_tag('InputText', args)
+				else
+					""
+				end
+			end
+		end
+		class LiveInputTextarea < LiveEdit 
+			def to_html(context)
+				args = super
+				unless(@model.send(@name).empty?)
+					dojo_tag('InputTextarea', args)
+				else
+					""
+				end
+			end
+		end
+		class LiveDeleteLink < HtmlGrid::Link 
+			def init 
+				super
+				@href = 'javascript:void(0)'
+				@value = @lookandfeel.lookup(:delete)
+				@class = 'delete-element'
+				args = {
+					:artobject_id => @model.artobject_id,
+				} 
+				url = @lookandfeel.event_url(@session.zone, :ajax_delete_element, args)
+				script = <<-EOS 
+					var msg = 'Do you really want to delete this Item?'
+					if(confirm(msg)) { 
+						deleteElement('#{url}')
+					}
+				EOS
+				@attributes['onclick'] = script
 			end
 		end
 	end
 end
-

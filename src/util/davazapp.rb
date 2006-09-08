@@ -140,6 +140,9 @@ module DAVAZ
 			def load_serie(serie_id, select_by='serie_id')
 				@db_manager.load_serie(serie_id, select_by)
 			end
+			def load_serie_id(name)
+				@db_manager.load_serie_id(name)
+			end
 			def load_series
 				@db_manager.load_series("", load_artobjects=false)
 			end

@@ -71,7 +71,9 @@ module DAVAZ
 				'ywesee.widget.SlideShow',
 				'ywesee.widget.Rack',
 				'ywesee.widget.Ticker',
-				'ywesee.widget.LiveEdit',
+				'ywesee.widget.EditWidget',
+				'ywesee.widget.InputText',
+				'ywesee.widget.InputTextarea',
 			]
 			CONTENT = nil
 			TICKER = nil
@@ -165,6 +167,9 @@ module DAVAZ
 		end
 		class CommunicationPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :communication_css ]
+		end
+		class CommunicationAdminPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :communication_css, :communication_admin_css ]
 		end
 		class PersonalPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :personal_css ]

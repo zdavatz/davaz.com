@@ -5,6 +5,7 @@ require 'state/global'
 require 'view/ajax_response'
 require 'view/admin/ajax_live_edit_form'
 require 'view/textblock'
+require 'view/communication/links'
 
 module DAVAZ
 	module State
@@ -48,7 +49,9 @@ class AjaxSaveLiveEdit < SBSM::State
 		update_value = @session.user_input(:update_value)
 		artobject_id = @session.user_input(:artobject_id)
 		field_key = @session.user_input(:field_key)
-		puts artobject_id, update_value, field_key
+		if(update_value.nil? || update_value.empty?)
+			update_value = @session.lookandfeel.lookup(:click2edit)
+		end
 		update_hash = {
 			field_key.intern	=>	update_value,
 		}

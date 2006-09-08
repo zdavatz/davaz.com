@@ -13,6 +13,9 @@ class News < State::Communication::Global
 		@model = @session.app.load_news
 	end
 end
+class AdminNews < State::Communication::News
+	VIEW = View::Communication::AdminNews
+end
 		end
 	end
 end

@@ -386,3 +386,28 @@ function loginLogout(link) {
 	var href = link.href + "fragment/" + hash.replace(/#/, '');
 	link.href = href;
 }
+
+function addNewElement(url) {
+	var container = dojo.byId('element-container');
+	dojo.io.bind({
+		url: url,
+		load: function(type, data, event) {
+			var div = document.createElement("div");
+			container.insertBefore(div,container.firstChild);
+			var pane = dojo.widget.createWidget("ContentPane", {executeScripts: true}, div);
+			pane.setContent(data);
+		},
+		mimetype: 'text/html'
+	});	
+}
+
+function deleteElement(url) {
+	var container = dojo.byId('element-container');
+	dojo.io.bind({
+		url: url,
+		load: function(type, data, event) {
+			window.location.href=data['url'];
+		},
+		mimetype: 'text/html'
+	});	
+}

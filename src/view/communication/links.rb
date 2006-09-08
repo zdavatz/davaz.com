@@ -3,6 +3,7 @@
 
 require 'view/publictemplate'
 require 'view/textblock'
+require 'view/add_new_element'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
 require 'htmlgrid/link'
@@ -40,7 +41,7 @@ class LinksList < View::List
 end
 =end
 class LinksList < HtmlGrid::DivList
-	CSS_CLASS = 'links'
+	CSS_CLASS = 'elements'
 	COMPONENTS = {
 		[0,0]	=>	View::TextBlock,
 	}	
@@ -65,18 +66,20 @@ end
 class Links < View::CommunicationPublicTemplate
 	CONTENT = View::Communication::LinksComposite
 end
-class AdminLinksList < View::Communication::LinksList
+class AdminLinksInnerComposite < HtmlGrid::DivComposite
+	CSS_ID = "element-container"
 	COMPONENTS = {
-		[0,0]	=>	View::AdminTextBlock,
+		[0,0]	=>	component(View::AdminTextBlockList, :links),
 	}
 end
 class AdminLinksComposite < View::Communication::LinksComposite
 	COMPONENTS = {
 		[0,0]	=>	LinksTitle,
-		[1,0]	=>	AdminLinksList,
+		[1,0]	=>	View::AddNewElementComposite,
+		[2,0]	=>	AdminLinksInnerComposite,
 	}
 end
-class AdminLinks < View::Communication::Links
+class AdminLinks < View::CommunicationAdminPublicTemplate
 	CONTENT = View::Communication::AdminLinksComposite
 end
 		end

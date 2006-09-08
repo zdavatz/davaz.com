@@ -275,20 +275,32 @@ td.shopping-cart-title {
 	width: 250px;
 }
 
-div.links, div.news {
+div#element-container, div.news {
 	width: 700px;
 	margin-left: auto; margin-right: auto;
 }
 
-div.block-url, div.block-title {
+div.block-title {
 	clear: both;
+	font-weight: bold;
+	font-size: 13pt;
 	margin-top: 20px;
-	height: 18px;
-	/*width: 600px;*/
-	color: white;
-	/*float: left;*/
-	background-color: #990099;
 	text-align: left;
+	width: 100%;
+	/*height: 22p;
+	width: 600px;*/
+	/*float: left;*/
+	/* background-color: #990099; */
+}
+
+div.block-url {
+	clear: both;
+	font-weight: bold;
+	font-size: 13pt;
+	margin-top: 20px;
+	text-align: left;
+	color: blue;
+	width: 100%;
 }
 
 div.block-url a:link, div.block-url a:visited, 
@@ -298,23 +310,18 @@ div.block-url a:hover {
 }
 
 div.block-date {
-	height: 17px;
-	margin-top: -17px;
-	width: 100px;
-	margin-left: 600px;
-	color: white;
-	/*float: right;*/
-	background-color: #990099;
-	text-align: right;
+	clear: both;
+	/*font-size: 10pt;*/
+	text-align: left;
+	width: 100%;
 }
 
 div.block-text {
 	color: black;
 	text-align: left;
-	padding-top: 10px;
+	width: 100%;
 }
 
 div.block-image {
-	float: right;
-	padding-top: 10px;
+	text-align: left;
 }

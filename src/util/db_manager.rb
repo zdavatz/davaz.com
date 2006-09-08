@@ -430,6 +430,18 @@ module DAVAZ
 				}
 				array
 			end
+			def load_serie_id(serie_name)
+				query = <<-EOS
+					SELECT serie_id FROM series
+					WHERE name='#{serie_name}'
+				EOS
+				result = connection.query(query)
+				serie_id = ""
+				result.each_hash { |row|
+					serie_id = row["serie_id"]
+				}
+				serie_id
+			end
 			def load_shop_items()
 				query = <<-EOS
 					SELECT artobjects.*, artgroups.name AS artgroup
@@ -522,21 +534,23 @@ module DAVAZ
 			def insert_artobject(values_hash)
 				values_array = []
 				tags = values_hash[:tags]
-				tags.each { |tag| 
-					unless tag.empty?
-						query = <<-EOS
-							INSERT INTO tags SET name='#{tag}'
-							ON DUPLICATE KEY UPDATE name='#{tag}'
-						EOS
-						connection.query(query)
-						tag_id = connection.insert_id
-						query = <<-EOS
-							INSERT INTO tags_artobjects
-							SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
-						EOS
-						connection.query(query)
-					end
-				}
+				if(tags)
+					tags.each { |tag| 
+						unless tag.empty?
+							query = <<-EOS
+								INSERT INTO tags SET name='#{tag}'
+								ON DUPLICATE KEY UPDATE name='#{tag}'
+							EOS
+							connection.query(query)
+							tag_id = connection.insert_id
+							query = <<-EOS
+								INSERT INTO tags_artobjects
+								SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
+							EOS
+							connection.query(query)
+						end
+					}
+				end
 				values_hash.each { |key, value|
 					unless(value.nil? || key == :tags)
 						values_array.push("#{key}='#{Mysql.quote(value)}'")

@@ -229,16 +229,28 @@ module DAVAZ
 =end
 		class AdminTextBlock < TextBlock 
 			def date_to_html(context)
-				LiveEdit.new(:date, @model, @session, self).to_html(context)
+				LiveInputText.new(:date, @model, @session, self).to_html(context)
 			end
 			def text_to_html(context)
-				LiveEdit.new(:text, @model, @session, self).to_html(context)
+				LiveInputTextarea.new(:text, @model, @session, self).to_html(context)
 			end
 			def title_to_html(context)
-				LiveEdit.new(:title, @model, @session, self).to_html(context)
+				LiveInputText.new(:title, @model, @session, self).to_html(context)
 			end
 			def url_to_html(context)
-				LiveEdit.new(:url, @model, @session, self).to_html(context)
+				LiveInputText.new(:url, @model, @session, self).to_html(context)
+			end
+			def to_html(context)
+				html = super
+				html << LiveDeleteLink.new(:delete_element, @model, @session, self).to_html(context)
+			end
+		end
+		class AdminTextBlockList < HtmlGrid::DivList
+			COMPONENTS = {
+				[0,0]	=>	View::AdminTextBlock,
+			}
+			def init
+				super
 			end
 		end
 	end

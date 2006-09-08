@@ -6,6 +6,14 @@ body {
 	min-width: 360px;
 }
 
+input {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+textarea {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
 .admin {
 	border: blue 1pt solid;
 	background-color: #99FFFF;
@@ -462,4 +470,14 @@ td.label {
 
 a:link, a:visited, a:hover {
 	text-decoration: none;
+}
+
+div#add-new-element-form {
+	/* display: none; */
+	margin-left: auto; margin-right: auto;
+	width: 600px;
+}
+
+div#add-new-element-form table {
+	margin-left: auto; margin-right: auto;
 }

@@ -40,6 +40,22 @@ end
 class News < View::CommunicationPublicTemplate
 	CONTENT = View::Communication::NewsComposite	
 end
+class AdminNewsList < View::Communication::NewsList
+	COMPONENTS = {
+		#[0,0]	=>	View::AdminTextBlock,
+		[0,0]	=>	View::TextBlock,
+	}
+end
+class AdminNewsComposite < View::Communication::NewsComposite
+	COMPONENTS = {
+		[0,0]	=>	NewsTitle,
+		#[1,0]	=>	AddNewNewsComposite,
+		[2,0]	=>	AdminNewsList,	
+	}
+end
+class AdminNews < View::CommunicationAdminPublicTemplate
+	CONTENT = View::Communication::AdminNewsComposite
+end
 		end
 	end
 end

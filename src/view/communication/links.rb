@@ -41,7 +41,7 @@ class LinksList < View::List
 end
 =end
 class LinksList < HtmlGrid::DivList
-	CSS_CLASS = 'elements'
+	CSS_ID = 'element-container'
 	COMPONENTS = {
 		[0,0]	=>	View::TextBlock,
 	}	

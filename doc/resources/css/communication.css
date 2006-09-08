@@ -275,7 +275,7 @@ td.shopping-cart-title {
 	width: 250px;
 }
 
-div#element-container, div.news {
+div#element-container, div.news, div.links {
 	width: 700px;
 	margin-left: auto; margin-right: auto;
 }
@@ -305,7 +305,6 @@ div.block-url {
 
 div.block-url a:link, div.block-url a:visited, 
 div.block-url a:hover {
-	color: white;
 	text-decoration: none;
 }
 

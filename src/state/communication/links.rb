@@ -17,7 +17,7 @@ class Links < State::Communication::Global
 		@model = @session.app.load_links
 	end
 end
-class AjaxAddNewElement < State::Admin::AjaxAddNewElement 
+class AjaxAddNewLinkElement < State::Admin::AjaxAddNewElement 
 	def init
 		values = {
 			:serie_id =>	@model.serie_id,
@@ -37,7 +37,7 @@ class AdminLinks < State::Communication::Global
 		@model.serie_id = @session.app.load_serie_id('site_links')
 	end
 	def ajax_add_new_element
-		AjaxAddNewElement.new(@session, @model)
+		AjaxAddNewLinkElement.new(@session, @model)
 	end
 end
 		end

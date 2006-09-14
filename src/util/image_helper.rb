@@ -56,12 +56,16 @@ module DAVAZ
 				dir_components.push(size) unless size.nil?
 				dir_components.join("/")
 			end
-			def ImageHelper.image_path(artobject_id, size=nil)
+			def ImageHelper.image_path(artobject_id, size=nil, \
+					timestamp=false)
 				return nil if artobject_id.nil?
-				file = ImageHelper.abs_image_path(artobject_id, size)
-				unless file.nil?
-					file.slice!(DOCUMENT_ROOT)
-					file
+				path = ImageHelper.abs_image_path(artobject_id, size)
+				if(timestamp)
+					path += sprintf("?time=%i", File.mtime(path))
+				end
+				unless path.nil?
+					path.slice!(DOCUMENT_ROOT)
+					path
 				end
 			end
 			def ImageHelper.resize_image(artobject_id, image)

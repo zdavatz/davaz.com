@@ -102,7 +102,7 @@ class AjaxUploadImage < SBSM::State
 			if artobject_id
 				Util::ImageHelper.store_upload_image(string_io, 
 																						 artobject_id)
-				@model = Util::ImageHelper.image_path(artobject_id, 'large')
+				@model = Util::ImageHelper.image_path(artobject_id, 'large', true)
 			end
 		end
 	end

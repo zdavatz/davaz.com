@@ -31,7 +31,7 @@ class LiveEditWidget < HtmlGrid::Div
 		]
 		if(Util::ImageHelper.has_image?(@model.artobject_id))
 			args.push([ 'has_image', 'true' ])
-			image_url = Util::ImageHelper.image_path(@model.artobject_id, 'large')
+			image_url = Util::ImageHelper.image_path(@model.artobject_id, 'large', true)
 			args.push([ 'image_url', image_url ])
 		else
 			args.push([ 'has_image', 'false' ])

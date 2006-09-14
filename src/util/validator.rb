@@ -9,6 +9,7 @@ module DAVAZ
 		class Validator < SBSM::Validator
 			DATES = [
 				:date,
+				:date_ch,
 			]
 			EVENTS = [ 
 				:add_entry,
@@ -27,6 +28,7 @@ module DAVAZ
 				:ajax_desk,
 				:ajax_desk_artobject,
 				:ajax_home,
+				:ajax_image_action,
 				:ajax_image_browser,
 				:ajax_reload_tag_images,
 				:ajax_live_edit_form,
@@ -50,6 +52,7 @@ module DAVAZ
 				:edit,
 				:exhibitions,
 				:family,
+				:flush_ajax_errors,
 				:gallery,
 				:guestbook,
 				:guestbookentry,

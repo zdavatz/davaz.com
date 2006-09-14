@@ -169,7 +169,8 @@ class AdminLifeList < HtmlGrid::UlList
 	}
 end
 class AdminLifeComposite < LifeComposite 
-	LIFE_LIST = component(AdminLifeList, :biography_items)
+	#LIFE_LIST = component(AdminLifeList, :biography_items)
+	LIFE_LIST = component(AdminTextBlockList, :biography_items)
 end
 class AdminLife < Life
 	CONTENT = View::Personal::AdminLifeComposite

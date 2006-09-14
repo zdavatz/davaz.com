@@ -40,11 +40,11 @@ input.block-title {
 	font-weight: bold;
 }
 
-div.block-date:hover {
+div.block-date_ch:hover {
 	background-color: #f3fb98;
 }
 
-input.block-date {
+input.block-date_ch {
 	border: none;
 	width: 100%;
 }
@@ -65,4 +65,18 @@ textarea.block-text {
 
 .active {
 	background-color: #e6e6fa;
+}
+
+div.edit-element {
+	text-align: left;
+	float: left;
+}
+
+a.edit-element:link, a.edit-element:active,
+a.edit-element:hover {
+	color: red;
+}
+
+div#upload-image-div {
+	clear: both;
 }

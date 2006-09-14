@@ -6,7 +6,7 @@ require 'htmlgrid/namedcomponent'
 require 'htmlgrid/span'
 require 'htmlgrid/link'
 require 'util/image_helper'
-require 'view/live_edit'
+require 'view/admin/live_edit'
 
 module DAVAZ 
 	module View
@@ -79,6 +79,10 @@ module DAVAZ
 			end
 			def add_image(context)
 				artobject_id = @model.artobject_id
+				args = {
+					'class'				=>	'block-image',
+					'id'					=>	"artobject-image-#{@model.artobject_id}",
+				}
 				if(Util::ImageHelper.has_image?(artobject_id))
 					image = HtmlGrid::Image.new(artobject_id, @model, @session, self)
 					url = Util::ImageHelper.image_path(artobject_id, 'large')
@@ -95,12 +99,9 @@ module DAVAZ
 					#link.href = url
 					#link.set_attribute('dojoType', 'tooltip')
 					#link.set_attribute('connectId', @model.artobject_id)
-					args = {
-						'class'				=>	'block-image',
-					}
 					div = context.div(args) { image.to_html(context) }
 				else
-					""
+					div = context.div(args) {}
 				end
 			end
 			def author_to_html(context)
@@ -131,7 +132,7 @@ module DAVAZ
 					args = {
 						'class'	=>	'block-date'
 					}
-					context.div(args) { add_links(@model.date, context) }
+					context.div(args) { @model.date_ch }
 				end
 			end
 			def hide_link(link, context)
@@ -195,63 +196,12 @@ module DAVAZ
 				add_hidden_divs(html, context)
 			end
 		end
-=begin
-		class LiveEdit < HtmlGrid::NamedComponent
-			include TextBlockLinksMethods
-			def to_html(context)
-				field_key = @name
-				field_value = @model.send(field_key)
-				text = context.p() {add_links(field_value, context)}
-				node_id = "#{@model.artobject_id}-#{field_key.to_s}"
-				args = {
-					'artobject_id'	=>	@model.artobject_id,
-					'field_value'		=>	field_value,
-					'field_key'			=>	field_key.to_s,
-					'node_id'				=>	node_id,
-				}
-			url = @lookandfeel.event_url(:admin, :ajax_live_edit_form, args)
-			args = {
-					'class'		=>	'live-edit',
-					'id'			=>	node_id,
-					'onclick'	=>	"liveEdit('#{url}', '#{node_id}');",
-				}
-				context.div(args) { context.p() { field_value } }
-			end
-		end
-		class CancelLiveEdit < View::Composite
-			COMPONENTS = {
-				[0,0]	=>	:live_edit,
-			}
-			def live_edit(model)
-				LiveEdit.new(@model.field_key, @model.artobject, @session, self)
-			end
-		end
-=end
-		class AdminTextBlock < TextBlock 
-			def date_to_html(context)
-				LiveInputText.new(:date, @model, @session, self).to_html(context)
-			end
-			def text_to_html(context)
-				LiveInputTextarea.new(:text, @model, @session, self).to_html(context)
-			end
-			def title_to_html(context)
-				LiveInputText.new(:title, @model, @session, self).to_html(context)
-			end
-			def url_to_html(context)
-				LiveInputText.new(:url, @model, @session, self).to_html(context)
-			end
-			def to_html(context)
-				html = super
-				html << LiveDeleteLink.new(:delete_element, @model, @session, self).to_html(context)
-			end
+		class AdminTextBlock < HtmlGrid::Component
 		end
 		class AdminTextBlockList < HtmlGrid::DivList
 			COMPONENTS = {
-				[0,0]	=>	View::AdminTextBlock,
+				[0,0]	=>	View::Admin::LiveEditWidget,
 			}
-			def init
-				super
-			end
 		end
 	end
 end

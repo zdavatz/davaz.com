@@ -4,7 +4,7 @@
 require 'state/global_predefine'
 require 'state/admin/ajax_states'
 require 'view/communication/links'
-require 'view/textblock'
+require 'view/admin/live_edit'
 require 'view/ajax_response'
 require 'date'
 
@@ -17,20 +17,7 @@ class Links < State::Communication::Global
 		@model = @session.app.load_links
 	end
 end
-class AjaxDeleteElement < SBSM::State 
-	VIEW = View::AjaxResponse
-	VOLATILE = true
-	def init
-		artobject_id = @session.user_input(:artobject_id)
-		@session.app.delete_artobject(artobject_id)
-		url = @session.lookandfeel.event_url(:communication, :links)
-		@model = Hash.new
-		@model['url'] = url
-	end
-end
-class AjaxAddNewElement < SBSM::State 
-	VIEW = View::AdminTextBlock
-	VOLATILE = true
+class AjaxAddNewElement < State::Admin::AjaxAddNewElement 
 	def init
 		values = {
 			:serie_id =>	@model.serie_id,
@@ -47,14 +34,10 @@ class AdminLinks < State::Communication::Global
 	def init
 		@model = OpenStruct.new
 		@model.links = @session.app.load_links
-		@model.fields = [ :url, :date, :text ]
 		@model.serie_id = @session.app.load_serie_id('site_links')
 	end
 	def ajax_add_new_element
 		AjaxAddNewElement.new(@session, @model)
-	end
-	def ajax_delete_element
-		AjaxDeleteElement.new(@session, @model)
 	end
 end
 		end

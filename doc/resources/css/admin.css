@@ -112,14 +112,6 @@ div.display-element-form-reset {
 	clear: both;
 }
 
-div#login-form {
-	text-align: left;
-	color: black;
-	width: 300px;
-	padding-top: 100px;
-	margin-left: auto; margin-right: auto;
-}
-
 div#breadcrumbs {
 	font-size: 10pt;
 	color: white;
@@ -187,4 +179,91 @@ div#artobject-image-upload-form {
 table#artobject-details td {
 	text-align: left;	
 	padding-bottom: 5px;
+}
+
+div.edit-buttons {
+	width: 100%;
+	text-align: left;
+}
+
+div.edit-buttons input {
+	margin: 5px;
+}
+
+input {
+	background-color: none;
+}
+
+textarea {
+	background-color: none;
+	font-size: 10pt;
+}
+
+div.block-url:hover {
+	background-color: #f3fb98;
+}
+
+input.block-url {
+	border: none;
+	width: 100%;
+	font-size: 13pt;
+	font-weight: bold;
+	font-color: blue;
+}
+
+div#element-container {
+	width: 600px;
+	margin-left: auto; margin-right: auto;
+}
+
+div.block-title:hover {
+	background-color: #f3fb98;
+}
+
+input.block-title {
+	border: none;
+	width: 100%;
+	font-size: 13pt;
+	font-weight: bold;
+}
+
+div.block-date_ch:hover {
+	background-color: #f3fb98;
+}
+
+input.block-date_ch {
+	border: none;
+	width: 100%;
+}
+
+div.block-text:hover {
+	background-color: #f3fb98;
+}
+
+input.block-text {
+	border: none;
+	width: 100%;
+}
+
+textarea.block-text {
+	border: none;
+	width: 100%;
+}
+
+.active {
+	background-color: #e6e6fa;
+}
+
+div.edit-element {
+	text-align: left;
+	float: left;
+}
+
+a.edit-element:link, a.edit-element:active,
+a.edit-element:hover {
+	color: red;
+}
+
+div#upload-image-div {
+	clear: both;
 }

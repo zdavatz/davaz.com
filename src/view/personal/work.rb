@@ -6,6 +6,7 @@ require 'view/textblock'
 require 'view/works/oneliner'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/image'
+require 'view/admin/ajax_views'
 
 module DAVAZ
 	module View
@@ -51,17 +52,13 @@ class WorkText < HtmlGrid::DivList
 	}
 end
 class WorkComposite < HtmlGrid::DivComposite
-	WORK_TEXT = component(WorkText, :text)
 	CSS_CLASS = 'content'
 	COMPONENTS = {
 		[0,0]	=>	WorkTitle,	
 		[1,0]	=>	component(View::Works::OneLiner, :oneliner),
+		[2,0]	=>	component(WorkText, :text),
 		[3,0]	=>	:morphopolis_ticker_link,
 	}
-	def init
-		components[[2,0]] = self.class::WORK_TEXT	
-		super
-	end
 	def morphopolis_ticker_link(model)
 		link = HtmlGrid::Link.new(:morphopolis_ticker_link, model, @session, self)
 		link.href = "javascript:void(0)"
@@ -77,16 +74,24 @@ class Work < View::PersonalPublicTemplate
 	CONTENT = View::Personal::WorkComposite
 	TICKER = 'morphopolis'
 end
-class AdminWorkText < WorkText 
+class AdminWorkTextInnerComposite < HtmlGrid::DivComposite 
+	CSS_ID = "element-container"
 	COMPONENTS = {
-		[0,0]	=>	View::AdminTextBlock,
+		[0,0]	=>	component(View::AdminTextBlockList, :text),
 	}
 end
 class AdminWorkComposite < WorkComposite 
-	WORK_TEXT = component(AdminWorkText, :text)
+	COMPONENTS = {
+		[0,0]	=>	WorkTitle,	
+		[1,0]	=>	component(View::Works::OneLiner, :oneliner),
+		[2,0]	=>	View::Admin::AjaxAddNewElementComposite,
+		[3,0]	=>	AdminWorkTextInnerComposite,
+		[4,0]	=>	:morphopolis_ticker_link,
+	}
 end
-class AdminWork < Work 
+class AdminWork < View::AdminPersonalPublicTemplate
 	CONTENT = View::Personal::AdminWorkComposite
+	TICKER = 'morphopolis'
 end
 		end
 	end

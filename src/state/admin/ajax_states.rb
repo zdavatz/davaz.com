@@ -3,13 +3,16 @@
 
 require 'state/global'
 require 'view/ajax_response'
-require 'view/admin/ajax_live_edit_form'
-require 'view/textblock'
-require 'view/communication/links'
+require 'view/admin/ajax_views'
+require 'util/image_helper'
 
 module DAVAZ
 	module State
 		module Admin
+class AjaxAddNewElement < SBSM::State 
+	VIEW = View::Admin::LiveEditWidget
+	VOLATILE = true
+end
 class AjaxCheckRemovalStatus < SBSM::State
 	VIEW = View::AjaxResponse
 	VOLATILE = true
@@ -42,13 +45,38 @@ class AjaxCheckRemovalStatus < SBSM::State
 		end
 	end
 end
+class AjaxDeleteElement < SBSM::State 
+	VIEW = View::AjaxResponse
+	VOLATILE = true
+	def init
+		artobject_id = @session.user_input(:artobject_id)
+		@model = Hash.new
+		if(@session.app.delete_artobject(artobject_id) > 0)
+			@model['status'] = 'deleted' 
+		else
+			@model['status'] = 'not deleted' 
+		end
+	end
+end
+class AjaxDeleteImage < SBSM::State
+	VIEW = View::AjaxResponse
+	VOLATILE = true
+	def init
+		artobject_id = @session.user_input(:artobject_id)
+		@model = {} 
+		@model['status'] = 'not deleted'
+		if(Util::ImageHelper.delete_image(artobject_id))
+			@model['status'] = 'deleted'
+		end
+	end
+end
 class AjaxSaveLiveEdit < SBSM::State
 	VIEW = View::AjaxResponse
 	VOLATILE = true
 	def init
 		update_value = @session.user_input(:update_value)
-		artobject_id = @session.user_input(:artobject_id)
 		field_key = @session.user_input(:field_key)
+		artobject_id = @session.user_input(:artobject_id)
 		if(update_value.nil? || update_value.empty?)
 			update_value = @session.lookandfeel.lookup(:click2edit)
 		end
@@ -60,6 +88,32 @@ class AjaxSaveLiveEdit < SBSM::State
 		@model = {
 			'updated_value'	=>	artobject.send(field_key.intern),
 		} 
+	end
+end
+class AjaxUploadImage < SBSM::State
+	include Magick
+	VIEW = View::AjaxHtmlResponse
+	VOLATILE = true
+	def init 
+		artobject_id = @session.user_input(:artobject_id)
+		@model = 'not uploaded'
+		string_io = @session.user_input(:image_file)
+		unless(string_io.nil?)
+			if artobject_id
+				Util::ImageHelper.store_upload_image(string_io, 
+																						 artobject_id)
+				@model = Util::ImageHelper.image_path(artobject_id, 'large')
+			end
+		end
+	end
+end
+class AjaxUploadImageForm < SBSM::State
+	VIEW = View::Admin::AjaxUploadImageForm
+	VOLATILE = true
+	def init
+		puts "in upload form"
+		artobject_id = @session.user_input(:artobject_id)
+		@model = @session.app.load_artobject(artobject_id)
 	end
 end
 		end

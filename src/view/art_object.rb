@@ -6,8 +6,8 @@ require 'view/form'
 require 'view/select'
 require 'htmlgrid/divform'
 require 'htmlgrid/divlist'
-require 'htmlgrid/inputfile'
 require 'htmlgrid/errormessage'
+require 'htmlgrid/inputfile'
 require 'RMagick'
 
 module DAVAZ
@@ -520,31 +520,6 @@ module DAVAZ
 				input_text(:url, '150')
 			end
 		end
-		class UploadForm < View::Form
-			CSS_ID = 'upload-image-form'
-			EVENT = :ajax_upload_image
-			LABELS = true
-			TAG_METHOD = :multipart_form
-			COMPONENTS = {
-				[0,0]	=>	:image_file,
-				[1,0]	=>	:submit,
-			}
-			SYMBOL_MAP = {
-				:image_file		=> HtmlGrid::InputFile,
-			}
-			def hidden_fields(context)
-				super <<
-				context.hidden('artobject_id', @model.artobject.artobject_id)
-			end
-			def init
-				super
-				data_id = 'artobject-admin-image'
-				form_id = 'upload-image-form'
-				script = "submitForm(this, '#{data_id}', '#{form_id}', true);" 
-				script << "return false;"
-				self.onsubmit = script 
-			end
-		end
 		class ImageDiv < HtmlGrid::Div
 			def image(artobject, url)
 				img = HtmlGrid::Image.new('artobject_image', artobject, @session, self)
@@ -572,22 +547,50 @@ module DAVAZ
 				end
 			end
 		end
+		class UploadImageForm < View::Form
+			CSS_ID = 'upload-image-form'
+			EVENT = :ajax_upload_image
+			LABELS = true
+			TAG_METHOD = :multipart_form
+			COMPONENTS = {
+				[0,0]	=>	:image_file,
+				[1,0]	=>	:submit,
+			}
+			SYMBOL_MAP = {
+				:image_file		=> HtmlGrid::InputFile,
+			}
+			def hidden_fields(context)
+				super <<
+				context.hidden('artobject_id', @model.artobject.artobject_id)
+			end
+			def init
+				super
+				data_id = "artobject-image-#{@model.artobject.artobject_id}"
+				form_id = 'upload-image-form'
+				script = "submitForm(this, '#{data_id}', '#{form_id}', true);" 
+				script << "return false;"
+				self.onsubmit = script 
+			end
+		end
 		class AdminArtObjectInnerComposite < HtmlGrid::DivComposite
 			COMPONENTS = {
 				[0,0]	=>	:artcode,
 				[0,1]	=>	ImageDiv,
-				[0,2]	=>	UploadForm,
+				[0,2]	=>	View::UploadImageForm,
 				[0,3]	=>	AdminArtobjectDetails,
 			}
 			CSS_ID_MAP = {
 				0	=>	'artobject-title',
-				1	=>	'artobject-admin-image',	
 				2	=>	'artobject-image-upload-form',	
 				3	=>	'artobject-admin-details',	
 			}
 			SYMBOL_MAP = {
 				:artcode =>	HtmlGrid::Value,
 			}
+			def init
+				css_id_map.store(1, "artobject-image-#{@model.artobject.artobject_id}")
+				super
+			end
 			def artcode(model)
 				model.artobject.artcode
 			end

@@ -11,6 +11,7 @@ module DAVAZ
 class Global < State::Global; end
 class Home < State::Admin::Global; end
 class ImageChooser < State::Admin::Global; end
+class AjaxAddNewElement < SBSM::State; end
 		end
 		module Communication
 class Global < State::Global; end

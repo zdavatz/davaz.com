@@ -1,0 +1,8 @@
+div#login-form {
+	text-align: left;
+	color: black;
+	padding: 5px;
+	border: 2px #990099 solid;
+	background-color: #FFFFCC;
+	margin-left: auto; margin-right: auto;
+}

@@ -103,6 +103,27 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
 	});
 }
 
+function toggleUploadImageForm(divId, url) {
+	var node = dojo.byId(divId);
+	if(node.innerHTML == '') {
+		document.body.style.cursor = 'progress';
+		dojo.io.bind({
+			url: url,
+			load: function(type, data, event) {
+				node.style.display = 'none';
+				node.innerHTML = data;
+				dojo.lfx.wipeIn(node, 300).play();
+				document.body.style.cursor = 'auto';
+			},
+			mimetype: 'text/html'
+		})
+	} else {
+		dojo.lfx.wipeOut(node, 300, null, function() {
+			node.innerHTML = "";
+		}).play();
+	}
+}
+
 function reloadShoppingCart(url, count) {
 	if(count!='0') {
 		var node = dojo.byId('shopping-cart');
@@ -381,7 +402,40 @@ function showImageChooser(url) {
 	});
 }
 
-function loginLogout(link) {
+function login_form(link, url) {
+	var hash = document.location.hash;
+	var login_url = url + "fragment/" + hash.replace(/#/, '');
+	dojo.io.bind({
+		url: login_url,
+		load: function(type, data, event) {
+			var form = dojo.byId('login-form')
+			if(form) {
+				dojo.html.body().removeChild(form);
+			} else {
+				var div = document.createElement("div");
+				div.innerHTML = data; 
+				div.id = 'login-form'
+				div.style.position="absolute";
+				dojo.html.body().appendChild(div);
+				var position = dojo.html.getAbsolutePosition(link, true);
+				var left = position[0];
+				var top = position[1] - 5 - div.offsetHeight;
+				div.style.left = left+"px";
+				div.style.top = top+"px";
+			}
+		},
+		mimetype: 'text/html'
+	});
+}
+
+function loginError(errorMessage) {
+	var form = dojo.byId('login-form');	
+	var div = document.createElement("div");
+	div.innerHTML = errorMessage;
+	form.appendChild(div); 
+}
+
+function logout(link) {
 	var hash = document.location.hash;
 	var href = link.href + "fragment/" + hash.replace(/#/, '');
 	link.href = href;
@@ -410,4 +464,40 @@ function deleteElement(url) {
 		},
 		mimetype: 'text/html'
 	});	
+}
+
+function deleteImage(url, image_div_id) {
+	var image_div = dojo.byId(image_div_id);
+	dojo.io.bind({
+		url: url,
+		load: function(type, data, event) {
+			image_div.innerHTML = "";
+		},
+		mimetype: 'text/html'
+	});
+}
+
+function reloadImageAction(url, div_id) {
+	var image_action_div = dojo.byId(div_id) ;
+	dojo.io.bind({
+		url: url,
+		load: function(type, data, event) {
+			image_action_div.innerHTML = data;
+		},
+		mimetype: 'text/html'
+	});
+}
+
+function toggleLoginWidget(loginLink, url) {
+	var div = document.createElement("div");	
+	dojo.html.body().appendChild(div);
+	dojo.widget.createWidget("LoginWidget", 
+		{
+			loginLink: loginLink,
+			loginFormUrl: url,
+			oldOnclick: loginLink.onclick,
+		},
+		div
+	);
+	loginLink.onclick = "return false;"
 }

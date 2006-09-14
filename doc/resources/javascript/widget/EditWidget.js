@@ -4,144 +4,126 @@ dojo.require("dojo.event");
 dojo.require("dojo.widget.*");
 dojo.require("dojo.lfx.*");
 dojo.require("dojo.style");
+dojo.require("ywesee.widget.Input");
+dojo.require("ywesee.widget.InputText");
+dojo.require("ywesee.widget.InputTextArea");
 
 dojo.widget.defineWidget(
-	"dojo.widget.EditWidget",
+	"ywesee.widget.EditWidget",
 	dojo.widget.HtmlWidget, 
 	{
-		widgetType: "EditWidget",
-		isContainer: false,
-
 		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlEditWidget.html"),
 
-		//widget variables
-		artobject_id: "",
-		old_value: "",
-		css_class: "",
-		update_url: "",
-		field_key: "",
-		leText: null,
-		leButtons: null,
-		leInput: null,
+		//edit widget variables
+		imageDiv: null,
 
+		//input widget variables
+		artobject_id: "",
+		date_ch: "",	
+		text: "",
+		title: "",
+		url: "",
+		update_url: "",
+
+		//edit button widget variables
+		delete_icon_src: "",
+		delete_icon_txt: "",
+		delete_image_icon_src: "",
+		delete_image_icon_txt: "",
+		add_image_icon_src: "",
+		add_image_icon_txt: "",
+		edit_widget: "",
+		has_image: "",
+		image_url: "",
+		delete_item_url: "",
+		delete_image_url: "",
+		upload_form_url: "",
+		
 		//attach points
 		editWidgetContainer: null,
-		editWidgetDiv: null,
-		editWidgetForm: null,
-
-		fillInTemplate: function() {
-			this.prepareWidget();
-		},
-
-		prepareWidget: function() {
-			this.editWidgetDiv.className = this.css_class;
-			dojo.event.connect(this.editWidgetDiv, "onclick", this, "toggleInput");
-			this.addTextToDiv();
-			//dojo.event.connect(this.editWidgetForm, "onblur", this, "saveChanges");
-			this.addHiddenFieldsToForm();
-		},
+		elementContainer: null,
+		editButtonsContainer: null,
 		
-		keyDown: function(evt){
-			if (evt.keyCode == 27) { // escape key
-				this.cancelInput();
-			}
+		fillInTemplate: function() {
+			this.addInputText(this.title, 'title');
+			this.addInputText(this.url, 'url');
+			this.addInputText(this.date_ch, 'date_ch');
+			this.handleImage();
+			this.addInputTextarea(this.text, 'text');
+			this.addEditButtons();
 		},
 
-		cancelInput: function() {
-			this.editWidgetDiv.className = this.css_class;
-			this.editWidgetForm.removeChild(this.leInput);
-			this.editWidgetContainer.removeChild(this.leButtons);
-			this.addTextToDiv();
-		},
-
-		addTextToDiv: function() {
-			this.leText = document.createElement("span");
-			this.leText.innerHTML = this.toHtml(this.old_value);
-			var _this = this;
-			dojo.event.connect(this.leText, "onclick", this, "toggleInput");
-			this.editWidgetDiv.appendChild(this.leText);
-		},
-
-		addInputToForm: function() {
-			//stub function to be filled by InputText or InputTextarea Widget
-		},
-
-		toggleInput: function() {
-			this.editWidgetDiv.className = this.css_class + " active";
-			this.editWidgetDiv.removeChild(this.leText);
-			this.addInputToForm();
-			this.addButtonsToContainer();
-		},
-
-		addButtonsToContainer: function() {
-			this.leButtons = document.createElement("div");
-			this.leButtons.className = 'edit-buttons';
-			
-			var submit = document.createElement("input");
-			submit.type = "button";
-			submit.value = "Save";
-			dojo.event.connect(submit, "onclick", this, "saveChanges");
-			this.leButtons.appendChild(submit);
-
-			var cancel = document.createElement("input");
-			cancel.type = "button";
-			cancel.value = "Cancel";
-			dojo.event.connect(cancel, "onclick", this, "cancelInput");
-			this.leButtons.appendChild(cancel);
-
-			this.editWidgetContainer.appendChild(this.leButtons);
-		},
-
-		addHiddenFieldsToForm: function() {
-			var aid = document.createElement("input");
-			aid.type = "hidden";
-			aid.name = "artobject_id";
-			aid.value = this.artobject_id;
-			this.editWidgetForm.appendChild(aid);
-			var fkey = document.createElement("input");
-			fkey.type = "hidden";
-			fkey.name = "field_key";
-			fkey.value = this.field_key;
-			this.editWidgetForm.appendChild(fkey);
-			var oldvalue = document.createElement("input");
-			oldvalue.type = "hidden";
-			oldvalue.name = "old_value";
-			oldvalue.value = this.old_value;
-			this.editWidgetForm.appendChild(oldvalue);
-		},
-
-		toHtml: function(strText) {
-			var strTarget = "\n"; 
-			var strSubString = "<br />";
-			
-			var intIndexOfMatch = strText.indexOf( strTarget );
-
-			while (intIndexOfMatch != -1){
-				strText = strText.replace( strTarget, strSubString )
-				intIndexOfMatch = strText.indexOf( strTarget );
-			}
-			return( strText );
-		},
-
-		saveChanges: function(evt) {
-			var form = this.editWidgetForm;
-			var _this = this;
-			dojo.io.bind({
-				url: this.update_url,
-				formNode: form,
-				load: function(type, data, event) {
-					_this.editWidgetForm.removeChild(_this.leInput);
-					_this.editWidgetContainer.removeChild(_this.leButtons);
-					_this.old_value = data['updated_value'];
-					_this.leText.innerHTML = _this.toHtml(data['updated_value']);
-					_this.editWidgetDiv.appendChild(_this.leText);
-					_this.editWidgetDiv.className = _this.css_class;
+		addInputText: function(value, str) {
+			var inputDiv = document.createElement("div");
+			this.elementContainer.appendChild(inputDiv);
+			dojo.widget.createWidget("InputText", 
+				{ 
+					artobject_id: this.artobject_id, 
+					old_value: value, 
+					css_class: "block-" + str, 
+					update_url: this.update_url,
+					field_key: str,
 				},
-				mimetype: "text/json"
-			});	
-			this.old_value = _this.old_value; 
-			evt.preventDefault();
+				inputDiv	
+			);
 		},
 
+		handleImage: function() {
+			if(this.has_image == 'true') {
+				this.imageDiv = document.createElement("div");
+				this.imageDiv.className = "block-image";
+				var img = new Image;	
+				img.src = this.image_url;
+				this.imageDiv.appendChild(img);
+				var node = this.elementContainer.childNodes[3];
+				if(node == 'undefined') { 
+					this.elementContainer.appendChild(this.imageDiv);
+				} else {
+					this.elementContainer.insertBefore(this.imageDiv, node);
+				}
+			}	else {
+				if(this.imageDiv) {
+					this.elementContainer.removeChild(this.imageDiv);
+					this.imageDiv = null;
+				}
+			}
+		},
+
+		addInputTextarea: function(value, str) {
+			var inputDiv = document.createElement("div");
+			this.elementContainer.appendChild(inputDiv);
+			dojo.widget.createWidget("InputTextarea", 
+				{ 
+					artobject_id: this.artobject_id, 
+					old_value: value, 
+					css_class: "block-" + str, 
+					update_url: this.update_url,
+					field_key: str
+				},
+				inputDiv	
+			);
+		},
+
+		addEditButtons: function() {
+			var buttonDiv = document.createElement("div");
+			this.editButtonsContainer.appendChild(buttonDiv);
+			dojo.widget.createWidget("EditButtons", 
+				{ 
+					delete_icon_src: this.delete_icon_src,
+					delete_icon_txt: this.delete_icon_txt,
+					delete_image_icon_src: this.delete_image_icon_src,
+					delete_image_icon_txt: this.delete_image_icon_txt,
+					add_image_icon_src: this.add_image_icon_src,
+					add_image_icon_txt: this.add_image_icon_txt,
+					edit_widget: this,
+					has_image: this.has_image,
+					delete_item_url: this.delete_item_url,
+					delete_image_url: this.delete_image_url,
+					upload_form_url: this.upload_form_url,
+				},
+				buttonDiv	
+			);
+
+		},
 	}
 );

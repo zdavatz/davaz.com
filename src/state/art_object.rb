@@ -49,33 +49,6 @@ module DAVAZ
 				@model = [] 
 			end
 		end
-		class AjaxUploadImage < SBSM::State
-			include Magick
-			VIEW = View::ImageDiv
-			VOLATILE = true
-			def init 
-				string_io = @session.user_input(:image_file)
-				unless(string_io.nil?)
-					artobject_id = @session.user_input(:artobject_id)
-					if artobject_id
-						Util::ImageHelper.store_upload_image(string_io, 
-																								 artobject_id)
-						model = OpenStruct.new
-						model.artobject = @session.app.load_artobject(artobject_id)
-					else
-						img_name = Time.now.to_i.to_s 
-						image = Image.from_blob(string_io.read).first
-						extension = image.format.downcase
-						path = File.join(
-							DAVAZ::Util::ImageHelper.abs_tmp_path,
-							img_name + "." + extension
-						)
-						image.write(path)
-						@model.artobject.abs_tmp_image_path = path
-					end
-				end
-			end
-		end
 		class AjaxMovieGallery < SBSM::State
 			VIEW = View::MoviesArtObjectComposite
 			VOLATILE = true
@@ -131,6 +104,33 @@ module DAVAZ
 				View::AjaxDynSelect.new("#{@select_name}_id", @model, @session, self)
 			end
 		end
+		class AjaxUploadImage < SBSM::State
+			include Magick
+			VIEW = View::ImageDiv
+			VOLATILE = true
+			def init 
+				string_io = @session.user_input(:image_file)
+				unless(string_io.nil?)
+					artobject_id = @model.artobject.artobject_id 
+					if artobject_id
+						Util::ImageHelper.store_upload_image(string_io, 
+																								 artobject_id)
+						model = OpenStruct.new
+						model.artobject = @session.app.load_artobject(artobject_id)
+					else
+						img_name = Time.now.to_i.to_s 
+						image = Image.from_blob(string_io.read).first
+						extension = image.format.downcase
+						path = File.join(
+							DAVAZ::Util::ImageHelper.abs_tmp_path,
+							img_name + "." + extension
+						)
+						image.write(path)
+						@model.artobject.abs_tmp_image_path = path
+					end
+				end
+			end
+		end
 		class ArtObject < State::Global 
 			VIEW = View::ArtObject	
 			def init
@@ -147,6 +147,17 @@ module DAVAZ
 		end
 		class AdminArtObject < ArtObject
 			VIEW = View::AdminArtObject
+			def init
+				super
+				build_selections
+				if @model.artobject.nil?
+					@model.artobjects = []
+					@model.artobject = Model::ArtObject.new
+				end
+			end
+			def ajax_upload_image
+				AjaxUploadImage.new(@session, @model)
+			end
 			def build_selection(selection, args)
 				artobject_id = args[:aid]	
 				selected_id = args[:sid]	
@@ -173,14 +184,6 @@ module DAVAZ
 				@model.select_material = build_selection("materials", args)
 				args[:sid] = @model.artobject.country_id if @model.artobject
 				@model.select_country = build_selection("countries", args)
-			end
-			def init
-				super
-				build_selections
-				if @model.artobject.nil?
-					@model.artobjects = []
-					@model.artobject = Model::ArtObject.new
-				end
 			end
 			def delete
 				artobject_id = @model.artobject.artobject_id	

@@ -1,19 +1,16 @@
 dojo.provide("ywesee.widget.InputTextarea");
 
-dojo.require("ywesee.widget.EditWidget");
+dojo.require("ywesee.widget.Input");
 dojo.require("dojo.event");
 dojo.require("dojo.widget.*");
 dojo.require("dojo.lfx.*");
 dojo.require("dojo.style");
 
 dojo.widget.defineWidget(
-	"dojo.widget.InputTextarea",
-	dojo.widget.EditWidget,
+	"ywesee.widget.InputTextarea",
+	ywesee.widget.Input,
 	{
-		widgetType: "InputTextarea",
-		isContainer: false,
-
-		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlInputTextarea.html"),
+		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlInput.html"),
 
 		fillInTemplate: function() {
 			this.prepareWidget();
@@ -26,7 +23,7 @@ dojo.widget.defineWidget(
 			this.leInput.className = this.css_class + " active";
 			this.leInput.rows = "12";
 			//dojo.event.connect(this.leInput, "onblur", this, "saveChanges");
-			this.editWidgetForm.appendChild(this.leInput);
+			this.inputForm.appendChild(this.leInput);
 			this.leInput.focus();
 		},
 	}

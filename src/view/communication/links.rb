@@ -3,7 +3,7 @@
 
 require 'view/publictemplate'
 require 'view/textblock'
-require 'view/add_new_element'
+require 'view/admin/ajax_views'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
 require 'htmlgrid/link'
@@ -75,7 +75,7 @@ end
 class AdminLinksComposite < View::Communication::LinksComposite
 	COMPONENTS = {
 		[0,0]	=>	LinksTitle,
-		[1,0]	=>	View::AddNewElementComposite,
+		[1,0]	=>	View::Admin::AjaxAddNewElementComposite,
 		[2,0]	=>	AdminLinksInnerComposite,
 	}
 end

@@ -1,19 +1,16 @@
 dojo.provide("ywesee.widget.InputText");
 
-dojo.require("ywesee.widget.EditWidget");
+dojo.require("ywesee.widget.Input");
 dojo.require("dojo.event");
 dojo.require("dojo.widget.*");
 dojo.require("dojo.lfx.*");
 dojo.require("dojo.style");
 
 dojo.widget.defineWidget(
-	"dojo.widget.InputText",
-	dojo.widget.EditWidget,
+	"ywesee.widget.InputText",
+	ywesee.widget.Input,
 	{
-		widgetType: "InputText",
-		isContainer: false,
-
-		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlInputText.html"),
+		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlInput.html"),
 
 		fillInTemplate: function() {
 			this.prepareWidget();
@@ -26,7 +23,7 @@ dojo.widget.defineWidget(
 			this.leInput.value = this.old_value;
 			this.leInput.className = this.css_class + " active";
 			dojo.event.connect(this.leInput, "onkeydown", this, "keyDown");
-			this.editWidgetForm.appendChild(this.leInput);
+			this.inputForm.appendChild(this.leInput);
 			this.leInput.focus();
 		},
 	}

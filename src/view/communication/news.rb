@@ -7,6 +7,7 @@ require 'view/textblock'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/value'
 require 'util/image_helper'
+require 'view/admin/ajax_views'
 
 module DAVAZ
 	module View
@@ -40,17 +41,17 @@ end
 class News < View::CommunicationPublicTemplate
 	CONTENT = View::Communication::NewsComposite	
 end
-class AdminNewsList < View::Communication::NewsList
+class AdminNewsInnerComposite < HtmlGrid::DivComposite
+	CSS_ID = "element-container"
 	COMPONENTS = {
-		#[0,0]	=>	View::AdminTextBlock,
-		[0,0]	=>	View::TextBlock,
+		[0,0]	=>	component(View::AdminTextBlockList, :news),
 	}
 end
 class AdminNewsComposite < View::Communication::NewsComposite
 	COMPONENTS = {
 		[0,0]	=>	NewsTitle,
-		#[1,0]	=>	AddNewNewsComposite,
-		[2,0]	=>	AdminNewsList,	
+		[1,0]	=>	View::Admin::AjaxAddNewElementComposite,
+		[2,0]	=>	AdminNewsInnerComposite,	
 	}
 end
 class AdminNews < View::CommunicationAdminPublicTemplate

@@ -17,7 +17,6 @@ class ImageBrowserList < HtmlGrid::DivList
 		0	=>	'image-chooser-image',
 	}
 	def image(model)
-		link_id = @container.model.link.link_id
 		link = HtmlGrid::Link.new(model.artobject_id.to_s, @model, \
 			@session, self)
 		image = HtmlGrid::Image.new(model.artobject_id.to_s, @model, \
@@ -28,12 +27,11 @@ class ImageBrowserList < HtmlGrid::DivList
 		image.set_attribute('height', '100px')
 		args = [
 			[	:artobject_id, model.artobject_id ],
-			[	:link_id, link_id ],
 		]
 		url = @lookandfeel.event_url(:admin, :ajax_add_element, args) 
 		#link.href = "javascript:void(0)"
 		link.href = "javascript:void(0)"
-		script = "toggleInnerHTML('link-composite-#{link_id}', '#{url}');"
+		script = "toggleInnerHTML('link-composite', '#{url}');"
 		link.set_attribute('onclick', script)
 		link.value = image
 		link
@@ -47,10 +45,9 @@ class ImageTags < HtmlGrid::SpanList
 	def tag(model)
 		link = HtmlGrid::Link.new(model, model, @session, self)
 		link.href = "javascript:void(0)"
-		link.value = model
+		link.value = model.name
 		args = [
-			[	:link_id, @session.user_input(:link_id) ],
-			[ :tags, model ],
+			[ :tag_id, model.tag_id ],
 		]
 		url = @lookandfeel.event_url(:admin, :ajax_reload_tag_images, args)
 		script = "toggleInnerHTML('image-browser-container', '#{url}')"

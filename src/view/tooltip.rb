@@ -39,7 +39,6 @@ module DAVAZ
 			CSS_ID = 'tooltip-container'
 			COMPONENTS = {
 				[0,0]	=>	TooltipComposite,
-				#[0,0]	=>	TextBlock,
 			}
 			HTTP_HEADERS = {
 				"Content-Type"	=>	"text/html; charset=UTF-8",

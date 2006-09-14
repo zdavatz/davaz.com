@@ -9,6 +9,7 @@ require 'htmlgrid/span'
 require 'htmlgrid/ulcomposite'
 require 'htmlgrid/spancomposite'
 require 'view/composite'
+require 'htmlgrid/dojotoolkit'
 
 module DAVAZ
 	module View
@@ -56,15 +57,18 @@ module DAVAZ
 				link
 			end
 			def login_form(model)
-				link = HtmlGrid::Link.new(:login_form, model, @session, self)
-				link.set_attribute('onclick', "loginLogout(this);")
-				link.href = @lookandfeel.event_url(:admin, :login_form)
+				link = HtmlGrid::Link.new(:login, model, @session, self)
+				link.css_class = self::class::CSS_CLASS 
+				url = @lookandfeel.event_url(:admin, :login_form)
+				link.set_attribute('onclick', "toggleLoginWidget(this, '#{url}')")
+				link.href = 'javascript:void(0)'
 				link
 			end
 			def logout(model)
 				link = HtmlGrid::Link.new(:logout, model, @session, self)
-				link.set_attribute('onclick', "loginLogout(this);")
+				link.set_attribute('onclick', "logout(this);")
 				link.href = @lookandfeel.event_url(:admin, :logout)
+				link.css_class = "foot-navigation"
 				link
 			end
 		end

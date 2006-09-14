@@ -36,15 +36,7 @@ class AjaxImageBrowser < SBSM::State
 		end
 		@model = OpenStruct.new
 		@model.image_tags = @session.app.load_image_tags
-=begin
-		@model.link = @session.app.load_displayelement_link(link_id)
-		@model.display_images = @session.app.load_images_by_tags(tags)
-		@model.link.displayelements.each { |element|
-			@model.display_images.delete_if { |image| 
-				element.artobject_id == image.artobject_id	
-			}
-		}
-=end
+		@model.display_images = @session.app.load_images_by_tag(tags.first)
 	end
 end
 class ImageBrowser < State::Admin::Global

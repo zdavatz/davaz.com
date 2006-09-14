@@ -92,8 +92,8 @@ module DAVAZ
 			def load_currency_rates(model)
 				@db_manager.load_currency_rates(model)
 			end
-			def load_images_by_tags(active_tags)
-				@db_manager.load_images_by_tags(active_tags)
+			def load_images_by_tag(tag_name)
+				@db_manager.load_images_by_tag(tag_name)
 			end
 			def load_exhibitions
 				@db_manager.load_serie_artobjects('site_exhibitions', 'series.name')

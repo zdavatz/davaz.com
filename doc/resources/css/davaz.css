@@ -231,15 +231,8 @@ span.hide-hidden-div-link {
 	padding: 5px;
 }
 
-div#login-form {
-	text-align: left;
-	color: black;
-	width: 300px;
-	padding-top: 100px;
-	margin-left: auto; margin-right: auto;
-}
-
 div.admin-action {
+	border: black solid 1px;
  	position: absolute;
  	margin-left: -40px;
 }
@@ -480,4 +473,10 @@ div#add-new-element-form {
 
 div#add-new-element-form table {
 	margin-left: auto; margin-right: auto;
+}
+
+div#login-form-div {
+	right: 0px;
+	text-align: right;
+	display: none;
 }

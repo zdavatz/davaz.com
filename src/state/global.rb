@@ -27,7 +27,7 @@ module DAVAZ
 				:ajax_rack						=>	State::Gallery::AjaxRack,
 				:home									=>	State::Personal::Init,
 				:images								=>	State::Images,
-				:login_form						=>	State::Admin::Login,
+				:login_form						=>	State::Admin::AjaxLoginForm,
 			}	
 			HOME_STATE = State::Personal::Init
 			VIEW = View::Personal::Init
@@ -40,6 +40,9 @@ module DAVAZ
 			end
 			def tooltip
 				State::Tooltip.new(@session, @model)
+			end
+			def flush_ajax_errors
+				@session.flush_ajax_errors	
 			end
 			def error_check_and_store(key, value, mandatory=[])
 				if(value.is_a? RuntimeError)

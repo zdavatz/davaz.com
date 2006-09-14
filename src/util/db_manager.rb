@@ -87,16 +87,20 @@ module DAVAZ
 					WHERE artobject_id='#{artobject_id}'
 				EOS
 				connection.query(query)
-				query = <<-EOS
-					DELETE FROM links_artobjects
-					WHERE artobject_id='#{artobject_id}'
-				EOS
-				connection.query(query)
-				query = <<-EOS
-					DELETE FROM tags_artobjects
-					WHERE artobject_id='#{artobject_id}'
-				EOS
-				connection.query(query)
+				deleted = connection.affected_rows
+				if(deleted > 0)
+					query = <<-EOS
+						DELETE FROM links_artobjects
+						WHERE artobject_id='#{artobject_id}'
+					EOS
+					connection.query(query)
+					query = <<-EOS
+						DELETE FROM tags_artobjects
+						WHERE artobject_id='#{artobject_id}'
+					EOS
+					connection.query(query)
+				end
+				deleted
 			end
 			def load_artgroups(order_by='artgroup_id')
 				query = <<-EOS
@@ -200,7 +204,7 @@ module DAVAZ
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
 					#{where}
-					ORDER BY artobjects.title #{"DESC" if reverse}
+					ORDER BY artobjects.serie_position,artobjects.title #{"DESC" if reverse}
 				EOS
 				result = connection.query(query)
 				artobjects = []
@@ -310,16 +314,37 @@ module DAVAZ
 			end
 			def load_image_tags
 				sql = <<-SQL
-					SELECT tag FROM tags;
+					SELECT tag_id,name FROM tags;
 				SQL
 				tags = []
 				result = connection.query(sql)
 				result.each_hash { |key, value|
+					model = DAVAZ::Model::Tag.new
 					key.each { |colname, colval|
-						tags.push(colval)
+						model.send(colname.to_s + '=', colval)
 					}
+					tags.push(model)
 				}
-				tags.uniq!
+				tags
+			end
+			def load_images_by_tag(tag_name)
+				query = <<-EOS
+					SELECT artobjects.artobject_id
+					FROM tags
+					LEFT OUTER JOIN tags_artobjects
+						ON tags.tag_id = tags_artobjects.tag_id
+					LEFT OUTER JOIN artobjects
+						ON tags_artobjects.artobject_id = artobjects.artobject_id
+					WHERE tags.name = '#{tag_name}'
+				EOS
+				result = connection.query(query)
+				artobjects = []
+				result.each_hash { |row|
+					artobject = Model::ArtObject.new
+					set_values(artobject, row)
+					artobjects.push(artobject)
+				}
+				artobjects
 			end
 			def load_materials
 				query = <<-EOS
@@ -667,7 +692,12 @@ module DAVAZ
 				end
 				update_hash.each { |key, value|
 					unless(value.nil? || key == :tags)
-						update_array.push("#{key}='#{Mysql.quote(value)}'")
+						if(key == :date_ch)
+							date = value.split(".")
+							update_array.push("date='#{date[2]}-#{date[1]}-#{date[0]}'")
+						else
+							update_array.push("#{key}='#{Mysql.quote(value)}'")
+						end
 					end
 				}
 				query = <<-EOS

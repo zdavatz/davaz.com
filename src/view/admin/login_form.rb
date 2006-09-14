@@ -10,12 +10,13 @@ require 'htmlgrid/errormessage'
 module DAVAZ
 	module View
 		module Admin
-class LoginFormForm < View::Form
+class LoginForm < View::Form
 	include HtmlGrid::ErrorMessage
 	COMPONENTS = {
 		[0,0]   =>  :email,
 		[0,1]   =>  :pass,
-		[1,2]   =>  :submit,
+		[1,2]		=>  :cancel,
+		[1,2,1] =>  :submit,
 	}
 	CSS_MAP = {
 		[0,0,2,3]	=>	'list',
@@ -37,22 +38,17 @@ class LoginFormForm < View::Form
 	def init
 		super
 		error_message()
+		self.onsubmit = 'return false;'
+	end
+	def cancel(model)
+		button = HtmlGrid::Button.new(:cancel, model, @session, self)
+		button.css_id = 'login-form-cancel-button'
+		button
 	end
 	def hidden_fields(context)
 		super <<
 		context.hidden('fragment', "#{@model.fragment}")
 	end
-end
-class LoginFormComposite < HtmlGrid::DivComposite
-	COMPONENTS = {
-		[0,0]	=>	View::Admin::LoginFormForm,
-	}
-	CSS_ID_MAP = {
-		0	=>	'login-form'
-	}
-end
-class LoginForm < View::PublicTemplate
-	CONTENT = View::Admin::LoginFormComposite
 end
 		end
 	end

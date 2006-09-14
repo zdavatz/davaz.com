@@ -308,7 +308,7 @@ div.block-url a:hover {
 	text-decoration: none;
 }
 
-div.block-date {
+div.block-date, div.block-date_ch {
 	clear: both;
 	/*font-size: 10pt;*/
 	text-align: left;

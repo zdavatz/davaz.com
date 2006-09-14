@@ -46,13 +46,13 @@ module DAVAZ
 			]
 			MOVIES_DIV_IMAGE_WIDTH = 185
 			MOVIES_DIV_IMAGE_SPEED = 4000
-			DOJO_DEBUG = true 
+			DOJO_DEBUG = false 
 			DOJO_BACK_BUTTON = false 
 			DOJO_PREFIX = {
 				'ywesee'	=>	'../javascript',
 			}
 			DOJO_REQUIRE = [
-				'dojo.debug.Firebug',
+				#'dojo.debug.Firebug',
 				'dojo.widget.*',
 				'dojo.widget.Tooltip',
 				'dojo.lfx.*',

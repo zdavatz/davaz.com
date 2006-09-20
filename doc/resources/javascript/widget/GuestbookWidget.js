@@ -32,7 +32,6 @@ dojo.widget.defineWidget(
 					_this.formContainer.innerHTML = data;	
 					_this.form_node = _this.formContainer.firstChild;
 					dojo.event.connect(_this.form_node, 'onsubmit', _this, 'submitForm');
-					dojo.lfx.wipeIn(_this.formContainer, 300).play();
 				},
 			});
 		},

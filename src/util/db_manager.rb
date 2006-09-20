@@ -204,7 +204,7 @@ module DAVAZ
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
 					#{where}
-					ORDER BY artobjects.serie_position,artobjects.date,artobjects.title #{"DESC" if reverse}
+					ORDER BY artobjects.serie_position,artobjects.date ASC,artobjects.title #{"DESC" if reverse}
 				EOS
 				result = connection.query(query)
 				artobjects = []
@@ -227,6 +227,11 @@ module DAVAZ
 					ORDER BY title DESC
 				EOS
 				result = connection.query(query) 
+				if(result.is_a?(Mysql))
+					puts "*"*25
+					puts query
+					puts "*"*25
+				end
 				ids = []
 				result.each_hash { |row| 
 					model = Model::ArtObject.new
@@ -303,11 +308,21 @@ module DAVAZ
 			end
 			def load_exhibitions
 			end
+			def load_guest(guest_id)
+				query = <<-EOS
+					SELECT *
+					FROM guestbook
+					WHERE guest_id='#{guest_id}'
+				EOS
+				result = connection.query(query)
+				create_model_array(DAVAZ::Model::Guest, result).first
+			end
 			def load_guests
 				query = <<-EOS
 					SELECT *
 					FROM guestbook
 					ORDER BY date DESC
+					LIMIT 3
 				EOS
 				result = connection.query(query)
 				create_model_array(DAVAZ::Model::Guest, result) 
@@ -417,7 +432,7 @@ module DAVAZ
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
 					WHERE #{select_by}='#{serie_id}'
-					ORDER BY artobjects.serie_position DESC,artobjects.date DESC,artobjects.title DESC
+					ORDER BY artobjects.serie_position DESC,artobjects.date ASC,artobjects.title DESC
 				EOS
 				result = connection.query(query)
 				artobjects = []
@@ -713,6 +728,26 @@ module DAVAZ
 					UPDATE currencies
 					SET rate='#{rate}'
 					WHERE origin='#{origin}' AND target='#{target}';
+				EOS
+				result = connection.query(query)
+				connection.affected_rows
+			end
+			def update_guest(guest_id, update_hash)
+				update_array = []
+				update_hash.each { |key, value|
+					unless(value.nil? || key == :tags)
+						if(key == :date_gb)
+							date = value.split(".")
+							update_array.push("date='#{date[2]}-#{date[1]}-#{date[0]}'")
+						else
+							update_array.push("#{key}='#{Mysql.quote(value)}'")
+						end
+					end
+				}
+				query = <<-EOS
+					UPDATE guestbook
+					SET #{update_array.join(', ')}
+					WHERE guest_id='#{guest_id}'
 				EOS
 				result = connection.query(query)
 				connection.affected_rows

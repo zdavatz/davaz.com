@@ -80,11 +80,11 @@ class AjaxSaveLiveEdit < SBSM::State
 		if(update_value.nil? || update_value.empty?)
 			update_value = @session.lookandfeel.lookup(:click2edit)
 		end
+		encoded = Iconv.iconv('utf8', 'latin1', update_value).first
 		update_hash = {
-			field_key.intern	=>	update_value,
+			field_key.intern	=>	encoded,
 		}
-		
-		#@session.app.update_artobject(artobject_id, update_hash)
+		@session.app.update_artobject(artobject_id, update_hash)
 		artobject = @session.app.load_artobject(artobject_id)
 		@model = {
 			'updated_value'	=>	artobject.send(field_key.intern),
@@ -101,8 +101,9 @@ class AjaxSaveGbLiveEdit < SBSM::State
 		if(update_value.nil? || update_value.empty?)
 			update_value = @session.lookandfeel.lookup(:click2edit)
 		end
+		encoded = Iconv.iconv('utf8', 'latin1', update_value).first
 		update_hash = {
-			field_key.intern	=>	update_value,
+			field_key.intern	=>	encoded,
 		}
 		
 		@session.app.update_guest(guest_id, update_hash)

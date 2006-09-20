@@ -40,8 +40,12 @@ dojo.widget.defineWidget(
 
 		toggleForm: function() {
 			if(this.formContainer.style.display == "block") {
-				this.addEntryLink.style.display = 'block';
-				dojo.lfx.wipeOut(this.formContainer, 300).play();
+				var _this = this;
+				var callback = function() {
+					_this.errorMessages.innerHTML = "";
+					_this.addEntryLink.style.display = 'block';
+				}
+				dojo.lfx.wipeOut(this.formContainer, 300, dojo.lfx.easeInOut, callback).play();
 			} else {
 				this.addEntryLink.style.display = 'none';
 				dojo.lfx.wipeIn(this.formContainer, 300).play();

@@ -32,14 +32,18 @@ dojo.widget.defineWidget(
 					_this.formContainer.innerHTML = data;	
 					_this.form_node = _this.formContainer.firstChild;
 					dojo.event.connect(_this.form_node, 'onsubmit', _this, 'submitForm');
+					var cancelButton = dojo.byId('cancel-add-entry');
+					dojo.event.connect(cancelButton, 'onclick', _this, 'toggleForm');
 				},
 			});
 		},
 
 		toggleForm: function() {
 			if(this.formContainer.style.display == "block") {
+				this.addEntryLink.style.display = 'block';
 				dojo.lfx.wipeOut(this.formContainer, 300).play();
 			} else {
+				this.addEntryLink.style.display = 'none';
 				dojo.lfx.wipeIn(this.formContainer, 300).play();
 			}
 		},	

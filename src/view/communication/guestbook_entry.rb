@@ -31,11 +31,12 @@ class GuestbookEntryForm < View::Form
 		[0,2]	=>	:city,
 		[2,2]	=>	:country,
 		[0,3]	=>	:messagetxt,
-		[0,4]	=>	:submit,
+		[1,4]	=>	:submit,
+		[1,4,1]	=>	:cancel,
 	}
 	COLSPAN_MAP = {
 		[1,3]	=>	3,
-		[0,4]	=>	4,
+		[1,4]	=>	3,
 	}
 	CSS_MAP = {
 		[0,0,1,4]	=>	'labels',	
@@ -66,6 +67,13 @@ class GuestbookEntryForm < View::Form
 		button.value = @lookandfeel.lookup(:submit_entry)
 		button.css_class = 'add-entry' 
 		button.attributes['type'] = 'submit'
+		button
+	end
+	def cancel(model)
+		button = HtmlGrid::Button.new(:cancel, model, @session, self)
+		button.value = @lookandfeel.lookup(:cancel)
+		button.css_class = 'add-entry' 
+		button.css_id = 'cancel-add-entry'
 		button
 	end
 end

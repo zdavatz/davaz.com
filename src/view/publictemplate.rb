@@ -52,7 +52,7 @@ module DAVAZ
 				'ywesee'	=>	'../javascript',
 			}
 			DOJO_REQUIRE = [
-			#'dojo.debug.Firebug',
+				#'dojo.debug.Firebug',
 				'dojo.widget.*',
 				'dojo.widget.Tooltip',
 				'dojo.lfx.*',

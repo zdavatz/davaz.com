@@ -59,7 +59,7 @@ dojo.widget.defineWidget(
 			if(this.labels) {
 				this.labelDiv.innerHTML = this.label;
 				dojo.event.connect(this.labelDiv, "onclick", this, "toggleInput");
-				this.inputDiv.style.paddingLeft = "80px";
+				this.inputDiv.style.marginLeft = "80px";
 			}
 			this.leText = document.createElement("span");
 			this.leText.innerHTML = this.toHtml(this.old_value);
@@ -73,7 +73,6 @@ dojo.widget.defineWidget(
 		},
 
 		toggleInput: function() {
-			this.labelDiv.className += " active";
 			this.inputDiv.className = this.css_class + " live-edit active";
 			this.inputDiv.removeChild(this.leText);
 			this.addInputToForm();
@@ -83,6 +82,9 @@ dojo.widget.defineWidget(
 		addButtonsToContainer: function() {
 			this.leButtons = document.createElement("div");
 			this.leButtons.className = 'edit-buttons';
+			if(this.labels) {
+				this.leButtons.style.marginLeft = '80px';
+			}
 			
 			var submit = document.createElement("input");
 			submit.type = "button";

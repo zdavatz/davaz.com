@@ -127,8 +127,15 @@ table.guestbookentry-form {
 	width: 600px;
 }
 
+textarea#guestbook-message {
+	width: 500px;
+	border: 2px lightgrey inset;
+}
+
 td.labels {
 	width: 80px;
+	vertical-align: top;
+	text-align: left;
 }
 
 td.labels input {

@@ -31,13 +31,16 @@ class GuestbookEntryForm < View::Form
 		[0,2]	=>	:city,
 		[2,2]	=>	:country,
 		[0,3]	=>	:messagetxt,
-		[1,4]	=>	:submit,
+		[0,4]	=>	:submit,
 	}
 	COLSPAN_MAP = {
 		[1,3]	=>	3,
+		[0,4]	=>	4,
 	}
 	CSS_MAP = {
-		[1,4]	=>	'add-entry',
+		[0,0,1,4]	=>	'labels',	
+		[2,0,1,3]	=>	'labels',	
+		[0,4]	=>	'add-entry',
 	}
 	SYMBOL_MAP = {
 		:name			=>	HtmlGrid::InputText,
@@ -52,10 +55,9 @@ class GuestbookEntryForm < View::Form
 	end
 	def messagetxt(model)
 		input = HtmlGrid::Textarea.new(:messagetxt, model, @session, self)
-		input.set_attribute('cols', 42)
 		input.set_attribute('rows', 10)
 		input.set_attribute('wrap', true)
-		input.set_attribute('style', 'border: 1pt lightgrey inset;')
+		input.css_id = 'guestbook-message'
 		input.label = true
 		input
 	end

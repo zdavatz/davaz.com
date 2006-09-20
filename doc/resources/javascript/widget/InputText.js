@@ -21,7 +21,7 @@ dojo.widget.defineWidget(
 			this.leInput.type = "text";
 			this.leInput.name = "update_value";
 			this.leInput.value = this.old_value;
-			this.leInput.className = this.css_class + " active";
+			this.leInput.className = this.css_class + " live-edit active";
 			dojo.event.connect(this.leInput, "onkeydown", this, "keyDown");
 			this.inputForm.appendChild(this.leInput);
 			this.leInput.focus();

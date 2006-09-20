@@ -12,7 +12,8 @@ dojo.widget.defineWidget(
 		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlInput.html"),
 
 		//widget variables
-		artobject_id: "",
+		element_id_name: "",
+		element_id_value: "",
 		old_value: "",
 		css_class: "",
 		update_url: "",
@@ -20,9 +21,12 @@ dojo.widget.defineWidget(
 		leText: null,
 		leButtons: null,
 		leInput: null,
+		labels: false,
+		label: "",
 
 		//attach points
 		inputContainer: null,
+		labelDiv: null,
 		inputDiv: null,
 		inputForm: null,
 
@@ -31,7 +35,7 @@ dojo.widget.defineWidget(
 		},
 
 		prepareWidget: function() {
-			this.inputDiv.className = this.css_class;
+			this.inputDiv.className = this.css_class + " live-edit";
 			dojo.event.connect(this.inputDiv, "onclick", this, "toggleInput");
 			this.addTextToDiv();
 			this.addHiddenFieldsToForm();
@@ -44,13 +48,19 @@ dojo.widget.defineWidget(
 		},
 
 		cancelInput: function() {
-			this.inputDiv.className = this.css_class;
+			this.inputDiv.className = this.css_class + " live-edit";
+			this.labelDiv.className = "label";
 			this.inputForm.removeChild(this.leInput);
 			this.inputContainer.removeChild(this.leButtons);
 			this.addTextToDiv();
 		},
 
 		addTextToDiv: function() {
+			if(this.labels) {
+				this.labelDiv.innerHTML = this.label;
+				dojo.event.connect(this.labelDiv, "onclick", this, "toggleInput");
+				this.inputDiv.style.paddingLeft = "80px";
+			}
 			this.leText = document.createElement("span");
 			this.leText.innerHTML = this.toHtml(this.old_value);
 			var _this = this;
@@ -59,12 +69,12 @@ dojo.widget.defineWidget(
 		},
 
 		addInputToForm: function() {
-			dojo.debug("not yet");
 			//stub function to be filled by InputText or InputTextarea Widget
 		},
 
 		toggleInput: function() {
-			this.inputDiv.className = this.css_class + " active";
+			this.labelDiv.className += " active";
+			this.inputDiv.className = this.css_class + " live-edit active";
 			this.inputDiv.removeChild(this.leText);
 			this.addInputToForm();
 			this.addButtonsToContainer();
@@ -90,11 +100,11 @@ dojo.widget.defineWidget(
 		},
 
 		addHiddenFieldsToForm: function() {
-			var aid = document.createElement("input");
-			aid.type = "hidden";
-			aid.name = "artobject_id";
-			aid.value = this.artobject_id;
-			this.inputForm.appendChild(aid);
+			var eid = document.createElement("input");
+			eid.type = "hidden";
+			eid.name = this.element_id_name;
+			eid.value = this.element_id_value;
+			this.inputForm.appendChild(eid);
 			var fkey = document.createElement("input");
 			fkey.type = "hidden";
 			fkey.name = "field_key";
@@ -132,7 +142,8 @@ dojo.widget.defineWidget(
 					_this.old_value = data['updated_value'];
 					_this.leText.innerHTML = _this.toHtml(data['updated_value']);
 					_this.inputDiv.appendChild(_this.leText);
-					_this.inputDiv.className = _this.css_class;
+					_this.inputDiv.className = _this.css_class + " live-edit";
+					_this.labelDiv.className = "label";
 				},
 				mimetype: "text/json"
 			});	

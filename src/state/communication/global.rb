@@ -3,7 +3,6 @@
 
 require 'state/global'
 require 'state/communication/guestbook'
-require 'state/communication/guestbookentry'
 require 'state/communication/links'
 require 'state/communication/news'
 require 'state/communication/shop'
@@ -16,7 +15,6 @@ class Global < State::Global
 	ZONE = :communication
 	EVENT_MAP = {
 		:guestbook						=>	State::Communication::Guestbook,
-		:guestbookentry				=>	State::Communication::GuestbookEntry,
 		:links								=>	State::Communication::Links,
 		:news									=>	State::Communication::News,
 		:send_order						=>	State::Communication::Shop,

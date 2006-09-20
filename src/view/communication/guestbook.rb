@@ -3,8 +3,10 @@
 
 require 'view/list'
 require 'view/publictemplate'
+require 'view/admin/live_edit'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
+require 'htmlgrid/dojotoolkit'
 require 'htmlgrid/button'
 require 'date'
 
@@ -17,30 +19,16 @@ class Guest < View::Composite
 	DEFAULT_CLASS = HtmlGrid::Value
 	OFFSET_STEP = [0,4]
 	COMPONENTS = {
-		[0,0]	=>	'name',
-		[1,0]	=>	:name,
-		[2,0]	=>	:date,
-		[0,1]	=>	:city,
-		[0,2]	=>	:country,
-		[0,3]	=>	:text,
-	}
-	COLSPAN_MAP = {
-		[1,1]	=> 2,
-		[1,2]	=> 2,
-		[1,3]	=> 2,
+		[0,0]	=>	:name,
+		[0,1]	=>	:date_gb,
+		[0,2]	=>	:city,
+		[0,3]	=>	:country,
+		[0,4]	=>	:text,
 	}
 	CSS_MAP = {
-		[2,0]				=>	'date-right',
-		[0,0,1,4]		=>	'label',
-		[1,0,1]			=>	'guestbook-entry-text',
-		[1,1,2,3]		=>	'guestbook-entry-text',
+		[0,0,1,5]		=>	'label',
+		[1,0,1,5]		=>	'guestbook-entry-text',
 	}
-	def name(model)
-		[model.firstname, model.lastname].join(" ")
-	end
-	def date(model)
-		Date.parse(model.date).strftime("%d.%m.%Y")	
-	end
 end
 class GuestList < HtmlGrid::DivList
 	COMPONENTS = {
@@ -88,17 +76,45 @@ class GuestbookComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	GuestbookTitle, 
 		[1,0]	=>	GuestbookInfo, 
-		[2,0]	=>	GuestbookButton,
+		[2,0]	=>	:guestbook_widget,
 		[3,0]	=>	GuestList, 
 	}
+	def guestbook_widget(model)
+		url = @lookandfeel.event_url(:communication, :ajax_guestbookentry)
+		args = [ 
+			[ 'form_url' , url ],
+		]
+		dojo_tag("GuestbookWidget", args)
+	end
 end
 class Guestbook < View::CommunicationPublicTemplate
 	CONTENT = View::Communication::GuestbookComposite
 end
-class AdminGuestbookComposite < View::Communication::GuestbookComposite
-	
+class AdminGuestList < HtmlGrid::DivList 
+	COMPONENTS = {
+		[0,0]	=>	View::Admin::GuestbookLiveEditWidget,
+	}
+	CSS_MAP = {
+		0	=>	'guestbook',
+	}
 end
-class AdminGuestbook < View::Communication::Guestbook
+class AdminGuestbookComposite <  HtmlGrid::DivComposite
+	CSS_CLASS = 'content'
+	COMPONENTS = {
+		[0,0]	=>	GuestbookTitle, 
+		[1,0]	=>	GuestbookInfo, 
+		[2,0]	=>	:guestbook_widget,
+		[3,0]	=>	AdminGuestList, 
+	}
+	def guestbook_widget(model)
+		url = @lookandfeel.event_url(:communication, :ajax_guestbookentry)
+		args = [ 
+			[ 'form_url' , url ],
+		]
+		dojo_tag("GuestbookWidget", args)
+	end
+end
+class AdminGuestbook < View::CommunicationAdminPublicTemplate
 	CONTENT = View::Communication::AdminGuestbookComposite
 end
 		end

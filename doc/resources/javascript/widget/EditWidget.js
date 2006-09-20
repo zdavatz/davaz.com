@@ -18,12 +18,12 @@ dojo.widget.defineWidget(
 		imageDiv: null,
 
 		//input widget variables
-		artobject_id: "",
-		date_ch: "",	
-		text: "",
-		title: "",
-		url: "",
 		update_url: "",
+		values: [],
+		image_pos: 0,
+		labels: false,
+		element_id_name: "",
+		element_id_value: "",
 
 		//edit button widget variables
 		delete_icon_src: "",
@@ -45,24 +45,41 @@ dojo.widget.defineWidget(
 		editButtonsContainer: null,
 		
 		fillInTemplate: function() {
-			this.addInputText(this.title, 'title');
-			this.addInputText(this.url, 'url');
-			this.addInputText(this.date_ch, 'date_ch');
+			if(this.labels) {
+				for(idx = 0; idx < this.values.length; idx += 3) {
+					key = this.values[idx];
+					value = this.values[idx + 1];
+					label = this.values[idx + 2]
+					this.addInputText(value, key, label);
+				}
+			} else {
+				for(idx = 0; idx < this.values.length; idx += 2) {
+					key = this.values[idx];
+					value = this.values[idx + 1];
+					this.addInputText(value, key, "");
+				}
+			}
 			this.handleImage();
-			this.addInputTextarea(this.text, 'text');
 			this.addEditButtons();
 		},
 
-		addInputText: function(value, str) {
+		addInputText: function(value, str, label) {
 			var inputDiv = document.createElement("div");
 			this.elementContainer.appendChild(inputDiv);
-			dojo.widget.createWidget("InputText", 
+			var widgetName = "InputText" 
+			if(value.length > 30) {
+				widgetName = "InputTextArea";
+			}
+			dojo.widget.createWidget(widgetName, 
 				{ 
-					artobject_id: this.artobject_id, 
+					element_id_name: this.element_id_name, 
+					element_id_value: this.element_id_value, 
 					old_value: value, 
 					css_class: "block-" + str, 
 					update_url: this.update_url,
 					field_key: str,
+					labels: this.labels,
+					label: label,
 				},
 				inputDiv	
 			);
@@ -75,7 +92,7 @@ dojo.widget.defineWidget(
 				var img = new Image;	
 				img.src = this.image_url;
 				this.imageDiv.appendChild(img);
-				var node = this.elementContainer.childNodes[3];
+				var node = this.elementContainer.childNodes[this.image_pos];
 				if(node == 'undefined') { 
 					this.elementContainer.appendChild(this.imageDiv);
 				} else {
@@ -87,21 +104,6 @@ dojo.widget.defineWidget(
 					this.imageDiv = null;
 				}
 			}
-		},
-
-		addInputTextarea: function(value, str) {
-			var inputDiv = document.createElement("div");
-			this.elementContainer.appendChild(inputDiv);
-			dojo.widget.createWidget("InputTextarea", 
-				{ 
-					artobject_id: this.artobject_id, 
-					old_value: value, 
-					css_class: "block-" + str, 
-					update_url: this.update_url,
-					field_key: str
-				},
-				inputDiv	
-			);
 		},
 
 		addEditButtons: function() {

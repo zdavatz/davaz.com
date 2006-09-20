@@ -60,6 +60,7 @@ module DAVAZ
 					timestamp=false)
 				return nil if artobject_id.nil?
 				path = ImageHelper.abs_image_path(artobject_id, size)
+				return nil if path.nil?
 				if(timestamp)
 					path += sprintf("?time=%i", File.mtime(path))
 				end

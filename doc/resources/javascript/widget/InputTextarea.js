@@ -20,7 +20,7 @@ dojo.widget.defineWidget(
 			this.leInput = document.createElement("textarea");
 			this.leInput.name = "update_value";
 			this.leInput.value = this.old_value;
-			this.leInput.className = this.css_class + " active";
+			this.leInput.className = this.css_class + " live-edit active";
 			this.leInput.rows = "12";
 			//dojo.event.connect(this.leInput, "onblur", this, "saveChanges");
 			this.inputForm.appendChild(this.leInput);

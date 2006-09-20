@@ -83,10 +83,32 @@ class AjaxSaveLiveEdit < SBSM::State
 		update_hash = {
 			field_key.intern	=>	update_value,
 		}
-		@session.app.update_artobject(artobject_id, update_hash)
+		
+		#@session.app.update_artobject(artobject_id, update_hash)
 		artobject = @session.app.load_artobject(artobject_id)
 		@model = {
 			'updated_value'	=>	artobject.send(field_key.intern),
+		} 
+	end
+end
+class AjaxSaveGbLiveEdit < SBSM::State
+	VIEW = View::AjaxResponse
+	VOLATILE = true
+	def init
+		update_value = @session.user_input(:update_value)
+		field_key = @session.user_input(:field_key)
+		guest_id = @session.user_input(:guest_id)
+		if(update_value.nil? || update_value.empty?)
+			update_value = @session.lookandfeel.lookup(:click2edit)
+		end
+		update_hash = {
+			field_key.intern	=>	update_value,
+		}
+		
+		@session.app.update_guest(guest_id, update_hash)
+		guest = @session.app.load_guest(guest_id)
+		@model = {
+			'updated_value'	=>	guest.send(field_key.intern),
 		} 
 	end
 end
@@ -111,7 +133,6 @@ class AjaxUploadImageForm < SBSM::State
 	VIEW = View::Admin::AjaxUploadImageForm
 	VOLATILE = true
 	def init
-		puts "in upload form"
 		artobject_id = @session.user_input(:artobject_id)
 		@model = @session.app.load_artobject(artobject_id)
 	end

@@ -213,6 +213,8 @@ div.guestbook {
 	width: 600px;
 	margin-left: auto; margin-right: auto;
 	border-bottom: 2px solid #990099;
+	margin-bottom: 20px;
+	margin-top: 20px;
 }
 
 div.guestbook table {

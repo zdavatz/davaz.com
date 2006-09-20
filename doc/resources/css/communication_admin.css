@@ -14,51 +14,19 @@ input {
 textarea {
 	background-color: none;
 	font-size: 10pt;
-}
-
-div.block-url:hover {
-	background-color: #f3fb98;
-}
-
-input.block-url {
-	border: none;
-	width: 100%;
-	font-size: 13pt;
-	font-weight: bold;
-	font-color: blue;
-}
-
-
-div.block-title:hover {
-	background-color: #f3fb98;
-}
-
-input.block-title {
-	border: none;
-	width: 100%;
-	font-size: 13pt;
-	font-weight: bold;
-}
-
-div.block-date_ch:hover {
-	background-color: #f3fb98;
-}
-
-input.block-date_ch {
 	border: none;
 	width: 100%;
 }
 
-div.block-text:hover {
+div.live-edit {
+	text-align: left;
+}
+
+div.live-edit:hover {
 	background-color: #f3fb98;
 }
 
-input.block-text {
-	border: none;
-	width: 100%;
-}
-
-textarea.block-text {
+input.live-edit {
 	border: none;
 	width: 100%;
 }
@@ -67,16 +35,10 @@ textarea.block-text {
 	background-color: #e6e6fa;
 }
 
-div.edit-element {
+div.label {
+	width: 60px;
+	padding-right: 20px;
+	font-weight: bold;
 	text-align: left;
 	float: left;
-}
-
-a.edit-element:link, a.edit-element:active,
-a.edit-element:hover {
-	color: red;
-}
-
-div#upload-image-div {
-	clear: both;
 }

@@ -102,6 +102,14 @@ module DAVAZ
 				end
 				deleted
 			end
+			def delete_guest(guest_id)
+				query = <<-EOS
+					DELETE FROM guestbook
+					WHERE guest_id='#{guest_id}'
+				EOS
+				connection.query(query)
+				connection.affected_rows
+			end
 			def load_artgroups(order_by='artgroup_id')
 				query = <<-EOS
 					SELECT *
@@ -431,7 +439,7 @@ module DAVAZ
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
 					WHERE #{select_by}='#{serie_id}'
-					ORDER BY artobjects.serie_position DESC,artobjects.date ASC,artobjects.title DESC
+					ORDER BY artobjects.serie_position DESC,artobjects.date DESC,artobjects.title DESC
 				EOS
 				result = connection.query(query)
 				artobjects = []
@@ -607,7 +615,7 @@ module DAVAZ
 					Time.now.strftime("%Y-%m-%d"),
 				]
 				[ 
-					:name, :surname, :city, :country, :email, :messagetxt 
+					:name, :city, :country, :email, :messagetxt 
 				].each { |key| 
 					values.push(Mysql.escape_string(user_values[key])) 
 				}

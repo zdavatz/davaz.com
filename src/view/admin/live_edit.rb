@@ -8,6 +8,22 @@ module DAVAZ
 	module View
 		module Admin
 class LiveEditWidget < HtmlGrid::Div
+	def compose_element_args
+		args = []
+		values = []
+		args.push([ 'element_id_name', 'artobject_id' ])
+		args.push([ 'element_id_value', @model.artobject_id ])
+		[
+			:title, :url, :date_ch, :text,
+		].each { |symbol|
+			unless((value = @model.send(symbol)).nil? || value.empty?)	
+				values.push(symbol.to_s)
+				values.push(value)
+			end
+		}
+		args.push(['values', values])
+		args
+	end
 	def to_html(context)
 		url = @lookandfeel.event_url(:admin, :ajax_save_live_edit)
 		object_args = {
@@ -36,16 +52,44 @@ class LiveEditWidget < HtmlGrid::Div
 		else
 			args.push([ 'has_image', 'false' ])
 		end
-		[
-			:artobject_id, :date_ch, :text, :title, :url
-		].each { |symbol|
-			unless((value = @model.send(symbol)).nil? || value.empty?)	
-				args.push([symbol.to_s, value])
-			end
-		}
-		dojo_tag('EditWidget', args)
+		args.push(['image_pos', 3])
+		dojo_tag('EditWidget', args.concat(compose_element_args))
 	end
 		end
+class GuestbookLiveEditWidget < HtmlGrid::Div 
+	def compose_element_args
+		args = []
+		values = []
+		args.push([ 'element_id_name', 'guest_id' ])
+		args.push([ 'element_id_value', @model.guest_id ])
+		[
+			:name, :date_gb, :city, :country, :text
+		].each { |symbol| 
+			unless((value = @model.send(symbol)).nil? || value.empty?)	
+				values.push(symbol.to_s)
+				values.push(value)
+				values.push(@lookandfeel.lookup(symbol))
+			end
+		}
+		args.push(['values', values])
+		args	
+	end
+	def to_html(context)
+		url = @lookandfeel.event_url(:admin, :ajax_save_gb_live_edit)
+		object_args = {
+			:guest_id => @model.guest_id,
+		} 
+		delete_item_url = @lookandfeel.event_url(@session.zone, :ajax_delete_element, object_args)
+		args = [
+			[ 'update_url', url ],
+			[ 'delete_item_url', delete_item_url ],
+			[ 'delete_icon_src', @lookandfeel.resource(:icon_cancel) ],
+			[ 'delete_icon_txt', @lookandfeel.lookup(:delete) ],
+			[ 'labels', true ], 
+		]
+		dojo_tag('EditWidget', args.concat(compose_element_args))	
+	end
+end
 		end
 	end
 end

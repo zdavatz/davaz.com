@@ -56,6 +56,9 @@ module DAVAZ
 			def delete_artobject(artobject_id)
 				@db_manager.delete_artobject(artobject_id)
 			end
+			def delete_guest(guest_id)
+				@db_manager.delete_guest(guest_id)
+			end
 			def delete_image(artobject_id)
 				Util::ImageHelper.delete_image(artobject_id)
 			end
@@ -100,6 +103,9 @@ module DAVAZ
 			end
 			def load_thefamily_text
 				@db_manager.load_serie_artobjects('site_thefamily', 'series.name')
+			end
+			def load_guest(guest_id)
+				@db_manager.load_guest(guest_id)
 			end
 			def load_guests
 				@db_manager.load_guests
@@ -214,6 +220,9 @@ module DAVAZ
 			end
 			def update_artobject(artobject_id, update_hash)
 				@db_manager.update_artobject(artobject_id, update_hash)
+			end
+			def update_guest(guest_id, update_hash)
+				@db_manager.update_guest(guest_id, update_hash)
 			end
 		end
 	end

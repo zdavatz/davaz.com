@@ -37,7 +37,7 @@ dojo.widget.defineWidget(
 					_this.widgetContainer.style.left = left+"px";
 					_this.widgetContainer.style.top = top+"px";
 					_this.loginForm = _this.formContainer.firstChild;
-					dojo.event.connect(cancel, 'onsubmit', _this, 'submitForm');
+					dojo.event.connect(_this.loginForm, 'onsubmit', _this, 'submitForm');
 					var cancel = dojo.byId('login-form-cancel-button');
 					dojo.event.connect(cancel, 'onclick', _this, 'cancelLogin');
 				}

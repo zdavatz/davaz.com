@@ -23,7 +23,7 @@ class AjaxAddNewLinkElement < State::Admin::AjaxAddNewElement
 			:serie_id =>	@model.serie_id,
 			:url			=>	@session.lookandfeel.lookup(:click2edit), 
 			:date			=>	Date.today.to_s, 
-			:text			=>	@session.lookandfeel.lookup(:click2edit), 
+			:text			=>	@session.lookandfeel.lookup(:click2edit_textarea), 
 		}		
 		insert_id = @session.app.insert_artobject(values)
 		@model = @session.app.load_artobject(insert_id)

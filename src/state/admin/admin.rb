@@ -2,6 +2,7 @@
 # State::Admin::Admin -- davaz.com -- 08.06.2006 -- mhuggler@ywesee.com
 
 require 'state/art_object'
+require 'state/communication/guestbook'
 require 'state/communication/links'
 require 'state/communication/news'
 require 'state/public/articles'
@@ -29,8 +30,10 @@ module Admin
 		:ajax_reload_tag_images	=>	State::Admin::AjaxReloadTagImages,
 		:ajax_remove_element		=>	State::AjaxRemoveElement,
 		:ajax_save_live_edit		=>	State::Admin::AjaxSaveLiveEdit,
+		:ajax_save_gb_live_edit	=>	State::Admin::AjaxSaveGbLiveEdit,
 		:ajax_upload_image			=>	State::Admin::AjaxUploadImage,
 		:ajax_upload_image_form	=>	State::Admin::AjaxUploadImageForm,
+		:guestbook							=>	State::Communication::AdminGuestbook,
 		:links									=>	State::Communication::AdminLinks,
 		:new_art_object					=>	State::AdminArtObject,
 		:news										=>	State::Communication::AdminNews,

@@ -41,9 +41,6 @@ module DAVAZ
 			def tooltip
 				State::Tooltip.new(@session, @model)
 			end
-			def flush_ajax_errors
-				@session.flush_ajax_errors	
-			end
 			def error_check_and_store(key, value, mandatory=[])
 				if(value.is_a? RuntimeError)
 					@errors.store(key, value)

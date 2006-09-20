@@ -46,13 +46,13 @@ module DAVAZ
 			]
 			MOVIES_DIV_IMAGE_WIDTH = 185
 			MOVIES_DIV_IMAGE_SPEED = 4000
-			DOJO_DEBUG = false 
+			DOJO_DEBUG = true 
 			DOJO_BACK_BUTTON = false 
 			DOJO_PREFIX = {
 				'ywesee'	=>	'../javascript',
 			}
 			DOJO_REQUIRE = [
-				#'dojo.debug.Firebug',
+				'dojo.debug.Firebug',
 				'dojo.widget.*',
 				'dojo.widget.Tooltip',
 				'dojo.lfx.*',
@@ -77,6 +77,7 @@ module DAVAZ
 				'ywesee.widget.EditWidget',
 				'ywesee.widget.EditButtons',
 				'ywesee.widget.LoginWidget',
+				'ywesee.widget.GuestbookWidget',
 			]
 			CONTENT = nil
 			TICKER = nil
@@ -172,7 +173,7 @@ module DAVAZ
 			CSS_FILES = [ :navigation_css, :communication_css ]
 		end
 		class CommunicationAdminPublicTemplate < View::CommonPublicTemplate
-			CSS_FILES = [ :navigation_css, :communication_css, :communication_admin_css ]
+			CSS_FILES = [ :navigation_css, :communication_css, :admin_css, :communication_admin_css ]
 		end
 		class AdminPersonalPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :personal_css, :admin_css ]

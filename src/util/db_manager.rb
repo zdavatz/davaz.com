@@ -322,7 +322,6 @@ module DAVAZ
 					SELECT *
 					FROM guestbook
 					ORDER BY date DESC
-					LIMIT 3
 				EOS
 				result = connection.query(query)
 				create_model_array(DAVAZ::Model::Guest, result) 

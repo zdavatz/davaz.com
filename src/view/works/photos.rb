@@ -11,6 +11,9 @@ class PhotosComposite < View::Works::Works; end
 class Photos < View::PhotosPublicTemplate
 	CONTENT = View::Works::PhotosComposite 
 end
+class AdminPhotos < View::AdminPhotosPublicTemplate
+	CONTENT = View::Works::PhotosComposite 
+end
 		end
 	end
 end

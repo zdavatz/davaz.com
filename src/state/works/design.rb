@@ -2,6 +2,7 @@
 # State::Works::Design -- davaz.com -- 05.05.2006 -- mhuggler@ywesee.com
 
 require 'state/global_predefine'
+require 'state/works/rack_state'
 require 'view/works/design'
 
 module DAVAZ
@@ -9,6 +10,10 @@ module DAVAZ
 		module Works
 class Design < State::Works::RackState
 	VIEW = View::Works::Design
+	ARTGROUP_ID = 'DES'
+end
+class AdminDesign < State::Works::AdminRackState
+	VIEW = View::Works::AdminDesign
 	ARTGROUP_ID = 'DES'
 end
 		end

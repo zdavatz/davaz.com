@@ -16,6 +16,7 @@ ywesee.widget.Rack = function(){
 	this.widgetType = "Rack";
 
 	this.artObjectIds = [];	
+	this.artGroupIds = [];	
 	this.images = [];	
 	this.titles = [];
 	this.dataUrl = "";
@@ -76,7 +77,7 @@ ywesee.widget.Rack = function(){
 			img.src = this.images[idx];
 			img.style.width = '180px';
 			img.alt = this.titles[idx];
-			_this = this;
+			var _this = this;
 			img.onmouseover = function() {
 				_this.toggleDisplay(this); 
 			};

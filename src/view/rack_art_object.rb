@@ -64,8 +64,22 @@ module DAVAZ
 				1	=>	'artobject-inner-composite',
 			}
 			HTTP_HEADERS = {
-		"type"		=>	"text/html",
-		"charset"	=>	"UTF-8",
+				"type"		=>	"text/html",
+				"charset"	=>	"UTF-8",
+			}			
+		end
+		class AdminRackArtObjectComposite < HtmlGrid::DivComposite
+			COMPONENTS = {
+				[0,0]	=>	RackArtObjectOuterComposite,
+				[0,1]	=>	View::AdminArtObjectInnerComposite,
+			}
+			CSS_ID_MAP = {
+				0	=>	'artobject-outer-composite',
+				1	=>	'artobject-inner-composite',
+			}
+			HTTP_HEADERS = {
+				"type"		=>	"text/html",
+				"charset"	=>	"UTF-8",
 			}			
 		end
 	end

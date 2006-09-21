@@ -11,11 +11,9 @@ ywesee.widget.Desk = function(){
 	this.templatePath = 
 		dojo.uri.dojoUri("../javascript/widget/templates/HtmlDesk.html");
 
-	// over-ride some defaults
 	this.isContainer = false;
 	this.widgetType = "Desk";
 
-	// useful properties
 	this.images = [];	
 	this.titles = [];
 	this.dataUrl = "";

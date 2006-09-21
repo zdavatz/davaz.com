@@ -11,6 +11,10 @@ class Schnitzenthesen < State::Works::RackState
 	VIEW = View::Works::Schnitzenthesen
 	ARTGROUP_ID = 'SCH'
 end
+class AdminSchnitzenthesen < State::Works::AdminRackState
+	VIEW = View::Works::AdminSchnitzenthesen
+	ARTGROUP_ID = 'SCH'
+end
 		end
 	end
 end

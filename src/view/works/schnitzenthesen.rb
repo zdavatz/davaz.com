@@ -11,6 +11,9 @@ class SchnitzenthesenComposite < View::Works::Works; end
 class Schnitzenthesen < View::SchnitzenthesenPublicTemplate
 	CONTENT = View::Works::SchnitzenthesenComposite 
 end
+class AdminSchnitzenthesen < View::AdminSchnitzenthesenPublicTemplate
+	CONTENT = View::Works::SchnitzenthesenComposite 
+end
 		end
 	end
 end

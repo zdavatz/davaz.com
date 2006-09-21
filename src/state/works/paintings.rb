@@ -7,6 +7,10 @@ require 'view/works/paintings'
 module DAVAZ
 	module State
 		module Works
+class AdminPaintings < State::Works::AdminRackState
+	VIEW = View::Works::AdminPaintings
+	ARTGROUP_ID = "PAI"
+end
 class Paintings < State::Works::RackState
 	VIEW = View::Works::Paintings
 	ARTGROUP_ID = "PAI"

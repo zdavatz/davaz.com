@@ -11,6 +11,9 @@ class DesignComposite < View::Works::Works; end
 class Design < View::DesignPublicTemplate
 	CONTENT = View::Works::DesignComposite 
 end
+class AdminDesign < View::AdminDesignPublicTemplate
+	CONTENT = View::Works::DesignComposite 
+end
 		end
 	end
 end

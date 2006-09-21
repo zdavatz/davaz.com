@@ -11,6 +11,9 @@ class PaintingsComposite < View::Works::Works; end
 class Paintings < View::PaintingsPublicTemplate
 	CONTENT = View::Works::PaintingsComposite 
 end
+class AdminPaintings < View::AdminPaintingsPublicTemplate
+	CONTENT = View::Works::PaintingsComposite 
+end
 		end
 	end
 end

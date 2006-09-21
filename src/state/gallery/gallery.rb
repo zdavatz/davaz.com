@@ -2,6 +2,7 @@
 # State::Gallery::Gallery -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
 
 require 'state/global_predefine'
+require 'state/art_object'
 require 'view/gallery/gallery'
 require 'view/art_object'
 require 'view/rack_art_object'
@@ -10,6 +11,24 @@ require 'view/ajax_response'
 module DAVAZ
 	module State
 		module Gallery 
+class AjaxAdminDeskArtobject < SBSM::State
+	include AdminArtObjectMethods
+	VIEW = View::AdminRackArtObjectComposite
+	VOLATILE = true
+	def init
+		@model = OpenStruct.new
+		artobject_id = @session.user_input(:artobject_id)
+		serie_id = @session.user_input(:serie_id)
+		serie	= @session.load_serie(serie_id) 
+		@model.artobjects = serie.artobjects
+		object = @model.artobjects.find { |artobject| 
+			artobject.artobject_id == artobject_id
+		} 
+		@model.artobject = object 
+		@model.fragment = "Desk_#{serie_id}_#{artobject_id}"
+		build_selections
+	end
+end
 class AjaxDeskArtobject < SBSM::State
 	VIEW = View::RackArtObjectComposite
 	VOLATILE = true

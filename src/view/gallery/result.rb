@@ -189,6 +189,7 @@ class RackResultList < ResultList
 		serie_id = @session.user_input(:serie_id)
 		artobject_id = model.artobject_id
 		args = [ 
+			[ :artgroup_id, model.artgroup_id ],
 			[ :serie_id, serie_id ],
 			[ :artobject_id, artobject_id ],
 		]

@@ -22,6 +22,8 @@ module Admin
 	include SBSM::ViralState
 	EVENT_MAP = {
 		:art_object							=>	State::AdminArtObject,
+		:ajax_add_element				=>	State::AjaxAddElement,
+		:ajax_add_form					=>	State::AjaxAddForm,
 		:ajax_all_tags					=>	State::AjaxAllTags,
 		:ajax_all_tags_link			=>	State::AjaxAllTagsLink,
 		:ajax_delete_element		=>	State::Admin::AjaxDeleteElement,
@@ -33,12 +35,24 @@ module Admin
 		:ajax_save_gb_live_edit	=>	State::Admin::AjaxSaveGbLiveEdit,
 		:ajax_upload_image			=>	State::Admin::AjaxUploadImage,
 		:ajax_upload_image_form	=>	State::Admin::AjaxUploadImageForm,
+		:design									=>	State::Works::AdminDesign,
+		:drawings								=>	State::Works::AdminDrawings,
 		:guestbook							=>	State::Communication::AdminGuestbook,
 		:links									=>	State::Communication::AdminLinks,
 		:new_art_object					=>	State::AdminArtObject,
 		:news										=>	State::Communication::AdminNews,
+		:paintings							=>	State::Works::AdminPaintings,
+		:photos									=>	State::Works::AdminPhotos,
+		:schnitzenthesen				=>	State::Works::Schnitzenthesen,
 		:work										=>	State::Personal::AdminWork,
 	}
+	def ajax_desk
+		if(@session.user_input(:artobject_id))
+			State::Gallery::AjaxAdminDeskArtobject.new(@session, [])
+		else
+			State::Gallery::AjaxDesk.new(@session, [])
+		end
+	end
 	def ajax_check_removal_status
 		State::Admin::AjaxCheckRemovalStatus.new(@session, [])	
 	end

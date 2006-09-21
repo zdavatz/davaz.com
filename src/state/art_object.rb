@@ -7,6 +7,35 @@ require 'model/artobject'
 
 module DAVAZ
 	module State
+		module AdminArtObjectMethods
+			def build_selection(selection, args)
+				artobject_id = args[:aid]	
+				selected_id = args[:sid]	
+				select = OpenStruct.new
+				select.artobject_id = artobject_id
+				select.selection = @session.app.send("load_#{selection}".intern)
+				select.selection.each { |sel| 
+					if(selected_id == sel.sid)
+						select.selected = sel
+					end
+				}
+				select.dup
+			end
+			def build_selections
+				args = { :aid => nil, :sid => nil }
+				args[:aid] = @model.artobject.artobject_id if @model.artobject
+				args[:sid] = @model.artobject.artgroup_id if @model.artobject
+				@model.select_artgroup = build_selection("artgroups", args)
+				args[:sid] = @model.artobject.serie_id if @model.artobject
+				@model.select_serie = build_selection("series", args)
+				args[:sid] = @model.artobject.tool_id if @model.artobject
+				@model.select_tool = build_selection("tools", args)
+				args[:sid] = @model.artobject.material_id if @model.artobject
+				@model.select_material = build_selection("materials", args)
+				args[:sid] = @model.artobject.country_id if @model.artobject
+				@model.select_country = build_selection("countries", args)
+			end
+		end
 		class AjaxAddElement < SBSM::State
 			VOLATILE = true
 			def init
@@ -136,9 +165,18 @@ module DAVAZ
 			def init
 				artobject_id = @session.user_input(:artobject_id)
 				artgroup_id = @session.user_input(:artgroup_id)
+				serie_id = @session.user_input(:serie_id)
 				query = @session.user_input(:search_query)
 				@model = OpenStruct.new
-				@model.artobjects = @session.app.search_artobjects(query, artgroup_id)
+				if(query)
+					@model.artobjects = @session.app.search_artobjects(query, artgroup_id)
+				elsif(serie_id)
+					@model.artobjects = @session.load_serie(serie_id).artobjects
+				elsif(artgroup_id)
+					@model.artobjects = @session.load_artgroup_artobjects(artgroup_id)
+				else
+					@model.artobjects = []
+				end
 				object = @model.artobjects.find { |artobject| 
 					artobject.artobject_id == artobject_id
 				} 
@@ -146,6 +184,7 @@ module DAVAZ
 			end
 		end
 		class AdminArtObject < ArtObject
+			include AdminArtObjectMethods
 			VIEW = View::AdminArtObject
 			def init
 				super
@@ -157,33 +196,6 @@ module DAVAZ
 			end
 			def ajax_upload_image
 				AjaxUploadImage.new(@session, @model)
-			end
-			def build_selection(selection, args)
-				artobject_id = args[:aid]	
-				selected_id = args[:sid]	
-				select = OpenStruct.new
-				select.artobject_id = artobject_id
-				select.selection = @session.app.send("load_#{selection}".intern)
-				select.selection.each { |sel| 
-					if(selected_id == sel.sid)
-						select.selected = sel
-					end
-				}
-				select.dup
-			end
-			def build_selections
-				args = { :aid => nil, :sid => nil }
-				args[:aid] = @model.artobject.artobject_id if @model.artobject
-				args[:sid] = @model.artobject.artgroup_id if @model.artobject
-				@model.select_artgroup = build_selection("artgroups", args)
-				args[:sid] = @model.artobject.serie_id if @model.artobject
-				@model.select_serie = build_selection("series", args)
-				args[:sid] = @model.artobject.tool_id if @model.artobject
-				@model.select_tool = build_selection("tools", args)
-				args[:sid] = @model.artobject.material_id if @model.artobject
-				@model.select_material = build_selection("materials", args)
-				args[:sid] = @model.artobject.country_id if @model.artobject
-				@model.select_country = build_selection("countries", args)
 			end
 			def delete
 				artobject_id = @model.artobject.artobject_id	

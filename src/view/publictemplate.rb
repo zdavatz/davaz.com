@@ -169,20 +169,35 @@ module DAVAZ
 			#FOOT = View::FootNavigation
 			#COMPONENTS.store([0,3], :foot)
 		end
+		class AdminDesignPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :design_css, :admin_css ]
+		end
+		class AdminDrawingsPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :drawings_css, :admin_css ]
+		end
+		class AdminGalleryPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :gallery_css, :admin_css ]
+		end
+		class AdminPaintingsPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :paintings_css, :admin_css ]
+		end
+		class AdminPersonalPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :personal_css, :admin_css ]
+		end
+		class AdminPhotosPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :photos_css, :admin_css ]
+		end
+		class AdminSchnitzenthesenPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :schnitzenthesen_css, :admin_css ]
+		end
+		class ArticlesPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :articles_css ]
+		end
 		class CommunicationPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :communication_css ]
 		end
 		class CommunicationAdminPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :communication_css, :admin_css, :communication_admin_css ]
-		end
-		class AdminPersonalPublicTemplate < View::CommonPublicTemplate
-			CSS_FILES = [ :navigation_css, :personal_css, :admin_css ]
-		end
-		class PersonalPublicTemplate < View::CommonPublicTemplate
-			CSS_FILES = [ :navigation_css, :personal_css ]
-		end
-		class MoviesPublicTemplate < View::CommonPublicTemplate
-			CSS_FILES = [ :navigation_css, :movies_css ]
 		end
 		class DesignPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :design_css ]
@@ -190,35 +205,35 @@ module DAVAZ
 		class DrawingsPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :drawings_css ]
 		end
+		class ExhibitionsPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :exhibitions_css ]
+		end
+		class GalleryPublicTemplate < View::PublicTemplate
+			CSS_FILES = [ :navigation_css, :gallery_css ]
+		end
+		class ImagesPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :images_css ]
+		end
 		class PaintingsPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :paintings_css ]
 		end
+		class LecturesPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :lectures_css ]
+		end
 		class MultiplesPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :multiples_css ]
+		end
+		class MoviesPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :movies_css ]
+		end
+		class PersonalPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :personal_css ]
 		end
 		class PhotosPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :photos_css ]
 		end
 		class SchnitzenthesenPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :schnitzenthesen_css ]
-		end
-		class GalleryPublicTemplate < View::PublicTemplate
-			CSS_FILES = [ :navigation_css, :gallery_css ]
-		end
-		class ArticlesPublicTemplate < View::CommonPublicTemplate
-			CSS_FILES = [ :navigation_css, :articles_css ]
-		end
-		class LecturesPublicTemplate < View::CommonPublicTemplate
-			CSS_FILES = [ :navigation_css, :lectures_css ]
-		end
-		class ExhibitionsPublicTemplate < View::CommonPublicTemplate
-			CSS_FILES = [ :navigation_css, :exhibitions_css ]
-		end
-		class ImagesPublicTemplate < View::CommonPublicTemplate
-			CSS_FILES = [ :navigation_css, :images_css ]
-		end
-		class AdminGalleryPublicTemplate < View::CommonPublicTemplate
-			CSS_FILES = [ :navigation_css, :gallery_css, :admin_css ]
 		end
 	end
 end

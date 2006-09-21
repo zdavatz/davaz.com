@@ -32,7 +32,7 @@ class AjaxSubmitStatus < SBSM::State
 			@model['messages'] = messages.join("<br />")
 		else
 			hash.each { |key, value|
-				hash[key] = Iconv.iconv('utf8', 'latin1', value).first
+				hash[key] = @session.app.enc2utf8(value) 
 			}
 			@session.app.insert_guest(hash)
 			@model['success'] = true 

@@ -165,20 +165,7 @@ module DAVAZ
 				link
 			end
 		end
-		module Breadcrumbs
-			def breadcrumbs
-				if(bcstring = @session.user_input(:breadcrumbs))
-					bcstring.split(',', 2)
-				else
-					[
-						@session.user_input(:artgroup_id),
-						@session.user_input(:search_query)
-					]
-				end
-			end
-		end
 		class ArtObjectOuterComposite < HtmlGrid::DivComposite
-			include Breadcrumbs
 			COMPONENTS = {
 				[0,0]	=>	:pager,
 				[0,1]	=>	:back_to_overview,
@@ -190,7 +177,7 @@ module DAVAZ
 			def back_to_overview(model)
 				return "" if @model.artobjects.empty?
 				link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
-				args = [:artgroup_id, :search_query].zip(breadcrumbs())
+				args = [:artgroup_id, :search_query]
 				link.href = @lookandfeel.event_url(:gallery, :search, args)
 				link
 			end
@@ -369,7 +356,6 @@ module DAVAZ
 		end
 		class AdminArtobjectDetails < View::Form
 			include HtmlGrid::ErrorMessage
-			include Breadcrumbs
 			def AdminArtobjectDetails.edit_links(*args)
 				args.each { |key|
 					define_method(key) { |model|
@@ -422,9 +408,13 @@ module DAVAZ
 				error_message()
 			end
 			def hidden_fields(context)
-				string = super
-				string.concat(context.hidden('breadcrumbs', 
-																		 breadcrumbs.join(',')))
+				hidden_fields = super
+				hidden_fields <<
+				context.hidden('artobject_id', @model.artobject.artobject_id)
+				if(@model.fragment)
+					hidden_fields << context.hidden('fragment', @model.fragment)
+				end
+				hidden_fields
 			end
 			def input_text(symbol, maxlength='50', size='50') 
 				input = HtmlGrid::InputText.new(symbol, model.artobject, @session, self)
@@ -452,8 +442,10 @@ module DAVAZ
 			def delete(model)
 				if(artobject_id = model.artobject.artobject_id)
 					button = HtmlGrid::Button.new(:delete, model, @session, self)
-					args = [:artgroup_id, :search_query].zip(breadcrumbs())
+					args = [:artgroup_id, :search_query]
 					args.push(
+						[ 'artobject_id', model.artobject.artobject_id ],
+						[ 'fragment', model.fragment ],
 						[ 'state_id', @session.state.object_id.to_s ]
 					)
 					url = @lookandfeel.event_url(:admin, :delete, args)
@@ -538,7 +530,7 @@ module DAVAZ
 			end
 			def init
 				super
-				artobject = model.artobject
+				artobject = @model.artobject
 				if(artobject_id = artobject.artobject_id)
 					url = DAVAZ::Util::ImageHelper.image_path(artobject_id)
 					image(artobject, url)

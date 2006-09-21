@@ -11,6 +11,10 @@ class Photos < State::Works::RackState
 	VIEW = View::Works::Photos
 	ARTGROUP_ID = 'PHO'
 end
+class AdminPhotos < State::Works::AdminRackState
+	VIEW = View::Works::AdminPhotos
+	ARTGROUP_ID = 'PHO'
+end
 		end
 	end
 end

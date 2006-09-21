@@ -87,6 +87,9 @@ module DAVAZ
 				image.write(name)
 			end
 			def ImageHelper.store_upload_image(string_io, artobject_id)
+				if(ImageHelper.has_image?(artobject_id))
+					ImageHelper.delete_image(artobject_id)	
+				end
 				image = Image.from_blob(string_io.read).first
 				extension = image.format.downcase
 				path = File.join(ImageHelper.images_path, \

@@ -198,7 +198,6 @@ ywesee.widget.SlideShow = function(){
 	}
 
 	this.refillCallback = function() {
-		dojo.debug('refillCallback');
 		//this.togglePaused();
 		this.loadedCallback = 'backgroundImageLoaded';
 		this.disconnectOnLoads('refillCallback');
@@ -206,7 +205,6 @@ ywesee.widget.SlideShow = function(){
 
 		//this.loadedCallback = "backgroundImageLoaded";
 		//this.loadNextImage();
-		//dojo.debug('we have arrived');
 	}
 	
 	this.disconnectOnLoads = function(funcname) {

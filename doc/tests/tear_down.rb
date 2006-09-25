@@ -15,7 +15,7 @@ module Selenium
 			@connection = Mysql.new(db_data['host'], db_data['user'], db_data['password'], db_data['db'])
 		end
 		def tear_down_guestbook
-			query = "DELETE FROM guestbook WHERE firstname='TestName'"
+			query = "DELETE FROM guestbook WHERE name='TestName'"
 			result = @connection.query(query)
 			if(@connection.affected_rows > 0)
 				puts "#{@connection.affected_rows} guestbook entries deleted!"

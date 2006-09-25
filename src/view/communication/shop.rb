@@ -79,7 +79,7 @@ class ShopList < View::List
 			[ :artgroup_id, model.artgroup_id ],
 			[ :artobject_id, model.artobject_id ],
 		]
-		link.href = @lookandfeel.event_url(:works, :art_object, args)
+		link.href = @lookandfeel.event_url(:communication, :shop_art_object, args)
 		link.value = model.title
 		link
 	end

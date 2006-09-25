@@ -123,6 +123,50 @@ module DAVAZ
 				end
 			end
 		end
+		class ShopPager < HtmlGrid::SpanComposite
+			COMPONENTS = {
+				[0,0]	=>	:last,
+				[0,1]	=>	:items,	
+				[0,2]	=>	:next,
+			}
+			def items(model)
+				"Item #{model.artobjects.index(model.artobject)+1} of #{model.artobjects.size}"
+			end
+			def next(model)
+				artobjects = model.artobjects
+				active_index = artobjects.index(model.artobject)
+				unless(active_index+1 == artobjects.size)
+					link = HtmlGrid::Link.new(:paging_next, model, @session, self)
+					args = [ 
+					  [ :artgroup_id, @session.user_input(:artgroup_id) ],
+						[ :artobject_id, artobjects.at(active_index+1).artobject_id ],
+					]
+					link.href = @lookandfeel.event_url(:communication, :shop_art_object, args)
+					image = HtmlGrid::Image.new(:paging_next, model, @session, self)
+					image_src = @lookandfeel.resource(:paging_next)
+					image.set_attribute('src', image_src)
+					link.value = image 
+					link
+				end
+			end
+			def last(model)
+				artobjects = model.artobjects
+				active_index = artobjects.index(model.artobject)
+				unless(active_index-1 == -1)
+					link = HtmlGrid::Link.new(:paging_last, model, @session, self)
+					args = [ 
+					  [ :artgroup_id, @session.user_input(:artgroup_id) ],
+						[ :artobject_id, artobjects.at(active_index-1).artobject_id ],
+					]
+					link.href = @lookandfeel.event_url(:communication, :shop_art_object, args)
+					image = HtmlGrid::Image.new(:paging_last, model, @session, self)
+					image_src = @lookandfeel.resource(:paging_last)
+					image.set_attribute('src', image_src)
+					link.value = image 
+					link
+				end
+			end
+		end
 		class MoviesPager < Pager 
 			def pager_link(link)
 				artobject_id = link.attributes['href'].split("/").last
@@ -213,6 +257,39 @@ module DAVAZ
 		end
 		class ArtObject < View::GalleryPublicTemplate
 			CONTENT = View::ArtObjectComposite
+		end
+		class ShopArtObjectOuterComposite < HtmlGrid::DivComposite
+			COMPONENTS = {
+				[0,0]	=>	:pager,
+				[0,1]	=>	:back_to_shop,
+			}
+			CSS_ID_MAP = {
+				0	=>	'artobject-pager',
+				1	=>	'artobject-back-link',
+			}
+			def back_to_shop(model)
+				link = HtmlGrid::Link.new(:back_to_shop, model, @session, self)
+				link.href = @lookandfeel.event_url(:communication, :shop)
+				link
+			end
+			def pager(model)
+				unless(@model.artobjects.empty?)
+					ShopPager.new(model, @session, self)
+				end
+			end
+		end
+		class ShopArtObjectComposite < HtmlGrid::DivComposite 
+			COMPONENTS = {
+				[0,0]	=>	ShopArtObjectOuterComposite,
+				[0,1]	=>	component(ArtObjectInnerComposite, :artobject),
+			}
+			CSS_ID_MAP = {
+				0	=>	'artobject-outer-composite',
+				1	=>	'artobject-inner-composite',
+			}
+		end
+		class ShopArtObject < View::GalleryPublicTemplate
+			CONTENT = View::ShopArtObjectComposite
 		end
 		class ShowAllTagsLink < HtmlGrid::Div
 			CSS_ID = 'all-tags-link'
@@ -559,8 +636,12 @@ module DAVAZ
 				super
 				data_id = "artobject-image-#{@model.artobject.artobject_id}"
 				form_id = 'upload-image-form'
-				script = "submitForm(this, '#{data_id}', '#{form_id}', true);" 
-				script << "return false;"
+				script = <<-EOS
+					if(this.image_file.value != '') {
+						submitForm(this, '#{data_id}', '#{form_id}', true);
+					}
+					return false;
+				EOS
 				self.onsubmit = script 
 			end
 		end

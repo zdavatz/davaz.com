@@ -93,7 +93,9 @@ class AdminRackState < State::Works::RackState
 	end
 	def update
 		artobject_id = @session.user_input(:artobject_id)
-		mandatory = [
+		@model.artobject = @session.app.load_artobject(artobject_id)
+		mandatory = []
+		keys = [
 			:title,
 			:artgroup_id,
 			:serie_id,
@@ -102,8 +104,6 @@ class AdminRackState < State::Works::RackState
 			:material_id,
 			:date,
 			:country_id,
-		]
-		keys = [
 			:tags_to_s,
 			:location,
 			:form_language,
@@ -147,8 +147,14 @@ class AdminRackState < State::Works::RackState
 				method = (key.to_s + "=").intern
 				@model.artobject.send(method, value)
 			}
+			@session.app.update_artobject(artobject_id, update_hash)
+			@model.artobject = @session.app.load_artobject(artobject_id)
 			build_selections
-			self 
+			model = self.request_path
+			if(fragment = @session.user_input(:fragment))
+				model << "##{fragment}" unless fragment.empty?
+			end
+			newstate = State::Redirect.new(@session, model)
 		end
 	end
 end

@@ -16,6 +16,7 @@ module DAVAZ
 		class DRbServer < SBSM::DRbServer
 			SESSION = DAVAZ::Util::Session
 			VALIDATOR = DAVAZ::Util::Validator
+			ENABLE_ADMIN = true
 		end
 	end
 end

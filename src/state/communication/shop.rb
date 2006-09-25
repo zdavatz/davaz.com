@@ -3,6 +3,7 @@
 
 require 'state/global_predefine'
 require 'view/communication/shop'
+require 'view/art_object'
 require 'net/smtp'
 require 'tmail'
 
@@ -31,6 +32,24 @@ class AjaxShop < SBSM::State
 				items.first.count = @session.user_input(:count)
 			end
 		end
+	end
+end
+class ShopArtObject < State::Global 
+	VIEW = View::ShopArtObject 
+	def init
+		artobject_id = @session.user_input(:artobject_id)
+		artgroup_id = @session.user_input(:artgroup_id)
+		@model = OpenStruct.new
+		@model.artobjects = @session.load_artgroup_artobjects(artgroup_id)
+		@model.artobjects.delete_if { |artobject| 
+			artobject.price == '0' || \
+			artobject.price == ''	|| \
+			artobject.price == nil 
+		}
+		object = @model.artobjects.find { |artobject| 
+			artobject.artobject_id == artobject_id
+		} 
+		@model.artobject = object
 	end
 end
 class Shop < State::Communication::Global

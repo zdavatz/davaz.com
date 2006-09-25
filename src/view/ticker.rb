@@ -26,19 +26,21 @@ module DAVAZ
 				}
 				model.each { |item| 
 					unless(item.artobject_id.nil?)
-						path = DAVAZ::Util::ImageHelper.image_path(item.artobject_id, 'medium')
-						args['images'].push(path)
-						event_args = [
-							[ 'artgroup_id' , item.artgroup_id ],
-							[ 'artobject_id', item.artobject_id ]
-						]
-						unless(item.url.nil? || item.url.empty?)
-							event_url = item.url
-						else
-							event_url = @lookandfeel.event_url(:gallery, :art_object, \
-																														event_args)
+						if(Util::ImageHelper.has_image?(item.artobject_id))
+							path = Util::ImageHelper.image_path(item.artobject_id, 'medium')
+							args['images'].push(path)
+							event_args = [
+								[ 'artgroup_id' , item.artgroup_id ],
+								[ 'artobject_id', item.artobject_id ]
+							]
+							unless(item.url.nil? || item.url.empty?)
+								event_url = item.url
+							else
+								event_url = @lookandfeel.event_url(:gallery, :art_object, \
+																															event_args)
+							end
+							args['eventUrls'].push(event_url)
 						end
-						args['eventUrls'].push(event_url)
 					end
 				}
 				dojo_tag('ticker', args)

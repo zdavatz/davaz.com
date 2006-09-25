@@ -43,7 +43,7 @@ module Admin
 		:news										=>	State::Communication::AdminNews,
 		:paintings							=>	State::Works::AdminPaintings,
 		:photos									=>	State::Works::AdminPhotos,
-		:schnitzenthesen				=>	State::Works::Schnitzenthesen,
+		:schnitzenthesen				=>	State::Works::AdminSchnitzenthesen,
 		:work										=>	State::Personal::AdminWork,
 	}
 	def ajax_desk

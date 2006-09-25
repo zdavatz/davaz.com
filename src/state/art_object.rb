@@ -78,19 +78,6 @@ module DAVAZ
 				@model = [] 
 			end
 		end
-		class AjaxMovieGallery < SBSM::State
-			VIEW = View::MoviesArtObjectComposite
-			VOLATILE = true
-			def init
-				@model = OpenStruct.new
-				artobject_id = @session.user_input(:artobject_id)
-				@model.artobjects	= @session.load_movies
-				object = @model.artobjects.find { |artobject| 
-					artobject.artobject_id == artobject_id
-				} 
-				@model.artobject = object 
-			end
-		end
 		class AjaxRemoveElement < SBSM::State
 			VOLATILE = true
 			def add_error(select_name, selected_id)

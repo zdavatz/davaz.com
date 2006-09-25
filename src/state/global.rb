@@ -21,7 +21,7 @@ module DAVAZ
 			attr_accessor :switched_zone
 			GLOBAL_MAP = {
 				:art_object						=>	State::ArtObject,
-				:ajax_movie_gallery		=>	State::AjaxMovieGallery,
+				:ajax_movie_gallery		=>	State::Works::AjaxMovieGallery,
 				#:ajax_desk						=>	State::Gallery::AjaxDesk,
 				#:ajax_desk_artobject	=>	State::Gallery::AjaxDeskArtobject,
 				:ajax_rack						=>	State::Gallery::AjaxRack,

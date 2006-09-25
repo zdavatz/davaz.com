@@ -384,6 +384,41 @@ module DAVAZ
 				}
 				materials
 			end
+			def load_movies
+				query = <<-EOS
+					SELECT artobjects.*, 
+						artgroups.name AS artgroup,
+						materials.name AS material,
+						series.name AS serie,
+						tools.name AS tool,
+						countries.name AS country
+					FROM artobjects
+					LEFT OUTER JOIN artgroups
+						ON artobjects.artgroup_id = artgroups.artgroup_id
+					LEFT OUTER JOIN materials 
+						ON artobjects.material_id = materials.material_id
+					LEFT OUTER JOIN series 
+						ON artobjects.serie_id = series.serie_id
+					LEFT OUTER JOIN tools 
+						ON artobjects.tool_id = tools.tool_id
+					LEFT OUTER JOIN countries 
+						ON artobjects.country_id = countries.country_id
+					WHERE artobjects.artgroup_id = 'MOV'
+					ORDER BY artobjects.title DESC 
+				EOS
+				result = connection.query(query)
+				artobjects = []
+				result.each_hash { |key, value| 
+					model = DAVAZ::Model::ArtObject.new
+					key.each { |column_name, column_value| 
+						model.send(column_name.to_s + '=', column_value)
+					}
+					model.links.concat(load_artobject_links(model.artobject_id))
+					model.tags.concat(load_artobject_tags(model.artobject_id))
+					artobjects.push(model)
+				}
+				artobjects
+			end
 			def load_oneliner(location)
 				sql = <<-SQL
 					SELECT * FROM oneliner WHERE location='#{location}'; 

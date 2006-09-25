@@ -157,6 +157,9 @@ end
 class Movies < View::MoviesPublicTemplate
 	CONTENT = View::Works::MoviesComposite
 end
+class AdminMovies < View::AdminMoviesPublicTemplate
+	CONTENT = View::Works::MoviesComposite
+end
 		end
 	end
 end

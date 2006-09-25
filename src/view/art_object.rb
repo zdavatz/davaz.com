@@ -610,5 +610,19 @@ module DAVAZ
 		class AdminArtObject < View::AdminGalleryPublicTemplate
 			CONTENT = View::AdminArtObjectComposite
 		end
+		class AdminMoviesArtObjectComposite < HtmlGrid::DivComposite
+			COMPONENTS = {
+				[0,0]	=>	MoviesArtObjectOuterComposite,
+				[0,1]	=>	AdminArtObjectInnerComposite,
+			}
+			CSS_ID_MAP = {
+				0	=>	'artobject-outer-composite',
+				1	=>	'artobject-inner-composite',
+			}
+			HTTP_HEADERS = {
+				"type"		=>	"text/html",
+				"charset"	=>	"UTF-8",
+			}			
+		end
 	end
 end

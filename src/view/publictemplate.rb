@@ -178,6 +178,9 @@ module DAVAZ
 		class AdminGalleryPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :gallery_css, :admin_css ]
 		end
+		class AdminMoviesPublicTemplate < View::CommonPublicTemplate
+			CSS_FILES = [ :navigation_css, :movies_css, :admin_css ]
+		end
 		class AdminPaintingsPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :paintings_css, :admin_css ]
 		end

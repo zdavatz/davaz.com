@@ -183,6 +183,8 @@ class Result < View::GalleryPublicTemplate
 	CONTENT = View::Gallery::ResultComposite
 end
 class RackResultList < ResultList 
+	SORT_DEFAULT = nil
+	SORT_REVERSE = false
 	def title(model)
 		link = HtmlGrid::Link.new(:title, @model, @session, self)
 		link.href = "javascript:void(0)"

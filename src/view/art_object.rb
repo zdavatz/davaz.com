@@ -221,7 +221,10 @@ module DAVAZ
 			def back_to_overview(model)
 				return "" if @model.artobjects.empty?
 				link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
-				args = [:artgroup_id, :search_query]
+				args = [
+					[ :artgroup_id, @session.user_input(:artgroup_id) ],
+					[ :search_query, @session.user_input(:search_query) ],
+				]
 				link.href = @lookandfeel.event_url(:gallery, :search, args)
 				link
 			end

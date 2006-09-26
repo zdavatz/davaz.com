@@ -237,8 +237,10 @@ module DAVAZ
 				result = connection.query(query) 
 				if(result.is_a?(Mysql))
 					puts "*"*25
-					puts query
+					puts connection
+					puts connection.inspect
 					puts "*"*25
+					return []
 				end
 				ids = []
 				result.each_hash { |row| 
@@ -511,7 +513,7 @@ module DAVAZ
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
 					WHERE #{select_by}='#{serie_id}'
-					ORDER BY artobjects.serie_position DESC,artobjects.date DESC,artobjects.title DESC
+					ORDER BY artobjects.serie_position,artobjects.date ASC,artobjects.title ASC 
 				EOS
 				result = connection.query(query)
 				artobjects = []
@@ -623,6 +625,7 @@ module DAVAZ
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
 					WHERE tags.name = '#{tag}' OR series.name = '#{tag}'
+					ORDER BY artobjects.serie_position,artobjects.date ASC,artobjects.title ASC 
 				EOS
 				result = connection.query(query)
 				artobjects = []

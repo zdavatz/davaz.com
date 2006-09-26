@@ -513,7 +513,7 @@ module DAVAZ
 					LEFT OUTER JOIN countries 
 						ON artobjects.country_id = countries.country_id
 					WHERE #{select_by}='#{serie_id}'
-					ORDER BY artobjects.serie_position,artobjects.date ASC,artobjects.title ASC 
+					ORDER BY artobjects.serie_position,artobjects.date DESC,artobjects.title ASC 
 				EOS
 				result = connection.query(query)
 				artobjects = []

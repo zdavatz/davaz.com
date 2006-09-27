@@ -612,7 +612,7 @@ module DAVAZ
 				super
 				artobject = @model.artobject
 				if(artobject_id = artobject.artobject_id)
-					url = DAVAZ::Util::ImageHelper.image_path(artobject_id, 'large', true)
+					url = DAVAZ::Util::ImageHelper.image_path(artobject_id, nil, true)
 					image(artobject, url)
 				elsif(artobject.abs_tmp_image_path)
 					image(artobject, artobject.rel_tmp_image_path)

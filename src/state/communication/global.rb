@@ -22,9 +22,6 @@ class Global < State::Global
 		:shop									=>	State::Communication::Shop,
 		:ajax_shop						=>	State::Communication::AjaxShop,
 	}
-	def init
-		@session[:cart_items] ||= []
-	end
 end
 		end
 	end

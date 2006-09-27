@@ -4,6 +4,8 @@
 $: << File.expand_path("../src", File.dirname(__FILE__))
 
 require 'drb/drb'
+require 'util/davaz'
+require 'util/config'
 require 'util/drbserver'
 require 'util/davazapp'
 require 'util/db_manager'
@@ -15,6 +17,6 @@ server = DAVAZ::Util::DRbServer.new(app)
 
 $0 = "DAVAZ"
 
-DRb.start_service(DAVAZ::SERVER_URI, server)
+DRb.start_service(DAVAZ.config.server_uri, server)
 
 DRb.thread.join

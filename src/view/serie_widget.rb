@@ -14,7 +14,7 @@ module DAVAZ
 					'titles'	=> [],
 					'transitionInterval'	=>	'1500',
 					'delay'		=> '3500',
-					'imageHeight'	=>	SLIDESHOW_IMAGE_HEIGHT,
+					'imageHeight'	=>	DAVAZ.config.slideshow_image_height,
 					#'id'			=>	@name.to_s,
 					'id'			=>	'show',
 				}

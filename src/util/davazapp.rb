@@ -7,11 +7,9 @@ require 'util/updater'
 module DAVAZ
 	module Util
 		class DavazApp
-			RUN_UPDATER = true 
-			YUS_SERVER = DRb::DRbObject.new(nil, YUS_URI)
 			attr_accessor :db_manager
 			def initialize
-				if(RUN_UPDATER)
+				if(DAVAZ.config.run_updater)
 					run_updater
 				end
 			end
@@ -197,10 +195,10 @@ module DAVAZ
 				@db_manager.load_artobjects_by_artgroup('MUL')
 			end
 			def login(email, pass)
-				YUS_SERVER.login(email, pass, YUS_DOMAIN)
+				DAVAZ.yus_server.login(email, pass, DAVAZ.config.yus_domain)
 			end
 			def logout(yus_session)
-				YUS_SERVER.logout(yus_session)
+				DAVAZ.yus_server.logout(yus_session)
 			end
 			def remove_element(artobject_id, link_id)
 				@db_manager.remove_element(artobject_id, link_id)

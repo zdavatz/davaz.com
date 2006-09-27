@@ -27,7 +27,7 @@ module DAVAZ
 					img = HtmlGrid::Image.new(artobject_id, model, @session, self)
 					url = DAVAZ::Util::ImageHelper.image_path(artobject_id, 'large')
 					img.set_attribute('src', url)
-					img.set_attribute('style', "max-width: #{LARGE_IMAGE_WIDTH};")
+					img.set_attribute('style', "max-width: #{DAVAZ.config.large_image_width};")
 					img.css_class = 'image-tooltip-image'
 					img
 				else

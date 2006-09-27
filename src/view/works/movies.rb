@@ -43,7 +43,7 @@ class MovieImage < HtmlGrid::Div
 		img = HtmlGrid::Image.new(:movie_image, @model, @session, self) 
 		url = DAVAZ::Util::ImageHelper.image_path(@model.artobject_id, 'large')
 		img.attributes['src']	= url
-		img.attributes['width'] = MEDIUM_IMAGE_WIDTH 
+		img.attributes['width'] = DAVAZ.config.medium_image_width 
 		#img.attributes['height'] = '150px'
 		link = HtmlGrid::HttpLink.new(:url, @model, @session, self)
 		link.href = @model.url

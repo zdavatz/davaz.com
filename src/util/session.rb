@@ -8,7 +8,7 @@ require 'state/states'
 module DAVAZ
 	module Util	
 		class Session < SBSM::Session
-			SERVER_NAME = 'www.davaz.com'
+			SERVER_NAME = DAVAZ.config.server_name 
 			DEFAULT_STATE = State::Personal::Init 
 			DEFAULT_ZONE = :personal
 			DEFAULT_LANGUAGE = 'en'

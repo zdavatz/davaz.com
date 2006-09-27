@@ -2,18 +2,18 @@
 # ImageHelper -- davaz.com -- 31.05.2006 -- mhuggler@ywesee.com
 
 require 'RMagick'
+require "util/config"
+require "util/davaz"
 
 module DAVAZ
 	module Util 
 		class ImageHelper
 			include Magick	
-			UPLOAD_IMAGES_PATH = 'uploads/images'
-			TMP_IMAGES_PATH = 'uploads/tmp/images'
-			GEOMETRIES = {
-				:small			=>	Geometry.new(SMALL_IMAGE_WIDTH.to_i),
-				:medium			=>	Geometry.new(MEDIUM_IMAGE_WIDTH.to_i),
-				:large			=>	Geometry.new(LARGE_IMAGE_WIDTH.to_i),
-				:slideshow	=>	Geometry.new(nil, SLIDESHOW_IMAGE_HEIGHT.to_i),
+			@@geometries = {
+				:small	=>	Geometry.new(DAVAZ.config.small_image_width.to_i),
+				:medium	=>	Geometry.new(DAVAZ.config.medium_image_width.to_i),
+				:large	=>	Geometry.new(DAVAZ.config.large_image_width.to_i),
+				:slideshow	=>	Geometry.new(nil, DAVAZ.config.slideshow_image_height.to_i),
 			}
 			def ImageHelper.abs_image_path(artobject_id, size=nil)
 				pattern = File.join(ImageHelper.images_path(size), \
@@ -25,7 +25,7 @@ module DAVAZ
 				unless(path.nil?)
 					File.unlink(path) #unless path.nil?
 				end
-				GEOMETRIES.each { |key, value|
+				@@geometries.each { |key, value|
 					path = ImageHelper.abs_image_path(artobject_id, key)
 					unless(path.nil?)
 						File.unlink(path) #unless path.nil?
@@ -41,17 +41,17 @@ module DAVAZ
 			end
 			def ImageHelper.abs_tmp_path
 				dir_components = [
-					DOCUMENT_ROOT,
+					DAVAZ.config.document_root,
 					"resources",
-					TMP_IMAGES_PATH,
+					DAVAZ.config.tmp_images_path,
 				]
 				dir_components.join("/")
 			end
 			def ImageHelper.images_path(size=nil)
 				dir_components = [
-					DOCUMENT_ROOT,
+					DAVAZ.config.document_root,
 					"resources",
-					UPLOAD_IMAGES_PATH,
+					DAVAZ.config.upload_images_path
 				]
 				dir_components.push(size) unless size.nil?
 				dir_components.join("/")
@@ -65,12 +65,12 @@ module DAVAZ
 					path += sprintf("?time=%i", File.mtime(path))
 				end
 				unless path.nil?
-					path.slice!(DOCUMENT_ROOT)
+					path.slice!(DAVAZ.config.document_root)
 					path
 				end
 			end
 			def ImageHelper.resize_image(artobject_id, image)
-				GEOMETRIES.each { |key, value| 
+				@@geometries.each { |key, value| 
 					image.change_geometry(value) { |cols, rows, img|
 						store_image(artobject_id, img.resize(cols, rows), key)
 					}	

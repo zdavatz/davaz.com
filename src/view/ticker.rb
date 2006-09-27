@@ -10,8 +10,8 @@ module DAVAZ
 		class Ticker < HtmlGrid::Component
 			attr_accessor :component_width, :component_height
 			def init
-				@component_width = TICKER_COMPONENT_WIDTH
-				@component_height = TICKER_COMPONENT_HEIGHT
+				@component_width = DAVAZ.config.ticker_component_width
+				@component_height = DAVAZ.config.ticker_component_height
 				super
 			end
 			def to_html(context)

@@ -73,7 +73,7 @@ class AjaxRack < SBSM::State
 			'artObjectIds'	=>	artobject_ids,
 			'images'				=>	images,
 			'titles'				=>	titles,
-			'imageHeight'		=>	SLIDESHOW_IMAGE_HEIGHT,
+			'imageHeight'		=>	DAVAZ.config.slideshow_image_height,
 			'serieId'				=>	serie_id,
 		}
 		@filter = Proc.new { |model|

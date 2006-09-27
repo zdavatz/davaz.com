@@ -2,7 +2,6 @@
 # Util::Lookandfeel -- davaz.com -- 18.07.2005 -- mhuggler@ywesee.com
 
 require 'sbsm/lookandfeel'
-require 'util/davazconfig'
 require 'yaml'
 require 'iconv'
 

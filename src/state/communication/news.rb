@@ -32,7 +32,7 @@ class AdminNews < State::Communication::News
 	def init
 		@model = OpenStruct.new
 		@model.news = @session.app.load_news
-		@model.serie_id = @session.app.load_serie_id('site_news')
+		@model.serie_id = @session.app.load_serie_id('Site News')
 	end
 	def ajax_add_new_element
 		AjaxAddNewNewsElement.new(@session, @model)

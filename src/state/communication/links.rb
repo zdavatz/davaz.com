@@ -34,7 +34,7 @@ class AdminLinks < State::Communication::Global
 	def init
 		@model = OpenStruct.new
 		@model.links = @session.app.load_links
-		@model.serie_id = @session.app.load_serie_id('site_links')
+		@model.serie_id = @session.app.load_serie_id('Site Links')
 	end
 	def ajax_add_new_element
 		AjaxAddNewLinkElement.new(@session, @model)

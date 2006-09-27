@@ -135,8 +135,8 @@ div.block-title {
 }
 
 div.block-image {
-	float: left;
-	padding-right: 10px;
+	/*float: left;
+	padding-right: 10px;*/
 }
 
 ul#biography {

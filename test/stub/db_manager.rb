@@ -2,6 +2,7 @@
 # Selenium::DbManager -- davaz.com -- 27.09.2006 -- mhuggler@ywesee.com
 
 require 'model/artobject'
+require 'model/serie'
 
 module DAVAZ
 	module Stub 

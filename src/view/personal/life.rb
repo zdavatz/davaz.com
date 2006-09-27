@@ -94,11 +94,11 @@ class LifeTranslations < HtmlGrid::DivComposite
 	def english(model)
 		link = HtmlGrid::Link.new(:english, model, @session, self)
 		link.value = @lookandfeel.lookup(:english)
-		args = { :lang	=>	'english' }
+		args = { :lang	=>	'English' }
 		link.href = @lookandfeel.event_url(:personal, :life, args) 
 		link.css_class = 'no-decoration'
 		lang = @session.user_input(:lang)
-		if(lang.nil? || lang == 'english')
+		if(lang.nil? || lang == 'English')
 			link.set_attribute('style','color:black')
 		end
 		link
@@ -106,9 +106,9 @@ class LifeTranslations < HtmlGrid::DivComposite
 	def chinese(model)
 		link = HtmlGrid::Link.new(:chinese, model, @session, self)
 		link.value = @lookandfeel.lookup(:chinese)
-		args = { :lang	=>	'chinese' }
+		args = { :lang	=>	'Chinese' }
 		link.href = @lookandfeel.event_url(:personal, :life, args) 
-		if(@session.user_input(:lang) == 'chinese')
+		if(@session.user_input(:lang) == 'Chinese')
 			link.set_attribute('style','color:black')
 		end
 		link.css_class = 'no-decoration'
@@ -117,9 +117,9 @@ class LifeTranslations < HtmlGrid::DivComposite
 	def hungarian(model)
 		link = HtmlGrid::Link.new(:hungarian, model, @session, self)
 		link.value = @lookandfeel.lookup(:hungarian)
-		args = { :lang	=>	'hungarian' }
+		args = { :lang	=>	'Hungarian' }
 		link.href = @lookandfeel.event_url(:personal, :life, args) 
-		if(@session.user_input(:lang) == 'hungarian')
+		if(@session.user_input(:lang) == 'Hungarian')
 			link.set_attribute('style','color:black')
 		end
 		link.css_class = 'no-decoration'

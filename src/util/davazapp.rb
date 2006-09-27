@@ -79,7 +79,7 @@ module DAVAZ
 				@db_manager.load_artgroups
 			end
 			def load_articles
-        @db_manager.load_serie_artobjects('site_articles', 'series.name')
+        @db_manager.load_serie_artobjects('Site Articles', 'series.name')
 			end
 			def load_article(artobject_id)
 				@db_manager.load_artobject(artobject_id)
@@ -100,10 +100,10 @@ module DAVAZ
 				@db_manager.load_images_by_tag(tag_name)
 			end
 			def load_exhibitions
-				@db_manager.load_serie_artobjects('site_exhibitions', 'series.name')
+				@db_manager.load_serie_artobjects('Site Exhibitions', 'series.name')
 			end
 			def load_thefamily_text
-				@db_manager.load_serie_artobjects('site_thefamily', 'series.name')
+				@db_manager.load_serie_artobjects('Site The Family', 'series.name')
 			end
 			def load_guest(guest_id)
 				@db_manager.load_guest(guest_id)
@@ -112,25 +112,25 @@ module DAVAZ
 				@db_manager.load_guests
 			end
 			def load_hisfamily_text
-				@db_manager.load_serie_artobjects('site_hisfamily', 'series.name')
+				@db_manager.load_serie_artobjects('Site His Family', 'series.name')
 			end
 			def load_hisinspiration_text
-				@db_manager.load_serie_artobjects('site_hisinspiration', 'series.name')
+				@db_manager.load_serie_artobjects('Site His Inspiration', 'series.name')
 			end
 			def load_hislife(lang)
-				@db_manager.load_serie_artobjects("site_life_#{lang}", 'series.name')
+				@db_manager.load_serie_artobjects("Site His Life #{lang}", 'series.name')
 			end
 			def load_hiswork_text
-				@db_manager.load_serie_artobjects('site_hiswork', 'series.name')
+				@db_manager.load_serie_artobjects('Site His Work', 'series.name')
 			end
 			def load_image_tags
 				@db_manager.load_image_tags
 			end
 			def load_links
-				@db_manager.load_serie_artobjects('site_links', 'series.name')
+				@db_manager.load_serie_artobjects('Site Links', 'series.name')
 			end
 			def load_lectures
-				@db_manager.load_serie_artobjects('site_lectures', 'series.name')
+				@db_manager.load_serie_artobjects('Site Lectures', 'series.name')
 			end
 			def load_material(id)
 				@db_manager.load_material(id)
@@ -139,7 +139,7 @@ module DAVAZ
 				@db_manager.load_materials
 			end
 			def load_news
-				@db_manager.load_serie_artobjects('site_news', 'series.name')
+				@db_manager.load_serie_artobjects('Site News', 'series.name')
 			end
 			def load_oneliner(location)
 				@db_manager.load_oneliner(location)

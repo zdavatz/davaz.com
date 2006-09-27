@@ -15,7 +15,7 @@ class Life < State::Personal::Global
 		if(lang = @session.user_input(:lang))
 			@model.biography_items = @session.app.load_hislife(lang) 
 		else
-			@model.biography_items = @session.app.load_hislife('english') 
+			@model.biography_items = @session.app.load_hislife('English') 
 		end
 		add_slideshow_items(@model, 'hislife_show')
 		@model.oneliner = @session.app.load_oneliner('hislife')

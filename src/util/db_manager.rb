@@ -543,7 +543,7 @@ module DAVAZ
 						model.send(column_name.to_s + '=', column_value)
 					}
 					unless(key_array.include?(key))
-						unless(model.name.match(/^site_/) || model.serie_id == 'AAA')
+						unless(model.name.match(/^Site /) || model.serie_id == 'AAA')
 							array.push(model)
 							key_array.push(key)
 						end

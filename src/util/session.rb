@@ -16,7 +16,7 @@ module DAVAZ
 			LOOKANDFEEL = DAVAZ::Util::Lookandfeel
 			def initialize(*args)
 				super
-				#@state.extend(State::Admin::Admin)
+				@state.extend(State::Admin::Admin)
 			end
 			def active_state
         if(state_id = @valid_input[:state_id])

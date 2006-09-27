@@ -490,7 +490,8 @@ module DAVAZ
 			def hidden_fields(context)
 				hidden_fields = super
 				hidden_fields <<
-				context.hidden('artobject_id', @model.artobject.artobject_id)
+				context.hidden('artobject_id', @model.artobject.artobject_id) <<
+				context.hidden('old_serie_id', @model.artobject.serie_id)
 				if(@model.fragment)
 					hidden_fields << context.hidden('fragment', @model.fragment)
 				end
@@ -627,6 +628,7 @@ module DAVAZ
 			COMPONENTS = {
 				[0,0]	=>	:image_file,
 				[1,0]	=>	:submit,
+				[2,0]	=>	:delete_image,
 			}
 			SYMBOL_MAP = {
 				:image_file		=> HtmlGrid::InputFile,
@@ -647,18 +649,33 @@ module DAVAZ
 				EOS
 				self.onsubmit = script 
 			end
+			def delete_image(model)
+				input = HtmlGrid::Input.new(:delete_image, model, @session, self)
+				input.set_attribute('type', 'button')
+				input.value = @lookandfeel.lookup(:delete_image)	
+				artobject_id = model.artobject.artobject_id
+				args = [
+					[ :artobject_id, artobject_id ],
+				]
+				url = @lookandfeel.event_url(:admin, :ajax_delete_image, args)
+				input.set_attribute('onclick', \
+					"deleteImage('#{url}', 'artobject-image-#{artobject_id}')")
+				input
+			end
 		end
 		class AdminArtObjectInnerComposite < HtmlGrid::DivComposite
 			COMPONENTS = {
 				[0,0]	=>	:artcode,
 				[0,1]	=>	ImageDiv,
 				[0,2]	=>	View::UploadImageForm,
-				[0,3]	=>	AdminArtobjectDetails,
+				[0,3]	=>	:error_message_container,
+				[0,4]	=>	AdminArtobjectDetails,
 			}
 			CSS_ID_MAP = {
 				0	=>	'artobject-title',
 				2	=>	'artobject-image-upload-form',	
-				3	=>	'artobject-admin-details',	
+				3	=>	'artobject-error-message-container',	
+				4	=>	'artobject-admin-details',	
 			}
 			SYMBOL_MAP = {
 				:artcode =>	HtmlGrid::Value,

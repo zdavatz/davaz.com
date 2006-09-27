@@ -133,7 +133,7 @@ class AdminMovies < State::Works::Global
 				AjaxAdminMovieGallery.new(@session, [])
 			end
 		else
-			model = "/en/works/movies/" 
+			model = @session.lookandfeel.event_url(:works, :movies)
 			model << "##{artobject_id}"
 			State::Redirect.new(@session, model)
 		end

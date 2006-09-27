@@ -659,7 +659,7 @@ module DAVAZ
 				]
 				url = @lookandfeel.event_url(:admin, :ajax_delete_image, args)
 				script = <<-EOS
-					var msg = 'Do you really want to delete this artobject?'
+					var msg = '#{@lookandfeel.lookup(:ask_for_image_deletion)}'
 					if(confirm(msg)) { 
 						deleteImage('#{url}', 'artobject-image-#{artobject_id}');
 					}

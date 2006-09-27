@@ -34,6 +34,7 @@ module DAVAZ
 					:artgroup									=>	'Artgroup',
 					:artgroup_id							=>	'Artgroup',
 					:articles									=>	'Articles',
+					:ask_for_image_deletion		=>	'Do you really want to delete this image?',
 					:author										=>	'Author',
 					:back											=>	'<< Back',
 					:back_to_overview					=>	'Back To Overview',

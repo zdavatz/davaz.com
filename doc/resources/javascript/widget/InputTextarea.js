@@ -25,6 +25,7 @@ dojo.widget.defineWidget(
 			//dojo.event.connect(this.leInput, "onblur", this, "saveChanges");
 			this.inputForm.appendChild(this.leInput);
 			this.leInput.focus();
-		},
+		}
+
 	}
 );

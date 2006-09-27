@@ -49,7 +49,7 @@ dojo.widget.defineWidget(
 				for(idx = 0; idx < this.values.length; idx += 3) {
 					key = this.values[idx];
 					value = this.values[idx + 1];
-					label = this.values[idx + 2]
+					label = this.values[idx + 2];
 					this.addInputText(value, key, label);
 				}
 			} else {
@@ -66,7 +66,7 @@ dojo.widget.defineWidget(
 		addInputText: function(value, str, label) {
 			var inputDiv = document.createElement("div");
 			this.elementContainer.appendChild(inputDiv);
-			var widgetName = "InputText" 
+			var widgetName = "InputText";
 			if(value.length > 30) {
 				widgetName = "InputTextArea";
 			}
@@ -125,7 +125,7 @@ dojo.widget.defineWidget(
 				},
 				buttonDiv	
 			);
+		}
 
-		},
 	}
 );

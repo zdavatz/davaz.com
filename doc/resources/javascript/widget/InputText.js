@@ -25,6 +25,7 @@ dojo.widget.defineWidget(
 			dojo.event.connect(this.leInput, "onkeydown", this, "keyDown");
 			this.inputForm.appendChild(this.leInput);
 			this.leInput.focus();
-		},
+		}
+
 	}
 );

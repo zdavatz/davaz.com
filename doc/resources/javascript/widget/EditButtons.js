@@ -61,7 +61,7 @@ dojo.widget.defineWidget(
 		},
 
 		deleteItem: function() {
-			var msg = 'Do you really want to delete this Item?'
+			var msg = 'Do you really want to delete this Item?';
 			_this = this;
 			if(confirm(msg)) { 
 				dojo.io.bind({
@@ -77,7 +77,7 @@ dojo.widget.defineWidget(
 		},
 
 		deleteImage: function() {
-			var msg = 'Do you really want to delete this Image?'
+			var msg = 'Do you really want to delete this Image?';
 				_this = this;
 			if(confirm(msg)) { 
 				dojo.io.bind({
@@ -140,7 +140,7 @@ dojo.widget.defineWidget(
 				},
 				mimetype: 'text/html'
 			});
-		},
+		}
 
 	}
 );

@@ -151,7 +151,7 @@ dojo.widget.defineWidget(
 			});	
 			this.old_value = _this.old_value; 
 			evt.preventDefault();
-		},
+		}
 
 	}
 );

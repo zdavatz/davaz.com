@@ -79,7 +79,7 @@ dojo.widget.defineWidget(
 					update_url: this.update_url,
 					field_key: str,
 					labels: this.labels,
-					label: label,
+					label: label
 				},
 				inputDiv	
 			);

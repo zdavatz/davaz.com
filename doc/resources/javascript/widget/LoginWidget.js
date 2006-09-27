@@ -30,8 +30,7 @@ dojo.widget.defineWidget(
 				mimetype: "text/html",
 				load: function(type, data, event) {
 					_this.formContainer.innerHTML = data;		
-					var pos = dojo.html.getAbsolutePosition(_this.loginLink, 
-						true)
+					var pos = dojo.html.getAbsolutePosition(_this.loginLink, true);
 					var left = pos[0];
 					var top = pos[1] - 20 - _this.formContainer.offsetHeight;
 					_this.widgetContainer.style.left = left+"px";
@@ -72,7 +71,7 @@ dojo.widget.defineWidget(
 				},
 				mimetype: "text/json"
 			});		
-		},
+		}
 
 	}
 );

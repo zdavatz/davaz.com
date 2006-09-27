@@ -121,7 +121,7 @@ dojo.widget.defineWidget(
 					has_image: this.has_image,
 					delete_item_url: this.delete_item_url,
 					delete_image_url: this.delete_image_url,
-					upload_form_url: this.upload_form_url,
+					upload_form_url: this.upload_form_url
 				},
 				buttonDiv	
 			);

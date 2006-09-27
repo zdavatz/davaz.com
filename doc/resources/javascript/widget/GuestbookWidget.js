@@ -66,7 +66,7 @@ dojo.widget.defineWidget(
 					}
 				},
 			});		
-		},
+		}
 		
 	}
 );

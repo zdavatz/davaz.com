@@ -309,7 +309,7 @@ PKCS7-----
 				File.expand_path("../../doc" + dir, File.dirname(__FILE__))
 			end
 			def slideshow_directory(dir)
-				File.join(PROJECT_ROOT, 'doc/resources/images/slideshows', dir)
+				File.join(DAVAZ.config.project_root, 'doc/resources/images/slideshows', dir)
 			end
 			def stream_url(id, size)
 				filename = "#{id.to_s}_#{size.to_s.downcase}.ram"

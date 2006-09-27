@@ -10,7 +10,7 @@ module DAVAZ
 		class Updater
 			def initialize(app)
 				@app = app
-				log_path = File.join(PROJECT_ROOT, "log")
+				log_path = File.join(DAVAZ.config.project_root, "log")
 				log_file = File.join(log_path, 'update_log')
 				@logger = Logger.new(log_file)
 			end
@@ -38,7 +38,7 @@ module DAVAZ
 				@app = app 
 			end
 			def run
-				curr = CURRENCIES.dup
+				curr = DAVAZ.config.currencies.dup
 				affected_rows = []
 				curr.each { |target, origin| 
 					affected_rows.push(update_conversion(origin, target))

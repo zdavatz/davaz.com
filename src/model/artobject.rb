@@ -95,7 +95,7 @@ module DAVAZ
 			end
 			def rel_tmp_image_path
 				rel = @abs_tmp_image_path.dup
-				rel.slice!(DOCUMENT_ROOT)
+				rel.slice!(DAVAZ.config.document_root)
 				rel
 			end
 			def size

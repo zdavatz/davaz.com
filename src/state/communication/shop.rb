@@ -87,12 +87,12 @@ class Shop < State::Communication::Global
 	end
 	def send_mail(mandatory, hash)
 		lookandfeel = @session.lookandfeel
-		recipients = RECIPIENTS.dup.push(hash[:email])
+		recipients = DAVAZ.config.recipients.dup.push(hash[:email])
 		
 		outgoing = TMail::Mail.new
 		outgoing.set_content_type('text', 'plain', 'charset'=>'UTF-8')
 		outgoing.to = recipients 
-		outgoing.from = MAIL_FROM
+		outgoing.from = DAVAZ.config.mail_from
 		outgoing.subject = 'Bestellung von davaz.com'
 		address = mandatory.collect { |key|
 			"#{lookandfeel.lookup(key)}: #{hash[key].to_s}"
@@ -116,8 +116,8 @@ class Shop < State::Communication::Global
 		]
 		outgoing.body = parts.join("\n\n") 
 		outgoing.date = Time.now
-		Net::SMTP.start(SMTP_SERVER) { |smtp|
-			smtp.sendmail(outgoing.encoded, SMTP_FROM, recipients)
+		Net::SMTP.start(DAVAZ.config.smtp_server) { |smtp|
+			smtp.sendmail(outgoing.encoded, DAVAZ.config.smtp_from, recipients)
 		}
 		@session.infos.push(:i_order_sent)
 	end

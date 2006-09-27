@@ -85,7 +85,8 @@ module DAVAZ
 				}
 				if(Util::ImageHelper.has_image?(artobject_id))
 					image = HtmlGrid::Image.new(artobject_id, @model, @session, self)
-					url = Util::ImageHelper.image_path(artobject_id, 'large')
+					#url = Util::ImageHelper.image_path(artobject_id, 'large')
+					url = Util::ImageHelper.image_path(artobject_id)
 					image.set_attribute('src', url)
 					image.css_id = @model.artobject_id
 					#span = HtmlGrid::Span.new(@model, @session, self)

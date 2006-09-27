@@ -34,7 +34,7 @@ dojo.widget.defineWidget(
 					dojo.event.connect(_this.form_node, 'onsubmit', _this, 'submitForm');
 					var cancelButton = dojo.byId('cancel-add-entry');
 					dojo.event.connect(cancelButton, 'onclick', _this, 'toggleForm');
-				},
+				}
 			});
 		},
 
@@ -64,7 +64,7 @@ dojo.widget.defineWidget(
 					} else {
 						_this.errorMessages.innerHTML = data['messages'];
 					}
-				},
+				}
 			});		
 		}
 		

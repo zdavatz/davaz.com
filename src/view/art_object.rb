@@ -658,8 +658,13 @@ module DAVAZ
 					[ :artobject_id, artobject_id ],
 				]
 				url = @lookandfeel.event_url(:admin, :ajax_delete_image, args)
-				input.set_attribute('onclick', \
-					"deleteImage('#{url}', 'artobject-image-#{artobject_id}')")
+				script = <<-EOS
+					var msg = 'Do you really want to delete this artobject?'
+					if(confirm(msg)) { 
+						deleteImage('#{url}', 'artobject-image-#{artobject_id}');
+					}
+				EOS
+				input.set_attribute('onclick', script)
 				input
 			end
 		end

@@ -21,7 +21,7 @@ function toggleTicker() {
 	var node = dojo.byId('ticker-container');
 	var ticker = dojo.widget.byId('ticker');
 	display = dojo.style.getStyle(node, "display");
-	if(display=="none" || display=='') {
+	if(display==="none" || display==='') {
 		dojo.style.hide(node); //setStyle(node, 'display', 'none');
 		var anim = dojo.lfx.html.wipeIn('ticker-container', 300);	
 		anim.play();
@@ -48,12 +48,18 @@ function checkRemovalStatus(selectValue, url) {
 	dojo.io.bind({
 		url: url,
 		load: function(type, data, event) { 
-			var removalStatus = data['removalStatus'];
-			var removeLink = dojo.byId(data['removeLinkId']);
+			//var removalStatus = data['removalStatus'];
+			var removalStatus = data.removalStatus;
+			//var removeLink = dojo.byId(data['removeLinkId']);
+			var removeLink = dojo.byId(data.removeLinkId);
 			if(removalStatus == 'goodForRemoval') {
-				if(removeLink) removeLink.style.color = 'blue';
+				if(removeLink) {
+					removeLink.style.color = 'blue';
+				}
 			} else {
-				if(removeLink) removeLink.style.color = 'grey';
+				if(removeLink) {
+					removeLink.style.color = 'grey';
+				}
 			}
 			document.body.style.cursor = 'auto';
 		},
@@ -80,11 +86,10 @@ function removeElement(inputSelect, url, removeLinkId) {
 }
 
 function toggleInnerHTML(divId, url, changeUrl, callback) {
+	var fragmentidentifier = "";
 	if(changeUrl) {
-		var fragmentidentifier = changeUrl;
-	} else {
-		var fragmentidentifier = "";
-	}
+		fragmentidentifier = changeUrl;
+	} 
 	var node = dojo.byId(divId);
 	if(url == 'null') {
 		node.innerHTML = '';
@@ -95,7 +100,7 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
 		url: url,
 		load: function(type, data, event) {
 			node.innerHTML = data;
-			if(callback) callback();
+			if(callback) { callback(); }
 			document.body.style.cursor = 'auto';
 		},
 		changeUrl: fragmentidentifier,
@@ -105,7 +110,7 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
 
 function toggleUploadImageForm(divId, url) {
 	var node = dojo.byId(divId);
-	if(node.innerHTML == '') {
+	if(node.innerHTML === '') {
 		document.body.style.cursor = 'progress';
 		dojo.io.bind({
 			url: url,
@@ -116,7 +121,7 @@ function toggleUploadImageForm(divId, url) {
 				document.body.style.cursor = 'auto';
 			},
 			mimetype: 'text/html'
-		})
+		});
 	} else {
 		dojo.lfx.wipeOut(node, 300, null, function() {
 			node.innerHTML = "";
@@ -179,7 +184,7 @@ function replaceDiv(id, replace_id) {
 	var replace = dojo.byId(replace_id);
 	var callback = function() {
 		dojo.lfx.html.wipeIn(replace, 100).play();
-	}
+	};
 	dojo.lfx.html.wipeOut(node, 1000, dojo.lfx.easeInOut, callback).play();
 }
 
@@ -191,16 +196,16 @@ function toggleDeskContent(id, serieId, objectId, url, wipe) {
 			url: url,	
 			load: function(type, data, event) {
 				desk.toggleInnerHTML(data);
-				if(wipe == true) {
+				if(wipe === true) {
 					dojo.lfx.html.wipeIn('show-wipearea', 1000).play();
 				}
 			}, 
 			changeUrl: fragmentIdentifier,
 			mimetype: "text/html"
 		});
-	}
+	};
 
-	if(wipe == true) {
+	if(wipe === true) {
 		dojo.lfx.html.wipeOut('show-wipearea', 1000, dojo.lfx.easeInOut, 
 																								reloadDesk).play();
 	} else {
@@ -230,7 +235,7 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
 	var display;
 	var replace = dojo.byId(replace_id);
 
-	if(view == null) {
+	if(view === null) {
 		if(show) {
 			view = show.widgetType;
 		} else  {
@@ -238,11 +243,11 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
 		}
 	}
 
-	if(url == null && show) {
+	if(url === null && show) {
 		url = lastUrl;	
 	}
 
-	if(serie_id == null) {
+	if(serie_id === null) {
 		serie_id = show.serieId;	
 	}
 
@@ -256,7 +261,8 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
 		dojo.io.bind({
 			url: url,
 			load: function(type, data, event) { 
-				data['id'] = id;
+				//data['id'] = id;
+				data.id = id;
 				if(show) {
 					show.destroy();	
 				}
@@ -271,7 +277,7 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
 			changeUrl: fragmentIdentifier,
 			mimetype: "text/json"
 		});
-	}
+	};
 	if(replace && dojo.style.getStyle(replace, "display") != 'none') {
 		dojo.lfx.html.wipeOut(replace, 1000, dojo.lfx.easeInOut, loadShow).play();
 	} else {
@@ -408,13 +414,13 @@ function login_form(link, url) {
 	dojo.io.bind({
 		url: login_url,
 		load: function(type, data, event) {
-			var form = dojo.byId('login-form')
+			var form = dojo.byId('login-form');
 			if(form) {
 				dojo.html.body().removeChild(form);
 			} else {
 				var div = document.createElement("div");
 				div.innerHTML = data; 
-				div.id = 'login-form'
+				div.id = 'login-form';
 				div.style.position="absolute";
 				dojo.html.body().appendChild(div);
 				var position = dojo.html.getAbsolutePosition(link, true);
@@ -460,7 +466,8 @@ function deleteElement(url) {
 	dojo.io.bind({
 		url: url,
 		load: function(type, data, event) {
-			window.location.href=data['url'];
+			//window.location.href=data['url'];
+			window.location.href=data.url;
 		},
 		mimetype: 'text/html'
 	});	
@@ -489,15 +496,13 @@ function reloadImageAction(url, div_id) {
 }
 
 function toggleLoginWidget(loginLink, url) {
-	var div = document.createElement("div");	
+	var newDiv = document.createElement("div");	
 	dojo.html.body().appendChild(div);
 	dojo.widget.createWidget("LoginWidget", 
 		{
 			loginLink: loginLink,
 			loginFormUrl: url,
-			oldOnclick: loginLink.onclick,
-		},
-		div
-	);
-	loginLink.onclick = "return false;"
+			oldOnclick: loginLink.onclick
+		}, newDiv );
+	loginLink.onclick = "return false;";
 }

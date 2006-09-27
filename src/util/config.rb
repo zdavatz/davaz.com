@@ -28,6 +28,7 @@ module DAVAZ
 			:schnitzenthesen	=>	'#9eff0c',		
 		},	
 		'document_root'						=>	File.expand_path('doc', project_root),
+		'dojo_debug'							=>	false,
 		'large_image_width'				=>	'360px',
 		'mail_from'								=>	'"markus.huggler" <mhuggler@ywesee.com>',
 		'medium_image_width'			=>	'180px',

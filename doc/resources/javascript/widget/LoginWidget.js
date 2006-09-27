@@ -63,10 +63,12 @@ dojo.widget.defineWidget(
 				url: this.loginForm.action,
 				formNode: this.loginForm,
 				load: function(type, data, event) {
-					if(data['success']) {
+					//if(data['success']) {
+					if(data.success) {
 						document.location.reload();
 					} else {
-						_this.errorMessageContainer.innerHTML = data['message'];
+						//_this.errorMessageContainer.innerHTML = data['message'];
+						_this.errorMessageContainer.innerHTML = data.message;
 					}
 				},
 				mimetype: "text/json"

@@ -6,7 +6,15 @@ require 'model/artobject'
 module DAVAZ
 	module Stub 
 		class DbManager
-					
+			def load_artgroups
+				[]
+			end
+			def load_oneliner(location)
+				[]
+			end
+			def load_series(where, load_artobjects=true)
+				[]
+			end
 		end
 	end
 end

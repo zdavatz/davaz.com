@@ -90,6 +90,9 @@ class Gallery < State::Gallery::Global
 		@model.series = @session.app.load_series
 	end
 end
+class AdminGallery < State::Gallery::Gallery
+	VIEW = View::Gallery::AdminGallery
+end
 		end
 	end
 end

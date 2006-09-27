@@ -6,6 +6,7 @@ require 'state/communication/guestbook'
 require 'state/communication/links'
 require 'state/communication/news'
 require 'state/public/articles'
+require 'state/gallery/gallery'
 require 'state/gallery/result'
 require 'state/personal/life'
 require 'state/personal/work'
@@ -38,6 +39,7 @@ module Admin
 		:ajax_upload_image_form	=>	State::Admin::AjaxUploadImageForm,
 		:design									=>	State::Works::AdminDesign,
 		:drawings								=>	State::Works::AdminDrawings,
+		:gallery								=>	State::Gallery::AdminGallery,
 		:guestbook							=>	State::Communication::AdminGuestbook,
 		:links									=>	State::Communication::AdminLinks,
 		:movies									=>	State::Works::AdminMovies,

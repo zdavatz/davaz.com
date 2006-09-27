@@ -113,6 +113,9 @@ end
 class Gallery < View::GalleryPublicTemplate
 	CONTENT = View::Gallery::GalleryComposite 
 end
+class AdminGallery < View::AdminGalleryPublicTemplate
+	CONTENT = View::Gallery::GalleryComposite 
+end
 		end
 	end
 end

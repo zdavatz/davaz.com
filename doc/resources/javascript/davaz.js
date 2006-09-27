@@ -497,7 +497,7 @@ function reloadImageAction(url, div_id) {
 
 function toggleLoginWidget(loginLink, url) {
 	var newDiv = document.createElement("div");	
-	dojo.html.body().appendChild(div);
+	dojo.html.body().appendChild(newDiv);
 	dojo.widget.createWidget("LoginWidget", 
 		{
 			loginLink: loginLink,

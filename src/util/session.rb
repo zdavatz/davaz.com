@@ -16,7 +16,10 @@ module DAVAZ
 			LOOKANDFEEL = DAVAZ::Util::Lookandfeel
 			def initialize(*args)
 				super
-				#@state.extend(State::Admin::Admin)
+				if(DAVAZ.config.autologin)
+					#autologin to be removed, only for debugging purposes
+					@state.extend(State::Admin::Admin)
+				end
 			end
 			def active_state
         if(state_id = @valid_input[:state_id])

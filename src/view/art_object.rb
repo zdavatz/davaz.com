@@ -627,8 +627,8 @@ module DAVAZ
 			TAG_METHOD = :multipart_form
 			COMPONENTS = {
 				[0,0]	=>	:image_file,
-				[1,0]	=>	:submit,
-				[2,0]	=>	:delete_image,
+				[1,1]	=>	:submit,
+				[1,1,1]	=>	:delete_image,
 			}
 			SYMBOL_MAP = {
 				:image_file		=> HtmlGrid::InputFile,

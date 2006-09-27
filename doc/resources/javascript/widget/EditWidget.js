@@ -89,7 +89,7 @@ dojo.widget.defineWidget(
 			if(this.has_image == 'true') {
 				this.imageDiv = document.createElement("div");
 				this.imageDiv.className = "block-image";
-				var img = document.createElement("image");	
+				var img = document.createElement("img");	
 				img.src = this.image_url;
 				this.imageDiv.appendChild(img);
 				var node = this.elementContainer.childNodes[this.image_pos];

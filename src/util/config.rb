@@ -8,7 +8,9 @@ module DAVAZ
   project_root = File.expand_path("../..", File.dirname(__FILE__)) 
   config_file = (File.join(project_root, 'etc', 'davaz.yml'))
   defaults = {
-		'currencies'							=> {
+		#autologin to be removed, only for debugging purposes
+		'autologin'								=>	false,
+		'currencies'							=>	{
 			'USD'		=>	'CHF',
 			'Euro'	=>	'CHF',
 		},

@@ -79,12 +79,19 @@ class GoogleVideoLink < HtmlGrid::Div
 		end
 	end
 end
-class MoreLink < HtmlGrid::Div
-	def init
-		super
-		link = HtmlGrid::Link.new(:more, @model, @session, self)
+class MoreLink < HtmlGrid::DivComposite
+	COMPONENTS = {
+		[0,0]	=>	:more_link,
+		[0,1]	=>	:up_link,
+	}
+	CSS_MAP = {
+		0	=>	'more-link',
+		1	=>	'up-link',
+	}
+	def more_link(model)
+		link = HtmlGrid::Link.new(:more, model, @session, self)
 		args = [
-			:artobject_id, @model.artobject_id	
+			:artobject_id, model.artobject_id	
 		]
 		url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, args)
 		link.href = "javascript:void(0)" 
@@ -93,7 +100,15 @@ class MoreLink < HtmlGrid::Div
 		div_id = "movies-gallery-view"
 		script = "showMovieGallery('#{div_id}', '#{replace_id}', '#{url}')"
 		link.set_attribute('onclick', script)
-		@value = link 
+		link 
+	end
+	def up_link(model)
+		link = HtmlGrid::Link.new(:site_top, model, @session, self)
+		args = [ '#top' ]
+		link.href = @lookandfeel.event_url(:works, :movies, args)
+		image = HtmlGrid::Image.new(:icon_toparrow, model, @session, self)
+		link.value = image 
+		link 
 	end
 end
 class MovieComposite < HtmlGrid::DivComposite
@@ -142,17 +157,23 @@ class MoviesComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'content'
 	COMPONENTS = {
 		[0,0]	=>	MoviesTitle,
-		[0,1]	=>	MoviesList,
-		[0,2]	=>	:movies_gallery_view,
-		[0,3] =>	AddOnloadMovies,
+		[0,1]	=>	:movie_top_link,
+		[0,2]	=>	MoviesList,
+		[0,3]	=>	:movies_gallery_view,
+		[0,4] =>	AddOnloadMovies,
 	}
 	CSS_ID_MAP = {
-		1	=>	'movies-list',
-		2	=>	'movies-gallery-view',
+		2	=>	'movies-list',
+		3	=>	'movies-gallery-view',
 	}
 	CSS_STYLE_MAP = {
-		2	=>	'display:none;',
+		3	=>	'display:none;',
 	}
+	def movie_top_link(model)
+		link = HtmlGrid::Link.new(:nbsp, model, @session, self)
+		link.set_attribute('name', 'top')
+		link
+	end
 end
 class Movies < View::MoviesPublicTemplate
 	CONTENT = View::Works::MoviesComposite

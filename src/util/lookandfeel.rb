@@ -253,6 +253,7 @@ module DAVAZ
 				:icon_add					=>	'images/global/icons/add.png',
 				:icon_cancel			=>	'images/global/icons/cancel.png',
 				:icon_delete			=>	'images/global/icons/delete.png',
+				:icon_toparrow		=>	'images/global/icons/toparrow.gif',
 				:images_css				=>	'css/images.css',
 				:init_css					=>	'css/init.css',
 				:init_drawing			=>	'images/init/drawing.jpg',

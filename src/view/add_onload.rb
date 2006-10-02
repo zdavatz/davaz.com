@@ -53,7 +53,7 @@ module DAVAZ
 				script = <<-EOS
 					dojo.addOnLoad(function() {
 						var artobjectId = location.hash;
-						if(artobjectId){
+						if(artobjectId && artobjectId != '#top'){
 							artobjectId = artobjectId.substring(1, artobjectId.length);
 							var url = '#{url}' + artobjectId
 							showMovieGallery('#{div_id}', '#{replace_id}', url)

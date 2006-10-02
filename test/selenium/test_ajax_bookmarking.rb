@@ -10,14 +10,13 @@ require 'test/selenium/unit'
 class TestAjaxBookmarking < Test::Unit::TestCase
 	include DAVAZ::Selenium::TestCase
 	def test_test_ajax_bookmarking_export
-		@selenium.open "/en/gallery/gallery/#Desk_AAF"
+		@selenium.open "/en/gallery/gallery/#Desk_ABC"
 		sleep 2
 		begin
-				assert @selenium.is_text_present("divicam/SP-Beta/Digi-Beta/Computer")
+				assert @selenium.is_text_present("Title of ArtObject 123")
 		rescue Test::Unit::AssertionFailedError
 				@verification_errors << $!
 		end
-=begin
 		@selenium.click "//a[@name='slideshow' and @onclick=\"toggleShow('show',null,'SlideShow','show-wipearea', null);\"]"
 		sleep 2
 		begin
@@ -39,6 +38,5 @@ class TestAjaxBookmarking < Test::Unit::TestCase
 		rescue Test::Unit::AssertionFailedError
 				@verification_errors << $!
 		end
-=end
 	end
 end

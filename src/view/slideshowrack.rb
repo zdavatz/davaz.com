@@ -17,7 +17,7 @@ module DAVAZ
 			}
 			def rack(model)
 				img = HtmlGrid::Image.new(:rack, model, @session, self)
-				link = HtmlGrid::Link.new(:slideshow, model, @session, self)
+				link = HtmlGrid::Link.new(:rack, model, @session, self)
 				link.href = "javascript:void(0)"
 				link.attributes['onclick'] = "toggleShow('show', null, 'Rack', 'show-wipearea', null);"
 				link.value = img

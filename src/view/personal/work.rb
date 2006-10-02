@@ -84,9 +84,9 @@ class AdminWorkComposite < WorkComposite
 	COMPONENTS = {
 		[0,0]	=>	WorkTitle,	
 		[1,0]	=>	component(View::Works::OneLiner, :oneliner),
-		[2,0]	=>	View::Admin::AjaxAddNewElementComposite,
-		[3,0]	=>	AdminWorkTextInnerComposite,
-		[4,0]	=>	:morphopolis_ticker_link,
+		[2,0]	=>	:morphopolis_ticker_link,
+		[3,0]	=>	View::Admin::AjaxAddNewElementComposite,
+		[4,0]	=>	AdminWorkTextInnerComposite,
 	}
 end
 class AdminWork < View::AdminPersonalPublicTemplate

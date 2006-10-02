@@ -29,8 +29,8 @@ class InspirationComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	InspirationTitle,
 		[1,0]	=>	component(View::Works::OneLiner, :oneliner),
-		[2,0]	=>	component(InspirationText, :text),	
-		[3,0]	=>	:india_ticker_link,
+		[2,0]	=>	:india_ticker_link,
+		[3,0]	=>	component(InspirationText, :text),	
 	}
 	def india_ticker_link(model)
 		link = HtmlGrid::Link.new(:india_ticker_link, model, @session, self)

@@ -56,8 +56,8 @@ class WorkComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	WorkTitle,	
 		[1,0]	=>	component(View::Works::OneLiner, :oneliner),
-		[2,0]	=>	component(WorkText, :text),
-		[3,0]	=>	:morphopolis_ticker_link,
+		[2,0]	=>	:morphopolis_ticker_link,
+		[3,0]	=>	component(WorkText, :text),
 	}
 	def morphopolis_ticker_link(model)
 		link = HtmlGrid::Link.new(:morphopolis_ticker_link, model, @session, self)

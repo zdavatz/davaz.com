@@ -41,7 +41,7 @@ class MovieImage < HtmlGrid::Div
 	def init
 		super
 		img = HtmlGrid::Image.new(:movie_image, @model, @session, self) 
-		url = DAVAZ::Util::ImageHelper.image_path(@model.artobject_id, 'large')
+		url = DAVAZ::Util::ImageHelper.image_url(@model.artobject_id, 'large')
 		img.attributes['src']	= url
 		img.attributes['width'] = DAVAZ.config.medium_image_width 
 		#img.attributes['height'] = '150px'

@@ -20,6 +20,7 @@ dojo.widget.defineWidget(
 		add_image_icon_src: "",
 		add_image_icon_txt: "",
 		edit_widget: "",
+		element_id_value: "", 
 		has_image: "",
 		delete_item_url: "",
 		delete_image_url: "",
@@ -40,6 +41,7 @@ dojo.widget.defineWidget(
 			this.deleteIcon.src = this.delete_icon_src;
 			this.deleteIcon.title = this.delete_icon_txt;
 			this.deleteIcon.alt = this.delete_icon_txt;
+			this.deleteIcon.id = "delete-item-" + this.element_id_value;
 			dojo.event.connect(this.deleteLink, 'onclick', this, 'deleteItem');
 			this.handleImageButtons();
 		},
@@ -49,12 +51,14 @@ dojo.widget.defineWidget(
 				this.imageButtonIcon.src = this.delete_image_icon_src;
 				this.imageButtonIcon.title = this.delete_image_icon_txt;
 				this.imageButtonIcon.alt = this.delete_image_icon_txt;
+				this.imageButtonIcon.id = "delete-image-" + this.element_id_value;
 				dojo.event.disconnect(this.imageButtonLink, 'onclick', this, 'addUploadImageForm');
 				dojo.event.connect(this.imageButtonLink, 'onclick', this, 'deleteImage');
 			} else {
 				this.imageButtonIcon.src = this.add_image_icon_src;
 				this.imageButtonIcon.title = this.add_image_icon_txt;
 				this.imageButtonIcon.alt = this.add_image_icon_txt;
+				this.imageButtonIcon.id = "add-image-" + this.element_id_value;
 				dojo.event.disconnect(this.imageButtonLink, 'onclick', this, 'deleteImage');
 				dojo.event.connect(this.imageButtonLink, 'onclick', this, 'addUploadImageForm');
 			}

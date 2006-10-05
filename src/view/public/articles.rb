@@ -34,7 +34,6 @@ class ArticlesList < HtmlGrid::DivList
 		div = HtmlGrid::Div.new(model, @session, self)
 		div.css_id = model.artobject_id
 		div.set_attribute('style', 'display: none;')
-		div.value = model.text
 		div
 	end
 end

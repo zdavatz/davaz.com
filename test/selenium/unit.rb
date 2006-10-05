@@ -3,6 +3,35 @@
 
 $: << File.expand_path("../src", File.dirname(__FILE__))
 
+=begin
+if(pid = Kernel.fork)
+	at_exit {
+		Process.kill('HUP', pid)
+	}
+else
+	path = File.expand_path('selenium-server.jar', File.dirname(__FILE__))
+	command = "java -jar #{path}"
+	exec(command)
+end
+
+require "bbmb/config"
+require 'selenium'
+
+$selenium = Selenium::SeleneseInterpreter.new("localhost", 4444,
+												"*firefox", BBMB.config.http_server + ":10080", 10000)
+start = Time.now
+begin
+	$selenium.start
+rescue Errno::ECONNREFUSED
+	sleep 1
+	if((Time.now - start) > 15)
+		raise
+	else
+		retry
+	end
+end
+=end
+
 require "util/config"
 require "util/davaz"
 require 'util/davazapp'
@@ -13,22 +42,38 @@ require 'logger'
 require "selenium"
 require 'stub/http_server'
 require 'stub/db_manager'
+require 'stub/yus_server'
+
+module DAVAZ
+	module Selenium
+class SeleniumWrapper < SimpleDelegator
+	def initialize(host, port, browser, server, port2)
+		@server = server
+		@selenium = ::Selenium::SeleneseInterpreter.new(host, port, browser,
+																										server, port2)
+		super @selenium
+	end
+	def open(path)
+		@selenium.open(@server + path)
+	end
+	def type(*args)
+		@selenium.type(*args)
+	end
+end
+	end
+end
 
 module DAVAZ 
   module Selenium  
 module TestCase
   include FlexMock::TestCase
-	class DbManager < FlexMock
-	end
   def setup
-    #BBMB.logger = Logger.new($stdout)
-    #BBMB.logger.level = Logger::DEBUG
-    @auth = flexmock('authenticator')
-    #BBMB.auth = @auth
+		DAVAZ.config.upload_root = File.expand_path('../doc', File.dirname(__FILE__))
+		DAVAZ.config.autologin = false
     drb_url = "druby://localhost:10081"
 		app = DAVAZ::Util::DavazApp.new
-		#@db_manager = flexmock('db_manager')
 		app.db_manager = DAVAZ::Stub::DbManager.new
+		app.yus_server = DAVAZ::Stub::YusServer.new
 		@server = DAVAZ::Util::DRbServer.new(app)
     @drb = Thread.new { 
       begin
@@ -48,44 +93,27 @@ module TestCase
     if $selenium
       @selenium = $selenium
     else
-      @selenium = ::Selenium::SeleneseInterpreter.new("localhost", 
-				4444, "*firefox /usr/lib/mozilla-firefox/firefox-bin", 
-				"http://localhost:10080", 10000);
-      @selenium.start
+			@selenium = SeleniumWrapper.new("localhost", 4444, 
+				"*chrome /usr/lib/mozilla-firefox/firefox-bin",
+				"http://localhost:10080", 10000)
+			@selenium.start
     end
     @selenium.set_context("TestCustomers", "info")
   end
   def teardown
-    @selenium.stop unless $selenium
+    #@selenium.stop unless $selenium
     @http_server.shutdown
 		@drb_server.stop_service
     assert_equal [], @verification_errors
   end
-  def login(email, *permissions)
-    user = mock_user email, *permissions
-    @auth.should_receive(:login).and_return(user)
-    @auth.should_ignore_missing
-    @selenium.open "/"
-    @selenium.type "email", email
-    @selenium.type "pass", "test"
-    @selenium.click "//input[@name='login']"
+	def login
+		@selenium.click "link=Login"
+		sleep 1
+    @selenium.type "email", "right@user.ch"
+    @selenium.type "pass", "abcd"
+		@selenium.click "document.loginform.login"
     @selenium.wait_for_page_to_load "30000"
-    user
-  end
-  def login_admin
-    login "test.admin@bbmb.ch", ['login', 'ch.bbmb.Admin'], 
-          ['edit', 'yus.entities']
-  end
-  def mock_user(email, *permissions)
-    user = flexmock(email)
-    user.should_receive(:allowed?).and_return { |*pair|
-      puts "allowed?(#{pair.join(', ')}"
-      permissions.include?(pair)
-    }
-    user.should_receive(:name).and_return(email)
-    user.should_ignore_missing
-    user
-  end
+	end
 end
   end
 end

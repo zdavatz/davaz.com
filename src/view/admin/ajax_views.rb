@@ -28,6 +28,7 @@ class AjaxUploadImageForm < View::Form
 	EVENT = :ajax_upload_image
 	LABELS = true
 	TAG_METHOD = :multipart_form
+	FORM_NAME = 'ajax_upload_image_form'
 	COMPONENTS = {
 		[0,0]	=>	:image_file,
 		[1,0]	=>	:submit,
@@ -66,10 +67,10 @@ class AjaxImageDiv < HtmlGrid::Div
 	def init
 		super
 		if(artobject_id = @model.artobject_id)
-			url = DAVAZ::Util::ImageHelper.image_path(artobject_id)
+			url = DAVAZ::Util::ImageHelper.image_url(artobject_id)
 			image(@model, url)
-		elsif(@model.abs_tmp_image_path)
-			image(@model, artobject.rel_tmp_image_path)
+		elsif(@model.tmp_image_path)
+			image(@model, artobject.tmp_image_url)
 		end
 	end
 end

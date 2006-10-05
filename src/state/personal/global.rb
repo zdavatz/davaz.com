@@ -32,7 +32,7 @@ class Global < State::Global
 		}
 		artobjects = @session.app.load_tag_artobjects(name)
 		artobjects.each { |artobject|
-			image = DAVAZ::Util::ImageHelper.image_path(artobject.artobject_id, 'slideshow')
+			image = DAVAZ::Util::ImageHelper.image_url(artobject.artobject_id, 'slideshow')
 			@model.slideshow_items['images'].push(image)
 			@model.slideshow_items['titles'].push(artobject.title)
 		}

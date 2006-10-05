@@ -38,7 +38,7 @@ class RackState < State::Works::Global
 			serie_items = serie.artobjects
 			serie_items.each { |item|
 				if(Util::ImageHelper.has_image?(item.artobject_id))
-					image = Util::ImageHelper.image_path(item.artobject_id, 'slideshow')
+					image = Util::ImageHelper.image_url(item.artobject_id, 'slideshow')
 					@model.serie_items['artObjectIds'].push(item.artobject_id)
 					@model.serie_items['images'].push(image)
 					@model.serie_items['titles'].push(item.title)
@@ -68,11 +68,11 @@ class AjaxRackUploadImage < SBSM::State
 				image = Image.from_blob(string_io.read).first
 				extension = image.format.downcase
 				path = File.join(
-					DAVAZ::Util::ImageHelper.abs_tmp_path,
+					DAVAZ::Util::ImageHelper.tmp_image_dir,
 					img_name + "." + extension
 				)
 				image.write(path)
-				@model.artobject.abs_tmp_image_path = path
+				@model.artobject.tmp_image_path = path
 			end
 		end
 	end
@@ -138,7 +138,7 @@ class AdminRackState < State::Works::RackState
 				newstate = State::Redirect.new(@session, model)
 			else
 				insert_id = @session.app.insert_artobject(update_hash)
-				image_path = @model.artobject.abs_tmp_image_path
+				image_path = @model.artobject.tmp_image_path
 				Util::ImageHelper.store_tmp_image(image_path, insert_id)
 				self 
 			end

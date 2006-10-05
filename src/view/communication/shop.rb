@@ -60,10 +60,10 @@ class ShopList < View::List
 			[:artobject_id, model.artobject_id],
 			[:count, nil],
 		]
-		url = @lookandfeel.event_url('communication', 
-			'ajax_shop', args)
+		url = @lookandfeel.event_url('communication', 'ajax_shop', args)
 		script = "reloadShoppingCart('#{url}', this.value);"
-		input.set_attribute('onChange', script)
+		#input.set_attribute('onChange', script)
+		input.set_attribute('onBlur', script)
 		input.set_attribute('name', name)
 		in_cart = @session[:cart_items].select { |item| 
 			item.artobject_id == model.artobject_id	
@@ -145,9 +145,9 @@ class ShoppingCartList < View::List
 		dollars = 0
 		euros = 0
 		model.each { |item| 
-			franks += item.count * item.price.to_i
-			dollars += item.count * item.dollar_price.to_i
-			euros += item.count * item.euro_price.to_i
+			franks += item.count.to_i * item.price.to_i
+			dollars += item.count.to_i * item.dollar_price.to_i
+			euros += item.count.to_i * item.euro_price.to_i
 		}
 		total = "CHF #{franks}.- / $ #{dollars}.- / &euro; #{euros}.-"
 		@grid.add(total, *matrix)
@@ -165,7 +165,7 @@ class ShoppingCartList < View::List
 		"CHF #{model.price}.-"
 	end
 	def subtotal(model)
-		"CHF #{model.count * model.price.to_i}.-"
+		"CHF #{model.count.to_i * model.price.to_i}.-"
 	end
 	def remove_item(model)
 		link = HtmlGrid::Link.new(:remove_item, model, @session, self) 

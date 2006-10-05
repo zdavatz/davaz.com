@@ -13,6 +13,7 @@ require 'util/db_manager'
 db_manager = DAVAZ::Util::DbManager.new
 app = DAVAZ::Util::DavazApp.new
 app.db_manager = db_manager
+app.yus_server = DRb::DRbObject.new(nil, DAVAZ.config.yus_uri)
 server = DAVAZ::Util::DRbServer.new(app)
 
 $0 = "DAVAZ"

@@ -15,51 +15,49 @@ module DAVAZ
 				:large	=>	Geometry.new(DAVAZ.config.large_image_width.to_i),
 				:slideshow	=>	Geometry.new(nil, DAVAZ.config.slideshow_image_height.to_i),
 			}
-			def ImageHelper.abs_image_path(artobject_id, size=nil)
-				pattern = File.join(ImageHelper.images_path(size), \
+			def ImageHelper.image_path(artobject_id, size=nil)
+				pattern = File.join(ImageHelper.image_dir(size), \
 					artobject_id.to_s[-1,1], artobject_id.to_s + ".*") 
 				Dir.glob(pattern).first
 			end
 			def ImageHelper.delete_image(artobject_id)
-				path = ImageHelper.abs_image_path(artobject_id)
+				path = ImageHelper.image_path(artobject_id)
 				unless(path.nil?)
 					File.unlink(path) #unless path.nil?
 				end
 				@@geometries.each { |key, value|
-					path = ImageHelper.abs_image_path(artobject_id, key)
+					path = ImageHelper.image_path(artobject_id, key)
 					unless(path.nil?)
 						File.unlink(path) #unless path.nil?
 					end
 				}
 			end
 			def ImageHelper.has_image?(artobject_id)
-				if(ImageHelper.abs_image_path(artobject_id).nil?)
+				if(ImageHelper.image_path(artobject_id).nil?)
 					false
 				else
 					true
 				end
 			end
-			def ImageHelper.abs_tmp_path
+			def ImageHelper.tmp_image_dir
 				dir_components = [
-					DAVAZ.config.document_root,
-					"resources",
-					DAVAZ.config.tmp_images_path,
+					DAVAZ.config.upload_root,
+					"tmp/images"
 				]
 				dir_components.join("/")
 			end
-			def ImageHelper.images_path(size=nil)
+			def ImageHelper.image_dir(size=nil)
 				dir_components = [
-					DAVAZ.config.document_root,
-					"resources",
-					DAVAZ.config.upload_images_path
+					DAVAZ.config.upload_root,
+					"images"
 				]
 				dir_components.push(size) unless size.nil?
 				dir_components.join("/")
 			end
-			def ImageHelper.image_path(artobject_id, size=nil, \
+			def ImageHelper.image_url(artobject_id, size=nil, \
 					timestamp=false)
 				return nil if artobject_id.nil?
-				path = ImageHelper.abs_image_path(artobject_id, size)
+				path = ImageHelper.image_path(artobject_id, size)
 				return nil if path.nil?
 				if(timestamp)
 					path += sprintf("?time=%i", File.mtime(path))
@@ -77,7 +75,7 @@ module DAVAZ
 				}
 			end
 			def ImageHelper.store_image(artobject_id, image, key=nil)
-				path = ImageHelper.images_path(key.to_s)
+				path = ImageHelper.image_dir(key.to_s)
 				directory = artobject_id[-1,1]
 				name = [
 					path,
@@ -92,7 +90,7 @@ module DAVAZ
 				end
 				image = Image.from_blob(string_io.read).first
 				extension = image.format.downcase
-				path = File.join(ImageHelper.images_path, \
+				path = File.join(ImageHelper.image_dir, \
 					artobject_id.to_s[-1,1], artobject_id.to_s + "." + extension) 
 				image.write(path)
 				ImageHelper.resize_image(artobject_id.to_s, image)
@@ -101,7 +99,7 @@ module DAVAZ
 				image = Image.read(tmp_path).first
 				extension = image.format.downcase
 				path = File.join(
-					ImageHelper.images_path,
+					ImageHelper.image_dir,
 					artobject_id.to_s[-1,1], 
 					artobject_id.to_s + "." + extension
 				) 

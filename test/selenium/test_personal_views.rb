@@ -14,38 +14,37 @@ class TestPersonalViews < Test::Unit::TestCase
     @selenium.click "link=HIS LIFE"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Personal | HIS LIFE", @selenium.get_title
-    assert @selenium.is_element_present("//span[id('connect-4-1')]")
     assert @selenium.is_text_present("Early Years")
     assert @selenium.is_text_present("English")
-    assert @selenium.is_text_present("meets his future friend.")
+    assert @selenium.is_text_present("Title of ArtObject 115")
     @selenium.click "link=Chinese"
     @selenium.wait_for_page_to_load "30000"
-    assert @selenium.is_text_present("Das Sagewerk in den Kopfen")
+    assert @selenium.is_text_present("Title of ArtObject 111")
     @selenium.click "link=Hungarian"
     @selenium.wait_for_page_to_load "30000"
-    assert @selenium.is_text_present("termet kap a budapesti")
+    assert @selenium.is_text_present("Title of ArtObject 113")
     @selenium.click "link=English"
     @selenium.wait_for_page_to_load "30000"
-    assert @selenium.is_text_present("While on a late night walk through")
+    assert @selenium.is_text_present("Title of ArtObject 115")
     @selenium.click "link=HIS WORK"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Personal | HIS WORK", @selenium.get_title
-    assert @selenium.is_text_present("He refused to go to any Art college")
+    assert @selenium.is_text_present("Title of ArtObject 115")
     @selenium.click "link=HIS INSPIRATION"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Personal | HIS INSPIRATION", @selenium.get_title
-    assert @selenium.is_text_present("My heartbeat is my inspiration. It links me to the bangs of life")
+    assert @selenium.is_text_present("Title of ArtObject 111")
     @selenium.click "link=HIS FAMILY"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Personal | HIS FAMILY", @selenium.get_title
-    assert @selenium.is_text_present("roots of the family name are found")
+    assert @selenium.is_text_present("Title of ArtObject 113")
     @selenium.click "link=Next >>"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Personal | THE FAMILY", @selenium.get_title
-    assert @selenium.is_text_present("The Da Vaz family explores the USA and Canada, crossing the North American continent")
+    assert @selenium.is_text_present("Title of ArtObject 115")
     @selenium.click "link=<< Back"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Personal | HIS FAMILY", @selenium.get_title
-    assert @selenium.is_text_present("The family tree starts 1550 in Fanas")
+    assert @selenium.is_text_present("Title of ArtObject 113")
   end
 end

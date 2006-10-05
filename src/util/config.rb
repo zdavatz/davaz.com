@@ -31,6 +31,7 @@ module DAVAZ
 		},	
 		'document_root'						=>	File.expand_path('doc', project_root),
 		'dojo_debug'							=>	false,
+		'upload_root'							=>	File.expand_path('doc/resources/uploads', project_root),
 		'large_image_width'				=>	'360px',
 		'mail_from'								=>	'"markus.huggler" <mhuggler@ywesee.com>',
 		'medium_image_width'			=>	'180px',
@@ -54,6 +55,4 @@ module DAVAZ
   config = RCLConf::RCLConf.new(ARGV, defaults)
   config.load(config.config)
   @config = config
-
-	@yus_server = DRb::DRbObject.new(nil, @config.yus_uri)
 end

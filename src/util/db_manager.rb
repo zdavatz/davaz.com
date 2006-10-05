@@ -563,6 +563,26 @@ module DAVAZ
 				}
 				serie_id
 			end
+			def load_shop_item(artobject_id)
+				query = <<-EOS
+					SELECT artobjects.*
+					FROM artobjects
+					WHERE artobject_id='#{artobject_id}'
+				EOS
+				result = connection.query(query)
+				items = []
+				result.each_hash { |key, value| 
+					artobject = DAVAZ::Model::ArtObject.new 
+					key.each { |column_name, column_value| 
+						artobject.send(column_name.to_s + '=', column_value)
+					}
+					rates = load_currency_rates
+					artobject.dollar_price = (rates['USD'] * artobject.price.to_i).round
+					artobject.euro_price = (rates['EURO'] * artobject.price.to_i).round
+					items.push(artobject)
+				}
+				items.first
+			end
 			def load_shop_items()
 				query = <<-EOS
 					SELECT artobjects.*, artgroups.name AS artgroup

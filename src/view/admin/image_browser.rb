@@ -21,7 +21,7 @@ class ImageBrowserList < HtmlGrid::DivList
 			@session, self)
 		image = HtmlGrid::Image.new(model.artobject_id.to_s, @model, \
 			@session, self)
-		url = DAVAZ::Util::ImageHelper.image_path(model.artobject_id, 'small')
+		url = DAVAZ::Util::ImageHelper.image_url(model.artobject_id, 'small')
 		image.set_attribute('src', url)
 		image.set_attribute('width', '100px')
 		image.set_attribute('height', '100px')

@@ -20,9 +20,6 @@ class Articles < State::Public::Global
 	VIEW = View::Public::Articles
 	def init
 		@model = @session.load_articles 
-		@model.each { |article|
-			article.text = ""
-		}
 	end
 end
 class AdminArticles < Articles

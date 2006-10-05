@@ -19,7 +19,7 @@ module DAVAZ
 			attr_accessor :date, :movie_type, :url
 			attr_accessor :text, :author, :charset
 			attr_accessor :price
-			attr_accessor :abs_tmp_image_path
+			attr_accessor :tmp_image_path
 			attr_reader	:links, :tags 
 			def initialize
 				@links = []
@@ -93,8 +93,8 @@ module DAVAZ
 			def price 
 				@price || ""
 			end
-			def rel_tmp_image_path
-				rel = @abs_tmp_image_path.dup
+			def tmp_image_url
+				rel = @tmp_image_path.dup
 				rel.slice!(DAVAZ.config.document_root)
 				rel
 			end

@@ -24,6 +24,7 @@ class LoginForm < View::Form
 	CSS_CLASS = 'component'
 	EVENT = :login
 	LABELS = true
+	FORM_NAME = 'loginform'
 	SYMBOL_MAP = {
 		:pass	=>	HtmlGrid::Pass,
 	}

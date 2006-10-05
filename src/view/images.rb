@@ -19,7 +19,7 @@ module DAVAZ
 			def image(model)
 				artobject_id = model.artobject_id
 				img = HtmlGrid::Image.new(artobject_id, model, @session, self)
-				url = DAVAZ::Util::ImageHelper.image_path(artobject_id)
+				url = DAVAZ::Util::ImageHelper.image_url(artobject_id)
 				img.attributes['src'] = url
 				img.css_class = 'tooltip-image'
 				img

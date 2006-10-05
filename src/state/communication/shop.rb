@@ -25,7 +25,7 @@ class AjaxShop < SBSM::State
 				item.artobject_id == artobject_id	
 			}
 			if(items.empty?)
-				new_item = @session.load_artobject(artobject_id)
+				new_item = @session.load_shop_item(artobject_id)
 				new_item.count = count
 				@session[:cart_items].push(new_item)
 			else
@@ -68,13 +68,12 @@ class Shop < State::Communication::Global
 	def send_order
 		mandatory = [ :name, :surname, :street, :postal_code, :city,
 			:country, :email ]
-		#mandatory = [ :postal_code ]
 		keys = mandatory.dup.push(:article)
 		hash = user_input(keys, mandatory)
 		unless error?
 			hash[:article].each { |artobject_id, count| 
 				unless count == ""
-					item = @session.load_artobject(artobject_id)
+					item = @session.load_shop_item(artobject_id)
 					item.count = count.to_i
 				end
 			}

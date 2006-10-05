@@ -14,18 +14,22 @@ class TestCommunicationViews < Test::Unit::TestCase
     @selenium.click "link=News"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Communication | News", @selenium.get_title
-    assert @selenium.is_text_present("Master Class for young Russian Filmmakers")
-    @selenium.click "link=Guestbook"
-    @selenium.wait_for_page_to_load "30000"
-    assert_equal "Da Vaz - Abstract Artist from Switzerland | Communication | Guestbook", @selenium.get_title
-    assert @selenium.is_text_present("I am affiliated with a Kazakhstan adoption agency and feel that your work will help many MANY children see first hand where they have come from")
+    assert @selenium.is_text_present("Text of ArtObject 111")
     @selenium.click "link=Shop"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Communication | Shop", @selenium.get_title
-    assert @selenium.is_text_present("002 / TRAPPED REALITY")
+    assert @selenium.is_text_present("Title of ArtObject 111")
+    assert @selenium.is_text_present("ArtGroup of ArtObject 111")
+    assert @selenium.is_text_present((111*1.5).to_s)
+    assert @selenium.is_text_present((111*2).to_s)
+    @selenium.click "link=Guestbook"
+    @selenium.wait_for_page_to_load "30000"
+    assert_equal "Da Vaz - Abstract Artist from Switzerland | Communication | Guestbook", @selenium.get_title
+    assert @selenium.is_text_present("Text of Guest 1")
     @selenium.click "link=Links"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Communication | Links", @selenium.get_title
-    assert @selenium.is_text_present("chinese art that fits to buy")
+    assert @selenium.is_text_present("Url of ArtObject 113")
+    assert @selenium.is_text_present("Text of ArtObject 113")
   end
 end

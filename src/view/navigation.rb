@@ -231,7 +231,7 @@ module DAVAZ
 				#[1,0]	=>	'pipe_divider',
 			}
 			def init
-				@model = @session.app.load_artgroups
+				@model = @model.artgroups
 				build_navigation()
 				super
 			end

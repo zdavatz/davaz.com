@@ -62,6 +62,7 @@ dojo.widget.defineWidget(
 				this.inputDiv.style.marginLeft = "80px";
 			}
 			this.leText = document.createElement("span");
+			this.leText.id = this.element_id_value + "-" + this.field_key; 
 			this.leText.innerHTML = this.toHtml(this.old_value);
 			var _this = this;
 			dojo.event.connect(this.leText, "onclick", this, "toggleInput");

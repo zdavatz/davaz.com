@@ -22,7 +22,7 @@ end
 class JavaApplet < HtmlGrid::Component 
 	def init
 		super
-		image = Util::ImageHelper.image_path(@model)
+		image = Util::ImageHelper.image_url(@model)
 		@value = <<-EOS
 			<applet name="ptviewer" valign=bottom border=0 hspace=0 vspace=0 archive="/resources/java/ptviewer.jar" code=ptviewer.class width="380" height="200" mayscript=true>
         <param name=file 		value="ptviewer:0">
@@ -67,7 +67,7 @@ class ThumbImages < HtmlGrid::SpanList
 		script = "location.hash='#{artobject_id}'; toggleJavaApplet('#{url}');"
 		link.set_attribute('onclick', script)
 		img = HtmlGrid::Image.new(artobject_id, model, @session, self)
-		url = DAVAZ::Util::ImageHelper.image_path(artobject_id, 'medium')
+		url = DAVAZ::Util::ImageHelper.image_url(artobject_id, 'medium')
 		img.attributes['width']	= DAVAZ.config.small_image_width 
 		img.attributes['src'] = url
 		img.css_class = 'thumb-image'

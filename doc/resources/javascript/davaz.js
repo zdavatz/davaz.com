@@ -129,8 +129,8 @@ function toggleUploadImageForm(divId, url) {
 	}
 }
 
-function reloadShoppingCart(url, count) {
-	if(count!='0') {
+function reloadShoppingCart(url, count) {	
+	if(parseInt(count)===count-0 && count!='0') {
 		var node = dojo.byId('shopping-cart');
 		document.body.style.cursor = 'progress';
 		dojo.io.bind({

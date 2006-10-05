@@ -7,7 +7,7 @@ require 'util/updater'
 module DAVAZ
 	module Util
 		class DavazApp
-			attr_accessor :db_manager
+			attr_accessor :db_manager, :yus_server
 			def initialize
 				if(DAVAZ.config.run_updater)
 					run_updater
@@ -92,9 +92,6 @@ module DAVAZ
 			end
 			def load_countries
 				@db_manager.load_countries
-			end
-			def load_currency_rates(model)
-				@db_manager.load_currency_rates(model)
 			end
 			def load_images_by_tag(tag_name)
 				@db_manager.load_images_by_tag(tag_name)
@@ -195,10 +192,10 @@ module DAVAZ
 				@db_manager.load_artobjects_by_artgroup('MUL')
 			end
 			def login(email, pass)
-				DAVAZ.yus_server.login(email, pass, DAVAZ.config.yus_domain)
+				@yus_server.login(email, pass, DAVAZ.config.yus_domain)
 			end
 			def logout(yus_session)
-				DAVAZ.yus_server.logout(yus_session)
+				@yus_server.logout(yus_session)
 			end
 			def remove_element(artobject_id, link_id)
 				@db_manager.remove_element(artobject_id, link_id)

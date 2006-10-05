@@ -27,7 +27,7 @@ module DAVAZ
 				model.each { |item| 
 					unless(item.artobject_id.nil?)
 						if(Util::ImageHelper.has_image?(item.artobject_id))
-							path = Util::ImageHelper.image_path(item.artobject_id, 'medium')
+							path = Util::ImageHelper.image_url(item.artobject_id, 'medium')
 							args['images'].push(path)
 							event_args = [
 								[ 'artgroup_id' , item.artgroup_id ],

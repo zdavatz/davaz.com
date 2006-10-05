@@ -118,6 +118,7 @@ dojo.widget.defineWidget(
 					add_image_icon_src: this.add_image_icon_src,
 					add_image_icon_txt: this.add_image_icon_txt,
 					edit_widget: this,
+					element_id_value: this.element_id_value, 
 					has_image: this.has_image,
 					delete_item_url: this.delete_item_url,
 					delete_image_url: this.delete_image_url,

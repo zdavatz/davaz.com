@@ -59,6 +59,9 @@ module DAVAZ
       server.mount_proc('/en/.*', &davaz)
       res = File.join(doc, 'resources')
       server.mount('/resources', WEBrick::HTTPServlet::FileHandler, res, {})
+			uploads = File.expand_path('../doc/resources/uploads', File.dirname(__FILE__))
+      server.mount('/resources/uploads', WEBrick::HTTPServlet::FileHandler, 
+									 uploads, {})
       server
     end
   end

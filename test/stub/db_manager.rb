@@ -3,8 +3,12 @@
 
 require 'model/artgroup'
 require 'model/artobject'
+require 'model/country'
 require 'model/guest'
+require 'model/material'
 require 'model/serie'
+require 'model/tag'
+require 'model/tool'
 require 'util/lookandfeel'
 
 module DAVAZ
@@ -29,13 +33,16 @@ module DAVAZ
 				@date = "2#{id}-01-01"
 				@dollar_price = (id.to_i*0.8).to_s
 				@country = "Country of ArtObject #{id}"
+				@country_id = "CH"
 				@euro_price = (id.to_i*0.6).to_s
 				@material = "Material of ArtObject #{id}"
+				@material_id = "1"
 				@price = id
 				@size = "Size of ArtObject #{id}"
 				@text = "Text of ArtObject #{id}"
 				@title = "Title of ArtObject #{id}"
 				@tool = "Tool of ArtObject #{id}"
+				@tool_id = "1"
 				@url = "Url of ArtObject #{id}"
 			end
 			def set_artgroup_id(artgroup_id)
@@ -43,6 +50,13 @@ module DAVAZ
 			end
 			def set_serie_id(serie_id)
 				@serie = serie_id
+			end
+		end
+		class StubCountry < Model::Country
+			def initialize(id)
+				super()
+				@country_id = id
+				@name = "Name of Country #{id}"
 			end
 		end
 		class StubGuest < Model::Guest
@@ -57,6 +71,13 @@ module DAVAZ
 				@country = "Country of Guest #{id}"
 			end
 		end
+		class StubMaterial < Model::Material
+			def initialize(id)
+				super()
+				@material_id = id
+				@name = "Name of Material #{id}"
+			end
+		end
 		class StubSerie < Model::Serie
 			attr_accessor :artobjects
 			def initialize(id)
@@ -68,16 +89,45 @@ module DAVAZ
 				@artobjects = artobject_array
 			end
 		end
+		class StubTag < Model::Tag
+			def initialize(id)
+				super()
+				@tool_id = id
+				@name = "Name of Tag #{id}"
+			end
+		end
+		class StubTool < Model::Tool
+			def initialize(id)
+				super()
+				@tool_id = id
+				@name = "Name of Tool #{id}"
+			end
+		end
 		
 		class DbManager
 			def initialize
+				@countries = [
+					StubCountry.new('CH'),
+					StubCountry.new('D'),
+					StubCountry.new('F'),
+				]
 				@guests = [ 
 					StubGuest.new('1'),
+				]
+				@materials = [
+					StubMaterial.new('1'),
+					StubMaterial.new('2'),
+					StubMaterial.new('3'),
 				]
 				@series = [
 					StubSerie.new('ABC'),
 					StubSerie.new('ABD'),
 					StubSerie.new('ABE'),
+				]
+				@tools = [
+					StubTool.new('1'),
+					StubTool.new('2'),
+					StubTool.new('3'),
 				]
 				artobject1 = StubArtobject.new('111')
 				artobject1.set_artgroup_id('234') 
@@ -101,6 +151,9 @@ module DAVAZ
 					StubArtgroup.new('234', 'movies'),
 					StubArtgroup.new('235', 'drawings'),
 				]
+			end
+			def count_artobjects(by, id)
+				3
 			end
 			def delete_artobject(artobject_id)
 				@artobjects.delete_if { |aobject| aobject.artobject_id == artobject_id}
@@ -140,8 +193,14 @@ module DAVAZ
 			def load_artobjects_by_artgroup(artgroup_id)
 				@artobjects
 			end
+			def load_countries
+				@countries
+			end
 			def load_guests
 				@guests
+			end
+			def load_materials
+				@materials
 			end
 			def load_movies
 				@artobjects
@@ -162,7 +221,6 @@ module DAVAZ
 					@artobjects.select { |aobject| aobject.serie == 'ABC' }
 				when 'Site Links'
 					@artobjects.select { |aobject| aobject.serie == 'ABD' }
-					@artobjects
 				when 'Site His Life English'
 					@artobjects.select { |aobject| aobject.serie == 'ABE' }
 				when 'Site His Life Chinese'
@@ -207,6 +265,9 @@ module DAVAZ
 			def load_tag_artobjects(tag)
 				[]
 			end
+			def load_tools
+				@tools
+			end
 			def search_artobjects(query)
 				@artobjects.select { |aobject| aobject.serie == query}
 			end
@@ -215,7 +276,14 @@ module DAVAZ
 					aobject.artobject_id == artobject_id
 				}.first
 				update_values.each { |key, value|
-					artobject.send("#{key.to_s}=", value)
+					if(key==:tags)
+						artobject.send("#{key.to_s}=", [ StubTag.new(value) ])
+					elsif(key==:url)
+						puts value.inspect
+						artobject.send("#{key.to_s}=", value)
+					else
+						artobject.send("#{key.to_s}=", value)
+					end
 				}
 			end
 		end

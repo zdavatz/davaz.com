@@ -68,7 +68,7 @@ module DAVAZ
 module TestCase
   include FlexMock::TestCase
   def setup
-		DAVAZ.config.upload_root = File.expand_path('../doc', File.dirname(__FILE__))
+		DAVAZ.config.document_root = File.expand_path('../doc', File.dirname(__FILE__))
 		DAVAZ.config.autologin = false
     drb_url = "druby://localhost:10081"
 		app = DAVAZ::Util::DavazApp.new

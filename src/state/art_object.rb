@@ -229,21 +229,28 @@ module DAVAZ
 				unless(error?)
 					if(artobject_id)
 						@session.app.update_artobject(artobject_id, update_hash)
-						search
 					else
 						insert_id = @session.app.insert_artobject(update_hash)
 						image_path = @model.artobject.tmp_image_path
 						Util::ImageHelper.store_tmp_image(image_path, insert_id)
-						search	
+						artobject_id = inser_id
 					end
 				else
 					update_hash.each { |key, value|
 						method = (key.to_s + "=").intern
 						@model.artobject.send(method, value)
 					}
-					build_selections
-					self 
 				end
+				args = [
+					[ :artobject_id, artobject_id ],
+				]
+				if(search_query = @session.user_input(:search_query))
+					args.push([ :search_query, search_query ])
+				else
+					args.push([ :artgroup_id, @session.user_input(:artgroup_id) ])
+				end
+				model = @session.lookandfeel.event_url(:gallery, :art_object, args)
+				State::Redirect.new(@session, model)
 			end
 		end
 	end

@@ -495,6 +495,9 @@ module DAVAZ
 				if(@model.fragment)
 					hidden_fields << context.hidden('fragment', @model.fragment)
 				end
+				if(search_query = @session.user_input(:search_query))
+					hidden_fields << context.hidden('search_query', search_query)
+				end
 				hidden_fields
 			end
 			def input_text(symbol, maxlength='50', size='50') 
@@ -523,7 +526,12 @@ module DAVAZ
 			def delete(model)
 				if(artobject_id = model.artobject.artobject_id)
 					button = HtmlGrid::Button.new(:delete, model, @session, self)
-					args = [:artgroup_id, :search_query]
+					args = []
+					if(search_query = @session.user_input(:search_query))
+						args.push([ :search_query, search_query ])
+					else
+						args.push([ :artgroup_id, model.artobject.artgroup_id ])
+					end
 					args.push(
 						[ 'artobject_id', model.artobject.artobject_id ],
 						[ 'fragment', model.fragment ],

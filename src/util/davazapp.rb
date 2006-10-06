@@ -3,6 +3,7 @@
 
 require 'yus/session'
 require 'util/updater'
+require 'util/image_helper'
 
 module DAVAZ
 	module Util
@@ -52,6 +53,7 @@ module DAVAZ
 				@db_manager.count_artobjects('material_id', material_id)
 			end
 			def delete_artobject(artobject_id)
+				Util::ImageHelper.delete_image(artobject_id)
 				@db_manager.delete_artobject(artobject_id)
 			end
 			def delete_guest(guest_id)

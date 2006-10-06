@@ -16,8 +16,8 @@ module DAVAZ
 				:slideshow	=>	Geometry.new(nil, DAVAZ.config.slideshow_image_height.to_i),
 			}
 			def ImageHelper.image_path(artobject_id, size=nil)
-				pattern = File.join(ImageHelper.image_dir(size), \
-					artobject_id.to_s[-1,1], artobject_id.to_s + ".*") 
+				pattern = File.join(ImageHelper.image_dir(size),
+														artobject_id.to_s[-1,1], artobject_id.to_s + ".*") 
 				Dir.glob(pattern).first
 			end
 			def ImageHelper.delete_image(artobject_id)
@@ -41,21 +41,22 @@ module DAVAZ
 			end
 			def ImageHelper.tmp_image_dir
 				dir_components = [
-					DAVAZ.config.upload_root,
+					DAVAZ.config.document_root,
+					DAVAZ.config.uploads_dir,
 					"tmp/images"
 				]
 				dir_components.join("/")
 			end
 			def ImageHelper.image_dir(size=nil)
 				dir_components = [
-					DAVAZ.config.upload_root,
+					DAVAZ.config.document_root,
+					DAVAZ.config.uploads_dir,
 					"images"
 				]
 				dir_components.push(size) unless size.nil?
 				dir_components.join("/")
 			end
-			def ImageHelper.image_url(artobject_id, size=nil, \
-					timestamp=false)
+			def ImageHelper.image_url(artobject_id, size=nil, timestamp=false)
 				return nil if artobject_id.nil?
 				path = ImageHelper.image_path(artobject_id, size)
 				return nil if path.nil?

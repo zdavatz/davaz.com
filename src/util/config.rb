@@ -31,7 +31,7 @@ module DAVAZ
 		},	
 		'document_root'						=>	File.expand_path('doc', project_root),
 		'dojo_debug'							=>	false,
-		'upload_root'							=>	File.expand_path('doc/resources/uploads', project_root),
+		'uploads_dir'							=>	'resources/uploads',
 		'large_image_width'				=>	'360px',
 		'mail_from'								=>	'"markus.huggler" <mhuggler@ywesee.com>',
 		'medium_image_width'			=>	'180px',

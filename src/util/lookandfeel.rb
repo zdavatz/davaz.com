@@ -22,6 +22,7 @@ module DAVAZ
 					:add_image								=>	'Add Image',
 					:add_link									=>	'Add Link',
 					:add_material							=>	'Add New Material',
+					:add_new_artobject				=>	'Add New Art Object',
 					:add_serie								=>	'Add New Serie',
 					:add_tool									=>	'Add New Tool',
 					:address									=>	'Address',

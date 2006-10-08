@@ -471,7 +471,7 @@ module DAVAZ
 				[0,17]	=>	:price,
 				[0,19]	=>	:text_label,
 				[1,19]	=>	:text,
-				[1,20]	=>	:submit,
+				[1,20]	=>	:update,
 				[1,20,1]	=>	:reset,
 				[1,21]		=>	:new_art_object,
 				[1,21,1]	=>	:delete,
@@ -559,13 +559,17 @@ module DAVAZ
 				input_text(:location)
 			end
 			def new_art_object(model)
-				button = HtmlGrid::Button.new(:new_art_object, model, @session, self)
-				url = @lookandfeel.event_url(:gallery, :new_art_object)
-				script = <<-EOS
-						window.location.href='#{url}';
-				EOS
-				button.set_attribute('onclick', script)
-				button
+				if(artobject_id = model.artobject.artobject_id)
+					button = HtmlGrid::Button.new(:new_art_object, model, @session, self)
+					url = @lookandfeel.event_url(:gallery, :new_art_object)
+					script = <<-EOS
+							window.location.href='#{url}';
+					EOS
+					button.set_attribute('onclick', script)
+					button
+				else
+					''
+				end
 			end
 			def price(model)
 				input_text(:price, '10')
@@ -596,6 +600,19 @@ module DAVAZ
 			end
 			def tags(model)
 				input_text(:tags_to_s)
+			end
+			def update(model)
+				if(artobject_id = model.artobject.artobject_id)
+					button = HtmlGrid::Button.new(:update, model, @session, self)
+				else
+					button = HtmlGrid::Button.new(:add_new_artobject, model, @session, self)
+				end
+				url = @lookandfeel.event_url(:gallery, :update)
+				script = <<-EOS
+						window.location.href='#{url}';
+				EOS
+				button.set_attribute('onclick', script)
+				button
 			end
 			def url(model)
 				input_text(:url, '150')

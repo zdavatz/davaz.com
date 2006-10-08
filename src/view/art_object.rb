@@ -607,9 +607,8 @@ module DAVAZ
 				else
 					button = HtmlGrid::Button.new(:add_new_artobject, model, @session, self)
 				end
-				url = @lookandfeel.event_url(:gallery, :update)
 				script = <<-EOS
-						window.location.href='#{url}';
+						this.form.submit();
 				EOS
 				button.set_attribute('onclick', script)
 				button

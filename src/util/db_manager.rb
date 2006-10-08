@@ -674,6 +674,17 @@ module DAVAZ
 			end
 			def insert_artobject(values_hash)
 				values_array = []
+				values_hash.each { |key, value|
+					unless(value.nil? || key == :tags)
+						values_array.push("#{key}='#{Mysql.quote(value)}'")
+					end
+				}
+				query = <<-EOS
+					INSERT INTO artobjects
+					SET #{values_array.join(', ')}
+				EOS
+				result = connection.query(query)
+				artobject_id = connection.insert_id
 				tags = values_hash[:tags]
 				if(tags)
 					tags.each { |tag| 
@@ -692,17 +703,7 @@ module DAVAZ
 						end
 					}
 				end
-				values_hash.each { |key, value|
-					unless(value.nil? || key == :tags)
-						values_array.push("#{key}='#{Mysql.quote(value)}'")
-					end
-				}
-				query = <<-EOS
-					INSERT INTO artobjects
-					SET #{values_array.join(', ')}
-				EOS
-				result = connection.query(query)
-				connection.insert_id
+				artobject_id
 			end
 			def insert_guest(user_values)
 				values = [

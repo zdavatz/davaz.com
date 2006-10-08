@@ -227,13 +227,14 @@ module DAVAZ
 					end	
 				}
 				unless(error?)
-					unless(artobject_id)
+					if(artobject_id)
+						@session.app.update_artobject(artobject_id, update_hash)
+					else
 						insert_id = @session.app.insert_artobject(update_hash)
 						image_path = @model.artobject.tmp_image_path
 						Util::ImageHelper.store_tmp_image(image_path, insert_id)
 						artobject_id = insert_id
 					end
-					@session.app.update_artobject(artobject_id, update_hash)
 				else
 					update_hash.each { |key, value|
 						method = (key.to_s + "=").intern

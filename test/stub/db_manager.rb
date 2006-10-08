@@ -279,7 +279,6 @@ module DAVAZ
 					if(key==:tags)
 						artobject.send("#{key.to_s}=", [ StubTag.new(value) ])
 					elsif(key==:url)
-						puts value.inspect
 						artobject.send("#{key.to_s}=", value)
 					else
 						artobject.send("#{key.to_s}=", value)

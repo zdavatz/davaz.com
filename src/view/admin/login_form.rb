@@ -15,8 +15,8 @@ class LoginForm < View::Form
 	COMPONENTS = {
 		[0,0]   =>  :email,
 		[0,1]   =>  :pass,
-		[1,2]		=>  :submit,
-		[1,2,1]	=>  :cancel,
+		[1,2,1]	=>  :submit,
+		[1,2,2]	=>  :cancel,
 	}
 	CSS_MAP = {
 		[0,0,2,3]	=>	'list',

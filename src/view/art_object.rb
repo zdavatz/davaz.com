@@ -471,10 +471,10 @@ module DAVAZ
 				[0,17]	=>	:price,
 				[0,19]	=>	:text_label,
 				[1,19]	=>	:text,
-				[1,20]	=>	:update,
-				[1,20,1]	=>	:reset,
-				[1,21]		=>	:new_art_object,
-				[1,21,1]	=>	:delete,
+				[1,20,1]	=>	:update,
+				[1,20,2]	=>	:reset,
+				[1,21,1]	=>	:new_art_object,
+				[1,21,2]	=>	:delete,
 			}	
 			CSS_MAP = {
 				[0,19]	=>	'label',

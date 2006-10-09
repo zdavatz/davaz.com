@@ -167,6 +167,7 @@ module DAVAZ
 					artobject6.send("#{key.to_s}=", value)
 				}
 				artobject6.send("tags=", [ StubTag.new(update_values[:tags]) ])
+				puts artobject6.tags.inspect
 				@artobjects.push(artobject6)
 				'116'
 			end
@@ -278,7 +279,7 @@ module DAVAZ
 				}.first
 				update_values.each { |key, value|
 					if(key==:tags)
-						artobject.send("#{key.to_s}=", [ StubTag.new(value) ])
+						artobject.send("tags=", [ StubTag.new(value) ])
 					elsif(key==:url)
 						artobject.send("#{key.to_s}=", value)
 					else

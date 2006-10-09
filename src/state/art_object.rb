@@ -4,6 +4,7 @@
 require 'state/global_predefine'
 require 'view/art_object'
 require 'model/artobject'
+require 'model/tag'
 
 module DAVAZ
 	module State
@@ -235,22 +236,32 @@ module DAVAZ
 						Util::ImageHelper.store_tmp_image(image_path, insert_id)
 						artobject_id = insert_id
 					end
+					args = [
+						[ :artobject_id, artobject_id ],
+					]
+					if(search_query = @session.user_input(:search_query))
+						args.push([ :search_query, search_query ])
+					else
+						args.push([ :artgroup_id, @session.user_input(:artgroup_id) ])
+					end
+					model = @session.lookandfeel.event_url(:gallery, :art_object, args)
+					State::Redirect.new(@session, model)
 				else
+					tags = []
 					update_hash.each { |key, value|
+						if(key==:tags)
+							tag = Model::Tag.new
+							tag.name = value
+							tags.push(tag)
+						end
+						puts "key: #{key}, value: #{value}"
 						method = (key.to_s + "=").intern
 						@model.artobject.send(method, value)
 					}
+					@model.artobject.send("tags=", tags)
+					build_selections
+					self
 				end
-				args = [
-					[ :artobject_id, artobject_id ],
-				]
-				if(search_query = @session.user_input(:search_query))
-					args.push([ :search_query, search_query ])
-				else
-					args.push([ :artgroup_id, @session.user_input(:artgroup_id) ])
-				end
-				model = @session.lookandfeel.event_url(:gallery, :art_object, args)
-				State::Redirect.new(@session, model)
 			end
 		end
 	end

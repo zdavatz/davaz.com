@@ -605,7 +605,7 @@ module DAVAZ
 				if(artobject_id = model.artobject.artobject_id)
 					button = HtmlGrid::Button.new(:update, model, @session, self)
 				else
-					button = HtmlGrid::Button.new(:add_new_artobject, model, @session, self)
+					button = HtmlGrid::Button.new(:save, model, @session, self)
 				end
 				script = <<-EOS
 						this.form.submit();

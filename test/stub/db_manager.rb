@@ -166,6 +166,7 @@ module DAVAZ
 				update_values.each { |key, value|
 					artobject6.send("#{key.to_s}=", value)
 				}
+				artobject6.send("tags=", [ StubTag.new(update_values[:tags]) ])
 				@artobjects.push(artobject6)
 				'116'
 			end

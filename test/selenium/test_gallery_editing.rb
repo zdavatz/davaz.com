@@ -106,7 +106,7 @@ class TestGalleryEditing < Test::Unit::TestCase
     @selenium.type "document.artobjectform.url", "http://video.google.com/"
     @selenium.type "price", "20"
     @selenium.type "text", "Text of ArtObject 116"
-    @selenium.click "update"
+    @selenium.click "add_new_artobject"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Title of ArtObject 116", @selenium.get_value("title")
     assert_equal "235", @selenium.get_value("artgroup_id_select")

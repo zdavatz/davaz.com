@@ -233,7 +233,6 @@ module DAVAZ
 					FROM artobjects
 					WHERE artgroup_id = '#{artgroup_id}'
 					ORDER BY title DESC
-					LIMIT 10
 				EOS
 				result = connection.query(query) 
 				if(result.is_a?(Mysql))

@@ -101,7 +101,7 @@ module TestCase
     @selenium.set_context("TestCustomers", "info")
   end
   def teardown
-    #@selenium.stop unless $selenium
+    @selenium.stop unless $selenium
     @http_server.shutdown
 		@drb_server.stop_service
     assert_equal [], @verification_errors

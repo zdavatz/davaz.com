@@ -28,9 +28,7 @@ module DAVAZ
 			def artcode
 				begin
 					Date.parse(date).year
-				rescue ArgumentError
-					'0000'
-				rescue NoMethodError 
+				rescue ArgumentError, NoMethodError 
 					'0000'
 				end
 				components = [

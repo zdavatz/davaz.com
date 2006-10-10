@@ -28,7 +28,7 @@ class TestGuestbook < Test::Unit::TestCase
     assert @selenium.is_text_present("Sorry, but your email-address seems to be invalid. Please try again")
     @selenium.type "email", "mhuggler@ywesee.com"
     @selenium.click "submit_entry"
-    sleep 1
+    @selenium.wait_for_page_to_load "30000"
     assert @selenium.is_text_present("This is a guestbook test entry")
   end
 end

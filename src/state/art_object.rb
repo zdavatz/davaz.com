@@ -233,9 +233,6 @@ module DAVAZ
 					else
 						insert_id = @session.app.insert_artobject(update_hash)
 						if(tmp_image_path = @model.artobject.tmp_image_path)
-							puts "*"*30
-							puts tmp_image_path.inspect
-							puts "*"*30
 							image_path = @model.artobject.tmp_image_path
 							Util::ImageHelper.store_tmp_image(image_path, insert_id)
 						end
@@ -259,7 +256,6 @@ module DAVAZ
 							tag.name = value
 							tags.push(tag)
 						end
-						puts "key: #{key}, value: #{value}"
 						method = (key.to_s + "=").intern
 						@model.artobject.send(method, value)
 					}

@@ -2,12 +2,13 @@
 # State::Admin::ImageBrowser -- davaz.com -- 12.06.2006 -- mhuggler@ywesee.com
 
 require 'state/global_predefine'
-require 'view/admin/image_browser'
+#require 'view/admin/image_browser'
 require 'util/image_helper'
 
 module DAVAZ
 	module State
 		module Admin
+=begin
 class AjaxReloadTagImages < SBSM::State
 	VIEW = View::Admin::ImageBrowserComposite
 	VOLATILE = true
@@ -44,11 +45,9 @@ class ImageBrowser < State::Admin::Global
 	def init
 		link_id = @session.user_input(:link_id)
 		@model = OpenStruct.new
-=begin
 		@model.display_link = @session.app.load_displayelement_link(link_id)
 		@model.display_images = @session.app.load_display_images
 		@model.displayelements = @model.display_link.displayelements
-=end
 	end
 	def ajax_add_image
 		link_id = @session.user_input(:link_id)
@@ -77,6 +76,7 @@ class ImageBrowser < State::Admin::Global
 		self
 	end
 end
+=end
 		end
 	end
 end

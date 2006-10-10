@@ -4,7 +4,7 @@
 $: << File.expand_path('..', File.dirname(__FILE__))
 $: << File.expand_path("../../src", File.dirname(__FILE__))
 
-require 'util/davazconfig'
+require 'util/config'
 require 'test/unit'
 require 'util/db_manager'
 require 'mysql'

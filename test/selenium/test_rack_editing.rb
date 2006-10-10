@@ -36,7 +36,7 @@ class TestRackEditing < Test::Unit::TestCase
     @selenium.type "price", "20"
     @selenium.type "text", "Text of ArtObject 112 edited"
     @selenium.click "update"
-		sleep 2
+		sleep 5
     assert_equal "Title of ArtObject 112 edited", @selenium.get_value("title")
     assert_equal "235", @selenium.get_value("artgroup_id_select")
     assert_equal "ABD", @selenium.get_value("serie_id_select")

@@ -29,7 +29,7 @@ module DAVAZ
 				:ajax_guestbookentry,
 				:ajax_home,
 				:ajax_image_action,
-				:ajax_image_browser,
+				#:ajax_image_browser,
 				:ajax_reload_tag_images,
 				:ajax_live_edit_form,
 				:ajax_movie_gallery,

@@ -11,6 +11,8 @@ Dir.foreach(File.dirname(__FILE__)) { |dir|
 	end
 }
 
+directories.push (File.expand_path("selenium", File.dirname(__FILE__)))
+
 directories.each { |dir|
 	if(File.ftype(dir) == 'directory')
 		puts dir

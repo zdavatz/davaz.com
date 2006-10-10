@@ -39,13 +39,12 @@ ywesee.widget.Ticker = function() {
 		for (i = 0; i < imageNumber; i++) {
 			if(i == (this.images.length-1)) {
 				this.imagePosition = 0;
-			} else {
-				this.imagePosition += 1;	
 			}
 			var div = document.createElement("div");
 			this.assembleImageDiv(div);
 			this.updateImageDiv(div);
 			this.tickerWindow.appendChild(div);
+			this.imagePosition += 1;	
 		}
 		if(!this.stopped) {
 			this.endTransition();
@@ -72,6 +71,11 @@ ywesee.widget.Ticker = function() {
 			div = _this.tickerWindow.removeChild(firstDiv);
 			_this.updateImageDiv(div);
 			_this.tickerWindow.appendChild(div);
+			if(_this.imagePosition == (_this.images.length-1)) {
+				_this.imagePosition = 0;
+			} else {
+				_this.imagePosition += 1;	
+			}
 			if(_this.stopped) {
 				_this.critical = false;
 				return;
@@ -81,11 +85,6 @@ ywesee.widget.Ticker = function() {
 		};
 		var wipeOutDiv = dojo.dom.firstElement(this.tickerWindow, 'div');
 		this.wipe(wipeOutDiv, 5000, this.componentWidth, 0, callback).play();
-		if(this.imagePosition == (this.images.length-1)) {
-			this.imagePosition = 0;
-		} else {
-			this.imagePosition += 1;	
-		}
 	}
 
 	this.togglePaused = function() {

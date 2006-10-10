@@ -16,17 +16,17 @@ class TestShop < Test::Unit::TestCase
     @selenium.type "article[111]", "2"
     @selenium.type "article[112]", "2"
     @selenium.type "article[113]", "2"
-    sleep 1
+    sleep 3
     assert @selenium.is_text_present("222")
     assert @selenium.is_text_present("224")
     assert @selenium.is_text_present("226")
     @selenium.click "link=remove all items"
-    sleep 1
+    sleep 3
     assert !@selenium.is_text_present("222")
     assert !@selenium.is_text_present("224")
     assert !@selenium.is_text_present("226")
     @selenium.type "article[113]", "2"
-    sleep 1
+    sleep 3
     assert @selenium.is_text_present("226")
     @selenium.click "order_item"
     @selenium.wait_for_page_to_load "30000"

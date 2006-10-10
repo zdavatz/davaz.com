@@ -12,7 +12,7 @@ require 'state/personal/life'
 require 'state/personal/work'
 require 'state/admin/login'
 require 'state/admin/admin_home'
-require 'state/admin/image_browser'
+#require 'state/admin/image_browser'
 require 'state/admin/ajax_states'
 require 'sbsm/viralstate'
 
@@ -29,9 +29,9 @@ module Admin
 		:ajax_all_tags_link			=>	State::AjaxAllTagsLink,
 		:ajax_delete_element		=>	State::Admin::AjaxDeleteElement,
 		:ajax_delete_image			=>	State::Admin::AjaxDeleteImage,
-		:ajax_image_browser			=>	State::Admin::AjaxImageBrowser,
+		#:ajax_image_browser			=>	State::Admin::AjaxImageBrowser,
 		:ajax_movie_gallery			=>	State::Works::AjaxAdminMovieGallery,
-		:ajax_reload_tag_images	=>	State::Admin::AjaxReloadTagImages,
+		#:ajax_reload_tag_images	=>	State::Admin::AjaxReloadTagImages,
 		:ajax_remove_element		=>	State::AjaxRemoveElement,
 		:ajax_save_live_edit		=>	State::Admin::AjaxSaveLiveEdit,
 		:ajax_save_gb_live_edit	=>	State::Admin::AjaxSaveGbLiveEdit,

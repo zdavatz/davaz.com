@@ -155,7 +155,6 @@ class TestGalleryEditing < Test::Unit::TestCase
 		@selenium.click "//input[@value='Upload Image']"
 		sleep 2
 		assert @selenium.is_element_present("//img[@name='artobject_image']")
-		sleep 20
 		@selenium.click "//input[@value='Delete Item']"
     assert /^Do you really want to delete this artobject[\s\S]$/ =~ @selenium.get_confirmation
     @selenium.wait_for_page_to_load "30000"

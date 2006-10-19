@@ -39,19 +39,6 @@ class AjaxSubmitStatus < SBSM::State
 		end
 	end
 end
-class AjaxDeleteStatus < SBSM::State
-	VIEW = View::AjaxResponse
-	VOLATILE = true
-	def init
-		@model = {}
-		guest_id = @session.user_input(:guest_id)
-		if(@session.app.delete_guest(guest_id) > 0)
-			@model['status'] = 'deleted' 
-		else
-			@model['status'] = 'not deleted' 
-		end
-	end
-end
 class Guestbook < State::Communication::Global
 	VIEW = View::Communication::Guestbook
 	def init
@@ -66,9 +53,6 @@ class Guestbook < State::Communication::Global
 end
 class AdminGuestbook < State::Communication::Guestbook
 	VIEW = View::Communication::AdminGuestbook
-	def ajax_delete_element
-		AjaxDeleteStatus.new(@session, @model)
-	end
 end
 		end
 	end

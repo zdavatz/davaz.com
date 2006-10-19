@@ -13,8 +13,8 @@ module DAVAZ
 class LoginForm < View::Form
 	include HtmlGrid::ErrorMessage
 	COMPONENTS = {
-		[0,0]   =>  :email,
-		[0,1]   =>  :pass,
+		[0,0]   =>  :login_email,
+		[0,1]   =>  :login_password,
 		[1,2,1]	=>  :submit,
 		[1,2,2]	=>  :cancel,
 	}
@@ -26,7 +26,7 @@ class LoginForm < View::Form
 	LABELS = true
 	FORM_NAME = 'loginform'
 	SYMBOL_MAP = {
-		:pass	=>	HtmlGrid::Pass,
+		:login_password	=>	HtmlGrid::Pass,
 	}
 =begin
 	def email(model)

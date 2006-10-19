@@ -96,6 +96,7 @@ class MoreLink < HtmlGrid::DivComposite
 		url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, args)
 		link.href = "javascript:void(0)" 
 		link.value = @lookandfeel.lookup(:more)
+		link.set_attribute('name', "#{model.artobject_id}-more")
 		replace_id = "movies-list"
 		div_id = "movies-gallery-view"
 		script = "showMovieGallery('#{div_id}', '#{replace_id}', '#{url}')"

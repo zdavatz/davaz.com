@@ -5,6 +5,7 @@ require 'view/publictemplate'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/spanlist'
 require 'util/image_helper'
+require 'view/add_onload'
 
 module DAVAZ
 	module View
@@ -60,11 +61,11 @@ class ThumbImages < HtmlGrid::SpanList
 	}
 	def image(model)
 		link = HtmlGrid::Link.new(:serie_link, model, @session, self)
-		args =[ [ :artobject_id, '' ] ]
-		url = @lookandfeel.event_url(:works, :ajax_multiples, args)
 		link.href = "javascript:void(0);" 
 		artobject_id = model.artobject_id
-		script = "location.hash='#{artobject_id}'; toggleJavaApplet('#{url}');"
+		args =[ [ :artobject_id, artobject_id ] ]
+		url = @lookandfeel.event_url(:works, :ajax_multiples, args)
+		script = "toggleJavaApplet('#{url}','#{artobject_id}');"
 		link.set_attribute('onclick', script)
 		img = HtmlGrid::Image.new(artobject_id, model, @session, self)
 		url = DAVAZ::Util::ImageHelper.image_url(artobject_id, 'medium')
@@ -97,9 +98,13 @@ class Multiples < View::MultiplesPublicTemplate
 		url = @lookandfeel.event_url(:works, :ajax_multiples, args)
 		script = <<-EOS
 			if(!location.hash) {
-				location.hash = #{@model.artobject_id};
+				location.hash = '#{@model.default_artobject_id}';
+				artobject_id = '#{model.default_artobject_id}';
+			} else {
+				var artobject_id = location.hash.substring(1, location.hash.length);
 			} 
-			toggleJavaApplet('#{url}');
+			var url = '#{url}' + artobject_id;
+			toggleJavaApplet(url, artobject_id);
 		EOS
 		self.onload = script
 	end

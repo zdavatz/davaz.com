@@ -9,6 +9,10 @@ require 'test/selenium/unit'
 
 class TestWorksViews < Test::Unit::TestCase
 	include DAVAZ::Selenium::TestCase
+	def test_stub
+    @selenium.open "/en/works/multiples/#112"
+    @selenium.wait_for_page_to_load "30000"
+	end
   def test_test_works_views
     @selenium.open "/en/communication/links/"
     @selenium.click "link=Drawings"
@@ -26,6 +30,8 @@ class TestWorksViews < Test::Unit::TestCase
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Works | Multiples", @selenium.get_title
     assert @selenium.is_text_present("Multiples")
+		@selenium.click "//img[@name='111']"
+		sleep 2
     @selenium.click "link=Movies"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Works | Movies", @selenium.get_title

@@ -63,16 +63,7 @@ class AjaxRackUploadImage < SBSM::State
 																						 artobject_id)
 				@model = OpenStruct.new
 				@model.artobject = @session.app.load_artobject(artobject_id)
-			else
-				img_name = Time.now.to_i.to_s 
-				image = Image.from_blob(string_io.read).first
-				extension = image.format.downcase
-				path = File.join(
-					DAVAZ::Util::ImageHelper.tmp_image_dir,
-					img_name + "." + extension
-				)
-				image.write(path)
-				@model.artobject.tmp_image_path = path
+			#no 'else' => src/state/art_object handles new artobjects
 			end
 		end
 	end
@@ -87,7 +78,8 @@ class AdminRackState < State::Works::RackState
 		@session.app.delete_artobject(artobject_id)
 		model = self.request_path
 		if(fragment = @session.user_input(:fragment))
-			model << "##{fragment}" unless fragment.empty?
+			frag_arr = fragment.split("_")
+			model << "##{frag_arr[0]}_#{frag_arr[1]}"
 		end
 		newstate = State::Redirect.new(@session, model)
 	end
@@ -133,7 +125,13 @@ class AdminRackState < State::Works::RackState
 				@session.app.update_artobject(artobject_id, update_hash)
 				model = self.request_path
 				if(fragment = @session.user_input(:fragment))
-					model << "##{fragment}" unless fragment.empty?
+					fragment_arr = fragment.split("_")
+					if(update_hash[:serie_id] == fragment_arr[1])
+						model << "##{fragment}" unless fragment.empty?
+					else
+						fragment_arr[1] = update_hash[:serie_id] 
+						model << "#" + fragment_arr.join("_")
+					end
 				end
 				newstate = State::Redirect.new(@session, model)
 			else
@@ -152,7 +150,13 @@ class AdminRackState < State::Works::RackState
 			build_selections
 			model = self.request_path
 			if(fragment = @session.user_input(:fragment))
-				model << "##{fragment}" unless fragment.empty?
+				fragment_arr = fragment.split("_")
+				if(update_hash[:serie_id] == fragment_arr[1])
+					model << "##{fragment}" unless fragment.empty?
+				else
+					fragment_arr[1] = update_hash[:serie_id] 
+					model << "#" + fragment_arr.join("_")
+				end
 			end
 			newstate = State::Redirect.new(@session, model)
 		end

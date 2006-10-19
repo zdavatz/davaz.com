@@ -14,13 +14,13 @@ class TestTransparentLoginLogout < Test::Unit::TestCase
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Communication | Links", @selenium.get_title
 		@selenium.click "link=Login"
-    @selenium.type "email", "wrong_user"
-    @selenium.type "pass", "abcd"
+    @selenium.type "login_email", "wrong_user"
+    @selenium.type "login_password", "abcd"
 		@selenium.click "document.loginform.login"
     sleep 1
     assert @selenium.is_text_present("Login failed! Invalid Username or Password. Please try again.")
     assert !@selenium.is_text_present("Logout")
-    @selenium.type "email", "right@user.ch"
+    @selenium.type "login_email", "right@user.ch"
 		@selenium.click "document.loginform.login"
     @selenium.wait_for_page_to_load "30000"
     assert @selenium.is_text_present("Logout")
@@ -36,12 +36,13 @@ class TestTransparentLoginLogout < Test::Unit::TestCase
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Works | Drawings", @selenium.get_title
     assert @selenium.is_text_present("Tool of ArtObject 114")
 		@selenium.click "link=Login"
-    @selenium.type "email", "right@user.ch"
-    @selenium.type "pass", "abcd"
+		sleep 2
+    @selenium.type "login_email", "right@user.ch"
+    @selenium.type "login_password", "abcd"
 		@selenium.click "document.loginform.login"
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Works | Drawings", @selenium.get_title
-    assert @selenium.is_text_present("Tool of ArtObject 114")
+    assert @selenium.is_text_present("Title of ArtObject 114")
     assert @selenium.is_text_present("Logout")
 		@selenium.click "link=Logout"
     @selenium.wait_for_page_to_load "30000"

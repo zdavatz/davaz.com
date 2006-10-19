@@ -79,7 +79,7 @@ class GuestbookLiveEditWidget < HtmlGrid::Div
 		object_args = {
 			:guest_id => @model.guest_id,
 		} 
-		delete_item_url = @lookandfeel.event_url(@session.zone, :ajax_delete_element, object_args)
+		delete_item_url = @lookandfeel.event_url(@session.zone, :ajax_delete_guest, object_args)
 		args = [
 			[ 'update_url', url ],
 			[ 'delete_item_url', delete_item_url ],

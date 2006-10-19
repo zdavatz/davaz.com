@@ -57,6 +57,8 @@ class AjaxLoginForm < SBSM::State
 		@model.fragment = @session.user_input(:fragment)
 	end
 end
+#Not use anymore because of Ajax Login
+=begin
 class Login < State::Admin::Global
 	DIRECT_EVENT = :login_form
 	VIEW = View::Admin::LoginForm
@@ -65,6 +67,7 @@ class Login < State::Admin::Global
 		@model.fragment = @session.user_input(:fragment)
 	end
 end
+=end
 		end
 	end
 end

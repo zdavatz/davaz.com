@@ -5,7 +5,9 @@ require 'model/artgroup'
 require 'model/artobject'
 require 'model/country'
 require 'model/guest'
+require 'model/link'
 require 'model/material'
+require 'model/oneliner'
 require 'model/serie'
 require 'model/tag'
 require 'model/tool'
@@ -25,7 +27,7 @@ module DAVAZ
 				@shop_order = "ShopOrder of Artgroup #{id}"
 			end
 		end
-		class StubArtobject < Model::ArtObject
+		class StubArtObject < Model::ArtObject
 			def initialize(id)
 				super()
 				@artobject_id = id 
@@ -38,6 +40,7 @@ module DAVAZ
 				@material = "Material of ArtObject #{id}"
 				@material_id = "1"
 				@price = id
+				@serie_position = id
 				@size = "Size of ArtObject #{id}"
 				@text = "Text of ArtObject #{id}"
 				@title = "Title of ArtObject #{id}"
@@ -48,8 +51,30 @@ module DAVAZ
 			def set_artgroup_id(artgroup_id)
 				@artgroup_id = artgroup_id
 			end
+			def set_links(links)
+				@links = links
+			end
 			def set_serie_id(serie_id)
-				@serie = serie_id
+				@serie_id = serie_id
+			end
+			def set_tags(tags_arr)
+				@tags = tags_arr
+			end
+		end
+		class EmptyStubArtObject < Model::ArtObject
+			def initialize(id)
+				super()
+				@artobject_id = id 
+				@date = "2#{id}-01-01"
+			end
+			def set_artgroup_id(artgroup_id)
+				@artgroup_id = artgroup_id
+			end
+			def set_serie_id(serie_id)
+				@serie_id = serie_id
+			end
+			def set_tags(tags_arr)
+				@tags = tags_arr
 			end
 		end
 		class StubCountry < Model::Country
@@ -71,11 +96,33 @@ module DAVAZ
 				@country = "Country of Guest #{id}"
 			end
 		end
+		class StubLink < Model::Link
+			def initialize(link_id, word, aid)
+				super()
+				@link_id = link_id
+				@word = word
+				@artobject_id = aid
+			end
+			def set_artobjects(artobjects)
+				@artobjects = artobjects 
+			end
+		end
 		class StubMaterial < Model::Material
 			def initialize(id)
 				super()
 				@material_id = id
 				@name = "Name of Material #{id}"
+			end
+		end
+		class StubOneLiner < Model::OneLiner
+			def initialize(id)
+				super()
+				@oneliner_id = id
+				@text	= "This is the Text of\n the OneLiner with id #{id}"
+				@location	= 'hisfamily'
+				@color = 'gray' 
+				@size = '20'
+				@active = '1'
 			end
 		end
 		class StubSerie < Model::Serie
@@ -90,10 +137,10 @@ module DAVAZ
 			end
 		end
 		class StubTag < Model::Tag
-			def initialize(id)
+			def initialize(name)
 				super()
-				@tool_id = id
-				@name = "Name of Tag #{id}"
+				@tag_id = Time.now.to_i
+				@name = name 
 			end
 		end
 		class StubTool < Model::Tool
@@ -113,37 +160,57 @@ module DAVAZ
 				]
 				@guests = [ 
 					StubGuest.new('1'),
+					StubGuest.new('2'),
+					StubGuest.new('3'),
 				]
 				@materials = [
 					StubMaterial.new('1'),
 					StubMaterial.new('2'),
 					StubMaterial.new('3'),
 				]
+				@oneliner = [
+					StubOneLiner.new('1'),
+					StubOneLiner.new('2'),
+					StubOneLiner.new('3'),
+				]	
 				@series = [
 					StubSerie.new('ABC'),
 					StubSerie.new('ABD'),
 					StubSerie.new('ABE'),
+				]
+				@tags = [
+					StubTag.new('Name of Tag 1'),
+					StubTag.new('Name of Tag 2'),
+					StubTag.new('Name of Tag 3'),
 				]
 				@tools = [
 					StubTool.new('1'),
 					StubTool.new('2'),
 					StubTool.new('3'),
 				]
-				artobject1 = StubArtobject.new('111')
+				artobject1 = StubArtObject.new('111')
 				artobject1.set_artgroup_id('234') 
 				artobject1.set_serie_id('ABC') 
-				artobject2 = StubArtobject.new('112')
+				artobject1.set_tags([ StubTag.new("hislife_show") ])
+				artobject2 = StubArtObject.new('112')
 				artobject2.set_artgroup_id('234') 
 				artobject2.set_serie_id('ABC') 
-				artobject3 = StubArtobject.new('113')
+				artobject2.set_tags([ StubTag.new("hislife_show") ])
+				artobject3 = StubArtObject.new('113')
 				artobject3.set_artgroup_id('234') 
 				artobject3.set_serie_id('ABD') 
-				artobject4 = StubArtobject.new('114')
+				artobject4 = StubArtObject.new('114')
 				artobject4.set_artgroup_id('235') 
 				artobject4.set_serie_id('ABD') 
-				artobject5 = StubArtobject.new('115')
+				link1 = StubLink.new('1', 'Title', '115')
+				link1.set_artobjects([artobject1])
+				link2 = StubLink.new('2', 'Text', '115')
+				link2.set_artobjects([ artobject2, artobject3	])
+				artobject5 = StubArtObject.new('115')
 				artobject5.set_artgroup_id('235') 
 				artobject5.set_serie_id('ABE') 
+				artobject5.set_tags([ StubTag.new("hisfamily_show") ])
+				artobject5.set_links([ link1, link2 ])
 				@artobjects = [
 					artobject1, artobject2, artobject3, artobject4, artobject5
 				]
@@ -152,22 +219,85 @@ module DAVAZ
 					StubArtgroup.new('235', 'drawings'),
 				]
 			end
+			def add_material(material_name)
+				material = StubMaterial.new("4")
+				material.name = material_name
+				@materials.push(material)
+			end
+			def add_serie(serie_name)
+				serie = StubSerie.new("ABF")
+				serie.name = serie_name
+				@series.push(serie)
+			end
+			def add_tool(tool_name)
+				tool = StubTool.new("4")
+				tool.name = tool_name
+				@tools.push(tool)
+			end
 			def count_artobjects(by, id)
-				3
+				case by
+				when 'serie_id'
+					serie = @series.select { |serie| serie.serie_id == id }.first
+					return serie.artobjects.size
+				when 'tool_id'
+					@artobjects.select { |aobject| 
+						aobject.tool_id == id 
+					}.size
+				when 'material_id'
+					@artobjects.select { |aobject| 
+						aobject.material_id == id 
+					}.size
+				else
+					return 3
+				end
 			end
 			def delete_artobject(artobject_id)
 				@artobjects.delete_if { |aobject| aobject.artobject_id == artobject_id}
 				return 1
 			end
+			def delete_guest(guest_id)
+				@guests.delete_if { |guest| guest.guest_id == guest_id}
+				return 1
+			end
 			def insert_artobject(update_values)
-				artobject6 = StubArtobject.new('116')
-				artobject6.set_artgroup_id('235') 
-				artobject6.set_serie_id('ABE') 
+				artobject6 = EmptyStubArtObject.new('116')
+				#artobject6.set_artgroup_id('235') 
+				#artobject6.set_serie_id('ABE') 
 				update_values.each { |key, value|
-					artobject6.send("#{key.to_s}=", value)
+					if(key == :artgroup_id)
+						artgroup = @artgroups.select { |agroup|
+							agroup.artgroup_id == value
+						}.first
+						artobject6.send("artgroup=", artgroup.name)
+						artobject6.send("artgroup_id=", value)
+					elsif(key == :serie_id)
+						serie = @series.select { |object|
+							object.serie_id == value
+						}.first
+						artobject6.send("serie=", serie.name) if serie
+						artobject6.send("serie_id=", value)
+					elsif(key == :material_id)
+						material = @materials.select { |object|
+							object.material_id == value
+						}.first
+						artobject6.send("material=", material.name) if material
+						artobject6.send("material_id=", value)
+					elsif(key == :tool_id)
+						tool = @tools.select { |object|
+							object.tool_id == value
+						}.first
+						artobject6.send("tool=", tool.name) if tool
+						artobject6.send("tool_id=", value)
+					elsif(key == :date_ch)
+						date = value.split(".")
+						artobject6.send("date=", "#{date[2]}-#{date[1]}-#{date[0]}")
+					else
+						artobject6.send("#{key.to_s}=", value)
+					end
 				}
-				artobject6.send("tags=", [ StubTag.new(update_values[:tags]) ])
-				puts artobject6.tags.inspect
+				unless(update_values[:tags].nil?)
+					artobject6.send("tags=", [ StubTag.new(update_values[:tags]) ])
+				end
 				@artobjects.push(artobject6)
 				'116'
 			end
@@ -187,7 +317,11 @@ module DAVAZ
 				aobjects = @artobjects.select { |aobject| 
 					aobject.artobject_id == artobject_id 
 				}
-				aobjects.first
+				if(select_by=='title')
+					@artobjects.first
+				else
+					return aobjects.first
+				end
 			end
 			def load_artobject_ids(artgroup)
 				[]
@@ -197,6 +331,15 @@ module DAVAZ
 			end
 			def load_countries
 				@countries
+			end
+			def load_element_artobject_id(element, element_id)
+				aobjects = @artobjects.select { |aobject| 
+					aobject.send(element.intern) == element_id
+				}
+				aobjects.first.artobject_id
+			end
+			def load_guest(guest_id)
+				@guests.select { |guest| guest.guest_id == guest_id }.first
 			end
 			def load_guests
 				@guests
@@ -208,41 +351,41 @@ module DAVAZ
 				@artobjects
 			end
 			def load_oneliner(location)
-				[]
+				@oneliner
 			end
 			def load_serie(serie_id, select_by)
 				serie = @series.select { |serie| serie.serie_id == serie_id }.first
 				serie.artobjects = @artobjects.select { |aobject| 
-					aobject.serie == serie_id 
+					aobject.serie_id == serie_id 
 				}
 				serie
 			end
 			def load_serie_artobjects(serie_id, select_by)
 				case serie_id
 				when 'Site News'
-					@artobjects.select { |aobject| aobject.serie == 'ABC' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABC' }
 				when 'Site Links'
-					@artobjects.select { |aobject| aobject.serie == 'ABD' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABD' }
 				when 'Site His Life English'
-					@artobjects.select { |aobject| aobject.serie == 'ABE' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABE' }
 				when 'Site His Life Chinese'
-					@artobjects.select { |aobject| aobject.serie == 'ABC' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABC' }
 				when 'Site His Life Hungarian'
-					@artobjects.select { |aobject| aobject.serie == 'ABD' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABD' }
 				when 'Site His Work'
-					@artobjects.select { |aobject| aobject.serie == 'ABE' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABE' }
 				when 'Site His Inspiration'
-					@artobjects.select { |aobject| aobject.serie == 'ABC' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABC' }
 				when 'Site His Family'
-					@artobjects.select { |aobject| aobject.serie == 'ABD' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABD' }
 				when 'Site The Family'
-					@artobjects.select { |aobject| aobject.serie == 'ABE' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABE' }
 				when 'Site Articles'
-					@artobjects.select { |aobject| aobject.serie == 'ABC' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABC' }
 				when 'Site Lectures'
-					@artobjects.select { |aobject| aobject.serie == 'ABD' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABD' }
 				when 'Site Exhibitions'
-					@artobjects.select { |aobject| aobject.serie == 'ABE' }
+					@artobjects.select { |aobject| aobject.serie_id == 'ABE' }
 				else
 					[]
 				end
@@ -251,6 +394,11 @@ module DAVAZ
 				'CCC'
 			end
 			def load_series(where, load_artobjects=true)
+				@series.each { |serie|
+					serie.artobjects = @artobjects.select { |aobject| 
+						aobject.serie_id == serie.serie_id 
+					}
+				}
 				@series
 			end
 			def load_series_by_artgroup(artgroup)
@@ -264,14 +412,37 @@ module DAVAZ
 			def load_shop_items
 				@artobjects
 			end
-			def load_tag_artobjects(tag)
-				[]
+			def load_tags
+				@tags
+			end
+			def load_tag_artobjects(tag_name)
+				aobjects = []
+				@artobjects.each { |aobject|
+					aobject.tags.each { |tag|
+						if(tag.name == tag_name)
+							aobjects.push(aobject)
+						end
+					}
+				}
+				aobjects
 			end
 			def load_tools
 				@tools
 			end
+			def remove_material(material_id)
+				@materials.delete_if { |material| material.material_id == material_id }
+				@materials
+			end
+			def remove_serie(serie_id)
+				@series.delete_if { |serie| serie.serie_id == serie_id }
+				@series
+			end
+			def remove_tool(tool_id)
+				@tools.delete_if { |tool| tool.tool_id == tool_id }
+				@tools
+			end
 			def search_artobjects(query)
-				@artobjects.select { |aobject| aobject.serie == query}
+				@artobjects.select { |aobject| aobject.serie_id == query}
 			end
 			def update_artobject(artobject_id, update_values)
 				artobject = @artobjects.select { |aobject| 
@@ -279,11 +450,31 @@ module DAVAZ
 				}.first
 				update_values.each { |key, value|
 					if(key==:tags)
-						artobject.send("tags=", [ StubTag.new(value) ])
+						arr = []
+						value.each { |tag_name|
+							arr.push(StubTag.new(tag_name)) unless tag_name == ""
+						}	
+						artobject.send("tags=", arr)
 					elsif(key==:url)
 						artobject.send("#{key.to_s}=", value)
+					elsif(key==:date_ch)
+						date = value.split(".")
+						artobject.send("date=", "#{date[2]}-#{date[1]}-#{date[0]}")
 					else
 						artobject.send("#{key.to_s}=", value)
+					end
+				}
+			end
+			def update_guest(guest_id, update_values)
+				guest = @guests.select { |guest_object| 
+					guest_object.guest_id == guest_id
+				}.first
+				update_values.each { |key, value|
+					if(key==:date_gb)
+						date = value.split(".")
+						guest.send("date=", "#{date[2]}-#{date[1]}-#{date[0]}")
+					else
+						guest.send("#{key.to_s}=", value)
 					end
 				}
 			end

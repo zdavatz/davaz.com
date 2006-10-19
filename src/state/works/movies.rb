@@ -48,17 +48,7 @@ class AjaxUploadImage < SBSM::State
 				Util::ImageHelper.store_upload_image(string_io, 
 																						 artobject_id)
 				@model.artobject = @session.app.load_artobject(artobject_id)
-			else
-				img_name = Time.now.to_i.to_s 
-				image = Image.from_blob(string_io.read).first
-				extension = image.format.downcase
-				path = File.join(
-					DAVAZ::Util::ImageHelper.tmp_image_dir,
-					img_name + "." + extension
-				)
-				image.write(path)
-				model = OpenStruct.new
-				model.artobject.tmp_image_path = path
+			#no 'else' => src/state/art_object handles new artobjects
 			end
 		end
 	end

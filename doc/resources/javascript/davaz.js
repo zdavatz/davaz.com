@@ -130,7 +130,7 @@ function toggleUploadImageForm(divId, url) {
 }
 
 function reloadShoppingCart(url, count) {	
-	if(parseInt(count)===count-0 && count!='0') {
+	if(parseInt(count)===count-0) {
 		var node = dojo.byId('shopping-cart');
 		document.body.style.cursor = 'progress';
 		dojo.io.bind({
@@ -285,16 +285,12 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
 	}
 }
 
-function toggleJavaApplet(url) {
-	var artobjectId = location.hash;
-	if(artobjectId){
-		artobjectId = artobjectId.substring(1, artobjectId.length);
-	}
-	var node = dojo.byId('java-applet');
+function toggleJavaApplet(url, artobjectId) {
 	dojo.io.bind({
-		url: url + artobjectId,
+		url: url,
 		load: function(type, data, event) {
-			node.innerHTML = data;
+			var container = dojo.byId('java-applet');
+			container.innerHTML = data;
 		},
 		changeUrl: artobjectId,
 		mimetype: "text/html"

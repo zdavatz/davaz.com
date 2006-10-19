@@ -18,14 +18,8 @@ class Multiples < State::Works::RackState
 	VIEW = View::Works::Multiples
 	def init
 		@model = OpenStruct.new
-		artobject_id = @session.user_input(:artobject_id) 
-		if(artobject_id.nil?)
-			multiples = @session.app.load_multiples
-			@model.artobject_id = multiples.first.artobject_id
-		else
-			@model.artobject_id = artobject_id
-		end
-		#@model.artobject = @session.app.load_artobject(artobject_id)
+		multiples = @session.app.load_multiples
+		@model.default_artobject_id = multiples.first.artobject_id
 		@model.multiples = @session.app.load_multiples()
 	end
 end

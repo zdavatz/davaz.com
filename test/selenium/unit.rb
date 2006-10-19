@@ -68,6 +68,11 @@ module DAVAZ
 module TestCase
   include FlexMock::TestCase
   def setup
+		puts "#"*120
+		puts "#"*120
+		puts self.class
+		puts "#"*120
+		puts "#"*120
 		DAVAZ.config.document_root = File.expand_path('../doc', File.dirname(__FILE__))
 		DAVAZ.config.autologin = false
     drb_url = "druby://localhost:10081"
@@ -99,6 +104,7 @@ module TestCase
 			@selenium.start
     end
     @selenium.set_context("TestCustomers", "info")
+		sleep 5
   end
   def teardown
     @selenium.stop unless $selenium
@@ -109,8 +115,8 @@ module TestCase
 	def login
 		@selenium.click "link=Login"
 		sleep 1
-    @selenium.type "email", "right@user.ch"
-    @selenium.type "pass", "abcd"
+    @selenium.type "login_email", "right@user.ch"
+    @selenium.type "login_password", "abcd"
 		@selenium.click "document.loginform.login"
     @selenium.wait_for_page_to_load "30000"
 	end

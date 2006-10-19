@@ -58,20 +58,7 @@ class Articles < View::ArticlesPublicTemplate
 end
 class AdminArticlesList < ArticlesList 
 	def title(model)
-		title = super
-		link = HtmlGrid::Link.new(:edit_link, model, @session, self)
-		link.css_class = 'admin-action'
-		link.value = @session.lookandfeel.lookup(:edit)
-		args = [
-			[ :artobject_id, model.artobject_id ],
-			[ :state_id, @session.state.object_id],
-		]
-		url = @lookandfeel.event_url(:admin, :edit, args)
-		style = 'color: red; font-weight: normal;'
-		link.set_attribute('style', style)
-		link.href = url
-		#[ title, link ]
-		title
+		super
 	end
 end
 class AdminArticlesComposite < HtmlGrid::DivComposite

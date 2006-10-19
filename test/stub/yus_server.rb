@@ -21,6 +21,7 @@ module DAVAZ
 
 		class YusServer
 			def login(email, pass, config)
+				puts "email: #{email}, pass: #{pass}, config: #{config}"
 				if(email == 'right@user.ch')
 					User.new
 				else

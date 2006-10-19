@@ -82,6 +82,7 @@ class AjaxRack < SBSM::State
 		}
 	end
 end
+=begin
 class AjaxUploadImage < SBSM::State
 	include Magick
 	VIEW = View::ImageDiv
@@ -110,6 +111,7 @@ class AjaxUploadImage < SBSM::State
 		end
 	end
 end
+=end
 class Gallery < State::Gallery::Global
 	VIEW = View::Gallery::Gallery
 	def init
@@ -121,6 +123,7 @@ class Gallery < State::Gallery::Global
 end
 class AdminGallery < State::Gallery::Gallery
 	VIEW = View::Gallery::AdminGallery
+=begin
 	def ajax_upload_image
 		AjaxUploadImage.new(@session, @model)
 	end
@@ -189,6 +192,7 @@ class AdminGallery < State::Gallery::Gallery
 			State::Redirect.new(@session, model)
 		end
 	end
+=end
 end
 		end
 	end

@@ -13,6 +13,10 @@ class TestPersonalViews < Test::Unit::TestCase
     @selenium.open "/en/personal/home"
     @selenium.click "link=HIS LIFE"
     @selenium.wait_for_page_to_load "30000"
+
+		#is there a slideshow?
+    assert @selenium.is_text_present("Title of ArtObject 111")
+
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Personal | HIS LIFE", @selenium.get_title
     assert @selenium.is_text_present("Early Years")
     assert @selenium.is_text_present("English")
@@ -36,6 +40,10 @@ class TestPersonalViews < Test::Unit::TestCase
     assert @selenium.is_text_present("Title of ArtObject 111")
     @selenium.click "link=HIS FAMILY"
     @selenium.wait_for_page_to_load "30000"
+
+		#is there a slideshow?
+    assert @selenium.is_text_present("Title of ArtObject 115")
+
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Personal | HIS FAMILY", @selenium.get_title
     assert @selenium.is_text_present("Title of ArtObject 113")
     @selenium.click "link=Next >>"

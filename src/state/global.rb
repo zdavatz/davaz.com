@@ -8,7 +8,6 @@ require 'state/art_object'
 require 'state/communication/global'
 require 'state/communication/shop'
 require 'state/gallery/global'
-require 'state/images'
 require 'state/personal/init' 
 require 'state/personal/global' 
 require 'state/tooltip'
@@ -27,7 +26,6 @@ module DAVAZ
 				#:ajax_desk_artobject	=>	State::Gallery::AjaxDeskArtobject,
 				:ajax_rack						=>	State::Gallery::AjaxRack,
 				:home									=>	State::Personal::Init,
-				:images								=>	State::Images,
 				:login_form						=>	State::Admin::AjaxLoginForm,
 				:shop_art_object			=>	State::Communication::ShopArtObject,
 			}	

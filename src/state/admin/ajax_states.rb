@@ -52,9 +52,18 @@ class AjaxDeleteElement < SBSM::State
 		artobject_id = @session.user_input(:artobject_id)
 		@model = Hash.new
 		if(@session.app.delete_artobject(artobject_id) > 0)
-			@model['status'] = 'deleted' 
-		else
-			@model['status'] = 'not deleted' 
+			@model['deleted'] = true 
+		end
+	end
+end
+class AjaxDeleteGuest < SBSM::State 
+	VIEW = View::AjaxResponse
+	VOLATILE = true
+	def init
+		guest_id = @session.user_input(:guest_id)
+		@model = Hash.new
+		if(@session.app.delete_guest(guest_id) > 0)
+			@model['deleted'] = true 
 		end
 	end
 end
@@ -124,6 +133,7 @@ class AjaxUploadImage < SBSM::State
 				Util::ImageHelper.store_upload_image(string_io, 
 																						 artobject_id)
 				@model = Util::ImageHelper.image_url(artobject_id, nil, true)
+			#no 'else' => new artobject images pass src/state/art_object
 			end
 		end
 	end

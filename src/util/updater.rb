@@ -3,7 +3,6 @@
 
 require 'logger'
 require 'net/http'
-require 'util/db_manager'
 
 module DAVAZ
 	module Util

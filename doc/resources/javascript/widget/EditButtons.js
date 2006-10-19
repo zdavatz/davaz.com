@@ -55,7 +55,7 @@ dojo.widget.defineWidget(
 				dojo.event.disconnect(this.imageButtonLink, 'onclick', this, 'addUploadImageForm');
 				dojo.event.connect(this.imageButtonLink, 'onclick', this, 'deleteImage');
 			} else {
-				this.imageButtonIcon.src = this.add_image_icon_src;
+				this.imageButtonIcon.src = "";//this.add_image_icon_src;
 				this.imageButtonIcon.title = this.add_image_icon_txt;
 				this.imageButtonIcon.alt = this.add_image_icon_txt;
 				this.imageButtonIcon.id = "add-image-" + this.element_id_value;
@@ -71,7 +71,7 @@ dojo.widget.defineWidget(
 				dojo.io.bind({
 					url: this.delete_item_url,
 					load: function(type, data, event) {
-						if(data['status'] == 'deleted') {
+						if(data.deleted) {
 							_this.edit_widget.destroy();
 						}
 					},

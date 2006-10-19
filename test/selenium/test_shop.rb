@@ -17,17 +17,25 @@ class TestShop < Test::Unit::TestCase
     @selenium.type "article[112]", "2"
     @selenium.type "article[113]", "2"
     sleep 3
-    assert @selenium.is_text_present("222")
-    assert @selenium.is_text_present("224")
-    assert @selenium.is_text_present("226")
+    assert @selenium.is_text_present("CHF 222.-")
+    assert @selenium.is_text_present("CHF 224.-")
+    assert @selenium.is_text_present("CHF 226.-")
+    assert @selenium.is_text_present("CHF 672.- / $ 534.- / € 400.-")
     @selenium.click "link=remove all items"
     sleep 3
-    assert !@selenium.is_text_present("222")
-    assert !@selenium.is_text_present("224")
-    assert !@selenium.is_text_present("226")
+    assert !@selenium.is_text_present("CHF 222.-")
+    assert !@selenium.is_text_present("CHF 224.-")
+    assert !@selenium.is_text_present("CHF 226.-")
+    assert !@selenium.is_text_present("CHF 672.- / $ 534.- / € 400.-")
     @selenium.type "article[113]", "2"
+    @selenium.type "article[114]", "2"
     sleep 3
-    assert @selenium.is_text_present("226")
+    assert @selenium.is_text_present("CHF 226.-")
+    @selenium.type "article[113]", "4"
+    @selenium.type "article[114]", "0"
+		sleep 3
+    assert @selenium.is_text_present("CHF 452.-")
+    assert @selenium.is_text_present("CHF 452.- / $ 360.- / € 268.-")
     @selenium.click "order_item"
     @selenium.wait_for_page_to_load "30000"
     assert @selenium.is_text_present("Please fill out the fields that are marked with red.")

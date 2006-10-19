@@ -238,8 +238,8 @@ module DAVAZ
 				if(result.is_a?(Mysql))
 					puts "*"*25
 					puts connection
-					puts connection.inspect
 					puts "*"*25
+					@connection = connect
 					return []
 				end
 				ids = []

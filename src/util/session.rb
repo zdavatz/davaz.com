@@ -36,7 +36,7 @@ module DAVAZ
 			end
 			def login
 				# @app.login raises Yus::YusError
-				@user = @app.login(user_input(:email), user_input(:pass))
+				@user = @app.login(user_input(:login_email), user_input(:login_password))
 			end
 			def logout
 				@app.logout(@user)

@@ -28,6 +28,7 @@ module Admin
 		:ajax_all_tags					=>	State::AjaxAllTags,
 		:ajax_all_tags_link			=>	State::AjaxAllTagsLink,
 		:ajax_delete_element		=>	State::Admin::AjaxDeleteElement,
+		:ajax_delete_guest			=>	State::Admin::AjaxDeleteGuest,
 		:ajax_delete_image			=>	State::Admin::AjaxDeleteImage,
 		#:ajax_image_browser			=>	State::Admin::AjaxImageBrowser,
 		:ajax_movie_gallery			=>	State::Works::AjaxAdminMovieGallery,
@@ -59,11 +60,6 @@ module Admin
 	end
 	def ajax_check_removal_status
 		State::Admin::AjaxCheckRemovalStatus.new(@session, [])	
-	end
-	def edit 
-		if(!@session.user_input(:artobject_id).nil?)
-			#State::Admin::DisplayElementForm.new(@session, self)
-		end
 	end
 	def foot_navigation
 		[

@@ -54,4 +54,12 @@ class TestPersonalInitLinks < Test::Unit::TestCase
     @selenium.wait_for_page_to_load "30000"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Personal | Home", @selenium.get_title
   end
+	def test_tooltip
+    @selenium.open "/en/personal/home"
+    @selenium.wait_for_page_to_load "30000"
+		@selenium.mouse_over("//div[@id='photo_davaz']")
+		sleep 2
+    assert @selenium.is_text_present("Title of ArtObject 111")
+    assert @selenium.is_text_present("Text of ArtObject 111")
+	end
 end

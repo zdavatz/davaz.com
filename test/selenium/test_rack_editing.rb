@@ -7,6 +7,7 @@ $: << File.expand_path("../../src", File.dirname(__FILE__))
 require 'test/unit'
 require 'test/selenium/unit'
 require 'util/image_helper'
+require 'fileutils'
 
 class TestRackEditing < Test::Unit::TestCase
 	include DAVAZ::Selenium::TestCase
@@ -17,14 +18,14 @@ class TestRackEditing < Test::Unit::TestCase
 		login
     @selenium.wait_for_page_to_load "30000"
     @selenium.click "//img[@name='desk']"
-		sleep 2
+		sleep 3
     @selenium.click "link=Title of ArtObject 112"
 		sleep 2
     @selenium.type "title", "Title of ArtObject 112 edited"
     @selenium.select "artgroup_id_select", "label=drawings"
     @selenium.select "serie_id_select", "label=Name of Serie ABD"
 		@selenium.type "serie_position", "Z"
-    @selenium.type "tags_to_s", "one"
+    @selenium.type "tags_to_s", "Name of Tag one"
     @selenium.select "tool_id_select", "label=Name of Tool 2"
     @selenium.select "material_id_select", "label=Name of Material 3"
     @selenium.type "size", "10m"
@@ -35,6 +36,7 @@ class TestRackEditing < Test::Unit::TestCase
     @selenium.type "document.artobjectform.url", "http://video.google.com/"
     @selenium.type "price", "20"
     @selenium.type "text", "Text of ArtObject 112 edited"
+		sleep 5
     @selenium.click "update"
 		sleep 5
     assert_equal "Title of ArtObject 112 edited", @selenium.get_value("title")
@@ -52,9 +54,20 @@ class TestRackEditing < Test::Unit::TestCase
 		assert_equal "http://video.google.com/", @selenium.get_value("document.artobjectform.url")
     assert_equal "20", @selenium.get_value("price")
     assert_equal "Text of ArtObject 112 edited", @selenium.get_value("text")
-    @selenium.click "link=Back To Overview"
+		image_file = File.expand_path("../doc/resources/images/112.png", File.dirname(__FILE__))
+		@selenium.type "image_file", image_file
+		@selenium.click "//input[@value='Upload Image']"
+		@selenium.click "//input[@value='Delete Item']"
+    assert /^Do you really want to delete this artobject[\s\S]$/ =~ @selenium.get_confirmation
 		sleep 2
-    assert @selenium.is_text_present("Title of ArtObject 111")
-    assert @selenium.is_text_present("Title of ArtObject 112 edited")
+    assert @selenium.is_text_present("Title of ArtObject 113")
+    assert !@selenium.is_text_present("Title of ArtObject 112 edited")
   end
+	def teardown
+		super
+		image_path = File.expand_path('../doc/resources/images/112.png', File.dirname(__FILE__))
+		tmp_image_path = File.expand_path('../doc/resources/images/112_tmp.png', File.dirname(__FILE__))
+		FileUtils.cp(image_path, tmp_image_path)	
+		DAVAZ::Util::ImageHelper.store_tmp_image(tmp_image_path, '112')
+	end
 end

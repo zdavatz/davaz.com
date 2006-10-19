@@ -4,7 +4,7 @@
 module DAVAZ
 	module Model
 		class Link
-			attr_accessor :link_id, :block_id, :word, :comment
+			attr_accessor :link_id, :word #:block_id, :comment
 			attr_accessor :artobject_id
 			attr_reader :artobjects
 			def initialize

@@ -12,6 +12,7 @@ module DAVAZ
 	module View
 		module TextBlockLinksMethods
 			def add_links(txt, context)
+
 				map = {}
 				@model.links.each { |link|
 					map.store(link.word, link)

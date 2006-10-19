@@ -134,8 +134,23 @@ module DAVAZ
 			def load_material(id)
 				@db_manager.load_material(id)
 			end
+			def load_material_artobject_id(material_id)
+				@db_manager.load_element_artobject_id('material_id', material_id)
+			end
 			def load_materials
 				@db_manager.load_materials
+			end
+			def load_movie(id)
+				@db_manager.load_movie(id)
+			end
+			def load_movies
+				@db_manager.load_movies
+			end
+			def load_movies_ticker
+				@db_manager.load_artobject_ids('MOV')
+			end
+			def load_multiples
+				@db_manager.load_artobjects_by_artgroup('MUL')
 			end
 			def load_news
 				@db_manager.load_serie_artobjects('Site News', 'series.name')
@@ -145,6 +160,9 @@ module DAVAZ
 			end
 			def load_serie(serie_id, select_by='serie_id')
 				@db_manager.load_serie(serie_id, select_by)
+			end
+			def load_serie_artobject_id(serie_id)
+				@db_manager.load_element_artobject_id('serie_id', serie_id)
 			end
 			def load_serie_id(name)
 				@db_manager.load_serie_id(name)
@@ -181,20 +199,8 @@ module DAVAZ
 			def load_tools
 				@db_manager.load_tools
 			end
-			def load_movie(id)
-				@db_manager.load_movie(id)
-			end
-			def load_movies
-				@db_manager.load_movies
-			end
-			def load_movies_ticker
-				@db_manager.load_artobject_ids('MOV')
-			end
-			def load_multiples
-				@db_manager.load_artobjects_by_artgroup('MUL')
-			end
-			def login(email, pass)
-				@yus_server.login(email, pass, DAVAZ.config.yus_domain)
+			def login(email, password)
+				@yus_server.login(email, password, DAVAZ.config.yus_domain)
 			end
 			def logout(yus_session)
 				@yus_server.logout(yus_session)

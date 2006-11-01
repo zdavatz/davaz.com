@@ -168,6 +168,10 @@ module DAVAZ
 				object = @model.artobjects.find { |artobject| 
 					artobject.artobject_id == artobject_id
 				} 
+        if(object.nil? \
+           && (object = @session.load_artobject(artobject_id)))
+          @model.artobjects.push(object)
+        end
 				@model.artobject = object
 			end
 		end

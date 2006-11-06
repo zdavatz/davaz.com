@@ -105,9 +105,7 @@ class GalleryComposite < HtmlGrid::DivComposite
 		GallerySlideShowRackComposite.new([], @session, self)
 	end
 	def series(model)
-		model.series.collect { |name|
-			serie_link(name, 'upper-search-composite')
-		}
+    super(model, 'upper-search-composite')
 	end
 end
 class Gallery < View::GalleryPublicTemplate

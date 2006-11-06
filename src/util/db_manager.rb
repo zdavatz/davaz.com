@@ -481,9 +481,7 @@ module DAVAZ
 						artobjects = load_serie_artobjects(serie.serie_id)
 						serie.artobjects.concat(artobjects)
 					end
-					#unless(serie.name.match(/^site_/) || serie.serie_id == 'AAA')
-						series.push(serie)
-					#end
+          series.push(serie)
 				}
 				series
 			end
@@ -528,25 +526,22 @@ module DAVAZ
 			end
 			def load_series_by_artgroup(artgroup_id)
 				sql = <<-SQL
-					SELECT series.serie_id,series.name 
+					SELECT DISTINCT series.serie_id,series.name 
 					FROM artobjects
 					JOIN series USING (serie_id)
 					WHERE artobjects.artgroup_id='#{artgroup_id}' 
+          AND series.serie_id != 'AAA' 
+          AND series.name NOT LIKE 'Site %'
+					ORDER BY series.name
 				SQL
 				result = connection.query(sql)
 				array = []
-				key_array = []
 				result.each_hash { |key, value| 
 					model = Model::Serie.new 
 					key.each { |column_name, column_value| 
 						model.send(column_name.to_s + '=', column_value)
 					}
-					unless(key_array.include?(key))
-						unless(model.name.match(/^Site /) || model.serie_id == 'AAA')
-							array.push(model)
-							key_array.push(key)
-						end
-					end
+          array.push(model)
 				}
 				array
 			end

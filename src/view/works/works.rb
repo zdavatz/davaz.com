@@ -33,9 +33,7 @@ class Works < HtmlGrid::DivComposite
 		2	=>	'serie-links',
 	}
 	def series(model)
-		model.series.collect { |name|
-			serie_link(name, 'null')
-		}
+    super(model, 'null')
 	end
 end
 		end

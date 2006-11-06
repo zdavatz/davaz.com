@@ -13,7 +13,7 @@ module DAVAZ
 				args = [ :serie_id, model.serie_id ]
 				#link.href = @lookandfeel.event_url(:works, @session.event, args)
 				link.href = 'javascript:void(0)'
-				link.value = model.name.gsub(' ', '&nbsp;') << ', '
+				link.value = model.name.gsub(' ', '&nbsp;')# << ', '
 				link.css_class = 'serie-link'
 				link.css_id = model.serie_id
 				args = [ :serie_id, model.serie_id ]
@@ -22,6 +22,16 @@ module DAVAZ
 				link.set_attribute('onclick', script);
 				link
 			end
+      def series(model, target)
+        res = []
+        model.series.each { |name|
+          unless(res.empty?)
+            res.push(', ')
+          end
+          res.push(serie_link(name, target))
+        }
+        res
+      end
 		end
 	end
 end

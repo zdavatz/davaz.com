@@ -228,7 +228,7 @@ module DAVAZ
 					elsif(key == :date)
 						update_hash.store(:date, "#{value.year}-#{value.month}-#{value.day}")
 					else
-						update_hash.store(key, @session.app.enc2utf8(value))
+						update_hash.store(key, value)
 					end	
 				}
 				unless(error?)

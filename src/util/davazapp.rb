@@ -65,9 +65,6 @@ module DAVAZ
 			def delete_link(link_id)
 				@db_manager.delete_link(link_id)
 			end
-			def enc2utf8(str)
-				Iconv.iconv('utf8', 'latin1', str).first
-			end
 			def insert_artobject(values_hash)
 				@db_manager.insert_artobject(values_hash)
 			end

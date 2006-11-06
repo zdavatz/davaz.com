@@ -90,7 +90,7 @@ class AjaxSaveLiveEdit < SBSM::State
 			update_value = @session.lookandfeel.lookup(:click2edit)
 		end
 		update_hash = {
-			field_key.intern	=>	@session.app.enc2utf8(update_value),
+			field_key.intern	=>	update_value,
 		}
 		@session.app.update_artobject(artobject_id, update_hash)
 		artobject = @session.app.load_artobject(artobject_id)
@@ -110,7 +110,7 @@ class AjaxSaveGbLiveEdit < SBSM::State
 			update_value = @session.lookandfeel.lookup(:click2edit)
 		end
 		update_hash = {
-			field_key.intern	=>	@session.app.enc2utf8(update_value),
+			field_key.intern	=>	update_value,
 		}
 		
 		@session.app.update_guest(guest_id, update_hash)

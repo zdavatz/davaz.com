@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+# Admin -- davaz -- 09.07.2003 -- hwyss@ywesee.com 
+
+$: << File.expand_path("../src", File.dirname(__FILE__))
+
+$KCODE = 'u'
+
+require 'drb'
+require 'sbsm/drb'
+require 'util/davaz'
+require 'util/config'
+require 'readline'
+include Readline
+
+Kernel.trap('INT') {
+  if($current.respond_to?(:exit))
+    $current.exit
+    $current = nil
+  else
+    puts "<ctrl-c> is used to kill admin-threads."
+    puts "Type <quit> or <exit> to exit."
+  end
+}
+
+prompt = 'davaz> '
+DRb.start_service('druby://localhost:0')
+davaz = DRbObject.new(nil, DAVAZ.config.server_uri)
+last_error = nil
+priority = -1
+while(line = readline(prompt, true))
+  result = ''
+  result.extend(DRb::DRbUndumped)
+  line.strip!
+  $stdout.print "-> "
+  if(match = /puts\s+(.*)/.match(line))
+    line = "DAVAZ.logger.debug('admin') { #{match[1]} }"
+  end
+  case line.downcase
+  when 'exit', 'quit'
+    $stdout.puts 'Goodbye'
+    break
+  when 'bt', 'backtrace'
+    if last_error.respond_to?(:backtrace)
+      $stdout.puts last_error.backtrace 
+    else
+      $stdout.puts 'No Error'
+    end
+  when /^last_error/
+    begin
+      $stdout.puts eval(line)
+    rescue Exception => last_error
+      $stdout.puts last_error
+    end
+  when /sp\s+(-?\d+)/, /set_priority\s+(-?\d+)/ 
+    priority = $~[1].to_i
+    $stdout.puts "setting Priority to #{priority}"
+  else
+    begin
+      bgflag = line.slice!(/\s*\&\s*$/)
+      $current = davaz._admin(line, result, priority)
+      unless(bgflag)
+        $current.join
+      end
+      $stdout.puts result
+    rescue Exception => last_error
+      $stdout.puts last_error
+    end
+  end
+  $current = nil
+  $stdout.flush
+end

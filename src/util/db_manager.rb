@@ -26,7 +26,12 @@ module DAVAZ
 				connect
 			end
 			def connection
-				@connection ||= connect
+				#@connection ||= connect
+        if(block_given?)
+          yield connect
+        else
+          connect
+        end
 			end
 			def set_values(model, row)
 				row.each { |key, value|
@@ -40,33 +45,33 @@ module DAVAZ
 				query = <<-EOS
 					SELECT serie_id FROM series
 				EOS
-				result = connection.query(query)
-				keys = []
-				result.each_hash { |row| 
-					keys.push(row['serie_id'])	
-				}
-				query = <<-EOS
-					INSERT INTO series
-					VALUES ('#{keys.sort.last.succ}', '#{serie_name}')
-				EOS
-				connection.query(query)
-				connection.affected_rows
+        connection { |conn|
+          result = conn.query(query)
+          keys = []
+          result.each_hash { |row| 
+            keys.push(row['serie_id'])	
+          }
+          query = <<-EOS
+            INSERT INTO series
+            VALUES ('#{keys.sort.last.succ}', '#{serie_name}')
+          EOS
+          conn.query(query)
+          conn.affected_rows
+        }
 			end
 			def add_tool(tool_name)
 				query = <<-EOS
 					INSERT INTO tools
 					VALUES ('', '#{tool_name}')
 				EOS
-				connection.query(query)
-				connection.affected_rows
+        query_affected_rows(query)
 			end
 			def add_material(material_name)
 				query = <<-EOS
 					INSERT INTO materials
 					VALUES ('', '#{material_name}')
 				EOS
-				connection.query(query)
-				connection.affected_rows
+        query_affected_rows(query)
 			end
 			def count_artobjects(by, id)
 				query = <<-EOS
@@ -74,41 +79,42 @@ module DAVAZ
 					FROM artobjects
 					WHERE #{by}='#{id}'
 				EOS
-				result = connection.query(query)
-				count = ""
-				result.each_hash { |row|
-					count = row['count(*)']
-				}
-				count
+        result = connection.query(query)
+        count = ""
+        result.each_hash { |row|
+          count = row['count(*)']
+        }
+        count
 			end
 			def delete_artobject(artobject_id)
 				query = <<-EOS
 					DELETE FROM artobjects
 					WHERE artobject_id='#{artobject_id}'
 				EOS
-				connection.query(query)
-				deleted = connection.affected_rows
-				if(deleted > 0)
-					query = <<-EOS
-						DELETE FROM links_artobjects
-						WHERE artobject_id='#{artobject_id}'
-					EOS
-					connection.query(query)
-					query = <<-EOS
-						DELETE FROM tags_artobjects
-						WHERE artobject_id='#{artobject_id}'
-					EOS
-					connection.query(query)
-				end
-				deleted
+				connection { |conn|
+          conn.query(query)
+          deleted = conn.affected_rows
+          if(deleted > 0)
+            query = <<-EOS
+              DELETE FROM links_artobjects
+              WHERE artobject_id='#{artobject_id}'
+            EOS
+            conn.query(query)
+            query = <<-EOS
+              DELETE FROM tags_artobjects
+              WHERE artobject_id='#{artobject_id}'
+            EOS
+            conn.query(query)
+          end
+          deleted
+        }
 			end
 			def delete_guest(guest_id)
 				query = <<-EOS
 					DELETE FROM guestbook
 					WHERE guest_id='#{guest_id}'
 				EOS
-				connection.query(query)
-				connection.affected_rows
+        query_affected_rows(query)
 			end
 			def load_artgroups(order_by='artgroup_id')
 				query = <<-EOS
@@ -234,14 +240,7 @@ module DAVAZ
 					WHERE artgroup_id = '#{artgroup_id}'
 					ORDER BY title DESC
 				EOS
-				result = connection.query(query) 
-				if(result.is_a?(Mysql))
-					puts "*"*25
-					puts connection
-					puts "*"*25
-					@connection = connect
-					return []
-				end
+        result = connection.query(query) 
 				ids = []
 				result.each_hash { |row| 
 					model = Model::ArtObject.new
@@ -683,27 +682,29 @@ module DAVAZ
 					INSERT INTO artobjects
 					SET #{values_array.join(', ')}
 				EOS
-				result = connection.query(query)
-				artobject_id = connection.insert_id
-				tags = values_hash[:tags]
-				if(tags)
-					tags.each { |tag| 
-						unless tag.empty?
-							query = <<-EOS
-								INSERT INTO tags SET name='#{tag}'
-								ON DUPLICATE KEY UPDATE name='#{tag}'
-							EOS
-							connection.query(query)
-							tag_id = connection.insert_id
-							query = <<-EOS
-								INSERT INTO tags_artobjects
-								SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
-							EOS
-							connection.query(query)
-						end
-					}
-				end
-				artobject_id
+        connection { |conn|
+          result = conn.query(query)
+          artobject_id = conn.insert_id
+          tags = values_hash[:tags]
+          if(tags)
+            tags.each { |tag| 
+              unless tag.empty?
+                query = <<-EOS
+                  INSERT INTO tags SET name='#{tag}'
+                  ON DUPLICATE KEY UPDATE name='#{tag}'
+                EOS
+                conn.query(query)
+                tag_id = conn.insert_id
+                query = <<-EOS
+                  INSERT INTO tags_artobjects
+                  SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
+                EOS
+                conn.query(query)
+              end
+            }
+          end
+          artobject_id
+        }
 			end
 			def insert_guest(user_values)
 				values = [
@@ -742,26 +743,29 @@ module DAVAZ
 				}
 				hash
 			end
+      def query_affected_rows(query)
+				connection { |conn|
+          conn.query(query)
+          conn.affected_rows
+        }
+      end
 			def remove_serie(serie_id)
 				query = <<-EOS
 					DELETE FROM series WHERE serie_id='#{serie_id}'
 				EOS
-				connection.query(query)
-				connection.affected_rows
+        query_affected_rows(query)
 			end
 			def remove_tool(tool_id)
 				query = <<-EOS
 					DELETE FROM tools WHERE tool_id='#{tool_id}'
 				EOS
-				connection.query(query)
-				connection.affected_rows
+        query_affected_rows(query)
 			end
 			def remove_material(material_id)
 				query = <<-EOS
 					DELETE FROM materials WHERE material_id='#{material_id}'
 				EOS
-				connection.query(query)
-				connection.affected_rows
+        query_affected_rows(query)
 			end
 			def search_artobjects(search_pattern)
 				series = search_serie(search_pattern)
@@ -789,41 +793,43 @@ module DAVAZ
 					DELETE FROM tags_artobjects
 					WHERE artobject_id = '#{artobject_id}'
 				EOS
-				connection.query(query)
-				if(tags)
-					tags.each { |tag| 
-						unless tag.empty?
-							query = <<-EOS
-								INSERT INTO tags SET name='#{tag}'
-								ON DUPLICATE KEY UPDATE name='#{tag}'
-							EOS
-							connection.query(query)
-							tag_id = connection.insert_id
-							query = <<-EOS
-								INSERT INTO tags_artobjects
-								SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
-							EOS
-							connection.query(query)
-						end
-					}
-				end
-				update_hash.each { |key, value|
-					unless(value.nil? || key == :tags)
-						if(key == :date_ch)
-							date = value.split(".")
-							update_array.push("date='#{date[2]}-#{date[1]}-#{date[0]}'")
-						else
-							update_array.push("#{key}='#{Mysql.quote(value)}'")
-						end
-					end
-				}
-				query = <<-EOS
-					UPDATE artobjects
-					SET #{update_array.join(', ')}
-					WHERE artobject_id='#{artobject_id}'
-				EOS
-				result = connection.query(query)
-				connection.affected_rows
+				connection { |conn|
+          conn.query(query)
+          if(tags)
+            tags.each { |tag| 
+              unless tag.empty?
+                query = <<-EOS
+                  INSERT INTO tags SET name='#{tag}'
+                  ON DUPLICATE KEY UPDATE name='#{tag}'
+                EOS
+                conn.query(query)
+                tag_id = conn.insert_id
+                query = <<-EOS
+                  INSERT INTO tags_artobjects
+                  SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
+                EOS
+                conn.query(query)
+              end
+            }
+          end
+          update_hash.each { |key, value|
+            unless(value.nil? || key == :tags)
+              if(key == :date_ch)
+                date = value.split(".")
+                update_array.push("date='#{date[2]}-#{date[1]}-#{date[0]}'")
+              else
+                update_array.push("#{key}='#{Mysql.quote(value)}'")
+              end
+            end
+          }
+          query = <<-EOS
+            UPDATE artobjects
+            SET #{update_array.join(', ')}
+            WHERE artobject_id='#{artobject_id}'
+          EOS
+          result = conn.query(query)
+          conn.affected_rows
+        }
 			end
 			def update_currency(origin, target, rate)
 				query = <<-EOS
@@ -831,8 +837,7 @@ module DAVAZ
 					SET rate='#{rate}'
 					WHERE origin='#{origin}' AND target='#{target}';
 				EOS
-				result = connection.query(query)
-				connection.affected_rows
+        query_affected_rows(query)
 			end
 			def update_guest(guest_id, update_hash)
 				update_array = []
@@ -851,8 +856,7 @@ module DAVAZ
 					SET #{update_array.join(', ')}
 					WHERE guest_id='#{guest_id}'
 				EOS
-				result = connection.query(query)
-				connection.affected_rows
+        query_affected_rows(query)
 			end
 		end
 	end

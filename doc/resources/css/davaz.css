@@ -14,6 +14,10 @@ textarea {
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
+img {
+  border: 0px;
+}
+
 .admin {
 	border: blue 1pt solid;
 	background-color: #99FFFF;
@@ -176,6 +180,10 @@ div.thumb-container {
 	width: 350px;
 	height: 350px;
 	overflow: hidden;
+}
+div.thumb-container div {
+  overflow: hidden;
+  float: left;
 }
 
 div.thumb-container img {

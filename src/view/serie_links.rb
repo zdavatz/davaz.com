@@ -25,10 +25,12 @@ module DAVAZ
       def series(model, target)
         res = []
         model.series.each { |name|
-          unless(res.empty?)
-            res.push(', ')
+          unless(name.strip.empty?)
+            unless(res.empty?)
+              res.push(', ')
+            end
+            res.push(serie_link(name, target))
           end
-          res.push(serie_link(name, target))
         }
         res
       end

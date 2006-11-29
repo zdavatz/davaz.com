@@ -62,7 +62,9 @@ a.no-decoration:link,a.no-decoration:hover,a.no-decoration:visited {
 	padding-right: 0px;
 }
 
-#container .column {
+
+/*#container*/ 
+.column {
 	position: relative;
 	float: left;
 }
@@ -267,7 +269,7 @@ div#show-container {
 
 div#rack-result-list-composite {
 	width: 800px;
-	margin-left: -57px;
+	margin-left: -52px;
 }
 
 table#result-list-column-names {

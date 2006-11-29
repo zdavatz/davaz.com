@@ -165,8 +165,12 @@ module DAVAZ
 					args = {
 						'class'	=>	'block-url'
 					}
+          parsed = URI.parse(@model.url)
+          unless(parsed.scheme)
+            parsed = URI.parse('http://' + @model.url)
+          end
 					link_args = {
-						'href' =>	"http://#{@model.url}",
+						'href' =>	parsed,
 						'target' =>	'_blank',
 					}
 					context.div(args) { context.a(link_args) { @model.url } }

@@ -158,7 +158,7 @@ module DAVAZ
 					:pic_bottleneck						=>	'Link to Bottleneck',
 					:pic_family								=>	'Link to Family',
 					:pic_inpiration						=>	'Link to Inpiration',
-					:pipe_divider							=>	'&nbsp;|&nbsp;',
+					:pipe_divider							=>	'|',
 					:player_download_text			=>	'free download:',
 					:please_select						=>	'Please select...',
 					:position									=>	'Position',

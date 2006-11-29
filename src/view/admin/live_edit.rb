@@ -16,9 +16,9 @@ class LiveEditWidget < HtmlGrid::Div
 		[
 			:title, :url, :date_ch, :text,
 		].each { |symbol|
-			unless((value = @model.send(symbol)).nil? || value.empty?)	
+			if((value = @model.send(symbol)) && !value.empty?)	
 				values.push(symbol.to_s)
-				values.push(value)
+				values.push(CGI.escapeHTML(value))
 			end
 		}
 		args.push(['values', values])
@@ -67,7 +67,7 @@ class GuestbookLiveEditWidget < HtmlGrid::Div
 		].each { |symbol| 
 			unless((value = @model.send(symbol)).nil? || value.empty?)	
 				values.push(symbol.to_s)
-				values.push(value)
+				values.push(CGI.escapeHTML(value))
 				values.push(@lookandfeel.lookup(symbol))
 			end
 		}

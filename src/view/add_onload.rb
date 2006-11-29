@@ -11,7 +11,7 @@ module DAVAZ
 					script = <<-EOS
 						location.hash = 'Rack_#{@model.serie_id}';
 						var serieLink = dojo.byId('#{@model.serie_id}');
-						serieLink.style.color = 'black';
+						serieLink.className += ' active';
 					EOS
 				else
 					""

@@ -214,19 +214,19 @@ function toggleDeskContent(id, serieId, objectId, url, wipe) {
 }
 
 function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
-	//serieLink.style.color = 'black';
 	var show = dojo.widget.byId(id);
 	if(show) {
 		var lastUrl = show.dataUrl;
 		var lastId = lastUrl.split("/").pop();
 	}
+
+  var serieLink = dojo.byId(serie_id);
+
 	if(serie_id && show) {
-		var serieLink = dojo.byId(serie_id);
-		serieLink.style.color = 'black';
 		if(lastId != serie_id) {
 			var lastSerieLink = dojo.byId(lastId);	
 			if(lastSerieLink) {
-				lastSerieLink.style.color = 'blue';
+        lastSerieLink.className = lastSerieLink.className.replace(/ ?active/, '');
 			}
 		} 
 	}
@@ -273,6 +273,12 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
 					dojo.lfx.html.wipeIn(wipearea, 1000, 
 																					dojo.lfx.easeInOut).play();
 				}
+
+        // change color of active link to black
+        if(!serieLink.className.match(/ ?active/))
+        {
+          serieLink.className += " active";
+        }
 			},
 			changeUrl: fragmentIdentifier,
 			mimetype: "text/json"

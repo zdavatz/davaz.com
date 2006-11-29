@@ -208,6 +208,10 @@ div#serie-links a.even {
 	color: #990099;
 }
 
+div#serie-links a.active {
+  color: black;
+}
+
 img.slideshow-control-image {
 	border: none;
 	padding-bottom: 5px;

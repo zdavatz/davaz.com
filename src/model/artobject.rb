@@ -63,7 +63,11 @@ module DAVAZ
 				@date || '00-00-0000'
 			end
 			def date_ch
-				Date.parse(@date).strftime("%d.%m.%Y")	
+				begin
+					Date.parse(@date)
+				rescue ArgumentError
+					Date.today
+				end.strftime("%d.%m.%Y")	
 			end
 			def image_string_io
 				@image_string_io || nil

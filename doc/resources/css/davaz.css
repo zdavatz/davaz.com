@@ -204,6 +204,10 @@ div#serie-links {
 	padding-bottom: 10px;
 }
 
+div#serie-links a.even {
+	color: #990099;
+}
+
 img.slideshow-control-image {
 	border: none;
 	padding-bottom: 5px;

@@ -24,12 +24,16 @@ module DAVAZ
 			end
       def series(model, target)
         res = []
-        model.series.each { |serie|
+        model.series.each_with_index { |serie, idx|
           unless(serie.name.to_s.strip.empty?)
             unless(res.empty?)
               res.push(', ')
             end
-            res.push(serie_link(serie, target))
+            link = serie_link(serie, target)
+            if(idx % 2 == 0)
+              link.css_class << ' even'
+            end
+            res.push(link)
           end
         }
         res

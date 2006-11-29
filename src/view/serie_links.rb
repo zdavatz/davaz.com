@@ -30,7 +30,7 @@ module DAVAZ
               res.push(', ')
             end
             link = serie_link(serie, target)
-            if(idx % 2 == 0)
+            if(idx % 2 != 0) # zero-based..
               link.css_class << ' even'
             end
             res.push(link)

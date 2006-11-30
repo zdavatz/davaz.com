@@ -163,7 +163,7 @@ class MovieLinks < HtmlGrid::DivComposite
 	def movie_ticker_link(model)
 		link = HtmlGrid::Link.new(:movie_ticker, model, @session, self)
 		link.href = "javascript:void(0)"
-		link.attributes['onclick'] = "toggleTicker();"		
+		self.onload = link.attributes['onclick'] = "toggleTicker();"		
 		link.value = @lookandfeel.lookup(:movie_link)  
 		link.css_class = 'movies-div-link'
 		link

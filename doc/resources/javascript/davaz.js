@@ -20,6 +20,7 @@ function submitForm(form, dataDivId, formDivId, keepForm) {
 function toggleTicker() {
 	var node = dojo.byId('ticker-container');
 	var ticker = dojo.widget.byId('ticker');
+  dojo.style.setStyle(node, 'overflow', 'hidden');
 	display = dojo.style.getStyle(node, "display");
 	if(display==="none" || display==='') {
 		dojo.style.hide(node); //setStyle(node, 'display', 'none');

@@ -159,22 +159,20 @@ module DAVAZ
 				end
 			end
 			def url_to_html(context)
-				if(@model.url.empty?)
-					""
-				else
-					args = {
-						'class'	=>	'block-url'
-					}
-          parsed = URI.parse(@model.url)
-          unless(parsed.scheme)
-            parsed = URI.parse('http://' + @model.url)
-          end
-					link_args = {
-						'href' =>	parsed,
-						'target' =>	'_blank',
-					}
-					context.div(args) { context.a(link_args) { @model.url } }
+				args = {
+					'class'	=>	'block-url'
+				}
+				parsed = URI.parse(@model.url)
+				unless(parsed.scheme)
+					parsed = URI.parse('http://' + @model.url)
 				end
+				link_args = {
+					'href' =>	parsed,
+					'target' =>	'_blank',
+				}
+				context.div(args) { context.a(link_args) { @model.url } }
+			rescue URI::InvalidURIError
+				''
 			end
 			def title_to_html(context)
 				if(@model.title.empty?)

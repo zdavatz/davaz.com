@@ -61,7 +61,7 @@ class ResultList < View::List
 		end
 	end
 	def compose_header(offset=[0,0])
-		table_title = @model.first.artgroup + " (#{@model.size})"
+		table_title = (@model.first.artgroup || 'Unknown') + " (#{@model.size})"
 		@grid.add(table_title, 0, 0)
 		@grid.add_tag('TH', 0, 0)
 		@grid.set_colspan(0, 0, full_colspan)

@@ -21,7 +21,7 @@ module DAVAZ
 			end
 			def to_html(context)
 				args = compose_args.update(@model)
-				dojo_tag(@name, args)
+				dojo_tag(@name, args).to_html(context)
 			end
 		end
 	end

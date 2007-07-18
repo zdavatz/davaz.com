@@ -20,7 +20,7 @@ class OneLiner < HtmlGrid::Component
 				args['messages'].push(line)
 			}
 		}
-		dojo_tag('oneliner', args)
+		dojo_tag('oneliner', args).to_html(context)
 	end
 end
 		end

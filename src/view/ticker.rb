@@ -43,7 +43,7 @@ module DAVAZ
 						end
 					end
 				}
-				dojo_tag('ticker', args)
+				dojo_tag('ticker', args).to_html(context)
 			end
 		end
 		class InnerTicker < HtmlGrid::Div

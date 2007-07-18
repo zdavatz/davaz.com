@@ -53,7 +53,7 @@ class LiveEditWidget < HtmlGrid::Div
 			args.push([ 'has_image', 'false' ])
 		end
 		args.push(['image_pos', 3])
-		dojo_tag('EditWidget', args.concat(compose_element_args))
+		dojo_tag('EditWidget', args.concat(compose_element_args)).to_html(context)
 	end
 		end
 class GuestbookLiveEditWidget < HtmlGrid::Div 
@@ -87,7 +87,7 @@ class GuestbookLiveEditWidget < HtmlGrid::Div
 			[ 'delete_icon_txt', @lookandfeel.lookup(:delete) ],
 			[ 'labels', true ], 
 		]
-		dojo_tag('EditWidget', args.concat(compose_element_args))	
+		dojo_tag('EditWidget', args.concat(compose_element_args)).to_html(context)
 	end
 end
 		end

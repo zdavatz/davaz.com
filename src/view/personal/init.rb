@@ -91,21 +91,24 @@ end
 class CommunicationLinksComposite < View::Composite
 	CSS_CLASS = 'communication-links'
 	COMPONENTS = {
-		[0,0]	=>	:news,
-		[0,1]	=>	:links,
-		[0,2]	=>	:email,
-		[0,3]	=>	:gallery,
-		[0,4]	=>	:movies,
-		[0,5]	=>	:guestbook,
+    [0,0] =>  :blog,
+		[0,1]	=>	:news,
+		[0,2]	=>	:links,
+		[0,3]	=>	:email,
+		[0,4]	=>	:gallery,
+		[0,5]	=>	:movies,
+		[0,6]	=>	:guestbook,
 		
 	}
 	CSS_MAP = {
-		[0,0]	=>	'communication-links',
-		[0,1]	=>	'communication-links',
-		[0,2]	=>	'communication-links',
-		[0,3]	=>	'communication-links',
-		[0,4]	=>	'communication-links',
+		[0,0,1,7]	=>	'communication-links',
 	}
+	def blog(model)
+		link = HtmlGrid::Link.new(:blog, model, @session, self)
+		link.href = "http://davaz.wordpress.com"
+		link.css_class = 'communication-link'
+		link
+	end
 	def news(model)
 		link = HtmlGrid::Link.new(:news, model, @session, self)
 		link.href = @lookandfeel.event_url(:communication, :news)

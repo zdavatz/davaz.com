@@ -92,6 +92,7 @@ module DAVAZ
 			FILES = [
 				:image_file,
 			]
+      HTML = [ :text ]
 			ZONES = [ 
 				:admin,
 				:communication,
@@ -146,7 +147,6 @@ module DAVAZ
 				:tags,
 				:tags_to_s,
 				:target,
-				:text,
 				:title,
 				:tool_id,
 				:update_value,

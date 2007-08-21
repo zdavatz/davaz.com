@@ -592,25 +592,23 @@ module DAVAZ
 				@lookandfeel.lookup(:text)
 			end
 			def text(model)
-				input = HtmlGrid::Textarea.new(:text, model, @session, self)
-				input.value = model.artobject.text
-				input.set_attribute('cols', '62')
-				input.set_attribute('rows', '15')
+				input = HtmlGrid::Textarea.new(:text, model.artobject, @session, self)
+        input.attributes.update({
+          'dojoType'    => 'Editor2',  
+          'shareToolbar'=> 'true',
+          'htmlEditing' => 'true',
+          'useActiveX'  => 'false',
+          'wrap'        => 'soft',
+        })
 				input
 			end
 			def tags(model)
 				input_text(:tags_to_s)
 			end
 			def update(model)
-				if(artobject_id = model.artobject.artobject_id)
-					button = HtmlGrid::Button.new(:update, model, @session, self)
-				else
-					button = HtmlGrid::Button.new(:save, model, @session, self)
-				end
-				script = <<-EOS
-						this.form.submit();
-				EOS
-				button.set_attribute('onclick', script)
+        button = submit(model)
+				key = (model.artobject.artobject_id) ? :update : :save
+				button.set_attribute('value', @lookandfeel.lookup(key))
 				button
 			end
 			def url(model)
@@ -739,6 +737,9 @@ module DAVAZ
 		end
 		class AdminArtObject < View::AdminGalleryPublicTemplate
 			CONTENT = View::AdminArtObjectComposite
+			DOJO_REQUIRE = AdminArtObject::DOJO_REQUIRE + [
+				'dojo.widget.Editor2',
+			]
 		end
 		class AdminMoviesArtObjectComposite < HtmlGrid::DivComposite
 			COMPONENTS = {

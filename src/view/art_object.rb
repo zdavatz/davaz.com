@@ -596,7 +596,7 @@ module DAVAZ
         input.attributes.update({
           'dojoType'    => 'Editor2',  
           'shareToolbar'=> 'true',
-          'htmlEditing' => 'true',
+          'htmlEditing' => 'false',
           'useActiveX'  => 'false',
           'wrap'        => 'soft',
         })

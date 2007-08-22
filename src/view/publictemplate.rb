@@ -60,6 +60,7 @@ module DAVAZ
 				'dojo.io.IframeIO',
 				'dojo.lang.*',
 				'dojo.undo.browser',
+        'dojo.widget.Editor2',
 				'dojo.widget.Tree',
 				'dojo.widget.TreeRPCController',
 				'dojo.widget.TreeSelector',
@@ -177,9 +178,6 @@ module DAVAZ
 		end
 		class AdminGalleryPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :gallery_css, :admin_css ]
-      DOJO_REQUIRE = CommonPublicTemplate::DOJO_REQUIRE + [
-        'dojo.widget.Editor2',
-      ]
 		end
 		class AdminMoviesPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :movies_css, :admin_css ]

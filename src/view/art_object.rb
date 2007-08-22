@@ -595,7 +595,7 @@ module DAVAZ
 				input = HtmlGrid::Textarea.new(:text, model.artobject, @session, self)
         input.attributes.update({
           'dojoType'    => 'Editor2',  
-          'shareToolbar'=> 'true',
+          'shareToolbar'=> 'false',
           'htmlEditing' => 'false',
           'useActiveX'  => 'false',
           'wrap'        => 'soft',
@@ -737,9 +737,6 @@ module DAVAZ
 		end
 		class AdminArtObject < View::AdminGalleryPublicTemplate
 			CONTENT = View::AdminArtObjectComposite
-			DOJO_REQUIRE = AdminArtObject::DOJO_REQUIRE + [
-				'dojo.widget.Editor2',
-			]
 		end
 		class AdminMoviesArtObjectComposite < HtmlGrid::DivComposite
 			COMPONENTS = {

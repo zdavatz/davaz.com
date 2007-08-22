@@ -276,7 +276,7 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
 				}
 
         // change color of active link to black
-        if(!serieLink.className.match(/ ?active/))
+        if(serieLink != null && !serieLink.className.match(/ ?active/))
         {
           serieLink.className += " active";
         }

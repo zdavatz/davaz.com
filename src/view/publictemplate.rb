@@ -177,6 +177,9 @@ module DAVAZ
 		end
 		class AdminGalleryPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :gallery_css, :admin_css ]
+      DOJO_REQUIRE = CommonPublicTemplate::DOJO_REQUIRE + [
+        'dojo.widget.Editor2',
+      ]
 		end
 		class AdminMoviesPublicTemplate < View::CommonPublicTemplate
 			CSS_FILES = [ :navigation_css, :movies_css, :admin_css ]

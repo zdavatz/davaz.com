@@ -123,6 +123,7 @@ class Gallery < State::Gallery::Global
 end
 class AdminGallery < State::Gallery::Gallery
 	VIEW = View::Gallery::AdminGallery
+	include AdminArtObjectMethods
 =begin
 	def ajax_upload_image
 		AjaxUploadImage.new(@session, @model)

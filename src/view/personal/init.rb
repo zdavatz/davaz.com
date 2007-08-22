@@ -274,10 +274,11 @@ class Init < View::PublicTemplate
 			'type'			=>	'text/javascript',
 		}
 		super << context.script(args) {
+      size = (@model.movies || []).size
 			<<-EOS
 			function scrollDiv(elId) {
 				var node = document.getElementById(elId);
-				dojo.lfx.html.slideTo(node, [-#{@model.movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_WIDTH)},0], #{@model.movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_SPEED)})
+				dojo.lfx.html.slideTo(node, [-#{movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_WIDTH)},0], #{movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_SPEED)})
 			}
 			EOS
 		}

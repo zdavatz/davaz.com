@@ -36,6 +36,81 @@ module DAVAZ
 				args[:sid] = @model.artobject.country_id if @model.artobject
 				@model.select_country = build_selection("countries", args)
 			end
+			def update
+				artobject_id = @session.user_input(:artobject_id) \
+          || @model.artobject.artobject_id
+				mandatory = [
+					:title,
+					:artgroup_id,
+					:serie_id,
+					:tool_id,
+					:material_id,
+					:date,
+					:country_id,
+				]
+				keys = [
+					:tags_to_s,
+					:location,
+					:form_language,
+					:price,
+					:serie_position,
+					:size,
+					:text,
+					:url,
+				].concat(mandatory)
+				update_hash = {}
+				user_input(keys, mandatory).each { |key, value|
+					if(match = key.to_s.match(/(form_)(.*)/))
+						update_hash.store(match[2].intern, value)
+					elsif(key == :tags_to_s)
+						if(value.nil?)
+							update_hash.store(:tags, [])	
+						else
+							update_hash.store(:tags, value.split(','))	
+						end
+					elsif(key == :date)
+						update_hash.store(:date, "#{value.year}-#{value.month}-#{value.day}")
+					else
+						update_hash.store(key, value)
+					end	
+				}
+				unless(error?)
+					if(artobject_id)
+						@session.app.update_artobject(artobject_id, update_hash)
+					else
+						insert_id = @session.app.insert_artobject(update_hash)
+						if(tmp_image_path = @model.artobject.tmp_image_path)
+							image_path = @model.artobject.tmp_image_path
+							Util::ImageHelper.store_tmp_image(image_path, insert_id)
+						end
+						artobject_id = insert_id
+					end
+					args = [
+						[ :artobject_id, artobject_id ],
+					]
+					if(search_query = @session.user_input(:search_query))
+						args.push([ :search_query, search_query ])
+					else
+						args.push([ :artgroup_id, @session.user_input(:artgroup_id) ])
+					end
+					model = @session.lookandfeel.event_url(:gallery, :art_object, args)
+					State::Redirect.new(@session, model)
+				else
+					tags = []
+					update_hash.each { |key, value|
+						if(key==:tags)
+							tag = Model::Tag.new
+							tag.name = value
+							tags.push(tag)
+						end
+						method = (key.to_s + "=").intern
+						@model.artobject.send(method, value)
+					}
+					@model.artobject.send("tags=", tags)
+					build_selections
+					self
+				end
+			end
 		end
 		class AjaxAddElement < SBSM::State
 			VOLATILE = true

@@ -278,7 +278,7 @@ class Init < View::PublicTemplate
 			<<-EOS
 			function scrollDiv(elId) {
 				var node = document.getElementById(elId);
-				dojo.lfx.html.slideTo(node, [-#{movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_WIDTH)},0], #{movies.size * self.class.const_get(:MOVIES_DIV_IMAGE_SPEED)})
+				dojo.lfx.html.slideTo(node, [-#{size * self.class.const_get(:MOVIES_DIV_IMAGE_WIDTH)},0], #{size * self.class.const_get(:MOVIES_DIV_IMAGE_SPEED)})
 			}
 			EOS
 		}

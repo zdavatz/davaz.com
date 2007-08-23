@@ -3,6 +3,7 @@ dojo.provide("ywesee.widget.InputTextarea");
 dojo.require("ywesee.widget.Input");
 dojo.require("dojo.event");
 dojo.require("dojo.widget.*");
+dojo.require("dojo.widget.Editor2");
 dojo.require("dojo.lfx.*");
 dojo.require("dojo.style");
 
@@ -11,6 +12,7 @@ dojo.widget.defineWidget(
 	ywesee.widget.Input,
 	{
 		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlInput.html"),
+    editor: null,
 
 		fillInTemplate: function() {
 			this.prepareWidget();
@@ -25,7 +27,30 @@ dojo.widget.defineWidget(
 			//dojo.event.connect(this.leInput, "onblur", this, "saveChanges");
 			this.inputForm.appendChild(this.leInput);
 			this.leInput.focus();
-		}
+			this.editor = dojo.widget.createWidget("Editor2", 
+				{ 
+          shareToolbar: false,
+          htmlEditing: false,
+          useActiveX: false,
+				},
+        this.leInput
+      );
+		},
 
-	}
+		cancelInput: function() {
+      this.inherited("cancelInput");
+      this.editor.destroy();
+      this.inputForm.removeChild(this.inputForm.lastChild);
+    },
+
+		saveChanges: function(evt) {
+      dojo.debug(this.leInput.value);
+      dojo.debug(this.leInput.value = this.editor.getEditorContent());
+      this.inherited("saveChanges", [evt]);
+      dojo.debug(this.leInput.value);
+    }
+  }
 );
+
+
+

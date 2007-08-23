@@ -50,6 +50,8 @@ module Admin
 		:photos									=>	State::Works::AdminPhotos,
 		:schnitzenthesen				=>	State::Works::AdminSchnitzenthesen,
 		:work										=>	State::Personal::AdminWork,
+
+		:life									  =>	State::Personal::AdminLife,
 	}
 	def ajax_desk
 		if(@session.user_input(:artobject_id))

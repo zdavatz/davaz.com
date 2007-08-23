@@ -92,7 +92,7 @@ module DAVAZ
 			FILES = [
 				:image_file,
 			]
-      HTML = [ :text ]
+      HTML = [ :text, :update_value, ]
 			ZONES = [ 
 				:admin,
 				:communication,
@@ -149,7 +149,6 @@ module DAVAZ
 				:target,
 				:title,
 				:tool_id,
-				:update_value,
 				:url,
 			]
 			NUMERIC = [

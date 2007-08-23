@@ -140,17 +140,14 @@ dojo.widget.defineWidget(
 				url: this.update_url,
 				formNode: form,
 				load: function(type, data, event) {
-					_this.inputForm.removeChild(_this.leInput);
-					_this.inputContainer.removeChild(_this.leButtons);
 					_this.old_value = data['updated_value'];
 					_this.leText.innerHTML = _this.toHtml(data['updated_value']);
-					_this.inputDiv.appendChild(_this.leText);
-					_this.inputDiv.className = _this.css_class + " live-edit";
-					_this.labelDiv.className = "label";
+          _this.cancelInput();
+					//_this.inputDiv.appendChild(_this.leText);
 				},
 				mimetype: "text/json"
 			});	
-			this.old_value = _this.old_value; 
+			//this.old_value = _this.old_value; 
 			evt.preventDefault();
 		}
 

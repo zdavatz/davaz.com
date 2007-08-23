@@ -44,10 +44,8 @@ dojo.widget.defineWidget(
     },
 
 		saveChanges: function(evt) {
-      dojo.debug(this.leInput.value);
-      dojo.debug(this.leInput.value = this.editor.getEditorContent());
+      this.leInput.value = this.editor.getEditorContent();
       this.inherited("saveChanges", [evt]);
-      dojo.debug(this.leInput.value);
     }
   }
 );

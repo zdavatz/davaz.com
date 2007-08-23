@@ -171,6 +171,7 @@ end
 class AdminLifeComposite < LifeComposite 
 	#LIFE_LIST = component(AdminLifeList, :biography_items)
 	LIFE_LIST = component(AdminTextBlockList, :biography_items)
+  CSS_ID_MAP = {3 => 'biography'}
 end
 class AdminLife < Life
 	CONTENT = View::Personal::AdminLifeComposite

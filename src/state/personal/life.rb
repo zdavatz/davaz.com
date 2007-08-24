@@ -23,9 +23,10 @@ class AjaxAddNewBioElement < State::Admin::AjaxAddNewElement
 	def init
     lang = @session.user_input(:lang) || "English"
 		values = {
+			:date			=>	Date.new(2006).to_s, 
+			:text			=>	@session.lookandfeel.lookup(:click2edit_textarea), 
       :title    =>  @session.lookandfeel.lookup(:click2edit), 
 			:serie_id =>	@model.serie_id,
-			:text			=>	@session.lookandfeel.lookup(:click2edit_textarea), 
 		}		
 		insert_id = @session.app.insert_artobject(values)
 		@model = @session.app.load_artobject(insert_id)

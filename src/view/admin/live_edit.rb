@@ -13,9 +13,13 @@ class LiveEditWidget < HtmlGrid::Div
 		values = []
 		args.push([ 'element_id_name', 'artobject_id' ])
 		args.push([ 'element_id_value', @model.artobject_id ])
-		[
-			:title, :url, :date_ch, :text,
-		].each { |symbol|
+    fields = case @model.serie
+             when  /His Life/
+               [ :title, :url, :text, ]
+             else
+               [ :title, :url, :date_ch, :text, ]
+             end
+		fields.each { |symbol|
 			if((value = @model.send(symbol)) && !value.empty?)	
 				values.push(symbol.to_s)
 				values.push(CGI.escapeHTML(value))

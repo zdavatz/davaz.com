@@ -144,9 +144,12 @@ class LifeComposite < HtmlGrid::DivComposite
 		[1,3]	=>	LifeTranslations,
 	}
 	def init
-		components[[2,3]] = self.class::LIFE_LIST
+    reorganize_components
 		super
 	end
+  def reorganize_components
+		components[[2,3]] = self.class::LIFE_LIST
+  end
 	def india_ticker_link(model)
 		link = HtmlGrid::Link.new(:india_ticker_link, model, @session, self)
 		link.href = "javascript:void(0)"
@@ -162,16 +165,19 @@ class Life < View::PersonalPublicTemplate
 	CONTENT = View::Personal::LifeComposite
 	TICKER = 'A passage through India'
 end
-class AdminLifeList < HtmlGrid::UlList
-	CSS_ID = 'biography'
+class AdminLifeList < HtmlGrid::DivComposite
+	CSS_ID = 'element-container'
 	COMPONENTS = {
-		[0,0]	=>	View::AdminTextBlock,
+		[0,0]	=>	component(AdminTextBlockList, :biography_items),
 	}
 end
 class AdminLifeComposite < LifeComposite 
 	#LIFE_LIST = component(AdminLifeList, :biography_items)
-	LIFE_LIST = component(AdminTextBlockList, :biography_items)
   CSS_ID_MAP = {3 => 'biography'}
+  def reorganize_components
+    components.update([2,3] => View::Admin::AjaxAddNewElementComposite,
+                      [3,3] => AdminLifeList)
+  end
 end
 class AdminLife < Life
 	CONTENT = View::Personal::AdminLifeComposite

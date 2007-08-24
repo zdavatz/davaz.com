@@ -30,7 +30,7 @@ dojo.widget.defineWidget(
 			this.editor = dojo.widget.createWidget("Editor2", 
 				{ 
           shareToolbar: false,
-          htmlEditing: false,
+          htmlEditing: true,
           useActiveX: false,
 				},
         this.leInput
@@ -44,6 +44,10 @@ dojo.widget.defineWidget(
     },
 
 		saveChanges: function(evt) {
+      if(this.editor._inHtmlMode) {
+				this.editor.editNode.innerHTML = this.editor._htmlEditNode.value;
+        this.editor.toggleHtmlEditing();
+      }
       this.leInput.value = this.editor.getEditorContent();
       this.inherited("saveChanges", [evt]);
     }

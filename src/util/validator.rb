@@ -7,6 +7,8 @@ require 'cgi'
 module DAVAZ
 	module Util
 		class Validator < SBSM::Validator
+      ALLOWED_TAGS = %{a b br div font h1 h2 h3 i img li ol p pre strong u ul
+                       embed object param}
 			DATES = [
 				:date,
 				:date_ch,

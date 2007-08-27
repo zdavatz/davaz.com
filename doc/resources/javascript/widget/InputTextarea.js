@@ -31,7 +31,7 @@ dojo.widget.defineWidget(
 				{ 
           shareToolbar: false,
           htmlEditing: true,
-          useActiveX: false,
+          useActiveX: false
 				},
         this.leInput
       );

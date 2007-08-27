@@ -191,8 +191,7 @@ class Drawing < HtmlGrid::DivComposite
 		[0,0]	=>	:drawing,
 	}
 	def drawing(model) 
-		img = HtmlGrid::Image.new(:init_drawing, model, @session, self)
-		img 
+		HtmlGrid::Image.new(:init_drawing, model, @session, self)
 	end
 end
 class PayPalForm < View::Form

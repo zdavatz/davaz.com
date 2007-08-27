@@ -47,7 +47,6 @@ module DAVAZ
 			end
 		end
 		class InnerTicker < HtmlGrid::Div
-			CSS_ID = 'ticker'
 			def init
 				super
 				@value = View::Ticker.new(@model, @session, self)
@@ -56,10 +55,17 @@ module DAVAZ
 			end
 		end
 		class TickerContainer < HtmlGrid::DivComposite
-			CSS_ID = 'ticker-container'
+			#CSS_ID = 'ticker-container'
 			COMPONENTS = {
-				[0,0]	=>	InnerTicker,
+				[0,0]	=>	:ticker,
 			}
+      CSS_ID_MAP = ['ticker-container']
+      def ticker(model)
+        tick = Ticker.new(model, @session, self)
+				tick.component_height = 135
+				tick.component_width = 180
+        tick
+      end
 		end
 	end
 end

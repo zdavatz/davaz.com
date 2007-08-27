@@ -11,32 +11,6 @@ require 'view/admin/ajax_views'
 module DAVAZ
 	module View
 		module Personal
-class MorphopolisTickerLink < HtmlGrid::Div
-	CSS_ID = 'ticker-link'
-	def init
-		super
-		link = HtmlGrid::Link.new(:morphopolis_ticker_link, model, @session, self)
-		link.href = "javascript:void(0)"
-		link.attributes['onclick']	=  'toggleTicker();'
-		link.value = @lookandfeel.lookup(:morphopolis_ticker_link)
-		@value = link
-	end
-end
-class MorphopolisTicker < HtmlGrid::Div
-	CSS_ID = 'ticker'
-	def init
-		super
-		@value = View::Ticker.new(@model.slideshow, @session, self)
-		@value.component_height = 135
-		@value.component_width = 180
-	end
-end
-class MorphopolisTickerContainer < HtmlGrid::DivComposite
-	CSS_ID = 'ticker-container'
-	COMPONENTS = {
-		[0,0]	=>	MorphopolisTicker
-	}
-end
 class WorkTitle < HtmlGrid::Div
 	CSS_CLASS = 'table-title center'
 	def init

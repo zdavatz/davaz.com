@@ -6,7 +6,7 @@ dojo.require("dojo.lfx.*");
 dojo.require("dojo.style");
 dojo.require("ywesee.widget.Input");
 dojo.require("ywesee.widget.InputText");
-dojo.require("ywesee.widget.InputTextArea");
+dojo.require("ywesee.widget.InputTextarea");
 
 dojo.widget.defineWidget(
 	"ywesee.widget.EditWidget",

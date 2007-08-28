@@ -107,10 +107,19 @@ ywesee.widget.SlideShow = function(){
 		var callback2 = function() { 
 			_this[_this.foreground].style.display = "none";
 			_this[_this.background].style.display = "block";
-			dojo.lfx.html.fadeIn(_this[_this.background], _this.transitionInterval, null,
-			callback1).play();
+      try {
+        dojo.lfx.html.fadeIn(_this[_this.background], _this.transitionInterval, null, callback1).play();
+      } catch(e) {
+        // apparently, IE6 can't do fades on spans
+        callback1();
+      }
 		};
-		dojo.lfx.html.fadeOut(this[this.foreground], this.transitionInterval, null, callback2).play();
+    try {
+      dojo.lfx.html.fadeOut(this[this.foreground], this.transitionInterval, null, callback2).play();
+    } catch(e) {
+      // apparently, IE6 can't do fades on spans
+      callback2();
+    }
 	}
 	
 	this.endTransition = function(){

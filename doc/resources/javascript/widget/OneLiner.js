@@ -24,18 +24,27 @@ ywesee.widget.OneLiner = function() {
 		if(this.messageIdx >= this.messages.length) {
 			this.messageIdx = 0;	
 		}
+
 		this[this.nodeIn].innerHTML = this.messages[this.messageIdx];	
-		this[this.nodeIn].style.color = 
-			this.colors[this.messageIdx];
+		this[this.nodeIn].style.color = this.colors[this.messageIdx];
 		var _this = this;
 		var callback1 = function() { _this.endTransition(); };
 		var callback2 = function() { 
 			_this[_this.nodeOut].style.display = 'none';
 			_this[_this.nodeIn].style.display = 'inline';
-			dojo.lfx.html.fadeIn(_this[_this.nodeIn], _this.delay, null,
-			callback1).play();
+      try {
+        dojo.lfx.html.fadeIn(_this[_this.nodeIn], _this.delay, null, callback1).play();
+      } catch(e) { 
+        // apparently, IE6 can't do fades on spans
+        callback1();
+      }
 		};
-		dojo.lfx.html.fadeOut(this[this.nodeOut], this.delay, null, callback2).play();
+    try {
+      dojo.lfx.html.fadeOut(this[this.nodeOut], this.delay, null, callback2).play();
+    } catch(e) { 
+      // apparently, IE6 can't do fades on spans
+      callback2();
+    }
 	}
 
 	this.display = function() {
@@ -45,6 +54,10 @@ ywesee.widget.OneLiner = function() {
 	}
 
 	this.fillInTemplate = function() {
+    if(dojo.render.html.ie) {
+      this.lineOne.style.filter = "alpha(opacity='0')" ;
+      this.lineTwo.style.filter = "alpha(opacity='0')" ;
+    }
 		dojo.style.setOpacity(this.lineOne, 0.0);
 		dojo.style.setOpacity(this.lineTwo, 0.0);
 		this.nextMessage();

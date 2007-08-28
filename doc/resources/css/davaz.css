@@ -94,8 +94,9 @@ div.dojo-tooltip {
 
 /*	ToolTips */
 
-.dojoTooltip {
+div.dojoTooltip {
 	/*width: 400px;*/
+  font-size: 12px;
 }
 
 div#tooltip-container {

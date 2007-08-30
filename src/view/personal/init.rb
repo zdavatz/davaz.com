@@ -40,7 +40,8 @@ class PhotoDavaz < HtmlGrid::Div
 	def init 
 		super
 		img = HtmlGrid::Image.new(:photo_davaz, model, @session, self)
-		args = [ :title, 'Power' ]
+		#args = [ :title, 'Power' ]
+		args = [:artobject_id, 1591]
 		@dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip, args)
 		@value = img
 	end

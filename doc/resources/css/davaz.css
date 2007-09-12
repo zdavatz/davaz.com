@@ -99,7 +99,7 @@ div.dojoTooltip {
   font-size: 12px;
 }
 
-div#tooltip-container {
+div.tooltip-container {
 	/* width: 400px; 
 	max-width: 400px;
 	padding: 5px;
@@ -505,6 +505,11 @@ div#login-form-div {
 
 /* for HtmlEditorPlugin */
 .tundra .dijitEditorIconHtml { background-position: -72px; }
+
+/* for Tooltip */
+div.dijitTooltipContainer.dijitTooltipContents {
+  border: none;
+}
 
 /* from HtmlLoginWidget.css */
 div#login-form {

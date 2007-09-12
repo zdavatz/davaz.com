@@ -36,7 +36,7 @@ module DAVAZ
 			end
 		end
 		class Tooltip < HtmlGrid::DivComposite
-			CSS_ID = 'tooltip-container'
+			CSS_CLASS = 'tooltip-container'
 			COMPONENTS = {
 				[0,0]	=>	TooltipComposite,
 			}

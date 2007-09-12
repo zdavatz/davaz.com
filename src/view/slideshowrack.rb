@@ -51,15 +51,11 @@ module DAVAZ
 		class SlideShowRackComposite < HtmlGrid::DivComposite
 			COMPONENTS = {
 				[0,0]	=>	component(SerieWidget, :serie_items, 'Rack'),
-				#[0,0]	=>	:serie_widget,
 				[0,1]	=>	MultimediaButtons,
 			}
 			CSS_ID_MAP = {
 				0	=>	'show-container',
 			}
-			def serie_widget(model)
-				SerieWidget.new('Rack', model, @session, self)
-			end
 		end
 		class GallerySlideShowRackComposite < HtmlGrid::DivComposite
 			COMPONENTS = {

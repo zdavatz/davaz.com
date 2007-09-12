@@ -84,7 +84,7 @@ class GuestbookComposite < HtmlGrid::DivComposite
 		args = [ 
 			[ 'form_url' , url ],
 		]
-		dojo_tag("GuestbookWidget", args)
+		dojo_tag("ywesee.widget.GuestbookWidget", args)
 	end
 end
 class Guestbook < View::CommunicationPublicTemplate
@@ -111,7 +111,7 @@ class AdminGuestbookComposite <  HtmlGrid::DivComposite
 		args = [ 
 			[ 'form_url' , url ],
 		]
-		dojo_tag("GuestbookWidget", args)
+		dojo_tag("ywesee.widget.GuestbookWidget", args)
 	end
 end
 class AdminGuestbook < View::CommunicationAdminPublicTemplate

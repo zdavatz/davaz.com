@@ -1,18 +1,13 @@
 dojo.provide("ywesee.widget.EditWidget");
 
-dojo.require("dojo.event");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.lfx.*");
-dojo.require("dojo.style");
-dojo.require("ywesee.widget.Input");
-dojo.require("ywesee.widget.InputText");
-dojo.require("ywesee.widget.InputTextarea");
+dojo.require("dijit._Widget");
+dojo.require("dijit._Templated");
 
-dojo.widget.defineWidget(
+dojo.declare(
 	"ywesee.widget.EditWidget",
-	dojo.widget.HtmlWidget, 
+	[dijit._Widget, dijit._Templated],
 	{
-		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlEditWidget.html"),
+    templatePath: dojo.moduleUrl("ywesee.widget", "templates/HtmlEditWidget.html"),
 
 		//edit widget variables
 		imageDiv: null,
@@ -44,7 +39,7 @@ dojo.widget.defineWidget(
 		elementContainer: null,
 		editButtonsContainer: null,
 		
-		fillInTemplate: function() {
+		startup: function() {
 			if(this.labels) {
 				for(idx = 0; idx < this.values.length; idx += 3) {
 					key = this.values[idx];
@@ -64,25 +59,25 @@ dojo.widget.defineWidget(
 		},
 
 		addInputText: function(value, str, label) {
+      value = value.replace(/<comma[^>]*>/g, ',');
 			var inputDiv = document.createElement("div");
 			this.elementContainer.appendChild(inputDiv);
-			var widgetName = "InputText";
+      var properties = {
+        element_id_name: this.element_id_name, 
+        element_id_value: this.element_id_value, 
+        old_value: value, 
+        css_class: "block-" + str, 
+        update_url: this.update_url,
+        field_key: str,
+        labels: this.labels,
+        label: label
+      };
 			if(value.length > 30) {
-				widgetName = "InputTextArea";
-			}
-			dojo.widget.createWidget(widgetName, 
-				{ 
-					element_id_name: this.element_id_name, 
-					element_id_value: this.element_id_value, 
-					old_value: value, 
-					css_class: "block-" + str, 
-					update_url: this.update_url,
-					field_key: str,
-					labels: this.labels,
-					label: label
-				},
-				inputDiv	
-			);
+        var widget = new ywesee.widget.InputTextarea(properties, inputDiv);
+			} else {
+        var widget = new ywesee.widget.InputText(properties, inputDiv);
+      }
+      widget.startup();
 		},
 
 		handleImage: function() {
@@ -109,7 +104,7 @@ dojo.widget.defineWidget(
 		addEditButtons: function() {
 			var buttonDiv = document.createElement("div");
 			this.editButtonsContainer.appendChild(buttonDiv);
-			dojo.widget.createWidget("EditButtons", 
+      var widget = new ywesee.widget.EditButtons(
 				{ 
 					delete_icon_src: this.delete_icon_src,
 					delete_icon_txt: this.delete_icon_txt,
@@ -126,6 +121,7 @@ dojo.widget.defineWidget(
 				},
 				buttonDiv	
 			);
+      widget.startup();
 		}
 
 	}

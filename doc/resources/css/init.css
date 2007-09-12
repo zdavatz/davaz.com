@@ -12,7 +12,7 @@ div.display-inline {
 	display: inline;
 }
 
-a:link.slide-control, a:visited:slide-control, a:hover.slide-control {
+a:link.slide-control, a:visited.slide-control, a:hover.slide-control {
 	background-color: black;
 	padding: 0px;
 	margin: 0px;

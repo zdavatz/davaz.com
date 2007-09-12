@@ -1,16 +1,13 @@
 dojo.provide("ywesee.widget.GuestbookWidget");
 
-dojo.require("dojo.event");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.lfx.*");
-dojo.require("dojo.style");
-dojo.require("dojo.validate");
+dojo.require("dijit._Widget");
+dojo.require("dijit._Templated");
 
-dojo.widget.defineWidget(
+dojo.declare(
 	"ywesee.widget.GuestbookWidget",
-	dojo.widget.HtmlWidget,
+	[dijit._Widget, dijit._Templated],
 	{
-		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlGuestbookWidget.html"),
+    templatePath: dojo.moduleUrl("ywesee.widget", "templates/HtmlGuestbookWidget.html"),
 
 		//widget variables
 		form_url: "",
@@ -22,20 +19,22 @@ dojo.widget.defineWidget(
 		formContainer: null,
 		errorMessages: null,
 
-		fillInTemplate: function() {
+		startup: function() {
 			this.formContainer.style.display = "none";
 			var _this = this;
-			dojo.io.bind({
+      
+			dojo.xhrPost({
 				url: this.form_url,
-				mimetype: "text/html",
-				load: function(type, data, event) {
+				handleAs: "text",
+				load: function(data, request) {
 					_this.formContainer.innerHTML = data;	
 					_this.form_node = _this.formContainer.firstChild;
-					dojo.event.connect(_this.form_node, 'onsubmit', _this, 'submitForm');
+					dojo.connect(_this.form_node, 'onsubmit', _this, 'submitForm');
 					var cancelButton = dojo.byId('cancel-add-entry');
-					dojo.event.connect(cancelButton, 'onclick', _this, 'toggleForm');
+					dojo.connect(cancelButton, 'onclick', _this, 'toggleForm');
 				}
 			});
+     
 		},
 
 		toggleForm: function() {
@@ -45,21 +44,21 @@ dojo.widget.defineWidget(
 					_this.errorMessages.innerHTML = "";
 					_this.addEntryLink.style.display = 'block';
 				}
-				dojo.lfx.wipeOut(this.formContainer, 300, dojo.lfx.easeInOut, callback).play();
+				dojo.fx.wipeOut({node:this.formContainer,duration:300,onEnd:callback}).play();
 			} else {
 				this.addEntryLink.style.display = 'none';
-				dojo.lfx.wipeIn(this.formContainer, 300).play();
+				dojo.fx.wipeIn({node:this.formContainer,duration:300}).play();
 			}
 		},	
 
 		submitForm: function() {
 			var _this = this;
-			dojo.io.bind({
+			dojo.xhrPost({
 				url: this.form_node.action,
-				formNode: this.form_node,
-				mimetype: "text/json",
-				load: function(type, data, event) {
-					if(data['success'])	{
+				form: this.form_node,
+				handleAs: "json-comment-filtered",
+				load: function(data, request) {
+					if(data["success"])	{
 						document.location.reload();
 					} else {
 						_this.errorMessages.innerHTML = data['messages'];

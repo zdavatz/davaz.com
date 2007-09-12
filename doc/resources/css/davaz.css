@@ -162,8 +162,8 @@ img.image-container-image {
 	padding-top: 4px;
 	max-width: 360px;
 	max-height: 340px;
-	height:expression(this.width > this.height ? "auto" : "360px");
-	width:expression(this.width > this.height ? "340px" : "auto");
+	/*height:expression(this.width > this.height ? "auto" : "360px");
+	width:expression(this.width > this.height ? "340px" : "auto");*/
 }
 
 div.image-title-container {
@@ -420,8 +420,8 @@ div#artobject-google-video-url {
 img#artobject-image {
 	max-width: 350px;
 	max-height: 350px;
-	height:expression(this.width > this.height ? "auto" : "350px");
-	width:expression(this.width > this.height ? "350px" : "auto");
+	/*height:expression(this.width > this.height ? "auto" : "350px");
+	width:expression(this.width > this.height ? "350px" : "auto");*/
 }
 
 div#artobject-details {
@@ -498,4 +498,40 @@ div#login-form-div {
 	right: 0px;
 	text-align: right;
 	display: none;
+}
+
+/* dojo 0.9 does not load per-widget css-files. 
+ * define the necessary css below */
+
+/* for HtmlEditorPlugin */
+.tundra .dijitEditorIconHtml { background-position: -72px; }
+
+/* from HtmlLoginWidget.css */
+div#login-form {
+	text-align: left;
+	color: black;
+	padding: 5px;
+	border: 2px #990099 solid;
+	background-color: #FFFFCC;
+	margin-left: auto; margin-right: auto;
+}
+
+/* from HtmlSlideShow.css */
+.slideShowImg {
+	position: absolute;
+	left: 0px;
+	top: 0px; 
+	border: 2px solid #4d4d4d;
+	padding: 0px;
+	margin: 0px;
+}
+
+.no-decoration {
+	text-decoration: none;
+}
+
+/* from HtmlEditButtons.css */
+img.edit-icon {
+	width: 23px;
+	border: none;
 }

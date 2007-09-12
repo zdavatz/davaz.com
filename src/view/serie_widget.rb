@@ -10,18 +10,19 @@ module DAVAZ
 		class SerieWidget < HtmlGrid::NamedComponent
 			def compose_args
 				{
-					'images'	=> [],
-					'titles'	=> [],
 					'transitionInterval'	=>	'1500',
 					'delay'		=> '3500',
 					'imageHeight'	=>	DAVAZ.config.slideshow_image_height,
 					#'id'			=>	@name.to_s,
 					'id'			=>	'show',
+          'dataUrl' =>  @lookandfeel.event_url(@session.zone, :ajax_images),
 				}
 			end
 			def to_html(context)
 				args = compose_args.update(@model)
-				dojo_tag(@name, args).to_html(context)
+        args.delete("images") # titles don't parse cleanly in dojo 0.9, so we 
+        args.delete("titles") # pass images and titles by json
+				dojo_tag("ywesee.widget.#@name", compose_args).to_html(context)
 			end
 		end
 	end

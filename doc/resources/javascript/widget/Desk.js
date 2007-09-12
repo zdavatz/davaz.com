@@ -1,52 +1,50 @@
 dojo.provide("ywesee.widget.Desk");
 
-dojo.require("dojo.event");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.lfx.html");
-dojo.require("dojo.style");
+dojo.require("dijit._Widget");
+dojo.require("dijit._Templated");
 
-ywesee.widget.Desk = function(){
-	dojo.widget.HtmlWidget.call(this);
+dojo.declare(
+  "ywesee.widget.Desk",
+	[dijit._Widget, dijit._Templated],
+  {
 
-	this.templatePath = 
-		dojo.uri.dojoUri("../javascript/widget/templates/HtmlDesk.html");
+    templatePath: dojo.moduleUrl("ywesee.widget", "templates/HtmlDesk.html"),
 
-	this.isContainer = false;
-	this.widgetType = "Desk";
+    view: "Desk",
 
-	this.images = [];	
-	this.titles = [];
-	this.dataUrl = "";
-	this.serieId = "";
-	this.deskContainer = null;
-	this.deskContent = null;
-  this.contentPane = null;
+    images: [],	
+    titles: [],
+    dataUrl: "",
+    serieId: "",
+    deskContainer: null,
+    deskContent: null,
+    contentPane: null,
 
-	this.fillInTemplate = function(){
-		var newDataUrl = this.dataUrl.replace(/ajax_rack/, 'ajax_desk');
+    startup: function(){
+      var newDataUrl = this.dataUrl.replace(/ajax_rack/, 'ajax_desk');
 
-    var div = document.createElement("div");
-    this.contentPane = dojo.widget.createWidget("ContentPane", {executeScripts: true}, div);
-    dojo.dom.replaceChildren(this.deskContent, div);
-		
-		_this = this;
+      _this = this;
 
-		dojo.io.bind({
-			url: newDataUrl,
-			load: function(type, data, event) {
-				//_this.deskContent.innerHTML = data;
-        //_this.toggleInnerHTML(data);
-        _this.contentPane.setContent(data);
-			},
-			mimetype: "text/html"
-		});
-	}
+      console.debug("Desk.startup, getting: ", newDataUrl);
+      dojo.xhrGet({
+        url: newDataUrl,
+        load: function(data, request) {
+          _this.toggleInnerHTML(data);
+        },
+        error: function(data, request) { 
+          console.debug("could not load Desk!", data, request); 
+        },
+        handleAs: "text"
+      });
+    },
 
-	this.toggleInnerHTML = function(html) {
-    this.contentPane.setContent(html);
-		//this.deskContent.innerHTML = html;		
-	}
-}
-
-dojo.inherits(ywesee.widget.Desk, dojo.widget.HtmlWidget);
-dojo.widget.tags.addParseTreeHandler("dojo:desk");
+    toggleInnerHTML: function(html) {
+      this.deskContent.innerHTML = html;
+      try {
+        dojo.parser.parse(this.deskContent);
+      } catch(e) {
+        console.debug("could not parse desk content!"); 
+      }
+    }
+  }
+);

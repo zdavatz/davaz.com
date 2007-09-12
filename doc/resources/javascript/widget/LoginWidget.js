@@ -1,16 +1,14 @@
 dojo.provide("ywesee.widget.LoginWidget");
 
-dojo.require("dojo.event");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.lfx.*");
-dojo.require("dojo.style");
+dojo.require("dijit._Widget");
+dojo.require("dijit._Templated");
 
-dojo.widget.defineWidget(
+dojo.declare(
 	"ywesee.widget.LoginWidget",
-	dojo.widget.HtmlWidget,
+	[dijit._Widget, dijit._Templated],
 	{
-		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlLoginWidget.html"),
-		templateCssPath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlLoginWidget.css"),
+    templatePath: 
+      dojo.moduleUrl("ywesee.widget", "templates/HtmlLoginWidget.html"),
 
 		//widget variables
 		loginLink: null,
@@ -23,33 +21,25 @@ dojo.widget.defineWidget(
 		errorMessageContainer: null,
 		formContainer: null,
 
-		fillInTemplate: function() {
+		startup: function() {
 			_this = this;
-			dojo.io.bind({
+			dojo.xhrGet({
 				url: this.loginFormUrl,	
-				mimetype: "text/html",
-				load: function(type, data, event) {
+				handleAs: "text",
+				load: function(data, request) {
 					_this.formContainer.innerHTML = data;		
-					var pos = dojo.html.getAbsolutePosition(_this.loginLink, true);
-					var left = pos[0];
-					var top = pos[1] - 20 - _this.formContainer.offsetHeight;
+					var pos = dojo.coords(_this.loginLink, true);
+					var left = pos.x;
+					var top = pos.y - 20 - _this.formContainer.offsetHeight;
+					_this.widgetContainer.style.position = "absolute";
 					_this.widgetContainer.style.left = left+"px";
 					_this.widgetContainer.style.top = top+"px";
 					_this.loginForm = _this.formContainer.firstChild;
-					dojo.event.connect(_this.loginForm, 'onsubmit', _this, 'submitForm');
+					dojo.connect(_this.loginForm, 'onsubmit', _this, 'submitForm');
 					var cancel = dojo.byId('login-form-cancel-button');
-					dojo.event.connect(cancel, 'onclick', _this, 'cancelLogin');
+					dojo.connect(cancel, 'onclick', _this, 'cancelLogin');
 				}
 			});
-		/*
-			this.login_form_div = dojo.byId('login-form-div');
-			this.loginLink.className = this.link_css_class;
-			this.loginLink.style.cssFloat = 'left';
-			//this.loginLink.style.display = 'inline';
-			this.loginLink.href = 'javascript:void(0)';
-			this.loginLink.innerHTML = this.link_value;
-			dojo.event.connect(this.loginLink, 'onclick', this, "toggleLoginForm");
-			*/
 		},
 
 		cancelLogin: function() {
@@ -59,19 +49,18 @@ dojo.widget.defineWidget(
 
 		submitForm: function() {
 			_this = this;
-			dojo.io.bind({
+			dojo.xhrPost({
 				url: this.loginForm.action,
-				formNode: this.loginForm,
-				load: function(type, data, event) {
-					if(data.success) {
+				form: this.loginForm,
+				load: function(data, event) {
+					if(data["success"]) {
 						document.location.reload();
 					} else {
 						_this.errorMessageContainer.innerHTML = data.message;
 					}
 				},
-				mimetype: "text/json"
+				handleAs: "json-comment-filtered"
 			});		
 		}
-
 	}
 );

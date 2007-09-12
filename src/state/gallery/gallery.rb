@@ -54,7 +54,6 @@ class AjaxDesk < SBSM::State
 end
 class AjaxRack < SBSM::State
 	VOLATILE = true
-	#VIEW = View::SearchSlideShowRackComposite
 	VIEW = View::AjaxResponse
 	def init
 		serie_id = @session.user_input(:serie_id)

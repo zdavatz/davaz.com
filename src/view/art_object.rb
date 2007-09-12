@@ -592,15 +592,9 @@ module DAVAZ
 				@lookandfeel.lookup(:text)
 			end
 			def text(model)
-				input = HtmlGrid::Textarea.new(:text, model.artobject, @session, self)
-        input.attributes.update({
-          'dojoType'    => 'Editor2',  
-          'shareToolbar'=> 'false',
-          'htmlEditing' => 'true',
-          'useActiveX'  => 'false',
-          'wrap'        => 'soft',
-        })
-				input
+        obj = model.artobject
+        dojo_tag("ywesee.widget.Editor", :name => "text", :id => "html-editor",
+                 :value => escape(obj.text), :class => "tundra")
 			end
 			def tags(model)
 				input_text(:tags_to_s)
@@ -608,7 +602,8 @@ module DAVAZ
 			def update(model)
         button = submit(model)
 				key = (model.artobject.artobject_id) ? :update : :save
-				button.set_attribute('value', @lookandfeel.lookup(key))
+        button = HtmlGrid::Button.new(key, model, @session, self)
+        button.set_attribute('onclick', "dijit.byId('html-editor').onSubmit(); this.form.submit();")
 				button
 			end
 			def url(model)

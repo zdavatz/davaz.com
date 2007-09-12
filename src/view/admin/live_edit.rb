@@ -9,10 +9,12 @@ module DAVAZ
 		module Admin
 class LiveEditWidget < HtmlGrid::Div
 	def compose_element_args
-		args = []
+		args = [
+      [ 'class', 'tundra' ],
+		  [ 'element_id_name', 'artobject_id' ],
+		  [ 'element_id_value', @model.artobject_id ],
+    ]
 		values = []
-		args.push([ 'element_id_name', 'artobject_id' ])
-		args.push([ 'element_id_value', @model.artobject_id ])
     fields = case @model.serie
              when  /His Life/
                [ :title, :url, :text, ]
@@ -22,7 +24,7 @@ class LiveEditWidget < HtmlGrid::Div
 		fields.each { |symbol|
 			if((value = @model.send(symbol)) && !value.empty?)	
 				values.push(symbol.to_s)
-				values.push(CGI.escapeHTML(value))
+				values.push(CGI.escapeHTML(value).gsub(',','<comma/>'))
 			end
 		}
 		args.push(['values', values])
@@ -57,21 +59,21 @@ class LiveEditWidget < HtmlGrid::Div
 			args.push([ 'has_image', 'false' ])
 		end
 		args.push(['image_pos', 3])
-		dojo_tag('EditWidget', args.concat(compose_element_args)).to_html(context)
+		dojo_tag('ywesee.widget.EditWidget', args.concat(compose_element_args)).to_html(context)
 	end
-		end
+end
 class GuestbookLiveEditWidget < HtmlGrid::Div 
 	def compose_element_args
-		args = []
+		args = [
+      [ 'class', 'tundra' ],
+		  [ 'element_id_name', 'guest_id' ],
+		  [ 'element_id_value', @model.guest_id ],
+    ]
 		values = []
-		args.push([ 'element_id_name', 'guest_id' ])
-		args.push([ 'element_id_value', @model.guest_id ])
-		[
-			:name, :date_gb, :city, :country, :text
-		].each { |symbol| 
+		[ :name, :date_gb, :city, :country, :text ].each { |symbol| 
 			unless((value = @model.send(symbol)).nil? || value.empty?)	
 				values.push(symbol.to_s)
-				values.push(CGI.escapeHTML(value))
+				values.push(CGI.escapeHTML(value).gsub(',','<comma/>').gsub(/\n/, '<br/>'))
 				values.push(@lookandfeel.lookup(symbol))
 			end
 		}
@@ -91,7 +93,7 @@ class GuestbookLiveEditWidget < HtmlGrid::Div
 			[ 'delete_icon_txt', @lookandfeel.lookup(:delete) ],
 			[ 'labels', true ], 
 		]
-		dojo_tag('EditWidget', args.concat(compose_element_args)).to_html(context)
+		dojo_tag('ywesee.widget.EditWidget', args.concat(compose_element_args)).to_html(context)
 	end
 end
 		end

@@ -24,7 +24,7 @@ module DAVAZ
 					'widgetId'				=>	'ticker',	
 					'stopped'					=>	'true',
 				}
-				model.each { |item| 
+				(model || []).each { |item| 
 					unless(item.artobject_id.nil?)
 						if(Util::ImageHelper.has_image?(item.artobject_id))
 							path = Util::ImageHelper.image_url(item.artobject_id, 'medium')
@@ -43,7 +43,7 @@ module DAVAZ
 						end
 					end
 				}
-				dojo_tag('ticker', args).to_html(context)
+				dojo_tag('ywesee.widget.Ticker', args).to_html(context)
 			end
 		end
 		class InnerTicker < HtmlGrid::Div
@@ -60,6 +60,7 @@ module DAVAZ
 				[0,0]	=>	:ticker,
 			}
       CSS_ID_MAP = ['ticker-container']
+      CSS_STYLE_MAP = [ 'display: none' ]
       def ticker(model)
         tick = Ticker.new(model, @session, self)
 				tick.component_height = 135

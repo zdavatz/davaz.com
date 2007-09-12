@@ -247,7 +247,7 @@ module DAVAZ
 				:cv_russian				=>	'uploads/pdf/hislife/cv_russian.pdf',
 				:design_css				=>	'css/design.css',
 				:desk							=>	'images/global/desk.gif',
-				:dojo_js					=>	'dojo/dojo.js',
+				:dojo_js					=>	'dojo/dojo/dojo.js',
 				:drawings_css			=>	'css/drawings.css',
 				:exhibitions_css	=>	'css/exhibitions.css',
 				:family_title			=>	'images/global/family.gif',

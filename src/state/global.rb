@@ -4,6 +4,7 @@
 require 'sbsm/state'
 require 'htmlgrid/link'
 require 'state/admin/login'
+require 'state/ajax_response'
 require 'state/art_object'
 require 'state/communication/global'
 require 'state/communication/shop'
@@ -38,6 +39,15 @@ module DAVAZ
 					State::Gallery::AjaxDesk.new(@session, [])
 				end
 			end
+      def ajax_images
+        if(@model.respond_to?(:slideshow_items))
+          AjaxResponse.new(@session, @model.slideshow_items)
+        elsif(@model.respond_to?(:serie_items))
+          AjaxResponse.new(@session, @model.serie_items)
+        else
+          AjaxResponse.new(@session, @model)
+        end
+      end
 			def tooltip
 				State::Tooltip.new(@session, @model)
 			end

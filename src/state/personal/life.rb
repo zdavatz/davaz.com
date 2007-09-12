@@ -30,7 +30,6 @@ class AjaxAddNewBioElement < State::Admin::AjaxAddNewElement
 		}		
 		insert_id = @session.app.insert_artobject(values)
 		@model = @session.app.load_artobject(insert_id)
-    puts @model.inspect
 	end
 end
 class AdminLife < State::Personal::Life

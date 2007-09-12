@@ -38,9 +38,9 @@ module DAVAZ
 				charset = self.charset
 				unless(charset.nil? \
 					|| %w{iso-8859-1 latin1}.include?(charset))
-					cd = Iconv.new('Latin1', charset)
+					iconv = Iconv.new('Latin1', charset)
 					begin
-						latin = Iconv.iconv('Latin1', charset, body).first
+						iconv.iconv(body)
 					rescue
 						body
 					end

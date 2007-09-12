@@ -2,6 +2,7 @@
 # State::Personal::Family -- davaz.com -- 27.09.2005 -- mhuggler@ywesee.com
 
 require 'state/global_predefine'
+require 'state/admin/ajax_states'
 require 'view/personal/family'
 
 module DAVAZ
@@ -16,7 +17,7 @@ class Family < State::Personal::Global
 	end
 end
 class AdminFamily < State::Personal::Family
-	#VIEW = View::Personal::AdminFamily
+	VIEW = View::Personal::AdminFamily
 end
 		end
 	end

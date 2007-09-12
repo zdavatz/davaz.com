@@ -1,20 +1,17 @@
 dojo.provide("ywesee.widget.InputText");
 
 dojo.require("ywesee.widget.Input");
-dojo.require("dojo.event");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.lfx.*");
-dojo.require("dojo.style");
 
-dojo.widget.defineWidget(
+dojo.declare(
 	"ywesee.widget.InputText",
-	ywesee.widget.Input,
+	[ywesee.widget.Input, dijit._Templated],
 	{
-		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlInput.html"),
-
-		fillInTemplate: function() {
+    templatePath: dojo.moduleUrl("ywesee.widget", "templates/HtmlInput.html"),
+  /*
+		startup: function() {
 			this.prepareWidget();
 		},
+    */
 		
 		addInputToForm: function() {
 			this.leInput = document.createElement("input");
@@ -23,10 +20,9 @@ dojo.widget.defineWidget(
 			this.leInput.value = this.old_value;
 			this.leInput.className = this.css_class + " live-edit active";
 			this.leInput.id = this.element_id_value + "-" + this.field_key; 
-			dojo.event.connect(this.leInput, "onkeydown", this, "keyDown");
+			dojo.connect(this.leInput, "onkeydown", this, "keyDown");
 			this.inputForm.appendChild(this.leInput);
 			this.leInput.focus();
 		}
-
 	}
 );

@@ -112,7 +112,6 @@ class AjaxSaveGbLiveEdit < SBSM::State
 		update_hash = {
 			field_key.intern	=>	update_value,
 		}
-		
 		@session.app.update_guest(guest_id, update_hash)
 		guest = @session.app.load_guest(guest_id)
 		@model = {

@@ -1,16 +1,15 @@
 dojo.provide("ywesee.widget.EditButtons");
 
-dojo.require("dojo.event");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.lfx.*");
-dojo.require("dojo.style");
+dojo.require("ywesee.widget.Input");
+dojo.require("dijit.Editor");
+dojo.require("dojo.io.iframe");
 
-dojo.widget.defineWidget(
+dojo.declare(
 	"ywesee.widget.EditButtons",
-	dojo.widget.HtmlWidget,
+	[dijit._Widget, dijit._Templated],
 	{
-		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlEditButtons.html"),
-		templateCssPath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlEditButtons.css"),
+    templatePath: 
+      dojo.moduleUrl("ywesee.widget", "templates/HtmlEditButtons.html"),
 
 		//dojo variables
 		delete_icon_src: "",
@@ -35,14 +34,14 @@ dojo.widget.defineWidget(
 		uploadImageFormDiv: null,
 		uploadImageForm: null,
 
-		fillInTemplate: function() {
+		startup: function() {
 			this.uploadImageFormDiv.style.display = "none";	
 			
 			this.deleteIcon.src = this.delete_icon_src;
 			this.deleteIcon.title = this.delete_icon_txt;
 			this.deleteIcon.alt = this.delete_icon_txt;
 			this.deleteIcon.id = "delete-item-" + this.element_id_value;
-			dojo.event.connect(this.deleteLink, 'onclick', this, 'deleteItem');
+			dojo.connect(this.deleteLink, 'onclick', this, 'deleteItem');
 			this.handleImageButtons();
 		},
 
@@ -52,15 +51,15 @@ dojo.widget.defineWidget(
 				this.imageButtonIcon.title = this.delete_image_icon_txt;
 				this.imageButtonIcon.alt = this.delete_image_icon_txt;
 				this.imageButtonIcon.id = "delete-image-" + this.element_id_value;
-				dojo.event.disconnect(this.imageButtonLink, 'onclick', this, 'addUploadImageForm');
-				dojo.event.connect(this.imageButtonLink, 'onclick', this, 'deleteImage');
+				dojo.disconnect(this.imageButtonLink, 'onclick', this, 'addUploadImageForm');
+				dojo.connect(this.imageButtonLink, 'onclick', this, 'deleteImage');
 			} else {
 				this.imageButtonIcon.src = "";//this.add_image_icon_src;
 				this.imageButtonIcon.title = this.add_image_icon_txt;
 				this.imageButtonIcon.alt = this.add_image_icon_txt;
 				this.imageButtonIcon.id = "add-image-" + this.element_id_value;
-				dojo.event.disconnect(this.imageButtonLink, 'onclick', this, 'deleteImage');
-				dojo.event.connect(this.imageButtonLink, 'onclick', this, 'addUploadImageForm');
+				dojo.disconnect(this.imageButtonLink, 'onclick', this, 'deleteImage');
+				dojo.connect(this.imageButtonLink, 'onclick', this, 'addUploadImageForm');
 			}
 		},
 
@@ -68,14 +67,14 @@ dojo.widget.defineWidget(
 			var msg = 'Do you really want to delete this Item?';
 			_this = this;
 			if(confirm(msg)) { 
-				dojo.io.bind({
+				dojo.xhrGet({
 					url: this.delete_item_url,
-					load: function(type, data, event) {
+					load: function(data, request) {
 						if(data.deleted) {
 							_this.edit_widget.destroy();
 						}
 					},
-					mimetype: "text/json"
+					handleAs: "json-comment-filtered"
 				});
 			}
 		},
@@ -84,9 +83,9 @@ dojo.widget.defineWidget(
 			var msg = 'Do you really want to delete this Image?';
 				_this = this;
 			if(confirm(msg)) { 
-				dojo.io.bind({
+				dojo.xhrGet({
 					url: this.delete_image_url,
-					load: function(type, data, event) {
+					load: function(data, request) {
 						if(data['status'] == 'deleted') {
 							_this.has_image = "false";
 							_this.handleImageButtons();
@@ -94,7 +93,7 @@ dojo.widget.defineWidget(
 							_this.edit_widget.handleImage();
 						}
 					},
-					mimetype: "text/json"
+					handleAs: "json-comment-filtered"
 				});
 			}
 		},
@@ -102,20 +101,20 @@ dojo.widget.defineWidget(
 		addUploadImageForm: function() {
 			_this = this;
 			if(this.uploadImageFormDiv.style.display == 'none') {
-				dojo.io.bind({
+				dojo.xhrGet({
 					url: this.upload_form_url,				
-					load: function(type, data, event) {
+					load: function(data, request) {
 						var container = _this.uploadImageFormDiv;
 						container.innerHTML = data;
 						_this.uploadImageForm = container.firstChild;
-						dojo.event.connect(_this.uploadImageForm, 
+						dojo.connect(_this.uploadImageForm, 
 							'onsubmit', _this, "submitForm");
-						dojo.lfx.wipeIn(container, 300).play();
+						dojo.fx.wipeIn({node:container, duration:300}).play();
 					}, 
-					mimetype: "text/html"
+					handleAs: "text"
 				});
 			} else {
-				dojo.lfx.wipeOut(_this.uploadImageFormDiv, 300).play();
+				dojo.fx.wipeOut({node:_this.uploadImageFormDiv, duration:300}).play();
 			}
 		},
 
@@ -123,13 +122,12 @@ dojo.widget.defineWidget(
 			var form = this.uploadImageForm;
 			document.body.style.curser = 'progress';
 			_this = this;
-			dojo.io.bind({
+			dojo.io.iframe.send({
 				url: form.action,
-				formNode: form,
-				transport: 'IframeTransport',
-				load: function(type, data, event) {
+				form: form,
+				load: function(data, request) {
 					if(data.body.innerHTML != 'not uploaded') {
-						dojo.lfx.wipeOut(_this.uploadImageFormDiv, 300).play();
+						dojo.fx.wipeOut({node:_this.uploadImageFormDiv, duration:300}).play();
 						_this.uploadImageFormDiv.removeChild(form);
 						_this.has_image = "true";
 						_this.handleImageButtons();
@@ -142,7 +140,7 @@ dojo.widget.defineWidget(
 				error: function(type, error) {
 					dojo.debug(dojo.errorToString(error));
 				},
-				mimetype: 'text/html'
+				handleAs: 'html'
 			});
 		}
 

@@ -41,7 +41,7 @@ class PhotoDavaz < HtmlGrid::Div
 		super
 		img = HtmlGrid::Image.new(:photo_davaz, model, @session, self)
 		args = [ :title, 'Power' ]
-		@dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip, args)
+		self.dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip, args)
 		@value = img
 	end
 end
@@ -74,7 +74,7 @@ class PicBottleneck < HtmlGrid::Div
 		super
 		img = HtmlGrid::Image.new(:pic_bottleneck, model, @session, self)
 		args = [ :title, 'Bottleneck' ]
-		@dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip, args)
+		self.dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip, args)
 		@value = img
 	end
 end
@@ -266,22 +266,10 @@ class Init < View::PublicTemplate
 		0	=>	'top-navigation',
 		1	=>	'ticker-container',
 	}
+  CSS_STYLE_MAP = {
+    1 => 'display: none',
+  }
 	CSS_MAP = {}
-	def other_html_headers(context)
-		args = {
-			'language'	=>	'JavaScript',
-			'type'			=>	'text/javascript',
-		}
-		super << context.script(args) {
-      size = (@model.movies || []).size
-			<<-EOS
-			function scrollDiv(elId) {
-				var node = document.getElementById(elId);
-				dojo.lfx.html.slideTo(node, [-#{size * self.class.const_get(:MOVIES_DIV_IMAGE_WIDTH)},0], #{size * self.class.const_get(:MOVIES_DIV_IMAGE_SPEED)})
-			}
-			EOS
-		}
-	end
 end
 		end
 	end

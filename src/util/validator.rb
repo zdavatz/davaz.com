@@ -31,6 +31,7 @@ module DAVAZ
 				:ajax_desk_artobject,
 				:ajax_guestbookentry,
 				:ajax_home,
+				:ajax_images,
 				:ajax_image_action,
 				#:ajax_image_browser,
 				:ajax_reload_tag_images,

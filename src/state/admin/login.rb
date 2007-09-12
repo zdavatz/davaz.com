@@ -19,26 +19,9 @@ module LoginMethods
 			'message'	=>	@session.lookandfeel.lookup(:e_incorrect_login),
 		}
 		AjaxLoginStatus.new(@session, model)
-=begin
-  rescue Yus::UnknownEntityError
-    @errors.store(:email, create_error(:e_authentication_error, :email, nil))
-		newstate
-  rescue Yus::AuthenticationError
-    @errors.store(:pass, create_error(:e_authentication_error, :pass, nil))
-		newstate
-=end
 	end
 	private
 	def autologin(user)
-		#no need anymore because auf ajax login
-		#model = @previous.request_path
-=begin
-		model = self.request_path
-		if(fragment = @session.user_input(:fragment))
-			model << "##{fragment}" unless fragment.empty?
-		end
-		newstate = State::Redirect.new(@session, model)
-=end
 		if(user.valid? && user.allowed?('edit', 'com.davaz'))
 			@session.active_state.extend(State::Admin::Admin)
 		end
@@ -57,17 +40,6 @@ class AjaxLoginForm < SBSM::State
 		@model.fragment = @session.user_input(:fragment)
 	end
 end
-#Not use anymore because of Ajax Login
-=begin
-class Login < State::Admin::Global
-	DIRECT_EVENT = :login_form
-	VIEW = View::Admin::LoginForm
-	def init
-		@model = OpenStruct.new
-		@model.fragment = @session.user_input(:fragment)
-	end
-end
-=end
 		end
 	end
 end

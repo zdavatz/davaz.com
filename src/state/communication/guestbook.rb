@@ -25,17 +25,17 @@ class AjaxSubmitStatus < SBSM::State
 		@model = {}
 		messages = []
 		if(error?)
-			@model['success'] = false
+			@model[:success] = false
 			@errors.each { |key, value|
 				messages.push(@session.lookandfeel.lookup(value.message))
 			}
-			@model['messages'] = messages.join("<br />")
+			@model[:messages] = messages.join("<br />")
 		else
 			hash.each { |key, value|
 				hash[key] = value
 			}
 			@session.app.insert_guest(hash)
-			@model['success'] = true 
+			@model[:success] = true 
 		end
 	end
 end

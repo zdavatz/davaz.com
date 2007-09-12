@@ -4,6 +4,7 @@
 require 'RMagick'
 require "util/config"
 require "util/davaz"
+require 'fileutils'
 
 module DAVAZ
 	module Util 
@@ -99,11 +100,9 @@ module DAVAZ
 			def ImageHelper.store_tmp_image(tmp_path, artobject_id)
 				image = Image.read(tmp_path).first
 				extension = image.format.downcase
-				path = File.join(
-					ImageHelper.image_dir,
-					artobject_id.to_s[-1,1], 
-					artobject_id.to_s + "." + extension
-				) 
+        dir = File.join(ImageHelper.image_dir, artobject_id.to_s[-1,1]) 
+        FileUtils.mkdir_p(dir)
+        path = File.join(dir, artobject_id.to_s + "." + extension)
 				image.write(path)
 				ImageHelper.resize_image(artobject_id.to_s, image)
 				File.delete(tmp_path)

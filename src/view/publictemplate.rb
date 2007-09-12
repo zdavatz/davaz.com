@@ -9,6 +9,8 @@ require 'htmlgrid/spanlist'
 require 'view/navigation'
 require 'view/ticker'
 
+DOJO_VERSION = '0.9'
+
 module HtmlGrid
 	module FormMethods
 		remove_const(:ACCEPT_CHARSET)
@@ -49,36 +51,26 @@ module DAVAZ
 			DOJO_DEBUG = DAVAZ.config.dojo_debug
 			DOJO_BACK_BUTTON = false 
 			DOJO_PREFIX = {
-				'ywesee'	=>	'../javascript',
+				'ywesee'	=>	'/resources/javascript',
 			}
 			DOJO_REQUIRE = [
-				#'dojo.debug.Firebug',
-				'dojo.widget.*',
-				'dojo.widget.Tooltip',
-				'dojo.lfx.*',
-				'dojo.lfx.html',
-				'dojo.io.IframeIO',
-				'dojo.lang.*',
-				'dojo.undo.browser',
-        'dojo.widget.Editor2',
-				'dojo.widget.Tree',
-				'dojo.widget.TreeRPCController',
-				'dojo.widget.TreeSelector',
-				'dojo.widget.TreeNode',
-				'dojo.widget.TreeContextMenu',
-				'ywesee.widget.*',
+				'dojo.parser',
+        'dojo.fx',
+        'dojo.back',
+				'dijit.layout.ContentPane',
 				'ywesee.widget.Desk',
 				'ywesee.widget.OneLiner',
 				'ywesee.widget.SlideShow',
 				'ywesee.widget.Rack',
 				'ywesee.widget.Ticker',
-				'ywesee.widget.Input',
 				'ywesee.widget.InputText',
 				'ywesee.widget.InputTextarea',
 				'ywesee.widget.EditWidget',
 				'ywesee.widget.EditButtons',
 				'ywesee.widget.LoginWidget',
 				'ywesee.widget.GuestbookWidget',
+				'ywesee.widget.Tooltip',
+				'ywesee.widget.Editor',
 			]
 			CONTENT = nil
 			TICKER = nil
@@ -127,6 +119,8 @@ module DAVAZ
 				div.css_class = 'column'
 				div.value = View::LeftNavigation.new(model, @session, self)
 				divs << div
+        self.onload = sprintf("dojo.back.setInitialState('%s');",
+                              @session.request_path)
 				divs
 			end
 			def title(context)

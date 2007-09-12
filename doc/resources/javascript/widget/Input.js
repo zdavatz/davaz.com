@@ -1,15 +1,14 @@
 dojo.provide("ywesee.widget.Input");
 
-dojo.require("dojo.event");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.lfx.*");
-dojo.require("dojo.style");
+dojo.require("dijit._Widget");
+dojo.require("dijit._Templated");
 
-dojo.widget.defineWidget(
+dojo.declare(
 	"ywesee.widget.Input",
-	dojo.widget.HtmlWidget, 
+	//[dijit._Widget, dijit._Templated],
+	[dijit._Widget],
 	{
-		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlInput.html"),
+    //templatePath: dojo.moduleUrl("ywesee.widget", "templates/HtmlInput.html"),
 
 		//widget variables
 		element_id_name: "",
@@ -24,19 +23,23 @@ dojo.widget.defineWidget(
 		labels: false,
 		label: "",
 
+    //connection handlers
+    divConn: null,
+    labelConn: null,
+    textConn: null,
+
 		//attach points
 		inputContainer: null,
 		labelDiv: null,
 		inputDiv: null,
 		inputForm: null,
 
-		fillInTemplate: function() {
+		startup: function() {
 			this.prepareWidget();
 		},
 
 		prepareWidget: function() {
 			this.inputDiv.className = this.css_class + " live-edit";
-			dojo.event.connect(this.inputDiv, "onclick", this, "toggleInput");
 			this.addTextToDiv();
 			this.addHiddenFieldsToForm();
 		},
@@ -58,14 +61,14 @@ dojo.widget.defineWidget(
 		addTextToDiv: function() {
 			if(this.labels) {
 				this.labelDiv.innerHTML = this.label;
-				dojo.event.connect(this.labelDiv, "onclick", this, "toggleInput");
 				this.inputDiv.style.marginLeft = "80px";
+				this.labelConn = dojo.connect(this.labelDiv, "onclick", this, "toggleInput");
 			}
 			this.leText = document.createElement("span");
 			this.leText.id = this.element_id_value + "-" + this.field_key; 
 			this.leText.innerHTML = this.toHtml(this.old_value);
-			var _this = this;
-			dojo.event.connect(this.leText, "onclick", this, "toggleInput");
+      this.divConn = dojo.connect(this.inputDiv, "onclick", this, "toggleInput");
+			this.textConn = dojo.connect(this.leText, "onclick", this, "toggleInput");
 			this.inputDiv.appendChild(this.leText);
 		},
 
@@ -74,6 +77,9 @@ dojo.widget.defineWidget(
 		},
 
 		toggleInput: function() {
+			dojo.disconnect(this.labelConn);
+			dojo.disconnect(this.divConn);
+			dojo.disconnect(this.textConn);
 			this.inputDiv.className = this.css_class + " live-edit active";
 			this.inputDiv.removeChild(this.leText);
 			this.addInputToForm();
@@ -90,13 +96,13 @@ dojo.widget.defineWidget(
 			var submit = document.createElement("input");
 			submit.type = "button";
 			submit.value = "Save";
-			dojo.event.connect(submit, "onclick", this, "saveChanges");
+			dojo.connect(submit, "onclick", this, "saveChanges");
 			this.leButtons.appendChild(submit);
 
 			var cancel = document.createElement("input");
 			cancel.type = "button";
 			cancel.value = "Cancel";
-			dojo.event.connect(cancel, "onclick", this, "cancelInput");
+			dojo.connect(cancel, "onclick", this, "cancelInput");
 			this.leButtons.appendChild(cancel);
 
 			this.inputContainer.appendChild(this.leButtons);
@@ -136,20 +142,21 @@ dojo.widget.defineWidget(
 		saveChanges: function(evt) {
 			var form = this.inputForm;
 			var _this = this;
-			dojo.io.bind({
+			dojo.xhrPost({
 				url: this.update_url,
-				formNode: form,
-				load: function(type, data, event) {
-					_this.old_value = data['updated_value'];
-					_this.leText.innerHTML = _this.toHtml(data['updated_value']);
-          _this.cancelInput();
-					//_this.inputDiv.appendChild(_this.leText);
-				},
-				mimetype: "text/json"
+				form: form,
+				load: dojo.hitch(this, "saveSuccess"),
+        handleAs: "json-comment-filtered"
 			});	
 			//this.old_value = _this.old_value; 
 			evt.preventDefault();
-		}
+		}, 
+
+    saveSuccess: function(data, request) {
+      this.old_value = data['updated_value'];
+      this.leText.innerHTML = this.toHtml(data['updated_value']);
+      this.cancelInput(); 
+    }
 
 	}
 );

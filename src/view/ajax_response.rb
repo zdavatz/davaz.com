@@ -9,7 +9,7 @@ module DAVAZ
 	module View
 		class AjaxResponse < HtmlGrid::Component
 			def to_html(context)
-				@model.to_json
+				"/*" << @model.to_json << "*/" # return comment-filtered json
 			end
 		end
 		class AjaxHtmlResponse < HtmlGrid::Component

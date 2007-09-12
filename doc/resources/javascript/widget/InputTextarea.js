@@ -1,55 +1,54 @@
 dojo.provide("ywesee.widget.InputTextarea");
 
 dojo.require("ywesee.widget.Input");
-dojo.require("dojo.event");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.Editor2");
-dojo.require("dojo.lfx.*");
-dojo.require("dojo.style");
+dojo.require("dijit.Editor");
+dojo.require("dijit._editor.plugins.LinkDialog");
+dojo.require("dijit._editor.plugins.AlwaysShowToolbar");
+dojo.require("ywesee.widget.HtmlEditorPlugin");
 
-dojo.widget.defineWidget(
+dojo.declare(
 	"ywesee.widget.InputTextarea",
-	ywesee.widget.Input,
+	[ywesee.widget.Input, dijit._Templated],
 	{
-		templatePath: dojo.uri.dojoUri("../javascript/widget/templates/HtmlInput.html"),
+    templatePath: dojo.moduleUrl("ywesee.widget", "templates/HtmlInput.html"),
     editor: null,
+    htmlPlugin: null,
 
-		fillInTemplate: function() {
-			this.prepareWidget();
-		},
-		
 		addInputToForm: function() {
-			this.leInput = document.createElement("textarea");
+			this.leInput = document.createElement("input");
 			this.leInput.name = "update_value";
-			this.leInput.value = this.old_value;
-			this.leInput.className = this.css_class + " live-edit active";
-			this.leInput.rows = "12";
-			//dojo.event.connect(this.leInput, "onblur", this, "saveChanges");
+      this.leInput.style.display = "none";
 			this.inputForm.appendChild(this.leInput);
-			this.leInput.focus();
-			this.editor = dojo.widget.createWidget("Editor2", 
-				{ 
-          shareToolbar: false,
-          htmlEditing: true,
-          useActiveX: false
-				},
-        this.leInput
-      );
+      var editor = document.createElement("textarea");
+			editor.value = this.old_value;
+      editor.innerHTML = this.old_value;
+			editor.className = this.css_class + " live-edit active";
+			editor.rows = "12";
+			this.inputForm.appendChild(editor);
+      var args = {
+        extraPlugins: [ "dijit._editor.plugins.LinkDialog",
+                        "dijit._editor.plugins.AlwaysShowToolbar"]
+      };
+      if(!dojo.isSafari) { args.height = ""; }
+			this.editor = new dijit.Editor(args, editor);
+      this.editor.addPlugin("ywesee.widget.HtmlEditorPlugin", 0);
+      this.editor.startup();
+      this.htmlPlugin = this.editor._plugins[0];
+			this.editor.focus();
 		},
 
 		cancelInput: function() {
-      this.inherited("cancelInput");
+      this.inherited("cancelInput", arguments);
       this.editor.destroy();
       this.inputForm.removeChild(this.inputForm.lastChild);
     },
 
-		saveChanges: function(evt) {
-      if(this.editor._inHtmlMode) {
-				this.editor.editNode.innerHTML = this.editor._htmlEditNode.value;
-        this.editor.toggleHtmlEditing();
+		saveChanges: function() {
+      if(this.htmlPlugin._inHtmlMode) {
+        this.htmlPlugin.toggleHtmlEditing();
       }
-      this.leInput.value = this.editor.getEditorContent();
-      this.inherited("saveChanges", [evt]);
+      this.leInput.value = this.editor.getValue();
+      this.inherited("saveChanges", arguments);
     }
   }
 );

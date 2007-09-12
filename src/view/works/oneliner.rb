@@ -10,16 +10,17 @@ module DAVAZ
 class OneLiner < HtmlGrid::Component
 	CSS_ID = 'oneliner'
 	def to_html(context)
+    messages = []
 		args = {
-			'messages'	=> [],
 			'colors'		=> [],
 		}
 		model.each { |oneliner|
 			oneliner.text.split("\r\n").each { |line|
 				args['colors'].push(oneliner.color_in_hex)
-				args['messages'].push(line)
+				messages.push(line)
 			}
 		}
+    args.store('messageString', messages.join('|'))
 		dojo_tag('ywesee.widget.OneLiner', args).to_html(context)
 	end
 end

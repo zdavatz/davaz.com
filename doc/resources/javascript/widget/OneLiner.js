@@ -10,6 +10,7 @@ dojo.declare(
 
     templatePath: dojo.moduleUrl("ywesee.widget", "templates/HtmlOneLiner.html"),
 
+    messageString: '',
     messages: [],
     colors: [],
     messageIdx: -1,
@@ -50,6 +51,7 @@ dojo.declare(
     startup: function() {
       this.lineOne.style.opacity = 0.0;
       this.lineTwo.style.opacity = 0.0;
+      this.messages = this.messageString.split(/\s*\|\s*/);
       this.nextMessage();
     },
 

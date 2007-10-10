@@ -133,6 +133,7 @@ class AjaxUploadImage < SBSM::State
 																						 artobject_id)
 				@model = Util::ImageHelper.image_url(artobject_id, nil, true)
 			#no 'else' => new artobject images pass src/state/art_object
+        ## this is actually highly confusing: why does that happen?
 			end
 		end
 	end

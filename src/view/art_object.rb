@@ -637,6 +637,14 @@ module DAVAZ
 				end
 			end
 		end
+		class AjaxUploadImageResponse < ImageDiv
+      include HtmlGrid::TemplateMethods
+      def to_html(context)
+        html = super
+        puts "returning: #{html}"
+        html
+      end
+		end
 		class UploadImageForm < View::Form
 			CSS_ID = 'upload-image-form'
 			EVENT = :ajax_upload_image

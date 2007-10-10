@@ -10,6 +10,7 @@ module DAVAZ
 class OneLiner < HtmlGrid::Component
 	CSS_ID = 'oneliner'
 	def to_html(context)
+    return '' if model.nil?
     messages = []
 		args = {
 			'colors'		=> [],

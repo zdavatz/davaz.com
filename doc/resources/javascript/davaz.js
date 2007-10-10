@@ -12,7 +12,7 @@ function submitForm(form, dataDivId, formDivId, keepForm) {
 			}	
 			document.body.style.cursor = 'auto';
 		},
-		handleAs: 'text'
+		handleAs: 'html'
 	});
 }
 

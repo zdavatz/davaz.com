@@ -198,7 +198,7 @@ module DAVAZ
 		end
 		class AjaxUploadImage < SBSM::State
 			include Magick
-			VIEW = View::ImageDiv
+			VIEW = View::AjaxUploadImageResponse
 			VOLATILE = true
 			def init 
 				string_io = @session.user_input(:image_file)

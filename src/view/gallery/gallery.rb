@@ -39,8 +39,8 @@ class InputBar < HtmlGrid::InputText
 		submit = @lookandfeel.event_url(:gallery, :search, args)
 		script = "if(#{@name}.value!='#{val}'){"
 		script << "var href = '#{submit}'"
-		script << "+escape(#{@name}.value.replace(/\\//, '%2F'));"
-		script << "document.location.href=href; } return false"
+		script << "+encodeURIComponent(#{@name}.value.replace(/\\//, '%2F'));"
+		script << "document.location.href=href; }; return false;"
 		self.onsubmit = script
 	end
 end

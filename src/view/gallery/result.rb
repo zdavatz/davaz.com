@@ -7,6 +7,7 @@ require 'view/publictemplate'
 require 'view/list'
 require 'view/navigation'
 require 'view/slideshowrack'
+require 'view/gallery/gallery'
 
 module DAVAZ
 	module View
@@ -88,29 +89,6 @@ class ResultColumnNames < View::Composite
 		[5,0]	=>	'result-country',
 		[6,0]	=>	'result-serie',
 	}
-end
-class InputBar < HtmlGrid::InputText
-	def init
-		super
-		val = @lookandfeel.lookup(@name)
-		@attributes.update({
-			'id'			=>	"searchbar",
-		})
-		args = [
-			[ @name, '' ],
-		]
-=begin
-		unless((artgroup_id = @session.user_input(:artgroup_id)).nil?)
-			args.unshift([ :artgroup_id, artgroup_id])
-		end
-=end
-		submit = @lookandfeel.event_url(:gallery, :search, args)
-		script = "if(#{@name}.value!='#{val}'){"
-		script << "var href = '#{submit}'"
-		script << "+escape(#{@name}.value.replace(/\\//, '%2F'));"
-		script << "document.location.href=href; } return false"
-		self.onsubmit = script
-	end
 end
 class NewSearch < HtmlGrid::DivForm
 	CSS_CLASS = ''

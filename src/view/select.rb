@@ -44,7 +44,6 @@ module DAVAZ
 			include HtmlGrid::ErrorMessage
 			def to_html(context)
 				html = super
-				@session.error(@name).inspect
 				if(error = @session.error(@name))
 					html << context.br << error_text(error).to_html(context)
 				end

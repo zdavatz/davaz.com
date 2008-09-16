@@ -87,7 +87,6 @@ module TestCase
         puts e.class
         puts e.message
         puts e.backtrace
-        current.raise(e)
         raise
       end
     }

@@ -17,21 +17,47 @@ require 'model/tool'
 
 module DAVAZ
 	module Util
+    class DbConnection
+			DB_CONNECTION_DATA = File.expand_path('../../etc/db_connection_data.yml', 
+                                            File.dirname(__FILE__))
+      @@db_data = YAML.load(File.read(DB_CONNECTION_DATA))
+      def initialize
+        reconnect
+      end
+      def reconnect
+        @connection = connection
+      end
+      def connection
+        Mysql.new(@@db_data['host'], @@db_data['user'], 
+                  @@db_data['password'], @@db_data['db'])
+      end
+      def method_missing(*args, &block)
+        @connection.send(*args, &block)
+      rescue Exception => e
+        puts e.class, e.message
+        retries ||= 2
+        if retries > 0
+          sleep 2 - retries
+          retries -= 1
+          reconnect
+          retry
+        end
+      end
+    end
 		class DbManager
-			DB_CONNECTION_DATA = File.expand_path('../../etc/db_connection_data.yml', File.dirname(__FILE__))
 			def connect
-				db_data = YAML.load(File.read(DB_CONNECTION_DATA))
-				connect = Mysql.new(db_data['host'], db_data['user'], db_data['password'], db_data['db'])
+				connect = DbConnection.new
 				connect.reconnect = true
 				connect
 			end
 			def connection
-				#@connection ||= connect
+				@connection ||= connect
         if(block_given?)
-          yield connect
+          yield @connection
         else
-          connect
+          @connection
         end
+      rescue
 			end
 			def set_values(model, row)
 				row.each { |key, value|

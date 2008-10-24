@@ -229,9 +229,9 @@ module DAVAZ
 				artobject_id = @session.user_input(:artobject_id)
 				artgroup_id = @session.user_input(:artgroup_id)
 				serie_id = @session.user_input(:serie_id)
-				query = @session.user_input(:search_query)
+				query = @session.user_input(:search_query).to_s
 				@model = OpenStruct.new
-				if(query)
+				if(!query.empty?)
 					@model.artobjects = @session.app.search_artobjects(query, artgroup_id)
 				elsif(serie_id)
 					@model.artobjects = @session.load_serie(serie_id).artobjects

@@ -50,7 +50,7 @@ class LinksTitle < HtmlGrid::Div
 	CSS_CLASS = 'table-title'
 	def init
 		super
-		span = HtmlGrid::Span.new(:links_from_davaz, model, @session)
+		span = HtmlGrid::Span.new(model, @session)
 		span.value = @lookandfeel.lookup(:links_from_davaz)
 		span.css_class = 'table-title'
 		@value = span

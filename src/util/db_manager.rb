@@ -43,6 +43,10 @@ module DAVAZ
           retry
         end
       end
+      def query *args, &block
+        #puts args.first.strip.gsub(/\s+/, ' ')
+        @connection.send(:query, *args, &block)
+      end
     end
 		class DbManager
 			def connect
@@ -248,15 +252,21 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				artobjects = []
-				result.each_hash { |key, value| 
-					model = DAVAZ::Model::ArtObject.new
-					key.each { |column_name, column_value| 
-						model.send(column_name.to_s + '=', column_value)
-					}
-					model.links.concat(load_artobject_links(model.artobject_id))
-					model.tags.concat(load_artobject_tags(model.artobject_id))
-					artobjects.push(model)
-				}
+        table = {}
+        result.each_hash { |key, value|
+          model = DAVAZ::Model::ArtObject.new
+          key.each { |column_name, column_value|
+            model.send(column_name.to_s + '=', column_value)
+          }
+          table.store model.artobject_id, model
+          artobjects.push(model)
+        }
+        load_artobjects_links(table.keys).each do |id, links|
+          table[id].links.concat links
+        end
+        load_artobjects_tags(table.keys).each do |id, tags|
+          table[id].tags.concat tags
+        end
 				artobjects
 			end
 			def load_artobject_ids(artgroup_id)
@@ -310,16 +320,22 @@ module DAVAZ
 					ORDER BY #{order_by}
 				EOS
 				result = connection.query(query)
+        table = {}
 				artobjects = []
-				result.each_hash { |key, value| 
-					model = DAVAZ::Model::ArtObject.new
-					key.each { |column_name, column_value| 
-						model.send(column_name.to_s + '=', column_value)
-					}
-					model.links.concat(load_artobject_links(model.artobject_id))
-					model.tags.concat(load_artobject_tags(model.artobject_id))
-					artobjects.push(model)
-				}
+        result.each_hash { |hash|
+          model = DAVAZ::Model::ArtObject.new
+          hash.each { |column_name, column_value|
+            model.send(column_name.to_s + '=', column_value)
+          }
+          table.store model.artobject_id, model
+          artobjects.push(model)
+        }
+        load_artobjects_links(table.keys).each do |id, links|
+          table[id].links.concat links
+        end
+        load_artobjects_tags(table.keys).each do |id, tags|
+          table[id].tags.concat tags
+        end
 				artobjects
 			end
 			def load_artobjects_by_location(location)
@@ -337,6 +353,61 @@ module DAVAZ
 				}
 				artobjects.sort { |a, b| a.serie_position <=> b.serie_position }
 			end
+      def load_artobjects_links(artobject_ids)
+        query = <<-EOS
+          SELECT links.artobject_id AS reference, links.*, artobjects.*
+          FROM links
+          JOIN links_artobjects USING (link_id)
+          JOIN artobjects
+            ON links_artobjects.artobject_id = artobjects.artobject_id
+          WHERE links.artobject_id IN ('#{artobject_ids.join("','")}')
+          ORDER BY links.artobject_id, links.word
+        EOS
+        result = connection.query(query)
+        table = {}
+        result.each_hash { |row|
+          artobject_id = row['reference']
+          links = (table[artobject_id] ||= {})
+          link_id = row['link_id']
+          if(links.has_key?(link_id))
+            link = links[link_id]
+          else
+            link = Model::Link.new
+            links.store(link_id, link)
+          end
+          artobject = Model::ArtObject.new
+          set_values(link, row)
+          set_values(artobject, row)
+          link.artobjects.push(artobject)
+        }
+        table.collect do |id, links|
+          [id, links.values]
+        end
+      end
+      def load_artobjects_tags(artobject_ids)
+        query = <<-EOS
+          SELECT artobjects.artobject_id AS reference, tags.*
+          FROM artobjects
+          LEFT OUTER JOIN tags_artobjects USING (artobject_id)
+          LEFT OUTER JOIN tags
+            ON tags.tag_id = tags_artobjects.tag_id
+          WHERE artobjects.artobject_id IN ('#{artobject_ids.join("','")}')
+          ORDER BY tags.name
+        EOS
+        result = connection.query(query)
+        table = {}
+        result.each_hash { |row|
+          if id = row['tag_id']
+            artobject_id = row['reference']
+            tags = (table[artobject_id] ||= [])
+            tag = Model::Tag.new
+            tag.tag_id = id
+            tag.name = row['name']
+            tags.push(tag)
+          end
+        }
+        table
+      end
 			def load_country(id)
 			end
 			def load_countries
@@ -472,15 +543,21 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				artobjects = []
-				result.each_hash { |key, value| 
-					model = DAVAZ::Model::ArtObject.new
-					key.each { |column_name, column_value| 
-						model.send(column_name.to_s + '=', column_value)
-					}
-					model.links.concat(load_artobject_links(model.artobject_id))
-					model.tags.concat(load_artobject_tags(model.artobject_id))
-					artobjects.push(model)
-				}
+        table = {}
+        result.each_hash { |key, value|
+          model = DAVAZ::Model::ArtObject.new
+          key.each { |column_name, column_value|
+            model.send(column_name.to_s + '=', column_value)
+          }
+          table.store model.artobject_id, model
+          artobjects.push(model)
+        }
+        load_artobjects_links(table.keys).each do |id, links|
+          table[id].links.concat links
+        end
+        load_artobjects_tags(table.keys).each do |id, tags|
+          table[id].tags.concat tags
+        end
 				artobjects
 			end
 			def load_oneliner(location)
@@ -540,14 +617,18 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				artobjects = []
-				result.each_hash { |key, value| 
-					model = DAVAZ::Model::ArtObject.new
-					key.each { |column_name, column_value| 
-						model.send(column_name.to_s + '=', column_value)
-					}
-					model.links.concat(load_artobject_links(model.artobject_id))
-					artobjects.push(model)
-				}
+        table = {}
+        result.each_hash { |key, value|
+          model = DAVAZ::Model::ArtObject.new
+          key.each { |column_name, column_value|
+            model.send(column_name.to_s + '=', column_value)
+          }
+          table.store model.artobject_id, model
+          artobjects.push(model)
+        }
+        load_artobjects_links(table.keys).each do |id, links|
+          table[id].links.concat links
+        end
 				artobjects
 			end
 			def load_series_by_artgroup(artgroup_id)
@@ -584,6 +665,7 @@ module DAVAZ
 				serie_id
 			end
 			def load_shop_item(artobject_id)
+        rates = load_currency_rates
 				query = <<-EOS
 					SELECT artobjects.*
 					FROM artobjects
@@ -596,7 +678,6 @@ module DAVAZ
 					key.each { |column_name, column_value| 
 						artobject.send(column_name.to_s + '=', column_value)
 					}
-					rates = load_currency_rates
 					artobject.dollar_price = (rates['USD'] * artobject.price.to_i).round
 					artobject.euro_price = (rates['EURO'] * artobject.price.to_i).round
 					items.push(artobject)
@@ -604,6 +685,7 @@ module DAVAZ
 				items.first
 			end
 			def load_shop_items()
+        rates = load_currency_rates
 				query = <<-EOS
 					SELECT artobjects.*, artgroups.name AS artgroup
 					FROM artobjects
@@ -619,7 +701,6 @@ module DAVAZ
 					key.each { |column_name, column_value| 
 						artobject.send(column_name.to_s + '=', column_value)
 					}
-					rates = load_currency_rates
 					artobject.dollar_price = (rates['USD'] * artobject.price.to_i).round
 					artobject.euro_price = (rates['EURO'] * artobject.price.to_i).round
 					items.push(artobject)

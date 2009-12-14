@@ -60,8 +60,16 @@ class MovieComment < HtmlGrid::Div
 	def init
 		super
 		comment = @model.text.gsub(/\n/, "[[>>]]")
+    comment.gsub! /<[^>]+>/ do |match|
+      match.gsub /\s+/, '#SPC#'
+    end
+    comment.gsub!(/ (<\/[^>]+> )/, '\1')
+    comment.gsub! /( <[^>]+>) /, '\1'
 		comment_arr = comment.split(" ")
 		comment = comment_arr.slice(0,50).join(" ").gsub(/\[\[>>\]\]/, "\n")
+    comment.gsub! /<[^>]+>/ do |match|
+      match.gsub '#SPC#', ' '
+    end
 		if(comment.size > 0)
 			comment << " ..."
 		end

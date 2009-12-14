@@ -65,7 +65,8 @@ class MovieComment < HtmlGrid::Div
 		if(comment.size > 0)
 			comment << " ..."
 		end
-		@value = comment 
+    hpricot = Hpricot comment, :fixup_tags => true
+		@value = hpricot.to_html
 	end
 end
 class GoogleVideoLink < HtmlGrid::Div

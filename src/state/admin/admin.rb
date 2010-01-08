@@ -83,6 +83,7 @@ module Admin
 		if(fragment = @session.user_input(:fragment))
 			model << "##{fragment}" unless fragment.empty?
 		end
+    model.gsub! %r{new_art_object}, 'gallery'
 		State::Redirect.new(@session, model)
 	end
 end

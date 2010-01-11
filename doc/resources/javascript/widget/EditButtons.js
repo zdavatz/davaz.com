@@ -54,7 +54,7 @@ dojo.declare(
 				dojo.disconnect(this.imageButtonLink, 'onclick', this, 'addUploadImageForm');
 				dojo.connect(this.imageButtonLink, 'onclick', this, 'deleteImage');
 			} else {
-				this.imageButtonIcon.src = "";//this.add_image_icon_src;
+				this.imageButtonIcon.src = this.add_image_icon_src;
 				this.imageButtonIcon.title = this.add_image_icon_txt;
 				this.imageButtonIcon.alt = this.add_image_icon_txt;
 				this.imageButtonIcon.id = "add-image-" + this.element_id_value;

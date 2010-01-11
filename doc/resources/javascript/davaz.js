@@ -462,7 +462,7 @@ function addNewElement(url) {
 		load: function(data, request) {
 			var div = document.createElement("div");
 			container.insertBefore(div,container.firstChild);
-			var pane = dojo.widget.createWidget("ContentPane", {executeScripts: true}, div);
+			var pane = new dijit.layout.ContentPane({executeScripts: true}, div);
 			pane.setContent(data);
 		},
 		handleAs: 'text'

@@ -498,6 +498,9 @@ module DAVAZ
 				if(search_query = @session.user_input(:search_query))
 					hidden_fields << context.hidden('search_query', search_query)
 				end
+        if obj = @model.artobject
+          hidden_fields << context.hidden('text', escape(obj.text))
+        end
 				hidden_fields
 			end
 			def input_text(symbol, maxlength='50', size='50') 
@@ -593,8 +596,8 @@ module DAVAZ
 			end
 			def text(model)
         obj = model.artobject
-        dojo_tag("ywesee.widget.Editor", :name => "text", :id => "html-editor",
-                 :value => escape(obj.text), :class => "tundra")
+        dojo_tag("dijit.Editor", {:id => "html-editor", :class => "tundra"},
+                 obj.text)
 			end
 			def tags(model)
 				input_text(:tags_to_s)
@@ -603,7 +606,7 @@ module DAVAZ
         button = submit(model)
 				key = (model.artobject.artobject_id) ? :update : :save
         button = HtmlGrid::Button.new(key, model, @session, self)
-        button.set_attribute('onclick', "dijit.byId('html-editor').onSubmit(); this.form.submit();")
+        button.set_attribute('onclick', "this.form.text.value = dijit.byId('html-editor').editNode.innerHTML; this.form.submit();")
 				button
 			end
 			def url(model)

@@ -58,6 +58,7 @@ module DAVAZ
         'dojo.fx',
         'dojo.back',
 				'dijit.layout.ContentPane',
+				'dijit.Editor',
 				'ywesee.widget.Desk',
 				'ywesee.widget.OneLiner',
 				'ywesee.widget.SlideShow',
@@ -70,7 +71,6 @@ module DAVAZ
 				'ywesee.widget.LoginWidget',
 				'ywesee.widget.GuestbookWidget',
 				'ywesee.widget.Tooltip',
-				'ywesee.widget.Editor',
 			]
 			CONTENT = nil
 			TICKER = nil

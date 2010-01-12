@@ -95,7 +95,8 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
 	dojo.xhrGet({
 		url: url,
 		load: function(data, request) {
-			node.innerHTML = data;
+      var pane = new dijit.layout.ContentPane({executeScripts: true}, node);
+      pane.setContent(data);
 			if(callback) { callback(); }
 			document.body.style.cursor = 'auto';
       dojo.back.addToHistory({changeUrl:fragmentidentifier});
@@ -163,7 +164,8 @@ function showMovieGallery(divId, replaceDivId, url) {
 		dojo.xhrGet({
 			url: url,
 			load: function(data, request) {
-				node.innerHTML = data;	
+        var pane = new dijit.layout.ContentPane({executeScripts: true}, node);
+        pane.setContent(data);
 				replaceDiv(replaceDivId, divId);
         dojo.back.addToHistory({changeUrl:artobjectId});
 			},

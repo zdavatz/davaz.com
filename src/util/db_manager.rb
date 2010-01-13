@@ -815,7 +815,7 @@ module DAVAZ
 				[ 
 					:name, :city, :country, :email, :messagetxt 
 				].each { |key| 
-					values.push(Mysql.escape_string(user_values[key])) 
+					values.push(Mysql.escape_string(user_values[key].to_s))
 				}
 				query = <<-EOS
 					INSERT INTO guestbook

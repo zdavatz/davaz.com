@@ -18,7 +18,8 @@ class AjaxSubmitStatus < SBSM::State
 	VIEW = View::AjaxResponse
 	VOLATILE = true
 	def init
-		mandatory = [:name, :surname, :email, :city, :country, :messagetxt]
+		mandatory = [:name, :messagetxt]
+    keys = mandatory + [:surname, :email, :city, :country]
 		hash = user_input(mandatory, mandatory)
 		hash[:name] = "#{hash[:name]} #{hash[:surname]}"
 		hash.delete(:surname)

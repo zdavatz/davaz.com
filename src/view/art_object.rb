@@ -34,6 +34,7 @@ module DAVAZ
 				[0,4]	=>	ArtobjectDetails,
 				[0,5]	=>	:url,
 				[0,6]	=>	:text,
+				[0,7]	=>	:wordpress_url,
 			}
 			CSS_ID_MAP = {
 				0	=>	'artobject-title',	
@@ -43,6 +44,7 @@ module DAVAZ
 				4	=>	'artobject-details',	
 				5	=>	'artobject-google-video-url',	
 				6	=>	'artobject-text',	
+				7	=>	'artobject-wordpress-url',
 			}
 			def image(model)
 				img = HtmlGrid::Image.new(model.artobject_id, model, @session, self)
@@ -68,6 +70,15 @@ module DAVAZ
 					link
 				end
 			end
+      def wordpress_url(model)
+        unless((url = model.wordpress_url).empty?)
+          link = HtmlGrid::HttpLink.new(:wordpress_link, model, @session, self)
+          link.href = url
+          link.value = @lookandfeel.lookup(:read_wordpress)
+          link.set_attribute('target', '_blank')
+          link
+        end
+      end
 		end
 		class Pager < HtmlGrid::SpanComposite
 			COMPONENTS = {
@@ -469,15 +480,16 @@ module DAVAZ
 				[0,15]	=>	:form_language,
 				[0,16]	=>	:url,
 				[0,17]	=>	:price,
-				[0,19]	=>	:text_label,
-				[1,19]	=>	:text,
-				[1,20,1]	=>	:update,
-				[1,20,2]	=>	:reset,
-				[1,21,1]	=>	:new_art_object,
-				[1,21,2]	=>	:delete,
+				[0,18]	=>	:wordpress_url,
+				[0,20]	=>	:text_label,
+				[1,20]	=>	:text,
+				[1,21,1]	=>	:update,
+				[1,21,2]	=>	:reset,
+				[1,22,1]	=>	:new_art_object,
+				[1,22,2]	=>	:delete,
 			}	
 			CSS_MAP = {
-				[0,19]	=>	'label',
+				[0,20]	=>	'label',
 			}
       LOOKANDFEEL_MAP = {
         :form_language => :language,
@@ -611,6 +623,9 @@ module DAVAZ
 			end
 			def url(model)
 				input_text(:url, '150')
+			end
+			def wordpress_url(model)
+				input_text(:wordpress_url, '300', '80')
 			end
 		end
 		class ImageDiv < HtmlGrid::Div

@@ -289,6 +289,7 @@ module DAVAZ
 					:size,
 					:text,
 					:url,
+          :wordpress_url,
 				].concat(mandatory)
 				update_hash = {}
 				user_input(keys, mandatory).each { |key, value|

@@ -171,6 +171,7 @@ module DAVAZ
 					:quicktime_player					=>	'Quicktime player',
 					:quicktime_download				=>	'http://www.apple.com/quicktime/download/',	
 					:read_on									=>	'Read On...',
+					:read_wordpress		        =>	'Read more about this work of art and leave a comment at Godzilla\'s Blog!',
 					:realone_player						=>	'RealOne player',
 					:realplayer_download			=>	'http://europe.real.com/freeplayer_r1p.html?&src=ZG.eu.idx.idx.sw.chc',
 					:remove										=>	'remove',
@@ -234,6 +235,7 @@ module DAVAZ
 					:upload_image_title				=>	'Upload an image for this Element',
 					:watch_movie							=>	'Watch the Movie',
 					:webcontent								=>	'WebContent',
+          :wordpress_url            =>  'Wordpress',
 					:work											=>	'HIS WORK',
 					:ywesee_url								=>	'http://www.ywesee.com',
 				}

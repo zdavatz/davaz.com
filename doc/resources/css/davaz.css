@@ -447,6 +447,13 @@ div#artobject-text {
 	color: black;
 }
 
+div#artobject-wordpress-url {
+	padding-top: 10px;
+	text-align: left;
+	clear: both;
+	color: black;
+}
+
 span.breadcrumbs a:link, span.breadcrumbs a:visited,
 span.breadcrumbs a:hover {
 	color: white;

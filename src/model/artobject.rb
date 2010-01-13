@@ -20,6 +20,7 @@ module DAVAZ
 			attr_accessor :text, :author, :charset
 			attr_accessor :price
 			attr_accessor :tmp_image_path
+			attr_accessor :wordpress_url
 			attr_reader	:links, :tags 
 			def initialize
 				@links = []

@@ -153,6 +153,7 @@ module DAVAZ
 				:title,
 				:tool_id,
 				:url,
+        :wordpress_url,
 			]
 			NUMERIC = [
 				:artobject_id,

@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# View::ArtObject -- davaz.com -- 17.07.2013 -- yasaka@ywesee.com
 # View::ArtObject -- davaz.com -- 07.06.2006 -- mhuggler@ywesee.com
 
 require 'view/publictemplate'
@@ -62,7 +63,7 @@ module DAVAZ
 				end
 			end
 			def url(model)
-				unless((url = model.url).empty?)
+        if url = model.url && !url.empty?
 					link = HtmlGrid::HttpLink.new(:google_video_link, model, @session, self)
 					link.href = url
 					link.value = @lookandfeel.lookup(:watch_movie) 
@@ -71,7 +72,7 @@ module DAVAZ
 				end
 			end
       def wordpress_url(model)
-        unless((url = model.wordpress_url).empty?)
+        if url = model.wordpress_url && !url.empty?
           link = HtmlGrid::HttpLink.new(:wordpress_link, model, @session, self)
           link.href = url
           link.value = @lookandfeel.lookup(:read_wordpress)
@@ -91,7 +92,7 @@ module DAVAZ
 			end
 			def next(model)
 				artobjects = model.artobjects
-				active_index = artobjects.index(model.artobject)
+        active_index = artobjects.index(model.artobject).to_i
 				unless(active_index+1 == artobjects.size)
 					link = HtmlGrid::Link.new(:paging_next, model, @session, self)
 					args = [ 
@@ -113,7 +114,7 @@ module DAVAZ
 			end
 			def last(model)
 				artobjects = model.artobjects
-				active_index = artobjects.index(model.artobject)
+        active_index = artobjects.index(model.artobject).to_i
 				unless(active_index-1 == -1)
 					link = HtmlGrid::Link.new(:paging_last, model, @session, self)
 					args = [ 

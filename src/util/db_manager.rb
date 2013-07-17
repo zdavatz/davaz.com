@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# Util::DbClient -- davaz.com -- 18.07.2013 -- yasaka@ywesee.com
 # Util::DbClient -- davaz.com -- 27.07.2005 -- mhuggler@ywesee.com
 
 require 'ftools'
@@ -46,6 +47,8 @@ module DAVAZ
       def query *args, &block
         #puts args.first.strip.gsub(/\s+/, ' ')
         @connection.send(:query, *args, &block)
+      rescue Exception => e
+        puts e.class, e.message
       end
     end
 		class DbManager
@@ -897,8 +900,8 @@ module DAVAZ
 				EOS
 				connection { |conn|
           conn.query(query)
-          if(tags)
-            tags.each { |tag| 
+          unless tags.empty?
+            tags.each { |tag|
               unless tag.empty?
                 query = <<-EOS
                   INSERT INTO tags SET name='#{tag}'

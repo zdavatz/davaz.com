@@ -63,7 +63,8 @@ module DAVAZ
 				end
 			end
 			def url(model)
-        if url = model.url && !url.empty?
+        url = model.url
+        if url && !url.empty?
 					link = HtmlGrid::HttpLink.new(:google_video_link, model, @session, self)
 					link.href = url
 					link.value = @lookandfeel.lookup(:watch_movie) 
@@ -72,7 +73,8 @@ module DAVAZ
 				end
 			end
       def wordpress_url(model)
-        if url = model.wordpress_url && !url.empty?
+        url = model.wordpress_url
+        if url && !url.empty?
           link = HtmlGrid::HttpLink.new(:wordpress_link, model, @session, self)
           link.href = url
           link.value = @lookandfeel.lookup(:read_wordpress)

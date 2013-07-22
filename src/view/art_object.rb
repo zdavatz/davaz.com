@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# View::ArtObject -- davaz.com -- 17.07.2013 -- yasaka@ywesee.com
+# View::ArtObject -- davaz.com -- 22.07.2013 -- yasaka@ywesee.com
 # View::ArtObject -- davaz.com -- 07.06.2006 -- mhuggler@ywesee.com
 
 require 'view/publictemplate'
@@ -47,21 +47,23 @@ module DAVAZ
 				6	=>	'artobject-text',	
 				7	=>	'artobject-wordpress-url',
 			}
-			def image(model)
-				img = HtmlGrid::Image.new(model.artobject_id, model, @session, self)
-				url = DAVAZ::Util::ImageHelper.image_url(model.artobject_id)
-				img.set_attribute('src', url)
-				img.css_id = 'artobject-image'
-				link = HtmlGrid::HttpLink.new(:url, @model, @session, self)
-				link.href = model.url
-				link.value = img
-				link.set_attribute('target', '_blank')
-				if(model.url.empty?)
-					img
-				else
-					link
-				end
-			end
+      def image(model)
+        if model
+          img = HtmlGrid::Image.new(model.artobject_id, model, @session, self)
+          url = DAVAZ::Util::ImageHelper.image_url(model.artobject_id)
+          img.set_attribute('src', url)
+          img.css_id = 'artobject-image'
+          link = HtmlGrid::HttpLink.new(:url, @model, @session, self)
+          link.href = model.url
+          link.value = img
+          link.set_attribute('target', '_blank')
+          if(model.url.empty?)
+            img
+          else
+            link
+          end
+        end
+      end
 			def url(model)
         url = model.url
         if url && !url.empty?

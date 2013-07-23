@@ -266,3 +266,7 @@ a.edit-element:hover {
 div#upload-image-div {
 	clear: both;
 }
+
+div#artobject-admin-details form td.red {
+  color: red;
+}

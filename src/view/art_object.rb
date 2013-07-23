@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# View::ArtObject -- davaz.com -- 22.07.2013 -- yasaka@ywesee.com
+# View::ArtObject -- davaz.com -- 23.07.2013 -- yasaka@ywesee.com
 # View::ArtObject -- davaz.com -- 07.06.2006 -- mhuggler@ywesee.com
 
 require 'view/publictemplate'
@@ -493,9 +493,17 @@ module DAVAZ
 				[1,22,1]	=>	:new_art_object,
 				[1,22,2]	=>	:delete,
 			}	
-			CSS_MAP = {
-				[0,20]	=>	'label',
-			}
+      CSS_MAP = {
+        [0,0]  => 'label red',
+        [0,1]  => 'label red',
+        [0,2]  => 'label red',
+        [0,4]  => 'label red',
+        [0,7]  => 'label red',
+        [0,9]  => 'label red',
+        [0,12] => 'label red',
+        [0,14] => 'label red',
+        [0,20] => 'label',
+      }
       LOOKANDFEEL_MAP = {
         :form_language => :language,
       }

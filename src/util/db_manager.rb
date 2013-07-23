@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Util::DbClient -- davaz.com -- 18.07.2013 -- yasaka@ywesee.com
+# Util::DbClient -- davaz.com -- 23.07.2013 -- yasaka@ywesee.com
 # Util::DbClient -- davaz.com -- 27.07.2005 -- mhuggler@ywesee.com
 
 require 'ftools'
@@ -900,7 +900,7 @@ module DAVAZ
 				EOS
 				connection { |conn|
           conn.query(query)
-          unless tags.empty?
+          unless tags.nil? || tags.empty?
             tags.each { |tag|
               unless tag.empty?
                 query = <<-EOS

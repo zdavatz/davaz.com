@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# State::Communication::News -- davaz.com -- 23.07.2013 -- yasaka@ywesee.com
 # State::Communication::News -- davaz.com -- 06.09.2005 -- mhuggler@ywesee.com
 
 require 'state/global_predefine'
@@ -17,12 +18,12 @@ class News < State::Communication::Global
 end
 class AjaxAddNewNewsElement < State::Admin::AjaxAddNewElement 
 	def init
-		values = {
-			:serie_id =>	@model.serie_id,
-			:title		=>	@session.lookandfeel.lookup(:click2edit), 
-			:date			=>	Date.today.to_s, 
-			:text			=>	@session.lookandfeel.lookup(:click2edit), 
-		}		
+    values = {
+      :serie_id =>  @model.serie_id,
+      :title    =>  @session.lookandfeel.lookup(:click2edit),
+      :date     =>  Date.today.to_s,
+      :text     => @session.lookandfeel.lookup(:click2edit_textarea),
+    }
 		insert_id = @session.app.insert_artobject(values)
 		@model = @session.app.load_artobject(insert_id)
 	end

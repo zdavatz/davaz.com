@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# Util::Lookandfeel -- davaz.com -- 29.07.2013 -- yasaka@ywesee.com
 # Util::Lookandfeel -- davaz.com -- 18.07.2005 -- mhuggler@ywesee.com
 
 require 'sbsm/lookandfeel'
@@ -174,6 +175,7 @@ module DAVAZ
 					:read_wordpress		        =>	'Read more about this work of art and leave a comment at Godzilla\'s Blog!',
 					:realone_player						=>	'RealOne player',
 					:realplayer_download			=>	'http://europe.real.com/freeplayer_r1p.html?&src=ZG.eu.idx.idx.sw.chc',
+          :remember_me              =>  'Remember me',
 					:remove										=>	'remove',
 					:remove_all_items					=>	'remove all items',
 					:remove_country						=>	'Remove Selected Country',

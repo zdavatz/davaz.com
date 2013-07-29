@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
+# View::Admin::LoginForm -- davaz.com -- 29.07.2013 -- yasaka@ywesee.com
 # View::Admin::LoginForm -- davaz.com -- 08.06.2006 -- mhuggler@ywesee.com
 
 require 'view/publictemplate'
 require 'view/form'
 require 'htmlgrid/divcomposite'
+require 'htmlgrid/inputcheckbox'
 require 'htmlgrid/pass'
 require 'htmlgrid/errormessage'
 
@@ -12,14 +14,15 @@ module DAVAZ
 		module Admin
 class LoginForm < View::Form
 	include HtmlGrid::ErrorMessage
-	COMPONENTS = {
-		[0,0]   =>  :login_email,
-		[0,1]   =>  :login_password,
-		[1,2,1]	=>  :submit,
-		[1,2,2]	=>  :cancel,
-	}
+  COMPONENTS = {
+    [0,0]   => :login_email,
+    [0,1]   => :login_password,
+    [0,2]   => :remember_me,
+    [1,3,1] => :submit,
+    [1,3,2] => :cancel,
+  }
 	CSS_MAP = {
-		[0,0,2,3]	=>	'list',
+		[0,0,3,3]	=>	'list',
 	}
 	CSS_CLASS = 'component'
 	EVENT = :login
@@ -46,6 +49,11 @@ class LoginForm < View::Form
 		button.css_id = 'login-form-cancel-button'
 		button
 	end
+  def remember_me(model)
+    box = HtmlGrid::InputCheckbox.new(:remember_me, model, @session, self)
+    box.set_attribute 'checked', @session.cookie_set_or_get(:remember)
+    box
+  end
 	def hidden_fields(context)
 		super <<
 		context.hidden('fragment', "#{@model.fragment}")

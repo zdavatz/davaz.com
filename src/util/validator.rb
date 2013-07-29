@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# Validator -- davaz.com -- 29.07.2013 -- yasaka@ywesee.com
 # Validator -- davaz.com -- 19.07.2005 -- mhuggler@ywesee.com
 
 require 'sbsm/validator'
@@ -9,6 +10,9 @@ module DAVAZ
 		class Validator < SBSM::Validator
       ALLOWED_TAGS = %{a b br div font h1 h2 h3 i img li ol p pre strong u ul
                        embed object param}
+      BOOLEAN = [
+        :remember_me
+      ]
 			DATES = [
 				:date,
 				:date_ch,
@@ -137,6 +141,7 @@ module DAVAZ
 				:object_type,
 				:old_serie_id,
 				:price,
+        :remember,
 				:search_query,
 				:select_name,
 				:select_value,

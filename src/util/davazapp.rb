@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# Util::DavazApp -- davaz.com -- 29.07.2013 -- yasaka@ywesee.com
 # Util::DavazApp -- davaz.com -- 26.08.2005 -- mhuggler@ywesee.com
 
 require 'yus/session'
@@ -199,6 +200,9 @@ module DAVAZ
 			def login(email, password)
 				@yus_server.login(email, password, DAVAZ.config.yus_domain)
 			end
+      def login_token(email, token)
+        @yus_server.login_token(email, token, DAVAZ.config.yus_domain)
+      end
 			def logout(yus_session)
 				@yus_server.logout(yus_session)
 			end

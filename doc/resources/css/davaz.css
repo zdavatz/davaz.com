@@ -507,6 +507,10 @@ div#login-form-div {
 	display: none;
 }
 
+div#login-form input {
+  margin: 4px 5px;
+}
+
 /* dojo 0.9 does not load per-widget css-files. 
  * define the necessary css below */
 

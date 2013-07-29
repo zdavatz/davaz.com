@@ -30,10 +30,11 @@ dojo.declare(
 					_this.formContainer.innerHTML = data;		
 					var pos = dojo.coords(_this.loginLink, true);
 					var left = pos.x;
-					var top = pos.y - 20 - _this.formContainer.offsetHeight;
-					_this.widgetContainer.style.position = "absolute";
+          // display near the "login" link see davaz.css
+					//var top = pos.y - 20 - _this.formContainer.offsetHeight;
+					//_this.widgetContainer.style.position = "absolute";
+					//_this.widgetContainer.style.top = top+"px";
 					_this.widgetContainer.style.left = left+"px";
-					_this.widgetContainer.style.top = top+"px";
 					_this.loginForm = _this.formContainer.firstChild;
 					dojo.connect(_this.loginForm, 'onsubmit', _this, 'submitForm');
 					var cancel = dojo.byId('login-form-cancel-button');

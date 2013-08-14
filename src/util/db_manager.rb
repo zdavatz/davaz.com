@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Util::DbClient -- davaz.com -- 23.07.2013 -- yasaka@ywesee.com
+# Util::DbClient -- davaz.com -- 14.08.2013 -- yasaka@ywesee.com
 # Util::DbClient -- davaz.com -- 27.07.2005 -- mhuggler@ywesee.com
 
 require 'ftools'
@@ -776,27 +776,27 @@ module DAVAZ
 				}
 				tools
 			end
-			def insert_artobject(values_hash)
-				values_array = []
-				values_hash.each { |key, value|
-					unless(value.nil? || key == :tags)
-						values_array.push("#{key}='#{Mysql.quote(value)}'")
-					end
-				}
-				query = <<-EOS
-					INSERT INTO artobjects
-					SET #{values_array.join(', ')}
-				EOS
+      def insert_artobject(values_hash)
+        values_array = []
+        values_hash.each { |key, value|
+          unless(value.nil? || key == :tags)
+            values_array.push("#{key}='#{Mysql.quote(value)}'")
+          end
+        }
+        query = <<-EOS
+          INSERT INTO artobjects
+          SET #{values_array.join(', ')}
+        EOS
         connection { |conn|
           result = conn.query(query)
           artobject_id = conn.insert_id
           tags = values_hash[:tags]
-          if(tags)
-            tags.each { |tag| 
+          unless tags.nil? || tags.empty?
+            tags.each { |tag|
               unless tag.empty?
                 query = <<-EOS
-                  INSERT INTO tags SET name='#{tag}'
-                  ON DUPLICATE KEY UPDATE name='#{tag}'
+                  INSERT INTO tags (name) VALUES('#{tag}')
+                  ON DUPLICATE KEY UPDATE tag_id=LAST_INSERT_ID(tag_id), name=name
                 EOS
                 conn.query(query)
                 tag_id = conn.insert_id
@@ -810,7 +810,7 @@ module DAVAZ
           end
           artobject_id
         }
-			end
+      end
 			def insert_guest(user_values)
 				values = [
 					Time.now.strftime("%Y-%m-%d"),
@@ -891,21 +891,21 @@ module DAVAZ
 				EOS
 				load_series(where)
 			end
-			def update_artobject(artobject_id, update_hash)
-				update_array = []
-				tags = update_hash[:tags]
-				query = <<-EOS
-					DELETE FROM tags_artobjects
-					WHERE artobject_id = '#{artobject_id}'
-				EOS
-				connection { |conn|
+      def update_artobject(artobject_id, update_hash)
+        update_array = []
+        tags = update_hash[:tags]
+        query = <<-EOS
+          DELETE FROM tags_artobjects
+          WHERE artobject_id = '#{artobject_id}'
+        EOS
+        connection { |conn|
           conn.query(query)
           unless tags.nil? || tags.empty?
             tags.each { |tag|
               unless tag.empty?
                 query = <<-EOS
-                  INSERT INTO tags SET name='#{tag}'
-                  ON DUPLICATE KEY UPDATE name='#{tag}'
+                  INSERT INTO tags (name) VALUES('#{tag}')
+                  ON DUPLICATE KEY UPDATE tag_id=LAST_INSERT_ID(tag_id), name=name
                 EOS
                 conn.query(query)
                 tag_id = conn.insert_id
@@ -935,7 +935,7 @@ module DAVAZ
           result = conn.query(query)
           conn.affected_rows
         }
-			end
+      end
 			def update_currency(origin, target, rate)
 				query = <<-EOS
 					UPDATE currencies

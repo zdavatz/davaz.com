@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# View::ArtObject -- davaz.com -- 23.07.2013 -- yasaka@ywesee.com
+# View::ArtObject -- davaz.com -- 21.08.2013 -- yasaka@ywesee.com
 # View::ArtObject -- davaz.com -- 07.06.2006 -- mhuggler@ywesee.com
 
 require 'view/publictemplate'
@@ -47,13 +47,13 @@ module DAVAZ
 				6	=>	'artobject-text',	
 				7	=>	'artobject-wordpress-url',
 			}
-      def image(model)
+      def image(model=@model)
         if model
           img = HtmlGrid::Image.new(model.artobject_id, model, @session, self)
           url = DAVAZ::Util::ImageHelper.image_url(model.artobject_id)
           img.set_attribute('src', url)
           img.css_id = 'artobject-image'
-          link = HtmlGrid::HttpLink.new(:url, @model, @session, self)
+          link = HtmlGrid::HttpLink.new(:url, model, @session, self)
           link.href = model.url
           link.value = img
           link.set_attribute('target', '_blank')
@@ -64,17 +64,17 @@ module DAVAZ
           end
         end
       end
-			def url(model)
+      def url(model=@model)
         url = model.url
         if url && !url.empty?
-					link = HtmlGrid::HttpLink.new(:google_video_link, model, @session, self)
-					link.href = url
-					link.value = @lookandfeel.lookup(:watch_movie) 
-					link.set_attribute('target', '_blank')
-					link
-				end
-			end
-      def wordpress_url(model)
+          link = HtmlGrid::HttpLink.new(:google_video_link, model, @session, self)
+          link.href = url
+          link.value = @lookandfeel.lookup(:watch_movie)
+          link.set_attribute('target', '_blank')
+          link
+        end
+      end
+      def wordpress_url(model=@model)
         url = model.wordpress_url
         if url && !url.empty?
           link = HtmlGrid::HttpLink.new(:wordpress_link, model, @session, self)

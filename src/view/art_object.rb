@@ -65,23 +65,27 @@ module DAVAZ
         end
       end
       def url(model=@model)
-        url = model.url
-        if url && !url.empty?
-          link = HtmlGrid::HttpLink.new(:google_video_link, model, @session, self)
-          link.href = url
-          link.value = @lookandfeel.lookup(:watch_movie)
-          link.set_attribute('target', '_blank')
-          link
+        if model
+          url = model.url
+          if url && !url.empty?
+            link = HtmlGrid::HttpLink.new(:google_video_link, model, @session, self)
+            link.href = url
+            link.value = @lookandfeel.lookup(:watch_movie)
+            link.set_attribute('target', '_blank')
+            link
+          end
         end
       end
       def wordpress_url(model=@model)
-        url = model.wordpress_url
-        if url && !url.empty?
-          link = HtmlGrid::HttpLink.new(:wordpress_link, model, @session, self)
-          link.href = url
-          link.value = @lookandfeel.lookup(:read_wordpress)
-          link.set_attribute('target', '_blank')
-          link
+        if model
+          url = model.wordpress_url
+          if url && !url.empty?
+            link = HtmlGrid::HttpLink.new(:wordpress_link, model, @session, self)
+            link.href = url
+            link.value = @lookandfeel.lookup(:read_wordpress)
+            link.set_attribute('target', '_blank')
+            link
+          end
         end
       end
 		end

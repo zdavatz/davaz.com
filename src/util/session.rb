@@ -22,6 +22,10 @@ module DAVAZ
 					@state.extend(State::Admin::Admin)
 				end
 			end
+      def flavor
+        # davaz.com does not use flavor
+        nil
+      end
 			def active_state
         @active_state = super
         unless @token_login_attempted

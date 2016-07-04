@@ -3,8 +3,6 @@
 
 $: << File.expand_path("../src", File.dirname(__FILE__))
 
-$KCODE = 'u'
-
 require 'drb'
 require 'sbsm/drb'
 require 'util/davaz'

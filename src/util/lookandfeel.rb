@@ -4,7 +4,6 @@
 
 require 'sbsm/lookandfeel'
 require 'yaml'
-require 'iconv'
 
 module DAVAZ
 	module Util
@@ -61,7 +60,6 @@ module DAVAZ
 					:comma_divider						=>	',&nbsp;',
 					:copyright								=>	"LGPL ywesee #{Time.now.year}",
 					:copyright_url						=>	"http://scm.ywesee.com/?p=davaz.com;a=summary",
-					:country									=>	'Country',
 					:dash_divider							=>	'&nbsp;-&nbsp;',
 					:date											=>	'Date',
 					:date_gb									=>	'Date',

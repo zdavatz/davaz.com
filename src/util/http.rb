@@ -4,7 +4,6 @@
 require 'cgi'
 require 'net/http'
 require 'delegate'
-require 'iconv'
 require 'fileutils'
 
 module DAVAZ 
@@ -38,9 +37,11 @@ module DAVAZ
 				charset = self.charset
 				unless(charset.nil? \
 					|| %w{iso-8859-1 latin1}.include?(charset))
-					iconv = Iconv.new('Latin1', charset)
 					begin
-						iconv.iconv(body)
+            body.encode('ISO-8859-1',
+                        :invalid => :replace,
+                        :undef   => :replace,
+                        :replace => '?')
 					rescue
 						body
 					end

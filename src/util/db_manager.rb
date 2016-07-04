@@ -4,7 +4,7 @@
 
 require 'ftools'
 require 'date'
-require 'mysql'
+require 'mysql2'
 require 'yaml'
 require 'model/artgroup'
 require 'model/country'
@@ -19,7 +19,8 @@ require 'model/tool'
 module DAVAZ
 	module Util
     class DbConnection
-			DB_CONNECTION_DATA = File.expand_path('../../etc/db_connection_data.yml', 
+      attr_reader :connection
+      DB_CONNECTION_DATA = File.expand_path('../../etc/db_connection_data.yml',
                                             File.dirname(__FILE__))
       @@db_data = YAML.load(File.read(DB_CONNECTION_DATA))
       def initialize
@@ -29,8 +30,13 @@ module DAVAZ
         @connection = connection
       end
       def connection
-        Mysql.new(@@db_data['host'], @@db_data['user'], 
-                  @@db_data['password'], @@db_data['db'])
+        Mysql2::Client.new(
+          :host     => @@db_data['host'],
+          :username => @@db_data['user'],
+          :password => @@db_data['password'],
+          :database => @@db_data['db'],
+          :encoding => @@db_data['encoding']
+        )
       end
       def method_missing(*args, &block)
         @connection.send(*args, &block)
@@ -53,13 +59,13 @@ module DAVAZ
     end
 		class DbManager
 			def connect
-				connect = DbConnection.new
-				connect.reconnect = true
-				connect
+				connection = DbConnection.new
+				connection.reconnect
+        connection.connection
 			end
 			def connection
 				@connection ||= connect
-        if(block_given?)
+        if block_given?
           yield @connection
         else
           @connection
@@ -81,7 +87,7 @@ module DAVAZ
         connection { |conn|
           result = conn.query(query)
           keys = []
-          result.each_hash { |row| 
+          result.each { |row|
             keys.push(row['serie_id'])	
           }
           query = <<-EOS
@@ -114,7 +120,7 @@ module DAVAZ
 				EOS
         result = connection.query(query)
         count = ""
-        result.each_hash { |row|
+        result.each { |row|
           count = row['count(*)']
         }
         count
@@ -157,7 +163,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				artgroups = []
-				result.each_hash { |key, value| 
+				result.each { |key, value|
 					model = DAVAZ::Model::Artgroup.new
 					key.each { |col_name, col_value|
 						model.send(col_name.to_s + '=', col_value)
@@ -178,7 +184,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				links = {}
-				result.each_hash { |row|
+				result.each { |row|
 					link_id = row['link_id'] 
 					if(links.has_key?(link_id))
 						link = links[link_id]
@@ -203,7 +209,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				series = []
-				result.each_hash { |row|
+				result.each { |row|
 					serie = Model::Serie.new
 					serie.serie_id = row['serie_id']
 					serie.name = row['name']
@@ -223,7 +229,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				tags = []
-				result.each_hash { |row|
+				result.each { |row|
 					tag = Model::Tag.new	
 					tag.tag_id = row['tag_id']
 					tag.name = row['name']
@@ -256,7 +262,7 @@ module DAVAZ
 				result = connection.query(query)
 				artobjects = []
         table = {}
-        result.each_hash { |key, value|
+        result.each { |key, value|
           model = DAVAZ::Model::ArtObject.new
           key.each { |column_name, column_value|
             model.send(column_name.to_s + '=', column_value)
@@ -281,7 +287,7 @@ module DAVAZ
 				EOS
         result = connection.query(query) 
 				ids = []
-				result.each_hash { |row| 
+				result.each { |row|
 					model = Model::ArtObject.new
 					model.artobject_id = row['artobject_id']
 					model.artgroup_id = row['artgroup_id']
@@ -325,7 +331,7 @@ module DAVAZ
 				result = connection.query(query)
         table = {}
 				artobjects = []
-        result.each_hash { |hash|
+        result.each { |row|
           model = DAVAZ::Model::ArtObject.new
           hash.each { |column_name, column_value|
             model.send(column_name.to_s + '=', column_value)
@@ -349,7 +355,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				artobjects = []
-				result.each_hash { |row|
+				result.each { |row|
 					artobject = load_artobject(row['artobject_id'])
 					artobject.serie_position = row['position']
 					artobjects.push(artobject)
@@ -368,7 +374,7 @@ module DAVAZ
         EOS
         result = connection.query(query)
         table = {}
-        result.each_hash { |row|
+        result.each { |row|
           artobject_id = row['reference']
           links = (table[artobject_id] ||= {})
           link_id = row['link_id']
@@ -399,7 +405,7 @@ module DAVAZ
         EOS
         result = connection.query(query)
         table = {}
-        result.each_hash { |row|
+        result.each { |row|
           if id = row['tag_id']
             artobject_id = row['reference']
             tags = (table[artobject_id] ||= [])
@@ -421,7 +427,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				countries = []
-				result.each_hash { |row|
+				result.each { |row|
 					model = Model::Country.new
 					model.country_id = row['country_id']
 					model.name = row['name']
@@ -436,7 +442,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				rates = {}
-				result.each_hash { |key, value|
+				result.each { |key, value|
 					rates.store(key['target'], key['rate'].to_f)
 				}
 				rates
@@ -448,7 +454,7 @@ module DAVAZ
 					WHERE #{element} = '#{element_id}'
 				EOS
 				result = connection.query(query)
-				result.each_hash { |row|
+				result.each { |row|
 					return row['artobject_id']
 				}
 			end
@@ -478,7 +484,7 @@ module DAVAZ
 				SQL
 				tags = []
 				result = connection.query(sql)
-				result.each_hash { |key, value|
+				result.each { |key, value|
 					model = DAVAZ::Model::Tag.new
 					key.each { |colname, colval|
 						model.send(colname.to_s + '=', colval)
@@ -499,7 +505,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				artobjects = []
-				result.each_hash { |row|
+				result.each { |row|
 					artobject = Model::ArtObject.new
 					set_values(artobject, row)
 					artobjects.push(artobject)
@@ -514,7 +520,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				materials = []
-				result.each_hash { |row|
+				result.each { |row|
 					model = Model::Material.new
 					model.material_id = row['material_id']
 					model.name = row['name']
@@ -547,7 +553,7 @@ module DAVAZ
 				result = connection.query(query)
 				artobjects = []
         table = {}
-        result.each_hash { |key, value|
+        result.each { |key, value|
           model = DAVAZ::Model::ArtObject.new
           key.each { |column_name, column_value|
             model.send(column_name.to_s + '=', column_value)
@@ -579,7 +585,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				series = []
-				result.each_hash { |row|
+				result.each { |row|
 					serie = Model::Serie.new		
 					serie.serie_id = row['serie_id']
 					serie.name = row['name']
@@ -621,7 +627,7 @@ module DAVAZ
 				result = connection.query(query)
 				artobjects = []
         table = {}
-        result.each_hash { |key, value|
+        result.each { |key, value|
           model = DAVAZ::Model::ArtObject.new
           key.each { |column_name, column_value|
             model.send(column_name.to_s + '=', column_value)
@@ -646,7 +652,7 @@ module DAVAZ
 				SQL
 				result = connection.query(sql)
 				array = []
-				result.each_hash { |key, value| 
+				result.each { |key, value|
 					model = Model::Serie.new 
 					key.each { |column_name, column_value| 
 						model.send(column_name.to_s + '=', column_value)
@@ -662,7 +668,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				serie_id = ""
-				result.each_hash { |row|
+				result.each { |row|
 					serie_id = row["serie_id"]
 				}
 				serie_id
@@ -676,7 +682,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				items = []
-				result.each_hash { |key, value| 
+				result.each { |key, value|
 					artobject = DAVAZ::Model::ArtObject.new 
 					key.each { |column_name, column_value| 
 						artobject.send(column_name.to_s + '=', column_value)
@@ -699,7 +705,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				items = []
-				result.each_hash { |key, value| 
+				result.each { |key, value|
 					artobject = DAVAZ::Model::ArtObject.new 
 					key.each { |column_name, column_value| 
 						artobject.send(column_name.to_s + '=', column_value)
@@ -717,7 +723,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				tags = []
-				result.each_hash { |row|
+				result.each { |row|
 					tag = Model::Tag.new 
 					tag.tag_id = row['tag_id']
 					tag.name = row['name']
@@ -752,7 +758,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				artobjects = []
-				result.each_hash { |row|
+				result.each { |row|
 					artobject = Model::ArtObject.new
 					set_values(artobject, row)
 					artobjects.push(artobject)
@@ -768,7 +774,7 @@ module DAVAZ
 				EOS
 				result = connection.query(query)
 				tools = []
-				result.each_hash { |row|
+				result.each { |row|
 					model = Model::Tool.new
 					model.tool_id = row['tool_id']
 					model.name = row['name']
@@ -828,7 +834,7 @@ module DAVAZ
 			end
 			def create_model_array(model_class, result)
 				array = []
-				result.each_hash { |key, value| 
+				result.each { |key, value|
 					model = model_class.new
 					key.each { |column_name, column_value| 
 						model.send(column_name.to_s + '=', column_value)
@@ -839,7 +845,7 @@ module DAVAZ
 			end
 			def create_model_hash(model_class, result, hsh_key)
 				hash = {}	
-				result.each_hash { |key, value| 
+				result.each { |key, value|
 					model = model_class.new	
 					key.each { |column_name, column_value| 
 						model.send(column_name.to_s + '=', column_value)

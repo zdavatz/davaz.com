@@ -9,7 +9,7 @@ require 'htmlgrid/divform'
 require 'htmlgrid/divlist'
 require 'htmlgrid/errormessage'
 require 'htmlgrid/inputfile'
-require 'RMagick'
+require 'rmagick'
 
 module DAVAZ
 	module View

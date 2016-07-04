@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # ImageHelper -- davaz.com -- 31.05.2006 -- mhuggler@ywesee.com
 
-require 'RMagick'
+require 'rmagick'
 require "util/config"
 require "util/davaz"
 require 'fileutils'

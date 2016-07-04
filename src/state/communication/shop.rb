@@ -5,7 +5,6 @@ require 'state/global_predefine'
 require 'view/communication/shop'
 require 'view/art_object'
 require 'net/smtp'
-require 'tmail'
 
 module DAVAZ
 	module State
@@ -87,12 +86,12 @@ class Shop < State::Communication::Global
 	def send_mail(mandatory, hash)
 		lookandfeel = @session.lookandfeel
 		recipients = DAVAZ.config.recipients.dup.push(hash[:email])
-		
-		outgoing = TMail::Mail.new
-		outgoing.set_content_type('text', 'plain', 'charset'=>'UTF-8')
-		outgoing.to = recipients 
-		outgoing.from = DAVAZ.config.mail_from
-		outgoing.subject = 'Bestellung von davaz.com'
+    outgoing = Mail.new do
+      content_type 'text/plain; charset=UTF-8'
+      to           recipients
+      from         DAVAZ.config.mail_from
+      subject      'Bestellung von davaz.com'
+    end
 		address = mandatory.collect { |key|
 			"#{lookandfeel.lookup(key)}: #{hash[key].to_s}"
 		}
@@ -113,8 +112,8 @@ class Shop < State::Communication::Global
 			orders.join("\n"),
 			@session.lookandfeel.lookup(:shop_mail_bye),
 		]
-		outgoing.body = parts.join("\n\n") 
-		outgoing.date = Time.now
+    outgoing.body = parts.join("\n\n")
+    outgoing.date = Time.now
 		Net::SMTP.start(DAVAZ.config.smtp_server) { |smtp|
 			smtp.sendmail(outgoing.encoded, DAVAZ.config.smtp_from, recipients)
 		}

@@ -26,25 +26,29 @@ module DAVAZ
 				@links = []
 				@tags = []
 			end
-			def artcode
-				begin
-					Date.parse(date).year
-				rescue ArgumentError, NoMethodError 
-					'0000'
-				end
-				components = [
-					artgroup_id,
-					tool_id.rjust(2, "0"),
-					material_id.rjust(2, "0"),
-					'-',
-					country_id.ljust(3, "_"),
-					date,
-					'-',
-					serie_id,
-					serie_position.rjust(4, "0"),
-				]	
-				components.join("")
-			end
+      def artcode
+        date_value = begin
+          unless date.is_a?(Date)
+            Date.parse(date).year
+          else
+            date.year
+          end
+        rescue ArgumentError, NoMethodError
+          '0000'
+        end
+        components = [
+          artgroup_id,
+          tool_id.to_s.rjust(2, "0"),
+          material_id.to_s.rjust(2, "0"),
+          '-',
+          country_id.to_s.ljust(3, "_"),
+          date_value,
+          '-',
+          serie_id,
+          serie_position.rjust(4, "0"),
+        ]
+        components.join("")
+      end
 			def artobject_id
 				@artobject_id || nil
 			end

@@ -333,7 +333,7 @@ module DAVAZ
 				artobjects = []
         result.each { |row|
           model = DAVAZ::Model::ArtObject.new
-          hash.each { |column_name, column_value|
+          row.each { |column_name, column_value|
             model.send(column_name.to_s + '=', column_value)
           }
           table.store model.artobject_id, model

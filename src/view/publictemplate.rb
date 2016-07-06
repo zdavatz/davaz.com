@@ -53,25 +53,24 @@ module DAVAZ
 			DOJO_PREFIX = {
 				'ywesee'	=>	'/resources/javascript',
 			}
-			DOJO_REQUIRE = [
-				'dojo.parser',
-        'dojo.fx',
-        'dojo.back',
-				'dijit.layout.ContentPane',
-				'dijit.Editor',
-				'ywesee.widget.Desk',
-				'ywesee.widget.OneLiner',
-				'ywesee.widget.SlideShow',
-				'ywesee.widget.Rack',
-				'ywesee.widget.Ticker',
-				'ywesee.widget.InputText',
-				'ywesee.widget.InputTextarea',
-				'ywesee.widget.EditWidget',
-				'ywesee.widget.EditButtons',
-				'ywesee.widget.LoginWidget',
-				'ywesee.widget.GuestbookWidget',
-				'ywesee.widget.Tooltip',
-			]
+      DOJO_REQUIRE = [
+        'dojo/ready',
+        'dojo/back',
+        'dijit/layout/ContentPane',
+        'dijit/Editor',
+        'ywesee/widget/Ticker',
+        #'ywesee/widget/Desk',
+        #'ywesee/widget/OneLiner',
+        #'ywesee/widget/SlideShow',
+        #'ywesee/widget/Rack',
+        #'ywesee/widget/InputText',
+        #'ywesee/widget/InputTextarea',
+        #'ywesee/widget/EditWidget',
+        #'ywesee/widget/EditButtons',
+        #'ywesee/widget/LoginWidget',
+        #'ywesee/widget/GuestbookWidget',
+        #'ywesee/widget/Tooltip',
+      ]
 			CONTENT = nil
 			TICKER = nil
 			COMPONENTS = {
@@ -119,7 +118,8 @@ module DAVAZ
 				div.css_class = 'column'
 				div.value = View::LeftNavigation.new(model, @session, self)
 				divs << div
-        self.onload = sprintf("dojo.back.setInitialState('%s');",
+        # dojo/back
+        self.onload = sprintf("back.setInitialState('%s');",
                               @session.request_path)
 				divs
 			end

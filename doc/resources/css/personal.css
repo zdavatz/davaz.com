@@ -168,12 +168,10 @@ div#cv-chinese, div#cv-hungarian {
 /* Ticker */
 
 div#ticker-container {
-	margin-left: auto; margin-right: auto;
-	overflow: hidden;
-	display: none;
-	height: 140px;
-	/*width: 600px;
-	background-image: url('/resources/images/global/movie.gif');*/
+  margin-left:  auto;
+  margin-right: auto;
+  overflow:     hidden;
+  height:       140px;
 }
 
 div.ticker-window {

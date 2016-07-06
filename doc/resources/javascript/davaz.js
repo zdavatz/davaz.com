@@ -17,15 +17,36 @@ function submitForm(form, dataDivId, formDivId, keepForm) {
 }
 
 function toggleTicker() {
-	var node = dojo.byId('ticker-container');
-	var ticker = dijit.byId('ywesee_widget_Ticker_0');
-	var display = node.style.display; 
-	if(display==="none" || display==='' || display == undefined) {
-		dojo.fx.wipeIn({node:node, duration:300}).play();
-	} else {
-		dojo.fx.wipeOut({node:node, duration:300}).play();	
-	}
-  ticker.togglePaused();
+  require([
+    'dojo/dom'
+  , 'dojo/dom-style'
+  , 'dojo/fx'
+  , 'dijit/dijit'
+  , 'dojo/domReady!'
+  ], function(dom, domStyle, fx, dijit) {
+    var node   = dom.byId('ticker-container')
+      , ticker = dijit.byId('ywesee_widget_Ticker_0')
+      ;
+    var display = node.style.display;
+    if (display === "none" || display === '' || display == undefined) {
+      fx.wipeIn({
+        node:     node
+      , duration: 300
+      , onEnd:    function() {
+          domStyle.set(node, 'display', 'block');
+        }
+      }).play();
+    } else {
+      fx.wipeOut({
+        node:     node
+      , duration: 300
+      , onEnd:    function() {
+          domStyle.set(node, 'display', 'none');
+        }
+      }).play();
+    }
+    ticker.TogglePaused();
+  });
 }
 
 function toggleHiddenDiv(divId) {

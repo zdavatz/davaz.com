@@ -1,139 +1,132 @@
-dojo.provide("ywesee.widget.Ticker");
-
-dojo.require("dijit._Widget");
-dojo.require("dijit._Templated");
-
-dojo.declare(
-	"ywesee.widget.Ticker",
-	[dijit._Widget, dijit._Templated],
-  {
-
-    templatePath: dojo.moduleUrl("ywesee.widget", "templates/HtmlTicker.html"),
-    
-    images: [],
-    eventUrls: [],
-    windowWidth: 780,
-    componentWidth:	180,
-    componentHeight: 180,
-    tickerSpeed: 4000,
-    imagePosition: 0,
-    stopped: false,
-    critical: false,
-
-    tickerWindow: null,
-
-    startup: function() {
-      this.divWidth = this.componentWidth+2+"px";
-      this.divHeight = this.componentHeight+2+"px";
-      this.imageWidth = this.componentWidth+"px";
-      this.imageHeight = this.componentHeight+"px";
-      var container = dojo.byId("ticker-container");
-      container.style.width = this.windowWidth+'px';
-      var tickerWidth = (this.windowWidth+(4*this.componentWidth));
-      this.tickerWindow.style.width = tickerWidth + 'px';	
+define([
+  'dojo/_base/declare'
+, 'dojo/_base/fx'
+, 'dojo/ready'
+, 'dojo/parser'
+, 'dojo/query'
+, 'dojo/dom'
+, 'dojo/dom-geometry'
+, 'dojo/dom-style'
+, 'dijit/_WidgetBase'
+, 'dijit/_TemplatedMixin'
+], function(declare, fx, ready, parser, query, dom, geo, style, _wb, _tm) {
+  declare('ywesee.widget.Ticker', [_wb, _tm], {
+    constructor: function(params, srcNodeRef) {
+      // pass
+    }
+  , templatePath: require.toUrl(
+      '/resources/javascript/widget/templates/HtmlTicker.html')
+  , images:          []
+  , eventUrls:       []
+  , windowWidth:     780
+  , componentWidth:  180
+  , componentHeight: 180
+  , imagePosition:   0
+  , stopped:         false
+  , critical:        false
+  , postCreate: function() {
+      this.divWidth    = this.componentWidth  + 2 + 'px';
+      this.divHeight   = this.componentHeight + 2 + 'px';
+      this.imageWidth  = this.componentWidth  + 'px';
+      this.imageHeight = this.componentHeight + 'px';
+      var container = dom.byId('ticker-container');
+      container.style.width = this.windowWidth + 'px';
+      var tickerWidth = (this.windowWidth + (4 * this.componentWidth));
+      this.domNode.style.width = tickerWidth + 'px';
+      this.width = tickerWidth + 'px';
       var imageNumber = Math.floor((tickerWidth / this.componentWidth));
       for (i = 0; i < imageNumber; i++) {
-        if(i == (this.images.length-1)) {
+        if (i == (this.images.length - 1)) {
           this.imagePosition = 0;
         }
-        var div = document.createElement("div");
+        var div = document.createElement('div');
         this.assembleImageDiv(div);
         this.updateImageDiv(div);
-        this.tickerWindow.appendChild(div);
-        this.imagePosition += 1;	
+        this.domNode.appendChild(div);
+        this.imagePosition += 1;
       }
-      if(!this.stopped) {
+      if (!this.stopped) {
         this.endTransition();
       }
-    },
-
-  /*
-    this.countChildren = function(parentNode) {
-      count = 0;
-      var node = parentNode.firstChild;	
-      while(node && node.Type != dojo.dom.ELEMENT_NODE){
-        node = node.nextSibling;
-        count += 1;
-      }
-      return count;
     }
-  */
-    
-    endTransition: function () {
+  , endTransition: function () {
       var _this = this;
       var div = '';
       var callback = function() {
-        var firstDiv = dojo.query('div', _this.tickerWindow)[0];
-        div = _this.tickerWindow.removeChild(firstDiv);
+        var firstDiv = query('div', _this.domNode)[0];
+        div = _this.domNode.removeChild(firstDiv);
         _this.updateImageDiv(div);
-        _this.tickerWindow.appendChild(div);
-        if(_this.imagePosition == (_this.images.length-1)) {
+        _this.domNode.appendChild(div);
+        if (_this.imagePosition == (_this.images.length - 1)) {
           _this.imagePosition = 0;
         } else {
-          _this.imagePosition += 1;	
+          _this.imagePosition += 1;
         }
-        if(_this.stopped) {
+        if (_this.stopped) {
           _this.critical = false;
           return;
         } else {
           _this.endTransition();
         }
       };
-      var wipeOutDiv = dojo.query('div', this.tickerWindow)[0];
-      this.wipe(wipeOutDiv, 5000, this.componentWidth, 0, callback).play();
-    },
-
-    togglePaused: function() {
-      if(this.stopped){
+      var wipeOutDiv = query('div', this.domNode)[0];
+      this.wipe(wipeOutDiv, 3820, this.componentWidth, 0, callback).play();
+    }
+  , updateImageDiv: function(div) {
+      var link = query('a', div)[0]
+        , img  = query('img', link)[0]
+        ;
+      div.style.width  = this.divWidth;
+      div.style.height = this.divHeight;
+      div.style.clear  = 'none';
+      img.src              = this.images[this.imagePosition];
+      img.style.marginLeft = '0px';
+      link.href = this.eventUrls[this.imagePosition];
+    }
+  , assembleImageDiv: function(div) {
+      var link = document.createElement('a')
+        , img  = document.createElement('img')
+        ;
+      img.src = this.images[this.imagePosition];
+      img.alt = 'movie';
+      img.style.width  = this.imageWidth;
+      img.style.height = this.imageHeight;
+      img.style.border = 'none';
+      link.href = this.eventUrls[this.imagePosition];
+      link.appendChild(img);
+      div.appendChild(link);
+    }
+  , wipe: function(node, duration, startWidth, endWidth, callback) {
+      var _this = this;
+      var link = query('a', node)[0]
+        , img  = query('img', link)[0]
+        ;
+      return fx.animateProperty({
+        node:      node
+      , onAnimate: function() {
+          var pos = geo.position(node);
+          node.style.width = (pos.w - 1) + 'px';
+        }
+      , onEnd: function() {
+          if (callback) { callback(); }
+        }
+      , duration: duration
+      });
+    }
+  , TogglePaused: function() {
+      if (this.stopped) {
         this.stopped = false;
-        if(!this.critical) {
+        if (!this.critical) {
           this.endTransition();
         }
       } else {
         this.critical = true;
-        this.stopped = true;
+        this.stopped  = true;
       }
-    },
-
-    updateImageDiv: function(div) {
-      var link = dojo.query('a', div)[0]; 
-      var img = dojo.query('img', link)[0];
-      div.style.width = this.divWidth;
-      div.style.height = this.divHeight;
-      div.style.clear = "none";
-      img.src = this.images[this.imagePosition];
-      img.style.marginLeft = '0px';
-      link.href = this.eventUrls[this.imagePosition];
-    },
-
-    assembleImageDiv: function(div) {
-      var img = document.createElement("img");
-      img.src = this.images[this.imagePosition];
-      img.alt = "movie";
-      img.style.width = this.imageWidth;
-      img.style.height = this.imageHeight;
-      img.style.border = 'none';
-      var link = document.createElement("a");
-      link.href = this.eventUrls[this.imagePosition];
-      link.appendChild(img);
-      div.appendChild(link);
-    },
-
-    wipe: function(node, duration, startWidth, endWidth, callback) {
-      var _this = this;
-      var link = dojo.query('a', node)[0]; 
-      var img = dojo.query('img', link)[0];
-      var anim = new dojo._Animation({
-        onAnimate: function(e) {
-          node.style.width = e + "px";
-          img.style.marginLeft = (e - _this.componentWidth) + "px";	
-        },
-        onEnd: function() {
-          if(callback) { callback(node, anim); }
-        }, duration:duration, curve:[startWidth, endWidth]});
-      return anim;
     }
+  });
 
-  }
-
-);
+  ready(function() {
+    parser.parse();
+  });
+});

@@ -9,7 +9,7 @@ require 'htmlgrid/spanlist'
 require 'view/navigation'
 require 'view/ticker'
 
-DOJO_VERSION = '0.9'
+DOJO_VERSION = '1.7.7'
 
 module HtmlGrid
 	module FormMethods
@@ -56,11 +56,12 @@ module DAVAZ
       DOJO_REQUIRE = [
         'dojo/ready',
         'dojo/back',
-        'dijit/layout/ContentPane',
-        'dijit/Editor',
+        #'dijit/layout/ContentPane',
+        #'dijit/Editor',
+        'dijit/Tooltip',
         'ywesee/widget/Ticker',
+        'ywesee/widget/OneLiner',
         #'ywesee/widget/Desk',
-        #'ywesee/widget/OneLiner',
         #'ywesee/widget/SlideShow',
         #'ywesee/widget/Rack',
         #'ywesee/widget/InputText',

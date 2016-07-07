@@ -2,7 +2,7 @@
 # View::Personal::Inspiration -- davaz.com -- 27.09.2005 -- mhuggler@ywesee.com
 
 require 'view/publictemplate'
-require 'view/works/oneliner'
+require 'view/oneliner'
 require 'view/personal/life'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/span'
@@ -26,12 +26,12 @@ class InspirationText < HtmlGrid::DivList
 end
 class InspirationComposite < HtmlGrid::DivComposite
 	CSS_ID = 'inner-content'
-	COMPONENTS = {
-		[0,0]	=>	InspirationTitle,
-		[1,0]	=>	component(View::Works::OneLiner, :oneliner),
-		[2,0]	=>	:india_ticker_link,
-		[3,0]	=>	component(InspirationText, :text),	
-	}
+  COMPONENTS = {
+    [ 0, 0] => InspirationTitle,
+    [ 1, 0] => component(View::OneLiner, :oneliner),
+    [ 2, 0] => :india_ticker_link,
+    [ 3, 0] => component(InspirationText, :text),
+  }
 	def india_ticker_link(model)
 		link = HtmlGrid::Link.new(:india_ticker_link, model, @session, self)
 		link.href = "javascript:void(0)"

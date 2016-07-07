@@ -7,7 +7,7 @@ require 'htmlgrid/spanlist'
 require 'view/add_onload'
 require 'view/serie_widget'
 require 'view/serie_links'
-require 'view/works/oneliner'
+require 'view/oneliner'
 
 module DAVAZ
 	module View
@@ -70,13 +70,13 @@ class SearchBar < HtmlGrid::Form
 	end
 end
 class UpperGalleryComposite < HtmlGrid::DivComposite
-	COMPONENTS = {
-		[0,0]	=>	SearchTitle,
-		[0,1]	=>	View::GalleryNavigation,
-		[0,2]	=>	SearchBar,
-		[0,3]	=>	component(View::Works::OneLiner, :oneliner),
-		[0,4]	=>	SeriesTitle,
-	}
+  COMPONENTS = {
+    [ 0, 0] => SearchTitle,
+    [ 0, 1] => View::GalleryNavigation,
+    [ 0, 2] => SearchBar,
+    [ 0, 3] => component(View::OneLiner, :oneliner),
+    [ 0, 4] => SeriesTitle,
+  }
 	CSS_ID_MAP = {
 		0	=>	'search-title',
 		1	=>	'gallery-navigation',

@@ -35,16 +35,18 @@ class Signature < HtmlGrid::Div
 	end
 end
 class PhotoDavaz < HtmlGrid::Div
-	CSS_CLASS = "photo"
-	CSS_ID = 'photo_davaz'
-	def init
-		super
-		img = HtmlGrid::Image.new(:photo_davaz, model, @session, self)
-		#args = [ :title, 'Power' ]
-		args = [:artobject_id, 1591]
-		self.dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip, args)
-		@value = img
-	end
+  CSS_CLASS = 'photo'
+  CSS_ID    = 'photo_davaz'
+  def init
+    super
+    img = HtmlGrid::Image.new(:photo_davaz, model, @session, self)
+    img.set_attribute(
+      :href,  # previous artobject_id 1591 is missing
+      @lookandfeel.event_url(:tooltip, :tooltip, [:artobject_id, 1500])
+    )
+    img.css_id = 'davaz'
+    @value = img
+  end
 end
 class PicInspiration < HtmlGrid::Div
 	CSS_CLASS = 'pic-inspiration' 
@@ -69,15 +71,18 @@ class PicFamily < HtmlGrid::Div
 	end
 end
 class PicBottleneck < HtmlGrid::Div
-	CSS_CLASS = 'pic-bottleneck' 
-	CSS_ID = 'pic_bottleneck'
-	def init 
-		super
-		img = HtmlGrid::Image.new(:pic_bottleneck, model, @session, self)
-		args = [ :title, 'Bottleneck' ]
-		self.dojo_tooltip = @lookandfeel.event_url(:tooltip, :tooltip, args)
-		@value = img
-	end
+  CSS_CLASS = 'pic-bottleneck'
+  CSS_ID    = 'pic_bottleneck'
+  def init
+    super
+    img = HtmlGrid::Image.new(:pic_bottleneck, model, @session, self)
+    img.set_attribute(
+      :href,
+      @lookandfeel.event_url(:tooltip, :tooltip, [:title, 'Bottleneck'])
+    )
+    img.css_id = 'bottleneck'
+    @value = img
+  end
 end
 class Copyright < HtmlGrid::Div
 	CSS_CLASS = 'init-copyright'

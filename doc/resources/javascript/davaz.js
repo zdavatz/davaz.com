@@ -534,3 +534,40 @@ function toggleLoginWidget(loginLink, url) {
 	loginLink.onclick = "return false;";
   login.startup();
 }
+
+function setHrefTooltip(domId, hrefHolderId, dialogId, orient) {
+  require([
+    'dijit/TooltipDialog'
+  , 'dijit/popup'
+  , 'dojo/on'
+  , 'dojo/dom'
+  , 'dojo/dom-attr'
+  , 'dojo/domReady!'
+  ], function(TooltipDialog, popup, on, dom, attr) {
+    var targetDom = dom.byId(domId)
+      , holder    = dom.byId(hrefHolderId)
+      ;
+    if (targetDom === null || holder === null) { return }
+    var artDialog = new TooltipDialog({
+          id:           dialogId + 'Dialog'
+        , style:        'width:400px;'
+        , href:         attr.get(holder, 'href')
+        , onMouseLeave: function() {
+            popup.close(artDialog);
+          }
+        });
+    on(targetDom, 'mouseover', function() {
+      popup.open({
+        popup:  artDialog
+      , around: targetDom
+      , orient: orient
+      });
+    });
+    on(targetDom, 'mouseleave', function() {
+      popup.close(artDialog);
+    });
+  });
+}
+
+setHrefTooltip('photo_davaz',    'davaz',      'art',        ['below-alt']);
+setHrefTooltip('pic_bottleneck', 'bottleneck', 'bottleneck', ['below-alt']);

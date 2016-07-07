@@ -56,11 +56,9 @@ module DAVAZ
       DOJO_REQUIRE = [
         'dojo/ready',
         'dojo/back',
-        #'dijit/layout/ContentPane',
-        #'dijit/Editor',
-        'dijit/Tooltip',
         'ywesee/widget/Ticker',
         'ywesee/widget/OneLiner',
+        #'ywesee/widget/Tooltip',
         #'ywesee/widget/Desk',
         #'ywesee/widget/SlideShow',
         #'ywesee/widget/Rack',
@@ -70,7 +68,6 @@ module DAVAZ
         #'ywesee/widget/EditButtons',
         #'ywesee/widget/LoginWidget',
         #'ywesee/widget/GuestbookWidget',
-        #'ywesee/widget/Tooltip',
       ]
 			CONTENT = nil
 			TICKER = nil

@@ -46,9 +46,9 @@ div#zone-image {
 }
 
 div.oneliner {
-	padding-top: 15px;
-	font: bold 16pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
-	text-align: center;
+  font:        bold 16pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  padding-top: 15px;
+  text-align:  center;
 }
 
 .center {

@@ -4,7 +4,7 @@
 require 'view/publictemplate'
 require 'view/list'
 require 'view/textblock'
-require 'view/works/oneliner'
+require 'view/oneliner'
 require 'view/serie_widget'
 require 'view/ticker'
 require 'htmlgrid/divcomposite'
@@ -136,13 +136,13 @@ end
 class LifeComposite < HtmlGrid::DivComposite
 	LIFE_LIST = component(LifeList, :biography_items)
 	CSS_CLASS = 'inner-content'
-	COMPONENTS = {
-		[0,0]	=>	:india_ticker_link,
-		[0,1]	=>	component(SerieWidget, :slideshow_items, 'SlideShow'),
-		[0,2]	=>	component(View::Works::OneLiner, :oneliner),
-		[0,3]	=>	LifeTimePeriods,
-		[1,3]	=>	LifeTranslations,
-	}
+  COMPONENTS = {
+    [ 0, 0] => :india_ticker_link,
+    [ 0, 1] => component(SerieWidget, :slideshow_items, 'SlideShow'),
+    [ 0, 2] => component(View::OneLiner, :oneliner),
+    [ 0, 3] => LifeTimePeriods,
+    [ 1, 3] => LifeTranslations,
+  }
 	def init
     reorganize_components
 		super

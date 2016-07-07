@@ -103,17 +103,17 @@ div.lines {
 	z-index: 3;
 }
 
-div#oneliner {
-	position: absolute;
-	width: 560px;
-	left: 0px;
-	top: 380px;
-	z-index: 2;
+div.oneliner {
+  position: absolute;
+  width:    560px;
+  left:     0px;
+  top:      380px;
+  z-index: 2;
 }
 
 div.oneliner {
-	font: bold 16pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
-	text-align: center;
+  font:       bold 16pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  text-align: center;
 }
 
 div.movie-links {

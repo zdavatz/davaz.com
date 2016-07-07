@@ -4,7 +4,7 @@
 require 'view/form'
 require 'view/publictemplate'
 require 'view/composite'
-require 'view/works/oneliner'
+require 'view/oneliner'
 require 'view/ticker' 
 require 'view/maillink'
 require 'htmlgrid/divcomposite'
@@ -37,7 +37,7 @@ end
 class PhotoDavaz < HtmlGrid::Div
 	CSS_CLASS = "photo"
 	CSS_ID = 'photo_davaz'
-	def init 
+	def init
 		super
 		img = HtmlGrid::Image.new(:photo_davaz, model, @session, self)
 		#args = [ :title, 'Power' ]
@@ -232,37 +232,30 @@ class PayPalDiv < HtmlGrid::DivComposite
 		[0,0]	=>	PayPalButtonDiv,
 	}
 end
-class OneLiner < HtmlGrid::Div
-	CSS_ID = 'oneliner'
-	def init
-		super
-		@value = View::Works::OneLiner.new(@model, @session, self)
-	end
-end
 class InitComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'init-container'
-	COMPONENTS = {
-		[0,0]		=>	Drawing,
-		[1,0]		=>	PhotoDavaz,
-		[2,0]		=>	Signature,
-		[3,0]		=>	IntroText,
-		[4,0]		=>	PicInspiration,
-		[5,0]		=>	PicFamily,
-		[6,0]		=>	PicBottleneck,
-		[7,0]		=>	CommunicationLinks,
-		#[8,0]		=>	Copyright,
-		[9,0]		=>	component(OneLiner, :oneliner),
-		[10,0]	=>	MovieLinks,
-		[11,0]	=>	PayPalDiv,
-	}
+  COMPONENTS = {
+    [ 0, 0] => Drawing,
+    [ 1, 0] => PhotoDavaz,
+    [ 2, 0] => Signature,
+    [ 3, 0] => IntroText,
+    [ 4, 0] => PicInspiration,
+    [ 5, 0] => PicFamily,
+    [ 6, 0] => PicBottleneck,
+    [ 7, 0] => CommunicationLinks,
+    #[ 8, 0] => Copyright,
+    [ 9, 0] => component(View::OneLiner, :oneliner),
+    [10, 0] => MovieLinks,
+    [11, 0] => PayPalDiv,
+  }
 end
 class Init < View::PublicTemplate
 	CSS_FILES = [ :navigation_css, :init_css ]
-	COMPONENTS = {
-		[0,0]	=>	View::TopNavigation,
-		[0,1]	=>	component(Ticker, :movies),
-		[0,2]	=>	InitComposite,
-	}
+  COMPONENTS = {
+    [ 0, 0] => View::TopNavigation,
+    [ 0, 1] => component(Ticker, :movies),
+    [ 0, 2] => View::Personal::InitComposite,
+  }
 	CSS_ID_MAP = {
 		0	=>	'top-navigation',
 		1	=>	'ticker-container',

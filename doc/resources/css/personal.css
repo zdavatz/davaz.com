@@ -63,10 +63,10 @@ div.family-forward-link {
 }
 
 div.oneliner {
-	font: bold 14pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
-	padding-top: 10px;
-	padding-bottom: 40px;
-	text-align: center;
+  font:           bold 14pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  padding-top:    10px;
+  padding-bottom: 40px;
+  text-align:     center;
 }
 
 table#life-time-periods {

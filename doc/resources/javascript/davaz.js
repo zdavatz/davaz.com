@@ -232,92 +232,106 @@ function toggleDeskContent(id, serieId, objectId, url, wipe) {
 }
 
 function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
-	var show = dijit.byId(id);
-	if(show) {
-		var lastUrl = show.dataUrl;
-		var lastId = lastUrl.split("/").pop();
-	}
+  require([
+    'dojo/_base/xhr'
+  , 'dojo/dom'
+  , 'dojo/dom-style'
+  , 'dojo/fx'
+  , 'dojo/back'
+  , 'dijit/dijit'
+  , 'dojo/domReady!'
+  , 'ywesee/widget/SlideShow'
+  , 'ywesee/widget/Desk'
+  , 'ywesee/widget/Rack'
+  ], function(xhr, dom, domStyle, fx, back, dijit) {
+    var show = dijit.byId(id);
+    if (show) {
+      var lastUrl = show.dataUrl
+        , lastId  = lastUrl.split('/').pop()
+        ;
+    }
+    var serieLink = dojo.byId(serie_id);
+    if (serie_id && show) {
+      if (lastId != serie_id) {
+        var lastSerieLink = dojo.byId(lastId);
+        if (lastSerieLink) {
+          lastSerieLink.className = lastSerieLink.className.replace(/ ?active/, '');
+        }
+      }
+    }
+    var container = dojo.byId(id + '-container')
+      , wipearea  = dojo.byId(id + '-wipearea')
+      , display
+      , replace = dojo.byId(replace_id)
+      ;
+    if (view === null) {
+      if (show) {
+        view = show.view;
+      } else  {
+        view = 'Rack';
+      }
+    }
+    if (url === null && show) {
+      url = lastUrl;
+    }
+    if (serie_id === null) {
+      serie_id = show.serieId;
+    }
+    var fragmentIdentifier = view + '_' + serie_id;
 
-  var serieLink = dojo.byId(serie_id);
+    if (artobject_id) {
+      fragmentIdentifier = fragmentIdentifier + '_' + artobject_id;
+    }
 
-	if(serie_id && show) {
-		if(lastId != serie_id) {
-			var lastSerieLink = dojo.byId(lastId);	
-			if(lastSerieLink) {
-        lastSerieLink.className = lastSerieLink.className.replace(/ ?active/, '');
-			}
-		} 
-	}
-	var container = dojo.byId(id + "-container");
-	var wipearea = dojo.byId(id + "-wipearea");
-	var display;
-	var replace = dojo.byId(replace_id);
-
-	if(view === null) {
-		if(show) {
-			view = show.view;
-		} else  {
-			view = 'Rack';	
-		}
-	}
-
-	if(url === null && show) {
-		url = lastUrl;	
-	}
-
-	if(serie_id === null) {
-		serie_id = show.serieId;	
-	}
-
-	var fragmentIdentifier = view + "_" + serie_id;
-
-	if(artobject_id) {
-		fragmentIdentifier = fragmentIdentifier + "_" + artobject_id;
-	}
-
-	var loadShow = function() {
-		dojo.xhrGet({
-			url: url,
-			load: function(data, args) { 
-				data.id = id;
-				if(show) {
-					show.destroy();	
-				}
-        var domNode = dojo.doc.createElement('div');
-        switch(view) {
-          case "SlideShow":
-				    var widget = new ywesee.widget.SlideShow(data, domNode);
+    var loadShow = function() {
+      xhr.get({
+        url:      url
+      , handleAs: 'json'
+      , load:     function(data, args) {
+          data.id = id;
+          if (show) {
+            show.destroy();
+          }
+          var domNode = dojo.doc.createElement('div');
+          switch(view) {
+          case 'SlideShow':
+            var widget = new ywesee.widget.SlideShow(data, domNode);
             break;
-          case "Desk":
-				    var widget = new ywesee.widget.Desk(data, domNode);
+          case 'Desk':
+            var widget = new ywesee.widget.Desk(data, domNode);
             break;
           default:
-				    var widget = new ywesee.widget.Rack(data, domNode);
-        }
-        container.appendChild(widget.domNode);
-        widget.startup();
-        var style = wipearea.style.display;
-				if(!style || style === 'none') {
-          wipearea.style.overflow = "hidden";
-          dojo.fx.wipeIn({node:wipearea, duration:1000 }).play();
-				}
+            var widget = new ywesee.widget.Rack(data, domNode);
+          }
+          container.appendChild(widget.domNode);
+          widget.startup();
+          var style = wipearea.style.display;
+          if (!style || style === 'none') {
+            wipearea.style.overflow = 'hidden';
+            fx.wipeIn({
+              node:     wipearea
+            , duration: 1000
+            }).play();
+          }
+          // change color of active link to black
+          if (serieLink != null && !serieLink.className.match(/ ?active/)) {
+            serieLink.className += ' active';
+          }
+          back.addToHistory({changeUrl:fragmentIdentifier});
+        },
+      });
+    };
 
-        // change color of active link to black
-        if(serieLink != null && !serieLink.className.match(/ ?active/))
-        {
-          serieLink.className += " active";
-        }
-				dojo.back.addToHistory({changeUrl:fragmentIdentifier});
-			},
-			handleAs: "json-comment-filtered"
-
-		});
-	};
-	if(replace && replace.style.display !== 'none') {
-		dojo.fx.wipeOut({node:replace, duration:1000, onEnd:loadShow}).play();
-	} else {
-		loadShow.call();	
-	}
+    if (replace && replace.style.display !== 'none') {
+      fx.wipeOut({
+        node:     replace
+      , duration: 1000
+      , onEnd:    loadShow
+      }).play();
+    } else {
+      loadShow.call();
+    }
+  });
 }
 
 function toggleJavaApplet(url, artobjectId) {

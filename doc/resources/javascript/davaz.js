@@ -274,7 +274,7 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
     if (url === null && show) {
       url = lastUrl;
     }
-    if (serie_id === null) {
+    if (serie_id === null && show) {
       serie_id = show.serieId;
     }
     var fragmentIdentifier = view + '_' + serie_id;
@@ -310,7 +310,7 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
             wipearea.style.overflow = 'hidden';
             fx.wipeIn({
               node:     wipearea
-            , duration: 1000
+            , duration: 900
             }).play();
           }
           // change color of active link to black
@@ -325,7 +325,7 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
     if (replace && replace.style.display !== 'none') {
       fx.wipeOut({
         node:     replace
-      , duration: 1000
+      , duration: 1200
       , onEnd:    loadShow
       }).play();
     } else {

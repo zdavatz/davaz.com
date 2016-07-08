@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # Validator -- davaz.com -- 29.07.2013 -- yasaka@ywesee.com
 # Validator -- davaz.com -- 19.07.2005 -- mhuggler@ywesee.com
 
@@ -177,17 +176,19 @@ module DAVAZ
 			def show(value)
 				value
 			end
-			def zone(value)
-				if(value.to_s.empty?)
-					raise SBSM::InvalidDataError.new("e_invalid_zone", :zone, value)
-				end
-				zone = value.to_s.intern
-				if(self::class::ZONES.include?(zone))
-					zone
-				else
-					raise SBSM::InvalidDataError.new("e_invalid_zone", :zone, value)
-				end
-			end
+
+      def zone(value)
+        zone_value = validate_string(value).to_s
+        if zone_value.empty?
+          raise SBSM::InvalidDataError.new("e_invalid_zone", :zone, value)
+        end
+        zone_sym = zone_value.intern
+        if self::class::ZONES.include?(zone_sym)
+          zone_sym
+        else
+          raise SBSM::InvalidDataError.new("e_invalid_zone", :zone, value)
+        end
+      end
 		end
 	end
 end

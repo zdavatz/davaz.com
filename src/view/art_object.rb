@@ -95,9 +95,10 @@ module DAVAZ
 				[0,1]	=>	:items,	
 				[0,2]	=>	:next,
 			}
-			def items(model)
-		"Item #{model.artobjects.index(model.artobject)+1} of #{model.artobjects.size}"
-			end
+      def items(model)
+        "Item #{model.artobjects.index(model.artobject).to_i + 1} of" \
+        " #{model.artobjects.size}"
+      end
 			def next(model)
 				artobjects = model.artobjects
         active_index = artobjects.index(model.artobject).to_i
@@ -149,9 +150,10 @@ module DAVAZ
 				[0,1]	=>	:items,	
 				[0,2]	=>	:next,
 			}
-			def items(model)
-				"Item #{model.artobjects.index(model.artobject).to_i + 1} of #{model.artobjects.size}"
-			end
+      def items(model)
+        "Item #{model.artobjects.index(model.artobject).to_i + 1} of" \
+        " #{model.artobjects.size}"
+      end
 			def next(model)
 				artobjects = model.artobjects
 				active_index = artobjects.index(model.artobject).to_i

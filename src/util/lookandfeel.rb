@@ -294,11 +294,12 @@ module DAVAZ
 				:movies_css				=>	'css/movies.css',
 				:work_title				=>	'images/global/work.gif',
 			}
-			def event_url(zone=@session.zone, event=:home, args={})
-				args = args.collect { |*pair| pair }.flatten
-				arr = [base_url(zone), event]
-				arr.push(args).compact.join('/')
-			end
+
+      def event_url(zone=@session.zone, event=:home, args={})
+        args = Array(args).collect { |*pair| pair }.flatten
+        [base_url(zone), event, args].compact.join('/')
+      end
+
 			def foot_navigation(filter=false)
 				@session.foot_navigation
 			end

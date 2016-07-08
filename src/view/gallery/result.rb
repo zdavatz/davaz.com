@@ -54,13 +54,17 @@ class ResultList < View::List
 		end
 		link
 	end
-	def year(model)
-		begin
-			Date.parse(model.date).year
-		rescue ArgumentError
-			'n.a.'
-		end
-	end
+
+  def year(model)
+    date = model.date
+    begin
+      date = Date.parse(date) unless date.is_a?(Date)
+      date.year
+    rescue ArgumentError, TypeError
+      'n.a.'
+    end
+  end
+
 	def compose_header(offset=[0,0])
 		table_title = (@model.first.artgroup || 'Unknown') + " (#{@model.size})"
 		@grid.add(table_title, 0, 0)

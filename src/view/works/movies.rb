@@ -29,13 +29,15 @@ class MovieDetails < HtmlGrid::SpanComposite
 		3	=>	'movies-details',
 		4	=>	'movies-details',
 	}
-	def year(model) 
-		begin
-			Date.parse(model.date).year
-		rescue ArgumentError
-			'n.a.'
-		end
-	end
+  def year(model)
+    date = model.date
+    begin
+      date = Date.parse(date) unless date.is_a?(Date)
+      date.year
+    rescue ArgumentError, TypeError
+      'n.a.'
+    end
+  end
 end
 class MovieImage < HtmlGrid::Div
 	def init

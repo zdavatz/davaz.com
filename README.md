@@ -78,8 +78,8 @@ davaz> exit
 
 ### Dependencies (via rubygems)
 
-* minitest
-* Selenium (watir-webdriver)
+* [minitest](https://github.com/seattlerb/minitest)
+* [Selenium](http://docs.seleniumhq.org/) ([watir-webdriver](https://watirwebdriver.com/))
 
 ### How to run
 
@@ -90,7 +90,17 @@ __TODO__
 #### Single feature test
 
 ```zsh
-% DEBUG=true ruby -I.:test test/feature/test_shop.rb
+: `DEBUG=true` is useful for debug (but it might be not interested)
+% bundle exec ruby -I.:test test/feature/test_shop.rb
+Run options: --seed 12380
+
+# Running:
+
+*
+
+Fabulous run in 9.634901s, 0.1038 runs/s, 0.3114 assertions/s.
+
+1 runs, 3 assertions, 0 failures, 0 errors, 0 skips
 ```
 
 ### Tips

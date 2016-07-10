@@ -1,15 +1,15 @@
-# Website of davaz.com
+# The [davaz.com](http://davaz.com/)
 
 ## Setup
 
 ### Requirements
 
-* Ruby, >= 2.3.1
-* PostgreSQL, >= 9.0 (for [yus](https://github.com/zdavatz/yus))
-* MySQL, >= 5.6
+* Ruby, `>= 2.3.1`
+* PostgreSQL, `>= 9.0` (for [yus](https://github.com/zdavatz/yus))
+* MySQL, `>= 5.6`
 * ImageMagick
 * Apache2
-* [mod_ruby](https://github.com/shugo/mod_ruby) (It works with Ruby 1.8.6)
+* [mod_ruby](https://github.com/shugo/mod_ruby) (It works with Ruby `1.8.6`)
 * cronolog (optional)
 
 ### Install
@@ -33,7 +33,7 @@ ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-linux]
 
 Use sample files in `etc` directory.
 
-```zs
+```zsh
 : Database (edit for your credentials)
 % cp etc/db_connection_data.yml.sample etc/db_connection_data.yml
 
@@ -47,7 +47,8 @@ __TODO__
 
 ### Booting
 
-Setup [daemontools](http://cr.yp.to/daemontools.html)
+Setup [daemontools](http://cr.yp.to/daemontools.html) then let supervise these
+servers.
 
 ```zsh
 : Boot application server (setup daemontools as supervisor)
@@ -58,8 +59,10 @@ Setup [daemontools](http://cr.yp.to/daemontools.html)
 % bundle exec yusd
 ```
 
+How to boot developer console.
+
 ```zsh
-: Boot admin console (for developer)
+: Boot admin console
 % bundle exec ./bin/admin
 davaz> load_artgroups.length
 -> 11

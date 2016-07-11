@@ -27,3 +27,17 @@ group :test do
   gem 'watir-webdriver'
   gem 'headless'
 end
+
+# NOTE: additional personal Gemfile.hack support for developer
+#
+# @example
+#   bundle install         #=> loads .hack file will if it exists
+#   HACK=no bundle install #=> ignores .hack file even if it exists
+group :development, :test do
+  if ENV['HACK'] !~ /\A(no|false)\z/i
+    hack = File.expand_path('../Gemfile.hack', __FILE__)
+    if File.exist?(hack)
+      eval File.read(hack)
+    end
+  end
+end

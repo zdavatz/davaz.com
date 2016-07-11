@@ -31,8 +31,8 @@ end
 # NOTE: additional personal Gemfile.hack support for developer
 #
 # @example
-#   bundle install         #=> loads .hack file will if it exists
-#   HACK=no bundle install #=> ignores .hack file even if it exists
+#   bundle install         #=> loads Gemfile.hack, if it exists
+#   HACK=no bundle install #=> ignores Gemfile.hack, even if it exists
 group :development, :test do
   if ENV['HACK'] !~ /\A(no|false)\z/i
     hack = File.expand_path('../Gemfile.hack', __FILE__)

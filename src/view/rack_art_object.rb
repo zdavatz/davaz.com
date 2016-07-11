@@ -40,8 +40,8 @@ module DAVAZ
         [0, 1] => :back_to_overview,
       }
       CSS_ID_MAP = {
-        0 => 'artobject-pager',
-        1 => 'artobject-back-link',
+        0 => 'artobject_pager',
+        1 => 'artobject_back_link',
       }
 
       def back_to_overview(model)
@@ -63,8 +63,8 @@ module DAVAZ
         [0, 1] => component(ArtObjectInnerComposite, :artobject),
       }
       CSS_ID_MAP = {
-        0 => 'artobject-outer-composite',
-        1 => 'artobject-inner-composite',
+        0 => 'artobject_outer_composite',
+        1 => 'artobject_inner_composite',
       }
       HTTP_HEADERS = {
         'type'    => 'text/html',
@@ -78,8 +78,8 @@ module DAVAZ
         [0, 1] => View::AdminArtObjectInnerComposite,
       }
       CSS_ID_MAP = {
-        0 => 'artobject-outer-composite',
-        1 => 'artobject-inner-composite',
+        0 => 'artobject_outer_composite',
+        1 => 'artobject_inner_composite',
       }
       HTTP_HEADERS = {
         'type'    => 'text/html',

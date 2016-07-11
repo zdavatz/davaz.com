@@ -83,17 +83,17 @@ module DAVAZ
           [0, 4] => SeriesTitle,
         }
         CSS_ID_MAP = {
-          0 => 'search-title',
-          1 => 'gallery-navigation',
-          2 => 'search-bar',
-          3 => 'search-oneliner',
+          0 => 'search_title',
+          1 => 'gallery_navigation',
+          2 => 'search_bar',
+          3 => 'search_oneliner',
         }
       end
 
       class GalleryComposite < HtmlGrid::DivComposite
         include SerieLinks
 
-        CSS_ID     = 'inner-content'
+        CSS_ID     = 'inner_content'
         COMPONENTS = {
           [0,0] => UpperGalleryComposite,
           [0,1] => :slideshow_rack,
@@ -104,9 +104,9 @@ module DAVAZ
           1 => 'display:none;',
         }
         CSS_ID_MAP = {
-          0 => 'upper-search-composite',
+          0 => 'upper_search_composite',
           1 => 'show_wipearea',
-          2 => 'serie-links',
+          2 => 'serie_links',
         }
 
         def slideshow_rack(model)

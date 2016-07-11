@@ -1,62 +1,73 @@
 div#content {
-	background-image: url("/resources/images/global/background.jpg");
-	background-position: top center;
-	background-repeat: no-repeat;
+  background-image:    url("/resources/images/global/background.jpg");
+  background-position: top center;
+  background-repeat:   no-repeat;
 }
 
-div#foot-navigation {
-	background: #70B878;
+div#top_navigation {
+  color:        #FFFF00;
+  background:   #70B878;
+  padding-left: 200px;
 }
-a.foot-navigation:visited,a.foot-navigation:link {
-	background: #70B878;
-}
-a.foot-navigation:hover {
-	background: #70B878;
-}
-div#top-navigation {
-	color: #FFFF00;
-	background: #70B878;
-	padding-left: 200px;
-}
-a.top-navigation:visited, a.top-navigation:link {
-	color: #FFFF00;
-	background: #70B878;
+
+a.top-navigation:visited,
+a.top-navigation:link {
+  background: #70B878;
+  color:      #FFFF00;
 }
 a.top-navigation:hover {
-	color: white;
-	background: #70B878;
+  background: #70B878;
+  color:      white;
 }
-div#zone-image {
-	background-image: url("/resources/images/global/topleft_drawings.gif");
-	background-repeat: no-repeat;
+
+div#foot_navigation {
+  background: #70B878;
+}
+
+a.foot-navigation:visited,
+a.foot-navigation:link {
+  background: #70B878;
+}
+a.foot-navigation:hover {
+  background: #70B878;
+}
+
+div#zone_image {
+  background-image:  url("/resources/images/global/topleft_drawings.gif");
+  background-repeat: no-repeat;
 }
 
 div#copyright {
-	background: #70B878;
+  background: #70B878;
 }
 
-table#result-list-column-names td {
-	background: #70B878;
+table#result_list_column_names td {
+  background: #70B878;
 }
 
 table.result-list th {
-	background-color: #90CF97;
+  background-color: #90CF97;
 }
 
-td.result-title-bg, td.result-year-bg, td.result-tool-bg, 
-td.result-material-bg, td.result-size-bg, td.result-country-bg,
+td.result-title-bg,
+td.result-year-bg,
+td.result-tool-bg,
+td.result-material-bg,
+td.result-size-bg,
+td.result-country-bg,
 td.result-serie-bg {
-	background-color: #DBFFDF;
+  background-color: #DBFFDF;
 }
 
-div#artobject-title-left {
-	background: #70B878;
+div#artobject_title_left {
+  background: #70B878;
 }
 
-div#artobject-title {
-	background: #70B878;
+div#artobject_title {
+  background: #70B878;
 }
 
-div#artobject-subtitle-left, div#artobject-subtitle-right {
-	background-color: #90CF97;
+div#artobject_subtitle_left,
+div#artobject_subtitle_right {
+  background-color: #90CF97;
 }

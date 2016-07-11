@@ -102,10 +102,10 @@ class ImageChooserComposite < HtmlGrid::DivComposite
 		3	=>	'image-chooser-title',
 		5	=>	'image-chooser-title',
 	}
-	CSS_ID_MAP = {
-		2	=>	'links-list-container',
-		4	=>	'image-upload-form',
-	}
+  CSS_ID_MAP = {
+    2 => 'links_list_container',
+    4 => 'image_upload_form',
+  }
 	def back(model)
 		link = HtmlGrid::Link.new(:back, model, @session, self)
 		state = @session.active_state
@@ -117,9 +117,9 @@ class ImageChooserContainerComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=> ImageChooserComposite,	
 	}
-	CSS_ID_MAP = {
-		0	=>	'image-chooser-container',
-	}
+  CSS_ID_MAP = {
+    0 => 'image_chooser_container',
+  }
 end
 class ImageChooser < AdminPublicTemplate
 	CONTENT = ImageChooserContainerComposite

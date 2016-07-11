@@ -1,18 +1,11 @@
-#foot-container {
+#foot_container {
 	padding-top: 20px;
 	clear: both;
 	padding-left: 180px;
 	padding-right: 0px;
 }
 
-/*
-#foot-container .column {
-	position: relative;
-	float: left;
-}
-*/
-
-div#foot-navigation {
+div#foot_navigation {
 	height: 25px;
 	line-height: 25px;
 	width: 100%;
@@ -76,7 +69,7 @@ a.foot-navigation:hover {
 	text-align: center;
 }
 
-div#top-navigation {
+div#top_navigation {
 	height: 55px;
 	line-height: 55px;
 	vertical-align: middle;
@@ -143,7 +136,7 @@ a#logo:hover {
 	display: block;
 }
 
-div#left-navigation {
+div#left_navigation {
   position: relative;
 	padding-top: 140px;
 	width: 200px;
@@ -152,16 +145,16 @@ div#left-navigation {
 }
 
 /*** IE6 Fix, cannot be comma-combined with IE7 Fix  ***/
-* html #left-navigation {
+* html #left_navigation {
   left: 0px;           /* RC width */
 }
 
 /*** IE7 Fix ***/
-*:first-child+html #left-navigation {
+*:first-child+html #left_navigation {
   left: 0px;           /* RC width */
 }
 
-ul#left-navigation {
+ul#left_navigation {
 	list-style: none;
 	padding-left: 0pt;
 }
@@ -228,62 +221,62 @@ a.small-lnavlink-active:visited {
 	color: white;
 }
 
-li#design-active, a#design:hover {
+li#design_active, a#design:hover {
 	/*background-color: #FF6600;*/
 	background-image: url(/resources/images/navigation/design.png);
 }
 
-li#drawings-active, a#drawings:hover {
+li#drawings_active, a#drawings:hover {
 	/*background-color: #74ba7c;*/
 	background-image: url(/resources/images/navigation/drawings.png);
 }
 
-li#paintings-active, a#paintings:hover {
+li#paintings_active, a#paintings:hover {
 	/*background-color: #c60c6d;*/
 	background-image: url(/resources/images/navigation/paintings.png);
 }
 
-li#multiples-active, a#multiples:hover {
+li#multiples_active, a#multiples:hover {
 	/*background-color: #ce3dff;*/
 	background-image: url(/resources/images/navigation/multiples.png);
 }
 
-li#movies-active, a#movies:hover {
+li#movies_active, a#movies:hover {
 	/*background-color: #7a8a99;*/
 	background-image: url(/resources/images/navigation/movies.png);
 }
 
-li#photos-active, a#photos:hover {
+li#photos_active, a#photos:hover {
 	/*background-color: #39cece;*/
 	background-image: url(/resources/images/navigation/photos.png);
 }
 
-li#carpets-active, a#carpets:hover {
+li#carpets_active, a#carpets:hover {
 	/*background-color: #ff6c0d;*/
 	background-image: url(/resources/images/navigation/carpets.png);
 }
 
-li#schnitzenthesen-active, a#schnitzenthesen:hover {
+li#schnitzenthesen_active, a#schnitzenthesen:hover {
 	/*background-color: #9eff0c;*/
 	background-image: url(/resources/images/navigation/schnitzenthesen.png);
 }
 
-li#gallery-active, a#gallery:hover {
+li#gallery_active, a#gallery:hover {
 	/*background-color: #f1171d;*/
 	background-image: url(/resources/images/navigation/gallery.png);
 }
 
-li#lectures-active, a#lectures:hover {
+li#lectures_active, a#lectures:hover {
 	/*background-color: #6d3d0c;*/
 	background-image: url(/resources/images/navigation/lectures.png);
 }
 
-li#exhibitions-active, a#exhibitions:hover {
+li#exhibitions_active, a#exhibitions:hover {
 	/*background-color: #f1a309;*/
 	background-image: url(/resources/images/navigation/exhibitions.png);
 }
 
-li#articles-active, a#articles:hover {
+li#articles_active, a#articles:hover {
 	/*background-color: #6d6dff;*/
 	background-image: url(/resources/images/navigation/articles.png);
 }

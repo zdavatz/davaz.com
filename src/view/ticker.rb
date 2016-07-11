@@ -1,19 +1,18 @@
-#!/usr/bin/env ruby
-# View::Ticker -- davaz.com -- 12.04.2006 -- mhuggler@ywesee.com
-
 require 'htmlgrid/dojotoolkit'
 require 'htmlgrid/component'
 require 'util/image_helper'
 
 module DAVAZ
-	module View
-		class Ticker < HtmlGrid::Component
-			attr_accessor :component_width, :component_height
-			def init
-				@component_width = DAVAZ.config.ticker_component_width
-				@component_height = DAVAZ.config.ticker_component_height
-				super
-			end
+  module View
+    class Ticker < HtmlGrid::Component
+      attr_accessor :component_width, :component_height
+
+      def init
+        @component_width  = DAVAZ.config.ticker_component_width
+        @component_height = DAVAZ.config.ticker_component_height
+        super
+      end
+
       def to_html(context)
         args = { # as html attributes
           'images'          => [],
@@ -49,30 +48,32 @@ module DAVAZ
             "#{k}:#{v}"
           }.join(',')
         }
-        dojo_tag('ywesee.widget.Ticker', dojo_args).to_html(context)
+        dojo_tag('ywesee.widget.ticker', dojo_args).to_html(context)
       end
-		end
-		class InnerTicker < HtmlGrid::Div
-			def init
-				super
-				@value = View::Ticker.new(@model, @session, self)
-				@value.component_height = 135
-				@value.component_width = 180
-			end
-		end
-		class TickerContainer < HtmlGrid::DivComposite
-			#CSS_ID = 'ticker-container'
-			COMPONENTS = {
-				[0,0]	=>	:ticker,
-			}
-      CSS_ID_MAP = ['ticker-container']
-      CSS_STYLE_MAP = [ 'display: none' ]
+    end
+
+    class InnerTicker < HtmlGrid::Div
+      def init
+        super
+        @value = View::Ticker.new(@model, @session, self)
+        @value.component_height = 135
+        @value.component_width  = 180
+      end
+    end
+
+    class TickerContainer < HtmlGrid::DivComposite
+      COMPONENTS = {
+        [0, 0] => :ticker,
+      }
+      CSS_ID_MAP    = ['ticker_container']
+      CSS_STYLE_MAP = ['display: none']
+
       def ticker(model)
         tick = Ticker.new(model, @session, self)
-				tick.component_height = 135
-				tick.component_width = 180
+        tick.component_height = 135
+        tick.component_width  = 180
         tick
       end
-		end
-	end
+    end
+  end
 end

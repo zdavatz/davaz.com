@@ -25,7 +25,7 @@ module DAVAZ::View
           "#{k}:#{v}"
         }.join(',')
       }
-      dojo_tag('ywesee.widget.OneLiner', dojo_args).to_html(context)
+      dojo_tag('ywesee.widget.oneliner', dojo_args).to_html(context)
     end
   end
 end

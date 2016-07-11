@@ -1,335 +1,349 @@
 div#content {
-	background-image: url("/resources/images/global/background.jpg");
-	background-position: top center;
-	background-repeat: no-repeat;
+  background-image:    url("/resources/images/global/background.jpg");
+  background-position: top center;
+  background-repeat:   no-repeat;
 }
 
 span.table-info {
-	font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
-	color: black;
+  font:  10pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color: black;
 }
 
-div#top-navigation {
-	padding-left: 200px;
+div#top_navigation {
+  padding-left: 200px;
 }
 
-div#zone-image {
-	background-image: url("/resources/images/global/topleft_communication.gif");
-	background-repeat: no-repeat;
+div#zone_image {
+  background-image:  url("/resources/images/global/topleft_communication.gif");
+  background-repeat: no-repeat;
 }
 
 div.table-info {
-	padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 input.new-entry {
-	background-color: #990099;
-	width: 200px;
-	color: white;
-	border:3px solid #DDDDDD;
+  background-color: #990099;
+  width:            200px;
+  color:            white;
+  border:           3px solid #DDDDDD;
 }
 
 input.add-entry {
-	background-color: #990099;
-	color: white;
-	border:3px solid #DDDDDD;
+  background-color: #990099;
+  color:            white;
+  border:           3px solid #DDDDDD;
 }
 
 input.order-item {
-	margin-top: 20px;
-	background-color: #990099;
-	color: white;
-	border:3px solid #DDDDDD;
+  margin-top:       20px;
+  background-color: #990099;
+  color:            white;
+  border:           3px solid #DDDDDD;
 }
 
-input.button, input#submit {
-	margin-top: 20px;
-	background-color: #990099;
-	color: white;
-	border:3px solid #DDDDDD;
+input.button,
+input#submit {
+  margin-top:       20px;
+  background-color: #990099;
+  color:            white;
+  border:           3px solid #DDDDDD;
 }
 
 td.date-right {
-	text-align: right;
+  text-align: right;
 }
 
-td.text, td.text-bg {
-	padding-top: 10px;
-	padding-bottom: 30px;
-	font: 10pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
-	color: black;
-	background: none;
+td.text,
+td.text-bg {
+  padding-top:    10px;
+  padding-bottom: 30px;
+  font:           10pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color:          black;
+  background:     none;
 }
 
-td.image, td.image-bg {
-	padding-top: 10px;
-	text-align: right;
-	padding-bottom: 30px;
+td.image,
+td.image-bg {
+  padding-top:    10px;
+  text-align:     right;
+  padding-bottom: 30px;
 }
 
 div.link-title {
-	width: 700px;
-	margin-left: auto; margin-right: auto;
-	background-color: #990099;
+  width:            700px;
+  margin-left:      auto;
+  margin-right:     auto;
+  background-color: #990099;
 }
 
 div.link-title-link {
-	float: left;
-	text-align: left;
+  float:      left;
+  text-align: left;
 }
 
 div.link-title-date {
-	color: white;
-	text-align: right;
+  color:      white;
+  text-align: right;
 }
 
 div.link-text {
-	width: 700px;
-	margin-left: auto; margin-right: auto;
-	color: black;
-	clear: both;
-	margin-top: 10px;
-	margin-bottom: 20px;
-	text-align: left;
+  width:         700px;
+  margin-left:   auto;
+  margin-right:  auto;
+  color:         black;
+  clear:         both;
+  margin-top:    10px;
+  margin-bottom: 20px;
+  text-align:    left;
 }
 
-a.link-title:link, a.link-title:visited {
-	color: white;
-	text-decoration: none;
+a.link-title:link,
+a.link-title:visited {
+  color:           white;
+  text-decoration: none;
 }
 
 a.link-title:hover {
-	color: blue;
-	text-decoration: none;
+  color:           blue;
+  text-decoration: none;
 }
 
 table.guestbook-entry {
-	width: 100%;
-	color: black;
+  width: 100%;
+  color: black;
 }
 
 td.label {
-	width: 60px;
-	padding-right: 20px;
-	text-align: left;
+  width:         60px;
+  padding-right: 20px;
+  text-align:    left;
 }
 
 td.guestbook-entry-text {
-	text-align: left;
+  text-align: left;
 }
 
 td.date-right {
-	text-align: right; 
+  text-align: right;
 }
 
 table.guestbookentry-form {
-	margin-left: auto; margin-right: auto;
-	width: 600px;
+  margin-left:  auto;
+  margin-right: auto;
+  width:        600px;
 }
 
-textarea#guestbook-message {
-	width: 500px;
-	border: 2px lightgrey inset;
+textarea#guestbook_message {
+  width:  500px;
+  border: 2px lightgrey inset;
 }
 
 td.labels {
-	width: 80px;
-	vertical-align: top;
-	text-align: left;
+  width:          80px;
+  vertical-align: top;
+  text-align:     left;
 }
 
 td.labels input {
-	background: black;
+  background: black;
 }
 
 td.shop-input {
-	width: 30px;
+  width: 30px;
 }
 
 td.shop-name {
-	text-align: left;
+  text-align: left;
 }
 
 td.shop-item {
-	width: 70px;	
+  width: 70px;
 }
 
 td.shop-price {
-	width: 75px;
+  width: 75px;
 }
 
 td.shop-divider {
-	width: 5px;
+  width: 5px;
 }
 
 div.shop-list {
 }
 
 table.shop-list {
-	margin-top: 20px;
-	margin-left: auto; margin-right: auto;
-	width: 700px;
-	color: black;
+  margin-top:   20px;
+  margin-left:  auto;
+  margin-right: auto;
+  width:        700px;
+  color:        black;
 }
 
 table.shop-list th {
-	text-align: left;
-	color: red;
-	font-weight: bold;
-	font-size: 14pt;
+  text-align:  left;
+  color:       red;
+  font-weight: bold;
+  font-size:   14pt;
 }
 
-div#shopping-cart {
-	margin-top: 20px;
-/*	display: none; */
-	margin-left: auto; margin-right: auto;
-	width: 700px;
-	text-align: left;
-	color: black;
+div#shopping_cart {
+  margin-top:   20px;
+  margin-left:  auto;
+  margin-right: auto;
+  width:        700px;
+  text-align:   left;
+  color:        black;
 }
 
-table#news-list {
-	margin-left: auto; margin-right: auto;
-	width: 700px;
+table#news_list {
+  margin-left:  auto;
+  margin-right: auto;
+  width:        700px;
 }
 
 td.news-title {
-	background-color: #990099;
-	color: white;
-	text-align: left;
+  background-color: #990099;
+  color:            white;
+  text-align:       left;
 }
 
 td.news-date {
-	background-color: #990099;
-	color: white;
-	text-align: right;
+  background-color: #990099;
+  color:            white;
+  text-align:       right;
 }
 
 td.news-text {
-	color: black;
-	margin-top: 5px;
-	margin-bottom: 20px;
+  color:         black;
+  margin-top:    5px;
+  margin-bottom: 20px;
 }
 
 td.news-image img {
-	margin-top: 5px;
-	margin-bottom: 20px;
+  margin-top:    5px;
+  margin-bottom: 20px;
 }
 
 div.guestbook {
-	width: 600px;
-	margin-left: auto; margin-right: auto;
-	border-bottom: 2px solid #990099;
-	margin-bottom: 20px;
-	margin-top: 20px;
+  width:         600px;
+  margin-left:   auto;
+  margin-right:  auto;
+  border-bottom: 2px solid #990099;
+  margin-bottom: 20px;
+  margin-top:    20px;
 }
 
 div.guestbook table {
-	padding-top: 30px;
+  padding-top: 30px;
 }
 
 input {
-	background: none;
+  background: none;
 }
 
 textarea {
-	background: none;
+  background: none;
 }
 
 td.shopping-cart-subtotal {
-	text-align: right;
-	font-weight: bold;
+  text-align: right;
+  font-weight: bold;
 }
 
 td.shopping-cart-total {
-	border-top: black solid 1pt;
-	text-align: right;
-	font-weight: bold;
+  border-top:  black solid 1pt;
+  text-align:  right;
+  font-weight: bold;
 }
 
 td.shopping-cart-total-title {
-	text-align: left;
-	font-weight: bold;
+  text-align:  left;
+  font-weight: bold;
 }
 
-table#shopping-cart {
-	margin-left: auto; margin-right: auto;
-	width: 700px;
-	text-align: left;
+table#shopping_cart {
+  margin-left:  auto;
+  margin-right: auto;
+  width:        700px;
+  text-align:   left;
 }
 
-div#shopping-address {
-	margin-top: 40px;
+div#shopping_address {
+  margin-top: 40px;
 }
 
-table#shopping-address {
-	width: 700px;
-	margin-left: auto; margin-right: auto;
-	text-align: left;
-	color: black;
+table#shopping_address {
+  width:        700px;
+  margin-left:  auto;
+  margin-right: auto;
+  text-align:   left;
+  color:        black;
 }
 
-div#shopping-submit {
-	width: 700px;
-	margin-left: auto; margin-right: auto;
-	text-align: left;
+div#shopping_submit {
+  width:        700px;
+  margin-left:  auto;
+  margin-right: auto;
+  text-align:   left;
 }
 
-.processingerror, .error {
-	font-weight: bold;
-	color: red;
+.processingerror,
+.error {
+  font-weight: bold;
+  color:       red;
 }
 
 td.shopping-cart-title {
-	width: 250px;
+  width: 250px;
 }
 
-div#element-container, div.news, div.links {
-	width: 700px;
-	margin-left: auto; margin-right: auto;
+div#element_container,
+div.news,
+div.links {
+  width:        700px;
+  margin-left:  auto;
+  margin-right: auto;
 }
 
 div.block-title {
-	clear: both;
-	font-weight: bold;
-	font-size: 13pt;
-	margin-top: 20px;
-	text-align: left;
-	width: 100%;
-	/*height: 22p;
-	width: 600px;*/
-	/*float: left;*/
-	/* background-color: #990099; */
+  clear:       both;
+  font-weight: bold;
+  font-size:   13pt;
+  margin-top:  20px;
+  text-align:  left;
+  width:       100%;
 }
 
 div.block-url {
-	clear: both;
-	font-weight: bold;
-	font-size: 13pt;
-	margin-top: 20px;
-	text-align: left;
-	color: blue;
-	width: 100%;
+  clear:       both;
+  font-weight: bold;
+  font-size:   13pt;
+  margin-top:  20px;
+  text-align:  left;
+  color:       blue;
+  width:       100%;
 }
 
-div.block-url a:link, div.block-url a:visited, 
+div.block-url a:link,
+div.block-url a:visited,
 div.block-url a:hover {
-	text-decoration: none;
+  text-decoration: none;
 }
 
-div.block-date, div.block-date_ch {
-	clear: both;
-	/*font-size: 10pt;*/
-	text-align: left;
-	width: 100%;
+div.block-date,
+div.block-date_ch {
+  clear:       both;
+  text-align: left;
+  width:      100%;
 }
 
 div.block-text {
-	color: black;
-	text-align: left;
-	width: 100%;
+  color:      black;
+  text-align: left;
+  width:      100%;
 }
 
 div.block-image {
-	text-align: left;
+  text-align: left;
 }

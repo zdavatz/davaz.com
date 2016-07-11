@@ -3,28 +3,29 @@
 
 require 'htmlgrid/div'
 
-module DAVAZ 
-	module View
-		module Admin 
-class AjaxAddNewElementComposite < HtmlGrid::DivComposite
-	CSS_ID = "add-new-element-composite"
-	COMPONENTS = {
-		[0,1]	=>	:add_new_element_link,
-	}
-	CSS_ID_MAP = {
-		2	=>	'add-new-element-form'
-	}
-	def add_new_element_link(model)
-		link = HtmlGrid::Link.new(:new_element, model, @session, self)
-		link.href = 'javascript:void(0)'
-		url = @lookandfeel.event_url(@session.zone, :ajax_add_new_element)
-		script = "addNewElement('#{url}')"
-		link.set_attribute('onclick', script)
-		link
-	end
-end
+module DAVAZ
+  module View
+    module Admin
+      class AjaxAddNewElementComposite < HtmlGrid::DivComposite
+        CSS_ID = 'add_new_element_composite'
+        COMPONENTS = {
+          [0, 1] => :add_new_element_link,
+        }
+        CSS_ID_MAP = {
+          2 => 'add_new_element_form'
+        }
+
+        def add_new_element_link(model)
+          link = HtmlGrid::Link.new(:new_element, model, @session, self)
+          link.href = 'javascript:void(0)'
+          url = @lookandfeel.event_url(@session.zone, :ajax_add_new_element)
+          link.set_attribute('onclick', "addNewElement('#{url}');")
+          link
+        end
+      end
+
 class AjaxUploadImageForm < View::Form
-	CSS_ID = 'upload-image-form'
+  CSS_ID = 'upload_image_form'
 	EVENT = :ajax_upload_image
 	LABELS = true
 	TAG_METHOD = :multipart_form
@@ -52,7 +53,7 @@ class AjaxImageDiv < HtmlGrid::Div
 	def image(artobject, url)
 		img = HtmlGrid::Image.new('artobject_image', artobject, @session, self)
 		img.set_attribute('src', url)
-		img.css_id = 'artobject-image'
+		img.css_id = 'artobject_image'
 		link = HtmlGrid::HttpLink.new(:url, artobject, @session, self)
 		link.href = artobject.url
 		link.value = img

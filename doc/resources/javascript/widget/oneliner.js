@@ -17,8 +17,8 @@ define([
   , messages:      []
   , colors:        []
   , messageIdx:    -1
-  , nodeOut:       'line-one'
-  , nodeIn:        'line-two'
+  , nodeOut:       'lineOne'
+  , nodeIn:        'lineTwo'
   , delay:         1200
   , constructor: function(params, srcNodeRef) {
       // pass

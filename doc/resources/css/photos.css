@@ -1,68 +1,76 @@
 div#content {
-	background-image: url("/resources/images/global/background.jpg");
-	background-position: top center;
-	background-repeat: no-repeat;
+  background-image:    url("/resources/images/global/background.jpg");
+  background-position: top center;
+  background-repeat:    no-repeat;
 }
 
-div#foot-navigation {
-	background: #33CCCC;
+div#foot_navigation {
+  background: #33CCCC;
 }
 
-a.foot-navigation:visited,a.foot-navigation:link {
-	background: #33CCCC;
+a.foot_navigation:visited,
+a.foot_navigation:link {
+  background: #33CCCC;
 }
 
-a.foot-navigation:hover {
-	background: #33CCCC;
+a.foot_navigation:hover {
+  background: #33CCCC;
 }
 
-div#top-navigation {
-	color: #FF6600;
-	background: #33CCCC;
-	padding-left: 200px;
+div#top_navigation {
+  color:        #FF6600;
+  background:   #33CCCC;
+  padding-left: 200px;
 }
 
-a.top-navigation:visited, a.top-navigation:link {
-	color: #FF6600;
-	background: #33CCCC;
+a.top-navigation:visited,
+a.top-navigation:link {
+  color:      #FF6600;
+  background: #33CCCC;
 }
 
 a.top-navigation:hover {
-	color: white;
-	background: #33CCCC;
+  color:      white;
+  background: #33CCCC;
 }
 
 div#copyright {
-	background: #33CCCC;
+  background: #33CCCC;
 }
 
-div#zone-image {
-	background-image: url("/resources/images/global/topleft_photos.gif");
-	background-repeat: no-repeat;
+div#zone_image {
+  background-image:  url("/resources/images/global/topleft_photos.gif");
+  background-repeat: no-repeat;
 }
 
-a.inner-top-navigation:visited, a.inner-top-navigation:link {
-	color: #FF6600;
+a.inner-top-navigation:visited,
+a.inner-top-navigation:link {
+  color: #FF6600;
 }
 
-table#result-list-column-names td {
-	background-color: #33CCCC;
+table#result_list_column_names td {
+  background-color: #33CCCC;
 }
 
 table.result-list th {
-	background-color: #7DEEEF;
+  background-color: #7DEEEF;
 }
 
-td.result-title-bg, td.result-year-bg, td.result-tool-bg, 
-td.result-material-bg, td.result-size-bg, td.result-country-bg,
+td.result-title-bg,
+td.result-year-bg,
+td.result-tool-bg,
+td.result-material-bg,
+td.result-size-bg,
+td.result-country-bg,
 td.result-serie-bg {
-	background-color: #EBFFFF;
+  background-color: #EBFFFF;
 }
 
-div#artobject-title {
-	background-color: #33CCCC;
+div#artobject_title {
+  background-color: #33CCCC;
 }
 
-div#artobject-subtitle-left, div#artobject-subtitle-right {
-	background-color: #7DEEEF;
+div#artobject_subtitle_left,
+div#artobject_subtitle_right {
+  background-color: #7DEEEF;
 }

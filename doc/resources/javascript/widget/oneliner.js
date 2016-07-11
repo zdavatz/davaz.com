@@ -9,15 +9,16 @@ define([
 , 'dijit/_TemplatedMixin'
 , 'dijit/_WidgetsInTemplateMixin'
 ], function(declare, connect, fx, lang, ready, parser, _wb, _tm, _witm) {
-  declare('ywesee.widget.OneLiner', [_wb, _tm], {
-    templatePath: require.toUrl(
-      '/resources/javascript/widget/templates/HtmlOneLiner.html')
+  declare('ywesee.widget.oneliner', [_wb, _tm], {
+    baseClass:    'oneliner-widget'
+  , templatePath: require.toUrl(
+      '/resources/javascript/widget/templates/oneliner.html')
   , messageString: ''
   , messages:      []
   , colors:        []
   , messageIdx:    -1
-  , nodeOut:       'lineOne'
-  , nodeIn:        'lineTwo'
+  , nodeOut:       'line-one'
+  , nodeIn:        'line-two'
   , delay:         1200
   , constructor: function(params, srcNodeRef) {
       // pass

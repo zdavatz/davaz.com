@@ -2,7 +2,7 @@ define([
   'dojo/_base/declare'
 , 'dojo/_base/xhr'
 ], function(declare, xhr) {
-  return declare('ywesee.widget.Show', [], {
+  return declare('ywesee.widget.show', [], {
     images:  []
   , titles:  []
   , startup: function() {

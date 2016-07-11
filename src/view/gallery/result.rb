@@ -184,7 +184,7 @@ class RackResultList < ResultList
 			link.value = model.title
 		end
 		#script = "toggleDeskContent('show', '#{serie_id}', '#{artobject_id}', '#{url}', true)"
-		script = "toggleShow('show', '#{url}', 'Desk', 'upper-search-composite', '#{serie_id}', '#{artobject_id}');"
+		script = "toggleShow('show', '#{url}', 'desk', 'upper-search-composite', '#{serie_id}', '#{artobject_id}');"
 		link.set_attribute('onclick', script)
 		link
 	end

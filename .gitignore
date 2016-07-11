@@ -4,5 +4,6 @@
 !/etc/davaz.yml
 !/etc/trans_handler.yml
 
-/doc
 /log
+/doc/resources/dojo*
+/doc/resources/uploads/*

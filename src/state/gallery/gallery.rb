@@ -52,35 +52,42 @@ class AjaxDesk < SBSM::State
 		@model = @session.app.load_serie(serie_id).artobjects
 	end
 end
+
 class AjaxRack < SBSM::State
-	VOLATILE = true
-	VIEW = View::AjaxResponse
-	def init
-		serie_id = @session.user_input(:serie_id)
-		artobject_ids = []	
-		images = []	
-		titles = []	
-		@session.load_serie(serie_id).artobjects.each { |artobject|
-			if(Util::ImageHelper.has_image?(artobject.artobject_id))
-				image = Util::ImageHelper.image_url(artobject.artobject_id, 'slideshow')
-				images.push(image)
-				titles.push(artobject.title)
-				artobject_ids.push(artobject.artobject_id)
-			end
-		}
-		@model = {
-			'artObjectIds'	=>	artobject_ids,
-			'images'				=>	images,
-			'titles'				=>	titles,
-			'imageHeight'		=>	DAVAZ.config.slideshow_image_height,
-			'serieId'				=>	serie_id,
-		}
-		@filter = Proc.new { |model|
-			model.store('dataUrl', @request_path)
-			model
-		}
-	end
+  VOLATILE = true
+  VIEW     = View::AjaxResponse
+
+  def init
+    serie_id = @session.user_input(:serie_id)
+    artobject_ids = []
+    images = []
+    titles = []
+    serie = @session.load_serie(serie_id)
+    if serie
+      serie.artobjects.each { |artobject|
+        if Util::ImageHelper.has_image?(artobject.artobject_id)
+          image = Util::ImageHelper.image_url(
+            artobject.artobject_id, 'slideshow')
+          images.push(image)
+          titles.push(artobject.title)
+          artobject_ids.push(artobject.artobject_id)
+        end
+      }
+    end
+    @model = {
+      'artObjectIds' => artobject_ids,
+      'images'       => images,
+      'titles'       => titles,
+      'imageHeight'  => DAVAZ.config.slideshow_image_height,
+      'serieId'      => serie_id,
+    }
+    @filter = Proc.new { |model|
+      model.store('dataUrl', @request_path)
+      model
+    }
+  end
 end
+
 class Gallery < State::Gallery::Global
 	VIEW = View::Gallery::Gallery
 	def init

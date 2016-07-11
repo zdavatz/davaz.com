@@ -1,33 +1,41 @@
 div#content {
-	background-image: url("/resources/images/global/background.jpg");
+	background-image:    url("/resources/images/global/background.jpg");
 	background-position: top center;
-	background-repeat: no-repeat;
+	background-repeat:   no-repeat;
 }
 
-div#foot-navigation {
+div#top_navigation {
+	color:        #FFFF00;
+	background:   #FF6600;
+	padding-left: 200px;
+}
+
+a.top-navigation:visited,
+a.top-navigation:link {
+	color:      #FFFF00;
 	background: #FF6600;
 }
-a.foot-navigation:visited,a.foot-navigation:link {
+
+a.top-navigation:hover {
+	color:      white;
 	background: #FF6600;
 }
+
+div#foot_navigation {
+	background: #FF6600;
+}
+
+a.foot-navigation:visited,
+a.foot-navigation:link {
+	background: #FF6600;
+}
+
 a.foot-navigation:hover {
 	background: #FF6600;
 }
-div#top-navigation {
-	color: #FFFF00;
-	background: #FF6600;
-	padding-left: 200px;
-}
-a.top-navigation:visited, a.top-navigation:link {
-	color: #FFFF00;
-	background: #FF6600;
-}
-a.top-navigation:hover {
-	color: white;
-	background: #FF6600;
-}
-div#zone-image {
-	background-image: url("/resources/images/global/topleft_drawings.gif");
+
+div#zone_image {
+	background-image:  url("/resources/images/global/topleft_drawings.gif");
 	background-repeat: no-repeat;
 }
 
@@ -35,7 +43,7 @@ div#copyright {
 	background: #FF6600;
 }
 
-table#result-list-column-names td {
+table#result_list_column_names td {
 	background-color: #FF6600;
 }
 
@@ -43,16 +51,21 @@ table.result-list th {
 	background-color: #F9A369;
 }
 
-td.result-title-bg, td.result-year-bg, td.result-tool-bg, 
-td.result-material-bg, td.result-size-bg, td.result-country-bg,
+td.result-title-bg,
+td.result-year-bg,
+td.result-tool-bg,
+td.result-material-bg,
+td.result-size-bg,
+td.result-country-bg,
 td.result-serie-bg {
 	background-color: #FFDDC6;
 }
 
-div#artobject-title {
+div#artobject_title {
 	background-color: #FF6600;
 }
 
-div#artobject-subtitle-left, div#artobject-subtitle-right { 
+div#artobject_subtitle_left,
+div#artobject_subtitle_right {
 	background-color: #F9A369;
 }

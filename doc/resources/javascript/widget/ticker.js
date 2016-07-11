@@ -30,7 +30,7 @@ define([
       this.divHeight   = this.componentHeight + 2 + 'px';
       this.imageWidth  = this.componentWidth  + 'px';
       this.imageHeight = this.componentHeight + 'px';
-      var container = dom.byId('ticker-container');
+      var container = dom.byId('ticker_container');
       container.style.width = this.windowWidth + 'px';
       var tickerWidth = (this.windowWidth + (4 * this.componentWidth));
       this.domNode.style.width = tickerWidth + 'px';

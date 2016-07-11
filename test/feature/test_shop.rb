@@ -9,7 +9,7 @@ class TestShop < Minitest::Test
     assert_match('/en/communication/shop', link.href)
     link.click
     browser.wait(3)
-    cart = browser.table(:id, 'shopping-cart')[0][0]
+    cart = browser.table(:id, 'shopping_cart')[0][0]
     item = browser.text_field(:id, 'article[111]')
     item.set('2')
     item.send_keys(:tab)

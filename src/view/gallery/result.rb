@@ -202,16 +202,17 @@ class RackResultListInnerComposite < HtmlGrid::DivComposite
 		end
 	end
 end
+
 class RackResultListComposite < HtmlGrid::DivComposite
-	COMPONENTS = {
-		[0,0]	=>	RackResultListInnerComposite,
-	}
-	CSS_ID_MAP = {
-		0	=>	'rack-result-list-composite',
-	}
-	HTTP_HEADERS = {
-		"Content-Type"	=>	"text/html; charset=UTF-8",
-	}			
+  COMPONENTS = {
+    [0, 0] => RackResultListInnerComposite,
+  }
+  CSS_ID_MAP = {
+    0 => 'rack_result_list_composite',
+  }
+  HTTP_HEADERS = {
+    'Content-Type' => 'text/html; charset=UTF-8',
+  }
 end
 		end
 	end

@@ -24,7 +24,7 @@ function toggleTicker() {
   , 'dijit/dijit'
   , 'dojo/domReady!'
   ], function(dom, domStyle, fx, dijit) {
-    var node   = dom.byId('ticker-container')
+    var node   = dom.byId('ticker_container')
       , ticker = dijit.byId('ywesee_widget_ticker_0')
       ;
     var display = node.style.display;
@@ -149,7 +149,7 @@ function toggleUploadImageForm(divId, url) {
 
 function reloadShoppingCart(url, count) {	
 	if(parseInt(count)===count-0) {
-		var node = dojo.byId('shopping-cart');
+		var node = dojo.byId('shopping_cart');
 		document.body.style.cursor = 'progress';
 		dojo.xhrGet({
 			url: url + count,
@@ -163,7 +163,7 @@ function reloadShoppingCart(url, count) {
 }
 
 function removeFromShoppingCart(url, fieldId) {
-	var node = dojo.byId('shopping-cart');
+	var node = dojo.byId('shopping_cart');
 	var inputNode = dojo.byId(fieldId);
 	document.body.style.cursor = 'progress';
 	dojo.xhrGet({
@@ -216,7 +216,7 @@ function toggleDeskContent(id, serieId, objectId, url, wipe) {
 			load: function(data, event) {
 				desk.toggleInnerHTML(data);
 				if(wipe === true) {
-					dojo.fx.wipeIn('show-wipearea', 1000).play();
+					dojo.fx.wipeIn('show_wipearea', 1000).play();
 				}
         dojo.back.addToHistory({changeUrl:fragmentIdentifier});
 			}, 
@@ -225,7 +225,7 @@ function toggleDeskContent(id, serieId, objectId, url, wipe) {
 	};
 
 	if(wipe === true) {
-		dojo.fx.wipeOut({node:'show-wipearea', duration:1000, onEnd:reloadDesk}).play();
+		dojo.fx.wipeOut({node:'show_wipearea', duration:1000, onEnd:reloadDesk}).play();
 	} else {
 		reloadDesk();
 	}
@@ -339,7 +339,7 @@ function toggleJavaApplet(url, artobjectId) {
 	dojo.xhrGet({
 		url: url,
 		load: function(data, request) {
-			var container = dojo.byId('java-applet');
+			var container = dojo.byId('java_applet');
 			container.innerHTML = data;
       dojo.back.addToHistory({changeUrl:artobjectId});
 		},
@@ -386,7 +386,7 @@ function jumpTo(nodeId) {
 }
 
 function reloadLinkListComposite(url) {
-	var node = dojo.byId('links-list-container');
+	var node = dojo.byId('links_list_container');
 	document.body.style.cursor = 'progress';
 	dojo.xhrGet({
 		url: url,	
@@ -399,7 +399,7 @@ function reloadLinkListComposite(url) {
 }
 
 function addImage(url) {
-	var node = dojo.byId('displayelement-form');
+	var node = dojo.byId('displayelement_form');
 	document.body.style.cursor = 'progress';
 	dojo.xhrGet({
 		url: url,	
@@ -412,8 +412,8 @@ function addImage(url) {
 }
 
 function addLink(url) {
-	var node = dojo.byId('links-list-container');
-	var linkWord = dojo.byId('link-word').value;
+	var node = dojo.byId('links_list_container');
+	var linkWord = dojo.byId('link_word').value;
 	dojo.xhrGet({
 		url: url + linkWord,	
 		load: function(data, request) {
@@ -425,8 +425,8 @@ function addLink(url) {
 }
 
 function addImageFromChooser(url) {
-	var node = dojo.byId('links-list-container');
-	var chooser = dojo.byId('links-list-image-chooser');
+	var node = dojo.byId('links_list_container');
+	var chooser = dojo.byId('links_list_image_chooser');
 	document.body.style.cursor = 'progress';
 	dojo.xhrGet({
 		url: url,	
@@ -439,7 +439,7 @@ function addImageFromChooser(url) {
 }
 
 function showImageChooser(url) {
-	var node = dojo.byId('links-list-image-chooser');
+	var node = dojo.byId('links_list_image_chooser');
 	document.body.style.cursor = 'progress';
 	dojo.xhrGet({
 		url: url,
@@ -494,7 +494,7 @@ function logout(link) {
 }
 
 function addNewElement(url) {
-	var container = dojo.byId('element-container');
+	var container = dojo.byId('element_container');
 	dojo.xhrGet({
 		url: url,
 		load: function(data, request) {
@@ -508,7 +508,7 @@ function addNewElement(url) {
 }
 
 function deleteElement(url) {
-	var container = dojo.byId('element-container');
+	var container = dojo.byId('element_container');
 	dojo.xhrGet({
 		url: url,
 		load: function(data, request) {

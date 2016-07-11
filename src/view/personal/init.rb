@@ -226,13 +226,13 @@ class PayPalForm < View::Form
 	end
 end
 class PayPalButtonDiv < HtmlGrid::DivComposite
-	CSS_ID = 'paypal-button'
+  CSS_ID = 'paypal_button'
 	COMPONENTS = {
 		[0,0]	=>	PayPalForm,
 	}
 end
 class PayPalDiv < HtmlGrid::DivComposite
-	CSS_ID = 'paypal'
+  CSS_ID = 'paypal'
 	COMPONENTS = {
 		[0,0]	=>	PayPalButtonDiv,
 	}
@@ -257,14 +257,14 @@ end
 class Init < View::PublicTemplate
 	CSS_FILES = [ :navigation_css, :init_css ]
   COMPONENTS = {
-    [ 0, 0] => View::TopNavigation,
-    [ 0, 1] => component(Ticker, :movies),
-    [ 0, 2] => View::Personal::InitComposite,
+    [0, 0] => View::TopNavigation,
+    [0, 1] => component(Ticker, :movies),
+    [0, 2] => View::Personal::InitComposite,
   }
-	CSS_ID_MAP = {
-		0	=>	'top-navigation',
-		1	=>	'ticker-container',
-	}
+  CSS_ID_MAP = {
+    0 => 'top_navigation',
+    1 => 'ticker_container',
+  }
   CSS_STYLE_MAP = {
     1 => 'display: none',
   }

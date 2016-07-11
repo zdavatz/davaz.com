@@ -144,7 +144,7 @@ module DAVAZ
 =end
 		end
 		class LeftNavigation < HtmlGrid::UlComposite 
-			CSS_ID = 'left-navigation'
+      CSS_ID = 'left_navigation'
 			COMPONENTS = { }
 			def init
 				@evt = @session.event
@@ -161,7 +161,7 @@ module DAVAZ
 					css_class = 'left-navigation'
 					zone = @session.zone
 					if(@evt == key)
-						css_id << '-active'
+						css_id << '_active'
 					end
 					if(@small_links.include?(key))
 						css_class << '-small'

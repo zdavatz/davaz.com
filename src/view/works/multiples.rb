@@ -53,7 +53,7 @@ class JavaApplet < HtmlGrid::Component
 	end
 end
 class JavaAppletDiv < HtmlGrid::Div
-	CSS_ID = "java-applet"
+  CSS_ID = 'java_applet'
 end
 class ThumbImages < HtmlGrid::SpanList 
 	COMPONENTS = {
@@ -77,7 +77,7 @@ class ThumbImages < HtmlGrid::SpanList
 	end
 end
 class ThumbImagesDiv < HtmlGrid::Div
-	CSS_ID = 'thumb-images'
+  CSS_ID = 'thumb_images'
 end
 class MultiplesComposite < HtmlGrid::DivComposite
 	CSS_CLASS = 'content'
@@ -86,9 +86,9 @@ class MultiplesComposite < HtmlGrid::DivComposite
 		[0,1]	=>	JavaAppletDiv,
 		[0,2]	=>	component(ThumbImages, :multiples),
 	}
-	CSS_ID_MAP = {
-		2	=>	'thumb-images',
-	}
+  CSS_ID_MAP = {
+    2 => 'thumb_images',
+  }
 end
 class Multiples < View::MultiplesPublicTemplate
 	CONTENT = View::Works::MultiplesComposite 

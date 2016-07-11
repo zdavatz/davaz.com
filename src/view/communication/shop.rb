@@ -93,25 +93,29 @@ class ShopList < View::List
 "&euro; #{model.euro_price}.-"
 	end
 end
+
 class ShopFormAddress < View::Composite
-	include HtmlGrid::ErrorMessage
-	CSS_ID = 'shopping-address'
-	LABELS = true
-	DEFAULT_CLASS = HtmlGrid::InputText
-	COMPONENTS = {
-		[0,0]	=>	:name,
-		[2,0]	=>	:surname,
-		[0,1]	=>	:street,
-		[0,2]	=>	:postal_code,
-		[2,2]	=>	:city,
-		[0,3]	=>	:country,
-		[0,4]	=>	:email,
-	}
-	def init
-		super
-		error_message()
-	end
+  include HtmlGrid::ErrorMessage
+
+  CSS_ID = 'shopping_address'
+  LABELS = true
+  DEFAULT_CLASS = HtmlGrid::InputText
+  COMPONENTS = {
+    [0, 0] => :name,
+    [2, 0] => :surname,
+    [0, 1] => :street,
+    [0, 2] => :postal_code,
+    [2, 2] => :city,
+    [0, 3] => :country,
+    [0, 4] => :email,
+  }
+
+  def init
+    super
+    error_message()
+  end
 end
+
 class ShoppingCartList < View::List
 	#TABLE_TITLE_CLASS = 'shopping-cart-title'
 	STRIPED_BG = false
@@ -183,29 +187,33 @@ class ShoppingCartList < View::List
 		link
 	end
 end
+
 class ShoppingCart < View::Composite
-	CSS_ID = 'shopping-cart'
-	COMPONENTS = {
-		[0,0]	=>	:shopping_cart_list,
-	}
-	def shopping_cart_list(model)
-		ShoppingCartList.new(@session[:cart_items], @session, self)
-	end
+  CSS_ID = 'shopping_cart'
+  COMPONENTS = {
+    [0, 0] => :shopping_cart_list,
+  }
+
+  def shopping_cart_list(model)
+    ShoppingCartList.new(@session[:cart_items], @session, self)
+  end
 end
+
 class ShopForm < HtmlGrid::DivForm
-	FORM_ID = 'shop-form'
-	EVENT = :send_order 
-	COMPONENTS = {
-		[0,0]	=>	:item_list,
-		[0,1]	=>	ShopFormAddress,
-		[0,2]	=>	ShoppingCart,
-		[0,3]	=>	:submit,
-	}
-	CSS_ID_MAP = {
-		1	=>	'shopping-address',
-		2	=>	'shopping-cart',
-		3	=>	'shopping-submit',
-	}
+  FORM_ID = 'shop_form'
+  EVENT = :send_order
+  COMPONENTS = {
+    [0, 0] => :item_list,
+    [0, 1] => ShopFormAddress,
+    [0, 2] => ShoppingCart,
+    [0, 3] => :submit,
+  }
+  CSS_ID_MAP = {
+    1 => 'shopping_address',
+    2 => 'shopping_cart',
+    3 => 'shopping_submit',
+  }
+
 	def item_list(model)
 		tables = []
 		@model.artgroups.each { |artgroup|

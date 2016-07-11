@@ -1,134 +1,139 @@
 div#content {
-	background-image: url("/resources/images/global/background.jpg");
-	background-position: top center;
-	background-repeat: no-repeat;
+  background-image:    url("/resources/images/global/background.jpg");
+  background-position: top center;
+  background-repeat:   no-repeat;
 }
 
-div#foot-navigation {
-	background: #738494;
+div#top_navigation {
+  background:   #738494;
+  padding-left: 200px;
 }
 
-a.foot-navigation:visited,a.foot-navigation:link {
-	background: #738494;
-}
-
-a.foot-navigation:hover {
-	background: #738494;
-}
-
-div#top-navigation {
-	background: #738494;
-	padding-left: 200px;
-}
-
-a.top-navigation:visited, a.top-navigation:link {
-	background: #738494;
+a.top-navigation:visited,
+a.top-navigation:link {
+  background: #738494;
 }
 
 a.top-navigation:hover {
-	background: #738494;
+  background: #738494;
+}
+
+div#foot_navigation {
+  background: #738494;
+}
+
+a.foot-navigation:visited,
+a.foot-navigation:link {
+  background: #738494;
+}
+
+a.foot-navigation:hover {
+  background: #738494;
 }
 
 div#copyright {
-	background: #738494;
+  background: #738494;
 }
 
-div#zone-image {
-	background-image: url("/resources/images/global/topleft_movies.gif");
-	background-repeat: no-repeat;
+div#zone_image {
+  background-image:  url("/resources/images/global/topleft_movies.gif");
+  background-repeat: no-repeat;
 }
 
 span.movies-details {
-	color: black;
-	font-weight: bold;
-	float: left;
-	clear: both;
+  color:       black;
+  font-weight: bold;
+  float:       left;
+  clear:       both;
 }
 
 span.movies-title {
-	color: red;
-	font-weight: bold;
+  color:       red;
+  font-weight: bold;
 }
 
 div.movies-details {
-	float: left;
-	height: 200px;
-	width: 300px;
-	padding-top: 20px;
-	text-align: left;
+  float:       left;
+  height:      200px;
+  width:       300px;
+  padding-top: 20px;
+  text-align:  left;
 }
 
 div.movies-image {
-	float: left;
-	text-align: right;
-	height: 200px;
-	width: 290px;
-	padding-top: 20px;
+  float:       left;
+  text-align:  right;
+  height:      200px;
+  width:       290px;
+  padding-top: 20px;
 }
 
 div.movies-comment {
-	width: 600px;
-	padding-bottom: 10px;
-	text-align: left;
-	color: black;
+  width:          600px;
+  padding-bottom: 10px;
+  text-align:     left;
+  color:          black;
 }
 
 div.movies-details-link {
-	clear: both;
-	width: 600px;
-	padding-bottom: 20px;
-	text-align: left;
-	border-bottom: solid #738494 2px;
+  clear:          both;
+  width:          600px;
+  padding-bottom: 20px;
+  text-align:     left;
+  border-bottom:  solid #738494 2px;
 }
 
 div.more-link {
-	clear: both;
-	text-align: left;
-	float: left;
+  clear: both;
+  text-align: left;
+  float: left;
 }
 
 div.up-link {
-	float: right;
-	text-align: right;
+  float: right;
+  text-align: right;
 }
 
 div.movies-google-link {
-	width: 600px;
-	text-align: right;
-	margin-bottom: 5px;
+  width:         600px;
+  text-align:    right;
+  margin-bottom: 5px;
 }
 
-a.inner-top-navigation:visited, a.inner-top-navigation:link {
-	color: #DAA520;
+a.inner-top-navigation:visited,
+a.inner-top-navigation:link {
+  color: #DAA520;
 }
 
 div.movies-list-item {
-	clear: both;
-	width: 600px;
-	margin-left: auto; margin-right: auto;
+  clear:        both;
+  width:        600px;
+  margin-left:  auto;
+  margin-right: auto;
 }
 
 div.movie-comment-link {
-	clear: both;
-	padding-bottom: 10px;
+  clear:          both;
+  padding-bottom: 10px;
 }
 
 div.movie-comment-div {
-	color: black;
-	clear: both;
-	padding-top: 10px;
-	padding-bottom: 10px;
+  color:          black;
+  clear:          both;
+  padding-top:    10px;
+  padding-bottom: 10px;
 }
 
-div#artobject-title {
-	background-color: #738494;
+div#artobject_title {
+  background-color: #738494;
 }
 
-div#artobject-subtitle-left, div#artobject-subtitle-right {
-	background-color: #B2C4D4;
+div#artobject_subtitle_left,
+div#artobject_subtitle_right {
+  background-color: #B2C4D4;
 }
 
 div.movie-comment-close {
-	padding-top: 10px;
-	padding-bottom: 10px;
+  padding-top:    10px;
+  padding-bottom: 10px;
 }

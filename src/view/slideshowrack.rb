@@ -71,7 +71,7 @@ module DAVAZ
         [0, 2] => MultimediaButtons,
       }
       CSS_ID_MAP = {
-        0 => 'close-x',
+        0 => 'close_x',
         1 => 'show_container',
       }
 

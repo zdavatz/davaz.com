@@ -142,8 +142,8 @@ class MovieComposite < HtmlGrid::DivComposite
 		""
 	end
 	def init
-		css_id_map.store(4, "movie-details-link-#{@model.artobject_id}")
-		css_id_map.store(5, "movie-details-div-#{@model.artobject_id}")
+		css_id_map.store(4, "movie_details_link_#{@model.artobject_id}")
+		css_id_map.store(5, "movie_details_div_#{@model.artobject_id}")
 		super
 	end
 end

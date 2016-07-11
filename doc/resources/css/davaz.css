@@ -549,3 +549,28 @@ img.edit-icon {
   width: 23px;
   border: none;
 }
+
+/* ticker */
+
+div#ticker_container {
+  margin-left:  auto;
+  margin-right: auto;
+  overflow:     hidden;
+  display:      none;
+  height:       183px;
+}
+
+div.ticker-window {
+  height:   183px;
+  overflow: hidden;
+}
+
+div.ticker-window div {
+  float:    left;
+  overflow: hidden;
+}
+
+div.ticker-window div img {
+  padding: 2px;
+}
+

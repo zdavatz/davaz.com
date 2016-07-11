@@ -25,7 +25,7 @@ function toggleTicker() {
   , 'dojo/domReady!'
   ], function(dom, domStyle, fx, dijit) {
     var node   = dom.byId('ticker-container')
-      , ticker = dijit.byId('ywesee_widget_Ticker_0')
+      , ticker = dijit.byId('ywesee_widget_ticker_0')
       ;
     var display = node.style.display;
     if (display === "none" || display === '' || display == undefined) {
@@ -240,9 +240,9 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
   , 'dojo/back'
   , 'dijit/dijit'
   , 'dojo/domReady!'
-  , 'ywesee/widget/SlideShow'
-  , 'ywesee/widget/Desk'
-  , 'ywesee/widget/Rack'
+  , 'ywesee/widget/slide'
+  , 'ywesee/widget/desk'
+  , 'ywesee/widget/rack'
   ], function(xhr, dom, domStyle, fx, back, dijit) {
     var show = dijit.byId(id);
     if (show) {
@@ -259,8 +259,8 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
         }
       }
     }
-    var container = dojo.byId(id + '-container')
-      , wipearea  = dojo.byId(id + '-wipearea')
+    var container = dojo.byId(id + '_container')
+      , wipearea  = dojo.byId(id + '_wipearea')
       , display
       , replace = dojo.byId(replace_id)
       ;
@@ -268,7 +268,7 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
       if (show) {
         view = show.view;
       } else  {
-        view = 'Rack';
+        view = 'rack';
       }
     }
     if (url === null && show) {
@@ -277,7 +277,8 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
     if (serie_id === null && show) {
       serie_id = show.serieId;
     }
-    var fragmentIdentifier = view + '_' + serie_id;
+    var flag = view.charAt(0).toUpperCase() + view.slice(1);
+    var fragmentIdentifier = flag + '_' + serie_id;
 
     if (artobject_id) {
       fragmentIdentifier = fragmentIdentifier + '_' + artobject_id;
@@ -294,14 +295,14 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
           }
           var domNode = dojo.doc.createElement('div');
           switch(view) {
-          case 'SlideShow':
-            var widget = new ywesee.widget.SlideShow(data, domNode);
+          case 'slide':
+            var widget = new ywesee.widget.slide(data, domNode);
             break;
-          case 'Desk':
-            var widget = new ywesee.widget.Desk(data, domNode);
+          case 'desk':
+            var widget = new ywesee.widget.desk(data, domNode);
             break;
           default:
-            var widget = new ywesee.widget.Rack(data, domNode);
+            var widget = new ywesee.widget.rack(data, domNode);
           }
           container.appendChild(widget.domNode);
           widget.startup();

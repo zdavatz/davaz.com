@@ -6,10 +6,11 @@ define([
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
 ], function(declare, xhr, ready, parser, _wb, _tm) {
-  declare('ywesee.widget.Desk', [_wb, _tm], {
-    templatePath: require.toUrl(
-      '/resources/javascript/widget/templates/HtmlDesk.html')
-  , view:          'Desk'
+  declare('ywesee.widget.desk', [_wb, _tm], {
+    baseClass:    'desk-widget'
+  , templatePath: require.toUrl(
+      '/resources/javascript/widget/templates/desk.html')
+  , view:          'desk'
   , images:        []
   , titles:        []
   , dataUrl:       ''

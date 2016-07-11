@@ -10,12 +10,13 @@ define([
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
 ], function(declare, fx, ready, parser, query, dom, geo, style, _wb, _tm) {
-  declare('ywesee.widget.Ticker', [_wb, _tm], {
-    constructor: function(params, srcNodeRef) {
+  declare('ywesee.widget.ticker', [_wb, _tm], {
+    base_class:  'ticker-widget'
+  , constructor: function(params, srcNodeRef) {
       // pass
     }
   , templatePath: require.toUrl(
-      '/resources/javascript/widget/templates/HtmlTicker.html')
+      '/resources/javascript/widget/templates/ticker.html')
   , images:          []
   , eventUrls:       []
   , windowWidth:     780

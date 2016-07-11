@@ -174,13 +174,13 @@ class MoviesComposite < HtmlGrid::DivComposite
 		[0,3]	=>	:movies_gallery_view,
 		[0,4] =>	AddOnloadMovies,
 	}
-	CSS_ID_MAP = {
-		2	=>	'movies-list',
-		3	=>	'movies-gallery-view',
-	}
-	CSS_STYLE_MAP = {
-		3	=>	'display:none;',
-	}
+  CSS_ID_MAP = {
+    2 => 'movies_list',
+    3 => 'movies_gallery_view',
+  }
+  CSS_STYLE_MAP = {
+    3 => 'display:none;',
+  }
 	def movie_top_link(model)
 		link = HtmlGrid::Link.new(:nbsp, model, @session, self)
 		link.set_attribute('name', 'top')

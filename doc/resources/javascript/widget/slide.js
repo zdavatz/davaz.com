@@ -8,13 +8,14 @@ define([
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
 , 'dijit/_WidgetsInTemplateMixin'
-, 'ywesee/widget/Show'
+, 'ywesee/widget/show'
 ], function(declare, connect, fx, lang, ready, parser, _wb, _tm, _witm, _sw) {
-  declare('ywesee.widget.SlideShow', [_wb, _tm, _sw], {
-    templatePath: require.toUrl(
-      '/resources/javascript/widget/templates/HtmlSlideShow.html')
+  declare('ywesee.widget.slide', [_wb, _tm, _sw], {
+    baseClass: 'slide-widget'
+  , templatePath: require.toUrl(
+      '/resources/javascript/widget/templates/slide.html')
     // properties
-  , view:               'SlideShow'
+  , view:               'slide'
   , imageHeight:        '280px'
   , imageIdx:           0
   , delay:              3500

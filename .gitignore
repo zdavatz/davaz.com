@@ -8,3 +8,5 @@ Gemfile.hack
 /log
 /doc/resources/dojo*
 /doc/resources/uploads/*
+
+/env

@@ -120,7 +120,7 @@ module DAVAZ
         div.css_class = 'column'
         divs << div
         div = HtmlGrid::Div.new(model, @session, self)
-        div.css_id    = 'left_navigation'
+        div.css_id    = 'left_navigation_container'
         div.css_class = 'column'
         div.value = View::LeftNavigation.new(model, @session, self)
         divs << div
@@ -148,9 +148,9 @@ module DAVAZ
       def logo(model)
         img = HtmlGrid::Image.new(:logo_ph, model, @session, self)
         link = HtmlGrid::Link.new(:no_name, model, @session, self)
-        link.css_id = 'logo'
-        link.href   = @lookandfeel.event_url(:personal, :home)
-        link.value  = img
+        link.css_class = 'logo_ph'
+        link.href      = @lookandfeel.event_url(:personal, :home)
+        link.value     = img
         link
       end
 

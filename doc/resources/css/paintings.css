@@ -12,13 +12,11 @@ div#top_navigation {
 
 a.top-navigation:visited,
 a.top-navigation:link {
-	color:      #DAA520;
-	background: #CC0066;
+	color: #DAA520;
 }
 
 a.top-navigation:hover {
-	color:      white;
-	background: #CC0066;
+	color: white;
 }
 
 div#foot_navigation {

@@ -462,40 +462,7 @@ function showImageChooser(url) {
 		handleAs: 'text'
 	});
 }
-/*
-function login_form(link, url) {
-	var hash = document.location.hash;
-	var login_url = url + "fragment/" + hash.replace(/#/, '');
-	dojo.io.bind({
-		url: login_url,
-		load: function(type, data, event) {
-			var form = dojo.byId('login-form');
-			if(form) {
-				dojo.html.body().removeChild(form);
-			} else {
-				var div = document.createElement("div");
-				div.innerHTML = data; 
-				div.id = 'login-form';
-				div.style.position="absolute";
-				dojo.html.body().appendChild(div);
-				var position = dojo.html.getAbsolutePosition(link, true);
-				var left = position[0];
-				var top = position[1] - 5 - div.offsetHeight;
-				div.style.left = left+"px";
-				div.style.top = top+"px";
-			}
-		},
-		mimetype: 'text/html'
-	});
-}
 
-function loginError(errorMessage) {
-	var form = dojo.byId('login-form');	
-	var div = document.createElement("div");
-	div.innerHTML = errorMessage;
-	form.appendChild(div); 
-}
-*/
 function logout(link) {
 	var hash = document.location.hash;
 	var href = link.href + "fragment/" + hash.replace(/#/, '');
@@ -550,13 +517,22 @@ function reloadImageAction(url, div_id) {
 	});
 }
 
-function toggleLoginWidget(loginLink, url) {
-	var newDiv = document.createElement("div");	
-	dojo.body().appendChild(newDiv);
-  var login = new ywesee.widget.LoginWidget({ loginLink: loginLink,
-      loginFormUrl: url, oldOnclick: loginLink.onclick }, newDiv);
-	loginLink.onclick = "return false;";
-  login.startup();
+function toggleLoginForm(loginLink, url) {
+  require([
+    'dojo/_base/window'
+  , 'dojo/domReady!'
+  , 'ywesee/widget/login'
+  ], function(win) {
+    var newDiv = document.createElement('div');
+    win.body().appendChild(newDiv);
+    loginLink.onclick = 'return false;';
+    var login = new ywesee.widget.login({
+      loginLink:    loginLink
+    , loginFormUrl: url
+    , oldOnclick:   loginLink.onclick
+    }, newDiv);
+    login.startup();
+  });
 }
 
 function setHrefTooltip(domId, hrefHolderId, dialogId, orient) {

@@ -6,7 +6,6 @@ require 'htmlgrid/divform'
 require 'view/publictemplate'
 require 'view/list'
 require 'view/navigation'
-require 'view/slideshowrack'
 require 'view/gallery/gallery'
 
 module DAVAZ

@@ -23,7 +23,7 @@ function toggleTicker() {
   , 'dojo/fx'
   , 'dijit/dijit'
   , 'dojo/domReady!'
-  ], function(dom, domStyle, fx, dijit) {
+  ], function(dom, styl, fx, dijit) {
     var node   = dom.byId('ticker_container')
       , ticker = dijit.byId('ywesee_widget_ticker_0')
       ;
@@ -33,7 +33,7 @@ function toggleTicker() {
         node:     node
       , duration: 300
       , onEnd:    function() {
-          domStyle.set(node, 'display', 'block');
+          styl.set(node, 'display', 'block');
         }
       }).play();
     } else {
@@ -41,7 +41,7 @@ function toggleTicker() {
         node:     node
       , duration: 300
       , onEnd:    function() {
-          domStyle.set(node, 'display', 'none');
+          styl.set(node, 'display', 'none');
         }
       }).play();
     }
@@ -234,50 +234,56 @@ function toggleDeskContent(id, serieId, objectId, url, wipe) {
 function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
   require([
     'dojo/_base/xhr'
+  , 'dojo/_base/window'
   , 'dojo/dom'
-  , 'dojo/dom-style'
+  , 'dojo/dom-attr'
+  , 'dojo/dom-construct'
+  , 'dojo/query'
   , 'dojo/fx'
   , 'dojo/back'
   , 'dijit/dijit'
   , 'dojo/domReady!'
+  , 'ywesee/widget/rack'
   , 'ywesee/widget/slide'
   , 'ywesee/widget/desk'
-  , 'ywesee/widget/rack'
-  ], function(xhr, dom, domStyle, fx, back, dijit) {
-    var show = dijit.byId(id);
-    if (show) {
-      var lastUrl = show.dataUrl
+  ], function(xhr, win, dom, attr, cnst, query, fx, back, dijit) {
+    var show = query('#show_container > div')[0]
+      , wdgt = dijit.byId(attr.get(show, 'widgetid'))
+      ;
+    if (wdgt) { // current widget
+      var lastUrl = wdgt.dataUrl
         , lastId  = lastUrl.split('/').pop()
         ;
     }
-    var serieLink = dojo.byId(serie_id);
-    if (serie_id && show) {
+    var serieLink = dom.byId(serie_id);
+    if (serie_id && wdgt) {
       if (lastId != serie_id) {
-        var lastSerieLink = dojo.byId(lastId);
+        var lastSerieLink = dom.byId(lastId);
         if (lastSerieLink) {
           lastSerieLink.className = lastSerieLink.className.replace(/ ?active/, '');
         }
       }
     }
-    var container = dojo.byId(id + '_container')
-      , wipearea  = dojo.byId(id + '_wipearea')
-      , display
-      , replace = dojo.byId(replace_id)
+    var container = dom.byId(id + '_container')
+      , wipearea  = dom.byId(id + '_wipearea')
+      , replace   = dom.byId(replace_id)
       ;
     if (view === null) {
-      if (show) {
-        view = show.view;
+      if (wdgt) {
+        view = wdgt.view;
       } else  {
         view = 'rack';
       }
     }
-    if (url === null && show) {
+    if (url === null && wdgt) {
       url = lastUrl;
     }
-    if (serie_id === null && show) {
-      serie_id = show.serieId;
+    if (serie_id === null && wdgt) {
+      serie_id = wdgt.serieId;
     }
-    var flag = view.charAt(0).toUpperCase() + view.slice(1);
+    var type = view.toLowerCase();
+
+    var flag = type.charAt(0).toUpperCase() + view.slice(1);
     var fragmentIdentifier = flag + '_' + serie_id;
 
     if (artobject_id) {
@@ -289,12 +295,11 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
         url:      url
       , handleAs: 'json'
       , load:     function(data, args) {
-          data.id = id;
-          if (show) {
-            show.destroy();
+          if (wdgt) {
+            cnst.destroy(wdgt.id);
           }
-          var domNode = dojo.doc.createElement('div');
-          switch(view) {
+          var domNode = win.doc.createElement('div');
+          switch (type) {
           case 'slide':
             var widget = new ywesee.widget.slide(data, domNode);
             break;
@@ -318,7 +323,9 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
           if (serieLink != null && !serieLink.className.match(/ ?active/)) {
             serieLink.className += ' active';
           }
-          back.addToHistory({changeUrl:fragmentIdentifier});
+          back.addToHistory({
+            changeUrl: fragmentIdentifier
+          });
         },
       });
     };
@@ -330,7 +337,9 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
       , onEnd:    loadShow
       }).play();
     } else {
-      loadShow.call();
+      if (wdgt) {
+        loadShow.call();
+      }
     }
   });
 }

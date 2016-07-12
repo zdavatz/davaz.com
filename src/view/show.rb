@@ -9,7 +9,7 @@ module DAVAZ
       CSS_CLASS  = 'multimedia-control'
       COMPONENTS = {
         [0, 0]    => :rack,
-        [0, 0, 1] => :show,
+        [0, 0, 1] => :slide,
         [0, 0, 2] => :desk,
       }
 
@@ -18,20 +18,20 @@ module DAVAZ
         link = HtmlGrid::Link.new(:rack, model, @session, self)
         link.value = img
         link.href  = 'javascript:void(0)'
-        link.set_attribute('onclick', <<~TGGL)
+        link.set_attribute('onclick', <<~EOS)
           toggleShow('show', null, 'rack', 'show_wipearea', null);
-        TGGL
+        EOS
         link
       end
 
-      def show(model)
-        img = HtmlGrid::Image.new(:show, model, @session, self)
-        link = HtmlGrid::Link.new(:slideshow, model, @session, self)
+      def slide(model)
+        img = HtmlGrid::Image.new(:slide, model, @session, self)
+        link = HtmlGrid::Link.new(:slide, model, @session, self)
         link.value = img
         link.href  = 'javascript:void(0)'
-        link.set_attribute('onclick', <<~TGGL)
+        link.set_attribute('onclick', <<~EOS)
           toggleShow('show', null, 'slide', 'show_wipearea', null);
-        TGGL
+        EOS
         link
       end
 
@@ -40,9 +40,9 @@ module DAVAZ
         link = HtmlGrid::Link.new(:desk, model, @session, self)
         link.value = img
         link.href  = 'javascript:void(0)'
-        link.set_attribute('onclick', <<~TGGL)
+        link.set_attribute('onclick', <<~EOS)
           toggleShow('show', null, 'desk', 'show_wipearea', null);
-        TGGL
+        EOS
         link
       end
     end
@@ -54,7 +54,7 @@ module DAVAZ
       }
     end
 
-    class SlideShowRackComposite < HtmlGrid::DivComposite
+    class ShowComposite < HtmlGrid::DivComposite
       COMPONENTS = {
         [0, 0] => component(SerieWidget, :serie_items, 'rack'),
         [0, 1] => MultimediaButtons,
@@ -64,7 +64,7 @@ module DAVAZ
       }
     end
 
-    class GallerySlideShowRackComposite < HtmlGrid::DivComposite
+    class GalleryShowComposite < HtmlGrid::DivComposite
       COMPONENTS = {
         [0, 0] => :close_x,
         [0, 1] => :show,
@@ -79,9 +79,9 @@ module DAVAZ
         link = HtmlGrid::Link.new('close', model, @session, self)
         link.href  = 'javascript:void(0)'
         link.value = 'X'
-        link.set_attribute('onclick', <<~TGGL)
-          replaceDiv('show_wipearea', 'upper-search-composite');
-        TGGL
+        link.set_attribute('onclick', <<~EOS)
+          replaceDiv('show_wipearea', 'upper_search_composite');
+        EOS
         link
       end
 

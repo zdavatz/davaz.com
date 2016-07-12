@@ -1,6 +1,6 @@
 require 'htmlgrid/divcomposite'
 require 'view/serie_links'
-require 'view/slideshowrack'
+require 'view/show'
 require 'view/add_onload'
 
 module DAVAZ
@@ -23,7 +23,7 @@ module DAVAZ
         CSS_CLASS  = 'content'
         COMPONENTS = {
           [0, 0] => WorksTitle,
-          [0, 1] => SlideShowRackComposite,
+          [0, 1] => ShowComposite,
           [0, 2] => :series,
           [0, 3] => AddOnloadShow,
         }

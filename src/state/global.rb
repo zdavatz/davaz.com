@@ -40,9 +40,9 @@ module DAVAZ
 				end
 			end
       def ajax_images
-        if(@model.respond_to?(:slideshow_items))
-          AjaxResponse.new(@session, @model.slideshow_items)
-        elsif(@model.respond_to?(:serie_items))
+        if @model.respond_to?(:show_items)
+          AjaxResponse.new(@session, @model.show_items)
+        elsif @model.respond_to?(:serie_items)
           AjaxResponse.new(@session, @model.serie_items)
         else
           AjaxResponse.new(@session, @model)

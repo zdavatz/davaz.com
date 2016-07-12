@@ -96,7 +96,7 @@ module DAVAZ
         CSS_ID     = 'inner_content'
         COMPONENTS = {
           [0,0] => UpperGalleryComposite,
-          [0,1] => :slideshow_rack,
+          [0,1] => :show,
           [0,2] => :series,
           [0,3] => View::AddOnloadShow,
         }
@@ -109,8 +109,8 @@ module DAVAZ
           2 => 'serie_links',
         }
 
-        def slideshow_rack(model)
-          GallerySlideShowRackComposite.new([], @session, self)
+        def show(model)
+          GalleryShowComposite.new([], @session, self)
         end
 
         def series(model)

@@ -83,10 +83,6 @@ a.gallery-navigation:hover {
   color:           blue;
 }
 
-div#slideshow_rack {
-  display: none;
-}
-
 div#close_x {
   width:        700px;
   margin-left:  auto;

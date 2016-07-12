@@ -4,19 +4,6 @@ div#content {
   background-repeat:    no-repeat;
 }
 
-div#foot_navigation {
-  background: #33CCCC;
-}
-
-a.foot_navigation:visited,
-a.foot_navigation:link {
-  background: #33CCCC;
-}
-
-a.foot_navigation:hover {
-  background: #33CCCC;
-}
-
 div#top_navigation {
   color:        #FF6600;
   background:   #33CCCC;
@@ -31,6 +18,19 @@ a.top-navigation:link {
 
 a.top-navigation:hover {
   color:      white;
+  background: #33CCCC;
+}
+
+div#foot_navigation {
+  background: #33CCCC;
+}
+
+a.foot_navigation:visited,
+a.foot_navigation:link {
+  #background: #33CCCC;
+}
+
+a.foot_navigation:hover {
   background: #33CCCC;
 }
 

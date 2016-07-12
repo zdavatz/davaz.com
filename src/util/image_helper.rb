@@ -10,12 +10,12 @@ module DAVAZ
 	module Util 
 		class ImageHelper
 			include Magick	
-			@@geometries = {
-				:small	=>	Geometry.new(DAVAZ.config.small_image_width.to_i),
-				:medium	=>	Geometry.new(DAVAZ.config.medium_image_width.to_i),
-				:large	=>	Geometry.new(DAVAZ.config.large_image_width.to_i),
-				:slideshow	=>	Geometry.new(nil, DAVAZ.config.slideshow_image_height.to_i),
-			}
+      @@geometries = {
+        :small  => Geometry.new(DAVAZ.config.small_image_width.to_i),
+        :medium => Geometry.new(DAVAZ.config.medium_image_width.to_i),
+        :large  => Geometry.new(DAVAZ.config.large_image_width.to_i),
+        :slide  => Geometry.new(nil, DAVAZ.config.show_image_height.to_i),
+      }
 			def ImageHelper.image_path(artobject_id, size=nil)
 				pattern = File.join(ImageHelper.image_dir(size),
 														artobject_id.to_s[-1,1], artobject_id.to_s + ".*") 

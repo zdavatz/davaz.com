@@ -40,7 +40,7 @@ module DAVAZ
 		'run_updater'							=>	true,
 		'server_name'							=>	'www.davaz.com',
 		'server_uri'							=>	"druby://localhost:9998",
-		'slideshow_image_height'	=>	'280px',
+    'show_image_height'       =>  '280px',
 		'small_image_width'				=>	'100px',
 		'smtp_server'							=>	'mail.ywesee.com',
 		'smtp_from'								=>	'mhuggler@ywesee.com',

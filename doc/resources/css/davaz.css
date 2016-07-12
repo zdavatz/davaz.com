@@ -153,10 +153,6 @@ div#rack {
   margin: 0 auto;
 }
 
-div#rack_slide {
-  display: none;
-}
-
 div.rack-container {
   width:        770px;
   height:       370px;

@@ -14,7 +14,7 @@ class Life < State::Personal::Global
 		@model = OpenStruct.new
 		lang = @session.user_input(:lang) || 'English'
     @model.biography_items = @session.app.load_hislife(lang) 
-		add_slideshow_items(@model, 'hislife_show')
+		add_show_items(@model, 'hislife_show')
 		@model.oneliner = @session.app.load_oneliner('hislife')
 		@model.serie_id = @session.app.load_serie_id("Site His Life %s" % lang)
 	end

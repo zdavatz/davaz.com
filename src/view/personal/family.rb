@@ -44,13 +44,13 @@ end
 class FamilyInfoComposite < HtmlGrid::DivComposite
 	COMPONENTS = {
 		[0,0]	=>	FamilyOrigin,
-		[0,1]	=>	component(SerieWidget, :slideshow_items, 'SlideShow'),
+		[0,1]	=>	component(SerieWidget, :show_items, 'slide'),
 		[0,2]	=>	component(FamilyText, :family_text),
 		[0,3]	=>	FamilyForwardLink,
 	}
 	CSS_MAP = {
 		0	=>	'family-origin',
-		1	=>	'slideshow',
+		1	=>	'slide',
 		2	=>	'family-intro',
 		3	=>	'family-forward-link',
 	}

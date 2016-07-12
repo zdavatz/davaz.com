@@ -25,16 +25,16 @@ class Global < State::Global
 		:the_family						=>	State::Personal::TheFamily,
 		:work									=>	State::Personal::Work,
 	}
-	def add_slideshow_items(ostruct, name)
-		ostruct.slideshow_items = {
+	def add_show_items(ostruct, name)
+		ostruct.show_items = {
 			'images'	=>	[],
 			'titles'	=>	[],
 		}
 		artobjects = @session.app.load_tag_artobjects(name)
 		artobjects.each { |artobject|
-			image = DAVAZ::Util::ImageHelper.image_url(artobject.artobject_id, 'slideshow')
-			@model.slideshow_items['images'].push(image)
-			@model.slideshow_items['titles'].push(artobject.title)
+			image = DAVAZ::Util::ImageHelper.image_url(artobject.artobject_id, 'show')
+			@model.show_items['images'].push(image)
+			@model.show_items['titles'].push(artobject.title)
 		}
 		ostruct
 	end

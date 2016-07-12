@@ -286,7 +286,7 @@ module DAVAZ
 				:ram_files				=>	'movies/ram_files',
 				:schnitzenthesen_css	=>	'css/schnitzenthesen.css',
 				:series_title			=>	'images/global/series.gif',
-				:show							=>	'images/global/show.gif',
+				:slide					  =>	'images/global/show.gif',
 				:signature				=>	'images/init/signature.GIF',
 				:tmp_uploads			=>	'uploads/tmp/',
 				:tooltip_css			=>	'css/tooltip.css',
@@ -315,9 +315,6 @@ PKCS7-----
 			def resource_path(rname, rstr)
 				dir = collect_resource([self::class::RESOURCE_BASE], rname, rstr)
 				File.expand_path("../../doc" + dir, File.dirname(__FILE__))
-			end
-			def slideshow_directory(dir)
-				File.join(DAVAZ.config.project_root, 'doc/resources/images/slideshows', dir)
 			end
 			def stream_url(id, size)
 				filename = "#{id.to_s}_#{size.to_s.downcase}.ram"

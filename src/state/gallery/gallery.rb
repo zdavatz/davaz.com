@@ -65,7 +65,7 @@ module DAVAZ
           if serie
             serie.artobjects.each { |obj|
               if Util::ImageHelper.has_image?(obj.artobject_id)
-                image = Util::ImageHelper.image_url(obj.artobject_id, 'slide')
+                image = Util::ImageHelper.image_url(obj.artobject_id, 'show')
                 images.push(image)
                 titles.push(obj.title)
                 artobject_ids.push(obj.artobject_id)
@@ -76,7 +76,7 @@ module DAVAZ
             'artObjectIds' => artobject_ids,
             'images'       => images,
             'titles'       => titles,
-            'imageHeight'  => DAVAZ.config.slideshow_image_height,
+            'imageHeight'  => DAVAZ.config.show_image_height,
             'serieId'      => serie_id,
           }
           @filter = Proc.new { |model|

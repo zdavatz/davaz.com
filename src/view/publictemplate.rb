@@ -57,13 +57,10 @@ module DAVAZ
       DOJO_REQUIRE = [
         'dojo/ready',
         'dojo/back',
-        'ywesee/widget/desk',
-        #'ywesee/widget/LoginWidget',
         'ywesee/widget/oneliner',
-        'ywesee/widget/rack',
-        'ywesee/widget/show',
-        'ywesee/widget/slide',
         'ywesee/widget/ticker',
+        #'ywesee/widget/login',
+        # TODO
         #'ywesee/widget/Tooltip',
         #'ywesee/widget/InputText',
         #'ywesee/widget/InputTextarea',

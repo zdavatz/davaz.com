@@ -125,7 +125,7 @@ module DAVAZ
         CSS_CLASS = 'inner-content'
         COMPONENTS = {
           [0, 0] => :india_ticker_link,
-          [0, 1] => component(SerieWidget, :slideshow_items, 'SlideShow'),
+          [0, 1] => component(SerieWidget, :show_items, 'slide'),
           [0, 2] => component(View::OneLiner, :oneliner),
           [0, 3] => LifeTimePeriods,
           [1, 3] => LifeTranslations,

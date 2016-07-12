@@ -36,12 +36,14 @@ define([
       this.fillInThumbContainer(imageCount, cWidth, rHeight);
     }
   , fillInDisplay: function() {
+      if (this.displayImage == null) { return; }
+      if (!this.images[0] || !this.titles[0]) { return; }
       this.displayImage.src     = this.images[0];
       this.imageTitle.innerHTML = this.titles[0];
     }
   , toggleDisplay: function(img) {
-      if (this.toggleBusy) return;
-      if (this.displayImage.src == img.src) return;
+      if (this.toggleBusy) { return; }
+      if (this.displayImage.src == img.src) { return; }
       /* No fading desired */
       this.displayImage.src = img.src;
       this.displayImage.alt = img.alt;
@@ -78,7 +80,6 @@ define([
       this.fillInTemplate();
     }
   });
-
   ready(function() {
     parser.parse();
   });

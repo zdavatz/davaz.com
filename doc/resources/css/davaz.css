@@ -484,16 +484,6 @@ div#add_new_element_form table {
   margin: 0 auto;
 }
 
-div#login_form_div {
-  right:      0px;
-  text-align: right;
-  display:    none;
-}
-
-div#login_form input {
-  margin: 4px 5px;
-}
-
 /* Widget CSS */
 
 /* EditorPlugin.js */
@@ -506,8 +496,8 @@ div.dijitTooltipContainer.dijitTooltipContents {
   border: none;
 }
 
-/* LoginWidget.js */
-div#login_form {
+/* login.js */
+.login-widget {
   text-align:       left;
   color:            black;
   padding:          5px;
@@ -517,6 +507,14 @@ div#login_form {
   margin-right:     auto;
   position:         fixed;
   bottom:           45px;
+}
+
+.login-widget table.component td input[type="checkbox"] {
+  display: block;
+}
+
+.login-widget table.component td input {
+  margin:  2px 3px;
 }
 
 /* slide.js */

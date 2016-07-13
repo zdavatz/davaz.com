@@ -195,7 +195,7 @@ module DAVAZ
       def pager_link(link)
         artobject_id = link.attributes['href'].split("/").last
         link.href = 'javascript:void(0)'
-        link.set_attribute('onclick', <<~EOS)
+        link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           return toggleInnerHTML(
             'movies-gallery-view'
           , '#{@lookandfeel.event_url(:gallery, :ajax_movie_gallery, [
@@ -233,9 +233,9 @@ module DAVAZ
       def back_to_overview(model)
         link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
         link.href = 'javascript:void(0)'
-        link.set_attribute('onclick', <<~SCRIPT)
-          showMovieGallery('movies-gallery-view','movies-list','');
-        SCRIPT
+        link.set_attribute('onclick', <<~EOS)
+          showMovieGallery('movies-gallery-view', 'movies-list','');
+        EOS
         link
       end
     end
@@ -342,7 +342,7 @@ module DAVAZ
         super
         link = HtmlGrid::Link.new(:show_tags, @model, @session, self)
         link.href = 'javascript:void(0)'
-        link.set_attribute('onclick', <<~EOS)
+        link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           return toggleInnerHTML(
             'all-tags-link'
           , '#{@lookandfeel.event_url(:gallery, :ajax_all_tags)}'
@@ -362,7 +362,7 @@ module DAVAZ
         link = HtmlGrid::Link.new(model.name, model, @session, self)
         link.value = model.name
         link.href  = 'javascript:void(0)'
-        link.set_attribute('onclick', <<~EOS)
+        link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           var values    = document.artobjectform.tags_to_s.value.split(',')
             , has_value = false
             ;
@@ -392,7 +392,7 @@ module DAVAZ
       def close(model)
         link = HtmlGrid::Link.new(:close, model, @session, self)
         link.href = 'javascript:void(0)'
-        link.set_attribute('onclick', <<~EOS)
+        link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           toggleInnerHTML(
             'all-tags-link',
             '#{@lookandfeel.event_url(:gallery, :ajax_all_tags_link)}'
@@ -415,7 +415,7 @@ module DAVAZ
           [:select_name,  name],
           [:select_value, '']
         ])
-        <<~EOS
+        <<-EOS.gsub(/(^\s*)|\n/, '')
           var value  = document.artobjectform.#{name}_add_form_input.value
             , select = document.artobjectform.#{name}_id_select
             ;
@@ -469,14 +469,16 @@ module DAVAZ
 
       def add(model)
         link = HtmlGrid::Link.new("add_#{model.name}", model, @session, self)
-        link.href = "javascript:void(0)"
-        args = [
-          [ :artobject_id, model.artobject.artobject_id ],
-          [ :name, model.name ],
-        ]
-        url = @lookandfeel.event_url(:gallery, :ajax_add_form, args)
-        script = "toggleInnerHTML('#{model.name}-add-form', '#{url}')"
-        link.set_attribute('onclick', script)
+        link.href = 'javascript:void(0)'
+        link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
+          toggleInnerHTML(
+            '#{model.name}-add-form'
+          , '#{@lookandfeel.event_url(:gallery, :ajax_add_form, [
+              [:artobject_id, model.artobject.artobject_id],
+              [:name,         model.name ]
+            ])}'
+          );
+        EOS
         link
       end
 
@@ -485,7 +487,7 @@ module DAVAZ
           "remove_#{model.name}", model, @session, self)
         link.css_id = "#{model.name}_remove_link"
         link.href   = 'javascript:void(0)'
-        link.set_attribute('onclick', <<~EOS)
+        link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           return removeElement(
             document.artobjectform.#{model.name}_id
           , '#{@lookandfeel.event_url(:gallery, :ajax_remove_element, [
@@ -637,7 +639,7 @@ module DAVAZ
         end
         url = @lookandfeel.event_url(:admin, :delete, args)
         button = HtmlGrid::Button.new(:delete, model, @session, self)
-        button.set_attribute('onclick', <<~EOS.gsub(/\n/, ''))
+        button.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           if (confirm('Do you really want to delete this artobject?')) {
             window.location.href = '#{url}';
           }
@@ -658,7 +660,7 @@ module DAVAZ
       def new_art_object(model)
         return '' unless model.artobject.artobject_id
         button = HtmlGrid::Button.new(:new_art_object, model, @session, self)
-        button.set_attribute('onclick', <<~EOS)
+        button.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           window.location.href =
             '#{@lookandfeel.event_url(:gallery, :new_art_object)}';
         EOS
@@ -692,9 +694,8 @@ module DAVAZ
       end
 
       def text(model)
-        obj = model.artobject
-        dojo_tag("dijit.Editor", {:id => "html-editor", :class => "tundra"},
-                 obj.text)
+        dojo_tag('dijit.Editor', {id: 'html-editor', class: 'tundra'},
+                 model.artobject.text)
       end
 
       def tags(model)
@@ -702,10 +703,14 @@ module DAVAZ
       end
 
       def update(model)
+        key = model.artobject.artobject_id ? :update : :save
         button = submit(model)
-        key = (model.artobject.artobject_id) ? :update : :save
         button = HtmlGrid::Button.new(key, model, @session, self)
-        button.set_attribute('onclick', "this.form.text.value = dijit.byId('html-editor').editNode.innerHTML; this.form.submit();")
+        button.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
+          this.form.text.value =
+           document.getElementById('html-editor').innerHTML;
+          this.form.submit();
+        EOS
         button
       end
 
@@ -727,22 +732,18 @@ module DAVAZ
         link.href  = artobject.url
         link.value = img
         link.set_attribute('target', '_blank')
-        if artobject.url.empty?
-          @value = img
-        else
-          @value = link
-        end
+        @value = artobject.url.empty? ? img : link
         img
       end
 
       def init
         super
-        artobject = @model.artobject
-        if artobject_id = artobject.artobject_id
-          url = DAVAZ::Util::ImageHelper.image_url(artobject_id, nil, true)
-          image(artobject, url)
-        elsif artobject.tmp_image_path
-          image(artobject, artobject.tmp_image_url)
+        obj = @model.artobject
+        if obj.artobject_id
+          url = DAVAZ::Util::ImageHelper.image_url(obj.artobject_id, nil, true)
+          image(obj, url)
+        elsif obj.tmp_image_path
+          image(obj, obj.tmp_image_url)
         end
       end
     end
@@ -777,7 +778,7 @@ module DAVAZ
 
       def init
         super
-        self.set_attribute('onsubmit', <<~EOS)
+        self.set_attribute('onsubmit', <<~EOS.gsub(/(^\s*)|\n/, ''))
           if (this.image_file.value != '') {
             submitForm(
               this
@@ -797,7 +798,7 @@ module DAVAZ
         url = @lookandfeel.event_url(:admin, :ajax_delete_image, [
           [:artobject_id, model.artobject.artobject_id]
         ])
-        input.set_attribute('onclick', <<~EOS)
+        input.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           var msg = '#{@lookandfeel.lookup(:ask_for_image_deletion)}'
           if (confirm(msg)) {
             deleteImage(
@@ -838,15 +839,14 @@ module DAVAZ
       end
 
       def url(model)
-        artobject = model.artobject
-        unless (url = artobject.url).empty?
-          link = HtmlGrid::HttpLink.new(
-            :google_video_link, artobject, @session, self)
-          link.href = url
-          link.value = @lookandfeel.lookup(:watch_movie)
-          link.set_attribute('target', '_blank')
-          link
-        end
+        url = mode.artobject.url
+        return '' unless url.empty?
+        link = HtmlGrid::HttpLink.new(
+          :google_video_link, model.artobject, @session, self)
+        link.href = url
+        link.value = @lookandfeel.lookup(:watch_movie)
+        link.set_attribute('target', '_blank')
+        link
       end
     end
 

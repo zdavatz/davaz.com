@@ -60,28 +60,32 @@ function toggleHiddenDiv(divId) {
 }
 
 function checkRemovalStatus(selectValue, url) {
-	document.body.style.cursor = 'progress';
-	url = url + selectValue; 
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) { 
-			//var removalStatus = data['removalStatus'];
-			var removalStatus = data.removalStatus;
-			//var removeLink = dojo.byId(data['removeLinkId']);
-			var removeLink = dojo.byId(data.removeLinkId);
-			if(removalStatus == 'goodForRemoval') {
-				if(removeLink) {
-					removeLink.style.color = 'blue';
-				}
-			} else {
-				if(removeLink) {
-					removeLink.style.color = 'grey';
-				}
-			}
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: "json-comment-filtered"
-	});
+  require([
+    'dojo/_base/xhr'
+  , 'dojo/dom'
+  , 'dojo/domReady!'
+  ], function(xhr, dom) {
+    document.body.style.cursor = 'progress';
+    xhr.get({
+      url:      url + selectValue
+    , handleAs: 'json'
+    , load:     function(data, request) {
+        var status = data.removalStatus
+          , link   = dom.byId(data.removeLinkId)
+          ;
+        if (status == 'goodForRemoval') {
+          if (link) {
+            linx.style.color = 'blue';
+          }
+        } else {
+          if (link) {
+            link.style.color = 'grey';
+          }
+        }
+        document.body.style.cursor = 'auto';
+      }
+    });
+  });
 }
 
 function addElement(inputSelect, url, value, addFormId, removeLinkId) {

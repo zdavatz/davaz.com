@@ -623,31 +623,26 @@ module DAVAZ
       end
 
       def delete(model)
-        artobject_id = model.artobject.artobject_id
-        if artobject_id
-          button = HtmlGrid::Button.new(:delete, model, @session, self)
-          args = []
-          if search_query = @session.user_input(:search_query)
-            args.push([:search_query, search_query])
-          else
-            args.push([:artgroup_id, artgroup_id])
-          end
-          args.push(
-            ['artobject_id', artobject_id],
-            ['fragment',     model.fragment],
-            ['state_id',     @session.state.object_id.to_s]
-          )
-          url = @lookandfeel.event_url(:admin, :delete, args)
-          script = <<-EOS
-            if (confirm('Do you really want to delete this artobject?')) {
-              window.location.href = '#{url}';
-            }
-          EOS
-          button.set_attribute('onclick', script)
-          button
+        obj = model.artobject
+        return '' unless obj
+        args = [
+          ['artobject_id', obj.artobject_id],
+          ['fragment',     model.fragment],
+          ['state_id',     @session.state.object_id.to_s]
+        ]
+        if search_query = @session.user_input(:search_query)
+          args.push([:search_query, search_query])
         else
-          ''
+          args.push([:artgroup_id, obj.artgroup_id])
         end
+        url = @lookandfeel.event_url(:admin, :delete, args)
+        button = HtmlGrid::Button.new(:delete, model, @session, self)
+        button.set_attribute('onclick', <<~EOS.gsub(/\n/, ''))
+          if (confirm('Do you really want to delete this artobject?')) {
+            window.location.href = '#{url}';
+          }
+        EOS
+        button
       end
 
       def form_language(model)

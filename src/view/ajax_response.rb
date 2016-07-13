@@ -1,5 +1,3 @@
-# View::AjaxResponse -- davaz.com -- 14.06.2006 -- mhuggler@ywesee.com
-
 require 'json'
 require 'htmlgrid/component'
 require 'htmlgrid/span'

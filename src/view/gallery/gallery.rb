@@ -34,15 +34,15 @@ module DAVAZ
         def init
           super
           @attributes.update('id' =>  'searchbar')
-          submit_url = @lookandfeel.event_url(:gallery, :search, [@name, ''])
-          self.set_attribute('onsubmit', <<~SCRIPT)
+          self.set_attribute('onsubmit', <<~EOS.gsub(/\n/, ''))
             if (#{@name}.value!='#{@lookandfeel.lookup(@name)}') {
-              var href = '#{submit_url}'"
+              var href = '#{@lookandfeel.event_url( \
+                :gallery, :search, [@name, ''])}'"
                 + encodeURIComponent(#{@name}.value.replace(/\\//, '%2F'));
               document.location.href = href;
             };
             return false;
-          SCRIPT
+          EOS
         end
       end
 
@@ -95,10 +95,10 @@ module DAVAZ
 
         CSS_ID     = 'inner_content'
         COMPONENTS = {
-          [0,0] => UpperGalleryComposite,
-          [0,1] => :show,
-          [0,2] => :series,
-          [0,3] => View::AddOnloadShow,
+          [0, 0] => UpperGalleryComposite,
+          [0, 1] => :show,
+          [0, 2] => :series,
+          [0, 3] => View::AddOnloadShow,
         }
         CSS_STYLE_MAP = {
           1 => 'display:none;',

@@ -609,7 +609,8 @@ module DAVAZ
       def date(model)
         input = HtmlGrid::InputText.new(:date, model, @session, self)
         begin
-          date = Date.parse(model.artobject.date)
+          date = model.artobject.date
+          date = Date.parse(date) unless date.is_a?(Date)
           input.value = date.strftime('%d.%m.%y')
         rescue ArgumentError
           input.value = '01.01.1970'

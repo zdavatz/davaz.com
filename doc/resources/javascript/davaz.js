@@ -130,7 +130,7 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
         wdgt.destroy();
         cnst.destroy(wdgt.id);
       }
-      // re:create as new noe
+      // re:create node as new one
       node = cnst.create('div');
       attr.set(node, 'id', divId);
       cnst.place(node, container);

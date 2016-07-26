@@ -106,28 +106,54 @@ function removeElement(inputSelect, url, removeLinkId) {
 	});
 }
 
+// Toggles input widgets {serie|tool|material}
 function toggleInnerHTML(divId, url, changeUrl, callback) {
-	var fragmentidentifier = "";
-	if(changeUrl) {
-		fragmentidentifier = changeUrl;
-	} 
-	var node = dojo.byId(divId);
-	if(url == 'null') {
-		node.innerHTML = '';
-		return;
-	}
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-      var pane = new dijit.layout.ContentPane({executeScripts: true}, node);
-      pane.setContent(data);
-			if(callback) { callback(); }
-			document.body.style.cursor = 'auto';
-      dojo.back.addToHistory({changeUrl:fragmentidentifier});
-		},
-		handleAs: 'text'
-	});
+  require([
+    'dojo/_base/xhr'
+  , 'dojo/back'
+  , 'dojo/dom'
+  , 'dojo/dom-attr'
+  , 'dojo/dom-construct'
+  , 'dijit/dijit'
+  , 'dojo/domReady!'
+  ], function(xhr, back, dom, attr, cnst, dijit) {
+    var fragmentidentifier = '';
+    if (changeUrl) {
+      fragmentidentifier = changeUrl;
+    }
+    var node = dom.byId(divId)
+      , container = node.parentNode
+      ;
+    if (url == 'null') {
+      var wdgt = dijit.byId(divId);
+      if (wdgt) {
+        wdgt.destroy();
+        cnst.destroy(wdgt.id);
+      }
+      // re:create as new noe
+      node = cnst.create('div');
+      attr.set(node, 'id', divId);
+      cnst.place(node, container);
+      return;
+    }
+    document.body.style.cursor = 'progress';
+    xhr.get({
+      url:      url
+    , handleAs: 'text'
+    , load:     function(data, request) {
+        var pane = new dijit.layout.ContentPane({
+          id:             divId
+        , executeScripts: true
+        }, node);
+        pane.setContent(data);
+        if (callback) { callback(); }
+        document.body.style.cursor = 'auto';
+        back.addToHistory({
+          changeUrl: fragmentidentifier
+        });
+      }
+    });
+  });
 }
 
 function toggleUploadImageForm(divId, url) {

@@ -124,8 +124,9 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
     var node = dom.byId(divId)
       , container = node.parentNode
       ;
-    if (url == 'null') {
-      var wdgt = dijit.byId(divId);
+    var wdgt = dijit.byId(divId);
+    if (url == 'null' || // cancel
+        wdgt != null) {  // re:click
       if (wdgt) {
         wdgt.destroy();
         cnst.destroy(wdgt.id);

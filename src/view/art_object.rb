@@ -194,10 +194,10 @@ module DAVAZ
     class MoviesPager < Pager
       def pager_link(link)
         artobject_id = link.attributes['href'].split("/").last
-        link.href = 'javascript:void(0)'
+        link.href = 'javascript:void(0);'
         link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           return toggleInnerHTML(
-            'movies-gallery-view'
+            'movies_gallery_view'
           , '#{@lookandfeel.event_url(:gallery, :ajax_movie_gallery, [
                 [:artobject_id, artobject_id]
             ])}'
@@ -232,9 +232,9 @@ module DAVAZ
 
       def back_to_overview(model)
         link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
-        link.href = 'javascript:void(0)'
+        link.href = 'javascript:void(0);'
         link.set_attribute('onclick', <<~EOS)
-          showMovieGallery('movies-gallery-view', 'movies-list','');
+          showMovieGallery('movies_gallery_view', 'movies_list', '');
         EOS
         link
       end
@@ -341,10 +341,10 @@ module DAVAZ
       def init
         super
         link = HtmlGrid::Link.new(:show_tags, @model, @session, self)
-        link.href = 'javascript:void(0)'
+        link.href = 'javascript:void(0);'
         link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           return toggleInnerHTML(
-            'all-tags-link'
+            'all_tags_link'
           , '#{@lookandfeel.event_url(:gallery, :ajax_all_tags)}'
           );
         EOS
@@ -361,7 +361,7 @@ module DAVAZ
       def tag(model)
         link = HtmlGrid::Link.new(model.name, model, @session, self)
         link.value = model.name
-        link.href  = 'javascript:void(0)'
+        link.href  = 'javascript:void(0);'
         link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           var values    = document.artobjectform.tags_to_s.value.split(',')
             , has_value = false
@@ -389,12 +389,13 @@ module DAVAZ
         0 => 'all_tags',
         1 => 'close_all_tags',
       }
+
       def close(model)
         link = HtmlGrid::Link.new(:close, model, @session, self)
-        link.href = 'javascript:void(0)'
+        link.href = 'javascript:void(0);'
         link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           toggleInnerHTML(
-            'all-tags-link',
+            'all_tags_link',
             '#{@lookandfeel.event_url(:gallery, :ajax_all_tags_link)}'
           );
         EOS
@@ -448,7 +449,7 @@ module DAVAZ
         name = "#{model.name}_add_form_input"
         link = HtmlGrid::Link.new(:cancel, model, @session, self)
         link.href = "javascript:void(0)"
-        script = "toggleInnerHTML('#{model.name}-add-form', 'null')"
+        script = "toggleInnerHTML('#{model.name}_add_form', 'null')"
         link.set_attribute('onclick', script)
         link
       end
@@ -472,7 +473,7 @@ module DAVAZ
         link.href = 'javascript:void(0)'
         link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
           toggleInnerHTML(
-            '#{model.name}-add-form'
+            '#{model.name}_add_form'
           , '#{@lookandfeel.event_url(:gallery, :ajax_add_form, [
               [:artobject_id, model.artobject.artobject_id],
               [:name,         model.name ]
@@ -750,12 +751,6 @@ module DAVAZ
 
     class AjaxUploadImageResponse < ImageDiv
       include HtmlGrid::TemplateMethods
-
-      def to_html(context)
-        html = super
-        puts "returning: #{html}"
-        html
-      end
     end
 
     class UploadImageForm < View::Form
@@ -799,8 +794,7 @@ module DAVAZ
           [:artobject_id, model.artobject.artobject_id]
         ])
         input.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
-          var msg = '#{@lookandfeel.lookup(:ask_for_image_deletion)}'
-          if (confirm(msg)) {
+          if (confirm('#{@lookandfeel.lookup(:ask_for_image_deletion)}')) {
             deleteImage(
               '#{url}'
             , 'artobject_image_#{model.artobject.artgroup_id}'
@@ -856,8 +850,8 @@ module DAVAZ
         [0, 1] => AdminArtObjectInnerComposite
       }
       CSS_ID_MAP = {
-        0 => 'artobject-outer-composite',
-        1 => 'artobject-inner-composite',
+        0 => 'artobject_outer_composite',
+        1 => 'artobject_inner_composite',
       }
     end
 

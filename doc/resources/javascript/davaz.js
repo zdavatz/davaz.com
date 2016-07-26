@@ -235,7 +235,8 @@ function toggleDeskContent(id, serieId, objectId, url, wipe) {
 	}
 }
 
-function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
+// Toggles show widgets {rack|slide|desk}
+function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
   require([
     'dojo/_base/xhr'
   , 'dojo/_base/window'
@@ -251,7 +252,14 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
   , 'ywesee/widget/slide'
   , 'ywesee/widget/desk'
   ], function(xhr, win, dom, attr, cnst, query, fx, back, dijit) {
-    var show = query('#show_container > div')[0]
+    var container = dom.byId(id + '_container');
+    if (attr.get(container, 'data-toggle-action') == 'true') {
+      return;
+    }
+    // prevents multiple clicks
+    attr.set(container, 'data-toggle-action', 'true');
+
+    var show = query('#' + id + '_container > div')[0]
       , wdgt = dijit.byId(attr.get(show, 'widgetid'))
       ;
     if (wdgt) { // current widget
@@ -259,9 +267,9 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
         , lastId  = lastUrl.split('/').pop()
         ;
     }
-    var serieLink = dom.byId(serie_id);
-    if (serie_id && wdgt) {
-      if (lastId != serie_id) {
+    var serieLink = dom.byId(serieId);
+    if (serieId && wdgt) {
+      if (lastId != serieId) {
         var lastSerieLink = dom.byId(lastId);
         if (lastSerieLink) {
           lastSerieLink.className = lastSerieLink.className.replace(/ ?active/, '');
@@ -270,7 +278,7 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
     }
     var container = dom.byId(id + '_container')
       , wipearea  = dom.byId(id + '_wipearea')
-      , replace   = dom.byId(replace_id)
+      , replace   = dom.byId(replaceId)
       ;
     if (view === null) {
       if (wdgt) {
@@ -282,16 +290,16 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
     if (url === null && wdgt) {
       url = lastUrl;
     }
-    if (serie_id === null && wdgt) {
-      serie_id = wdgt.serieId;
+    if (serieId === null && wdgt) {
+      serieId = wdgt.serieId;
     }
     var type = view.toLowerCase();
 
     var flag = type.charAt(0).toUpperCase() + view.slice(1);
-    var fragmentIdentifier = flag + '_' + serie_id;
+    var fragmentIdentifier = flag + '_' + serieId;
 
-    if (artobject_id) {
-      fragmentIdentifier = fragmentIdentifier + '_' + artobject_id;
+    if (artobjectId) {
+      fragmentIdentifier = fragmentIdentifier + '_' + artobjectId;
     }
 
     var loadShow = function() {
@@ -323,6 +331,7 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
             , duration: 900
             }).play();
           }
+          attr.set(container, 'data-toggle-action', 'false');
           // change color of active link to black
           if (serieLink != null && !serieLink.className.match(/ ?active/)) {
             serieLink.className += ' active';
@@ -340,9 +349,11 @@ function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
       , duration: 1200
       , onEnd:    loadShow
       }).play();
-    } else {
+    } else { // initialize
       if (wdgt) {
         loadShow.call();
+      } else {
+        attr.set(container, 'data-toggle-action', 'false');
       }
     }
   });

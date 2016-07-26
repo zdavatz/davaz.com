@@ -72,6 +72,7 @@ module DAVAZ
       }
     end
 
+    # @api admin
     class AdminRackArtObjectComposite < HtmlGrid::DivComposite
       COMPONENTS = {
         [0, 0] => RackArtObjectOuterComposite,

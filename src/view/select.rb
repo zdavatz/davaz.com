@@ -5,6 +5,7 @@ require 'htmlgrid/errormessage'
 module DAVAZ
   module View
     class DynSelect < HtmlGrid::AbstractSelect
+
       def init
         super
         url = @lookandfeel.event_url(:gallery, :ajax_check_removal_status, [
@@ -13,7 +14,9 @@ module DAVAZ
           [:selected_id,  nil]
         ])
         selected_id = @model.selected ? @model.selected.send(@name.intern) : ''
-        set_attribute('onchange', "checkRemovalStatus(this.value, '#{url}');")
+        set_attribute('onchange', <<~EOS)
+          checkRemovalStatus(this.value, '#{url}');
+        EOS
         self.onload = "checkRemovalStatus('#{selected_id}', '#{url}');"
         set_attribute('id', @name + '_select')
       end
@@ -34,6 +37,7 @@ module DAVAZ
       end
     end
 
+    # @api ajax
     class AjaxDynSelect < DynSelect
       include HtmlGrid::ErrorMessage
 

@@ -21,6 +21,10 @@ module DAVAZ
         end
       end
 
+      # @api admin
+      # @api ajax
+      # @note responds to:
+      #   /de/gallery/ajax_desk/artgroup_id/XXX/serie_id/XXX/artobject_id/XXX
       class AjaxAdminDeskArtobject < SBSM::State
         include AjaxDeskArtobjectLoadable
         include AdminArtObjectMethods
@@ -30,11 +34,16 @@ module DAVAZ
 
         def init
           super
-          @model.fragment = "Desk_#{serie_id}_#{artobject_id}"
+          @model.fragment = "Desk" \
+            "_#{@session.user_input(:serie_id)}" \
+            "_#{@session.user_input(:artobject_id)}"
           build_selections
         end
       end
 
+      # @api ajax
+      # @note responds to:
+      #   /de/gallery/ajax_desk/artgroup_id/XXX/serie_id/XXX/artobject_id/XXX
       class AjaxDeskArtobject < SBSM::State
         include AjaxDeskArtobjectLoadable
 
@@ -42,6 +51,9 @@ module DAVAZ
         VOLATILE = true
       end
 
+      # @api ajax
+      # @note responds to:
+      #   /de/gallery/ajax_desk/artgroup_id/XXX/serie_id/XXX
       class AjaxDesk < SBSM::State
         VIEW     = View::Gallery::RackResultListComposite
         VOLATILE = true
@@ -52,6 +64,7 @@ module DAVAZ
         end
       end
 
+      # @api ajax
       class AjaxRack < SBSM::State
         VOLATILE = true
         VIEW     = View::AjaxResponse
@@ -97,6 +110,7 @@ module DAVAZ
         end
       end
 
+      # @api admin
       class AdminGallery < State::Gallery::Gallery
         include AdminArtObjectMethods
 

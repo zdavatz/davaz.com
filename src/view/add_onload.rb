@@ -34,10 +34,10 @@ module DAVAZ
               if (artobject_id) {
                 url += '/artobject_id/' + artobject_id;
                 toggleShow('show', url, show_type,
-                  'upper_search_composite', serie_id, artobject_id);
+                  'show_wipearea', serie_id, artobject_id);
               } else {
                 toggleShow('show', url, show_type,
-                  'upper_search_composite', serie_id);
+                  'show_wipearea', serie_id);
               }
             }  else {
               #{add_location_hash}

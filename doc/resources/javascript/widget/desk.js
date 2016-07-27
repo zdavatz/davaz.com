@@ -5,37 +5,32 @@ define([
 , 'dojo/parser'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
-], function(declare, xhr, ready, parser, _wb, _tm) {
-  declare('ywesee.widget.desk', [_wb, _tm], {
+, 'ywesee/widget/show'
+], function(declare, xhr, ready, parser, _wb, _tm, _sw) {
+  declare('ywesee.widget.desk', [_wb, _tm, _sw], {
+    // attributes
     baseClass:    'desk-widget'
   , templatePath: require.toUrl(
       '/resources/javascript/widget/templates/desk.html')
-  , view:          'desk'
-  , images:        []
-  , titles:        []
-  , dataUrl:       ''
-  , serieId:       ''
+  , view:         'desk'
+    // properties
+  , dataType: 'text'
+  , dataUrl:  ''
+    // dom nodes
   , deskContainer: null
   , deskContent:   null
   , contentPane:   null
-  , startup:       function() {
-      var newDataUrl = this.dataUrl.replace(/ajax_rack/, 'ajax_desk');
-      _this = this;
-      xhr.get({
-        url:      newDataUrl
-      , handleAs: 'text'
-      , load:     function(data, request) {
-          _this.toggleInnerHTML(data);
-        }
+    // callbacks
+  , build: function() {
+      var _this = this;
+      // dataUrl will be used for next widget
+      var url = _this.dataUrl.replace(/ajax_rack/, 'ajax_desk');
+      _this.fetch(url, function(data, req) {
+        _this.setup(data);
       });
     }
-  , toggleInnerHTML: function(html) {
-      this.deskContent.innerHTML = html;
-      try {
-        parser.parse(this.deskContent);
-      } catch(e) {
-        // pass
-      }
+  , setup: function(data) {
+      this.deskContent.innerHTML = data;
     }
   });
 });

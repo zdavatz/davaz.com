@@ -265,8 +265,9 @@ function toggleDeskContent(id, serieId, objectId, url, wipe) {
 // Toggles show widgets {rack|slide|desk}
 function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
   require([
-    'dojo/_base/xhr'
-  , 'dojo/_base/window'
+    'dojo/_base/window'
+  , 'dojo/_base/xhr'
+  , 'dojo/parser'
   , 'dojo/dom'
   , 'dojo/dom-attr'
   , 'dojo/dom-construct'
@@ -278,13 +279,16 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
   , 'ywesee/widget/rack'
   , 'ywesee/widget/slide'
   , 'ywesee/widget/desk'
-  ], function(xhr, win, dom, attr, cnst, query, fx, back, dijit) {
-    var container = dom.byId(id + '_container');
-    if (attr.get(container, 'data-toggle-action') == 'true') {
+  ], function(win, xhr, parser, dom, attr, cnst, query, fx, back, dijit) {
+    var wrapper   = dom.byId('show_wipearea')
+      , container = dom.byId(id + '_container')
+      ;
+
+    if (attr.get(wrapper, 'data-toggle-action') == 'true') {
       return;
     }
     // prevents multiple clicks
-    attr.set(container, 'data-toggle-action', 'true');
+    attr.set(wrapper, 'data-toggle-action', 'true');
 
     var show = query('#' + id + '_container > div')[0]
       , wdgt = dijit.byId(attr.get(show, 'widgetid'))
@@ -299,18 +303,15 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
       if (lastId != serieId) {
         var lastSerieLink = dom.byId(lastId);
         if (lastSerieLink) {
-          lastSerieLink.className = lastSerieLink.className.replace(/ ?active/, '');
+          lastSerieLink.className = 
+            lastSerieLink.className.replace(/ ?active/, '');
         }
       }
     }
-    var container = dom.byId(id + '_container')
-      , wipearea  = dom.byId(id + '_wipearea')
-      , replace   = dom.byId(replaceId)
-      ;
     if (view === null) {
       if (wdgt) {
         view = wdgt.view;
-      } else  {
+      } else  { // default widget
         view = 'rack';
       }
     }
@@ -322,66 +323,83 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
     }
     var type = view.toLowerCase();
 
+    // disable same widget
+    //if (wdgt && type == wdgt.view) {
+    //  attr.set(wrapper, 'data-toggle-action', 'false');
+    //  return;
+    //}
+
     var flag = type.charAt(0).toUpperCase() + view.slice(1);
     var fragmentIdentifier = flag + '_' + serieId;
-
     if (artobjectId) {
       fragmentIdentifier = fragmentIdentifier + '_' + artobjectId;
     }
 
-    var loadShow = function() {
-      xhr.get({
-        url:      url
-      , handleAs: 'json'
-      , load:     function(data, args) {
-          if (wdgt) {
-            cnst.destroy(wdgt.id);
-          }
-          var domNode = win.doc.createElement('div');
-          switch (type) {
-          case 'slide':
-            var widget = new ywesee.widget.slide(data, domNode);
-            break;
-          case 'desk':
-            var widget = new ywesee.widget.desk(data, domNode);
-            break;
-          default:
-            var widget = new ywesee.widget.rack(data, domNode);
-          }
-          container.appendChild(widget.domNode);
-          widget.startup();
-          var style = wipearea.style.display;
-          if (!style || style === 'none') {
-            wipearea.style.overflow = 'hidden';
-            fx.wipeIn({
-              node:     wipearea
-            , duration: 900
-            }).play();
-          }
-          attr.set(container, 'data-toggle-action', 'false');
-          // change color of active link to black
-          if (serieLink != null && !serieLink.className.match(/ ?active/)) {
-            serieLink.className += ' active';
-          }
-          back.addToHistory({
-            changeUrl: fragmentIdentifier
-          });
-        },
+    var loadWidget = function(type, container, callback) {
+      var data      = {dataUrl: url}
+        , domNode   = win.doc.createElement('div')
+        ;
+      switch (type) {
+      case 'slide':
+        var wdgt = new ywesee.widget.slide(data, domNode);
+        break;
+      case 'desk':
+        var wdgt = new ywesee.widget.desk(data, domNode);
+        break;
+      default:
+        var wdgt = new ywesee.widget.rack(data, domNode);
+      }
+      wdgt.startup();
+      wdgt.placeAt(container);
+      // change color of active link to black
+      if (serieLink != null && !serieLink.className.match(/ ?active/)) {
+        serieLink.className += ' active';
+      }
+      back.addToHistory({
+        changeUrl: fragmentIdentifier
       });
+      callback.call();
     };
 
-    if (replace && replace.style.display !== 'none') {
+    if (wdgt) {
       fx.wipeOut({
-        node:     replace
+        node:     container
       , duration: 1200
-      , onEnd:    loadShow
+      , onEnd: function() {
+          var container = wdgt.domNode.parentNode
+            , current   = wdgt.view
+            ;
+          // wipeIn animation callback
+          var callback = function() {
+            setTimeout(function() {
+              var style = container.style.display;
+              if (style === '' || style === 'none') {
+                fx.wipeIn({
+                  node:     container
+                , duration: 800
+                , onEnd: function() {
+                    attr.set(wrapper, 'data-toggle-action', 'false');
+                  }
+                }).play();
+              }
+            }, 3);
+          }
+
+          if (type == current) { // same as current widget
+            callback.call();
+          } else {
+            // destroy current widget
+            // NOTE: this might remains widgt in registry :'(
+            wdgt.destroy(true);
+            cnst.destroy(wdgt.id);
+            wdgt = null;
+
+            loadWidget.call(this, type, container, callback);
+          }
+        }
       }).play();
     } else { // initialize
-      if (wdgt) {
-        loadShow.call();
-      } else {
-        attr.set(container, 'data-toggle-action', 'false');
-      }
+      attr.set(wrapper, 'data-toggle-action', 'false');
     }
   });
 }

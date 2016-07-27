@@ -104,7 +104,7 @@ module DAVAZ
           1 => 'display:none;',
         }
         CSS_ID_MAP = {
-          0 => 'upper_search_composite',
+          0 => 'show_container',
           1 => 'show_wipearea',
           2 => 'serie_links',
         }
@@ -114,7 +114,7 @@ module DAVAZ
         end
 
         def series(model)
-          super(model, 'upper-search-composite')
+          super(model, 'show_container')
         end
       end
 

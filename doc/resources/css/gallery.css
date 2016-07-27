@@ -99,10 +99,6 @@ div#close_x a:visited {
   font-weight:     bold;
 }
 
-div#show_wipearea {
-  display: none;
-}
-
 table#result_list_column_names td {
   background-color: #f1171d;
 }

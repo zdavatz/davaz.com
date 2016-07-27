@@ -162,9 +162,8 @@ div.rack-container {
 }
 
 div#slide {
-  display: none;
-  margin:  0 auto;
   width:   730px;
+  margin:  0 auto;
 }
 
 div.multimedia-buttons {
@@ -249,7 +248,7 @@ img.slide-control-image {
 
 
 div#show_container {
-  width:  700px;
+  width:  700px !important;
   margin: 0 auto;
 }
 

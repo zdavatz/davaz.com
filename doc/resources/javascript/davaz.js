@@ -315,7 +315,9 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
         view = 'rack';
       }
     }
+    var reuse = false; // reuse widget without ajax
     if (url === null && wdgt) {
+      reuse = true;
       url = lastUrl;
     }
     if (serieId === null && wdgt) {
@@ -323,20 +325,14 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
     }
     var type = view.toLowerCase();
 
-    // disable same widget
-    //if (wdgt && type == wdgt.view) {
-    //  attr.set(wrapper, 'data-toggle-action', 'false');
-    //  return;
-    //}
-
     var flag = type.charAt(0).toUpperCase() + view.slice(1);
-    var fragmentIdentifier = flag + '_' + serieId;
+    var anchor = flag + '_' + serieId;
     if (artobjectId) {
-      fragmentIdentifier = fragmentIdentifier + '_' + artobjectId;
+      anchor = anchor + '_' + artobjectId;
     }
 
     var loadWidget = function(type, container, callback) {
-      var data      = {dataUrl: url}
+      var data      = {dataUrl: url, anchor: anchor}
         , domNode   = win.doc.createElement('div')
         ;
       switch (type) {
@@ -356,7 +352,7 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
         serieLink.className += ' active';
       }
       back.addToHistory({
-        changeUrl: fragmentIdentifier
+        changeUrl: anchor
       });
       callback.call();
     };
@@ -385,7 +381,7 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
             }, 3);
           }
 
-          if (type == current) { // same as current widget
+          if (type == current && reuse) { // same as current widget
             callback.call();
           } else {
             // destroy current widget

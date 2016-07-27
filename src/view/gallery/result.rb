@@ -178,7 +178,7 @@ module DAVAZ
           link.href  = 'javascript:void(0)'
           link.set_attribute('onclick', <<~EOS)
             toggleShow('show', '#{url}', 'desk',
-              'upper-search-composite', '#{serie_id}', '#{artobject_id}');
+              'show_wipearea', '#{serie_id}', '#{artobject_id}');
           EOS
           link
         end

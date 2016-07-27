@@ -5,6 +5,7 @@ define([
   return declare('ywesee.widget.show', [], {
     // properties
     dataType:     'json'
+  , anchor:       ''
   , dataUrl:      ''
   , images:       []
   , titles:       []

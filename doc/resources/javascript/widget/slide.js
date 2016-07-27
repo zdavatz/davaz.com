@@ -14,7 +14,7 @@ define([
     baseClass: 'slide-widget'
   , templatePath: require.toUrl(
       '/resources/javascript/widget/templates/slide.html')
-    // properties
+    // attributes
   , view:               'slide'
   , imageHeight:        '280px'
   , imageIdx:           0
@@ -28,9 +28,10 @@ define([
   , foreground_title:   'title1'
   , fadeAnim:           null
   , loadedCallback:     'backgroundImageLoaded'
-  , dataUrl:            ''
-  , serieId:            ''
-    // dom nodes:
+    // properties
+  , dataUrl: ''
+  , serieId: ''
+    // dom nodes
   , imagesContainer:   null
   , startStopButton:   null
   , controlsContainer: null
@@ -45,8 +46,12 @@ define([
   , stopped:          false
   , was_patient:      false
   , finished_loading: false
+    // callbacks
   , constructor: function(params, srcNodeRef) {
       // pass
+    }
+  , build: function() {
+      this.inherited(arguments);
     }
   , setup: function() {
       this.container1.style.opacity = 0.9999;

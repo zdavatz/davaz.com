@@ -80,7 +80,7 @@ module DAVAZ
         link.href  = 'javascript:void(0)'
         link.value = 'X'
         link.set_attribute('onclick', <<~EOS)
-          replaceDiv('show_wipearea', 'upper_search_composite');
+          replaceDiv('show_wipearea', 'show_container');
         EOS
         link
       end

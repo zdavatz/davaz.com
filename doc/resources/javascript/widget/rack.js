@@ -8,24 +8,32 @@ define([
 , 'ywesee/widget/show'
 ], function(declare, ready, parser, _wb, _tm, _witm, _sw) {
   declare('ywesee.widget.rack', [_wb, _tm, _sw], {
+    // attributes
     baseClass:    'rack-widget'
   , templatePath: require.toUrl(
       '/resources/javascript/widget/templates/rack.html')
-  , view:                'rack'
-  , toggleBusy:          false
-  , artObjectIds:        []
-  , artGroupIds:         []
-  , dataUrl:             ''
-  , serieId:             ''
+  , view:         'rack'
+    // properties
+  , dataUrl:      ''
+  , images:       []
+  , titles:       []
+  , artObjectIds: []
+    // dom nodes
   , imageContainer:      null
   , thumbContainer:      null
   , imageTitleContainer: null
   , imageTitle:          null
   , displayImage:        null
+    // states
+  , toggleBusy:   false
+    // callbacks
   , constructor: function(params, srcNodeRef) {
       // pass
     }
-  , setup: function() {
+  , build: function() {
+      this.inherited(arguments);
+    }
+  , setup: function(data) {
       var imageCount   = this.images.length
         , columnsCount = Math.floor(Math.sqrt(imageCount))
         , rowsCount    = Math.ceil(imageCount / columnsCount)
@@ -80,7 +88,7 @@ define([
       this.fillInTemplate();
     }
   });
-  ready(function() {
-    parser.parse();
-  });
+  //ready(function() {
+  //  parser.parse();
+  //});
 });

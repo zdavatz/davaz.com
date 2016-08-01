@@ -1,7 +1,3 @@
-#!/usr/bin/env ruby
-# Util::DbClient -- davaz.com -- 14.08.2013 -- yasaka@ywesee.com
-# Util::DbClient -- davaz.com -- 27.07.2005 -- mhuggler@ywesee.com
-
 require 'ftools'
 require 'date'
 require 'mysql2'
@@ -17,27 +13,35 @@ require 'model/tag'
 require 'model/tool'
 
 module DAVAZ
-	module Util
+  module Util
     class DbConnection
       attr_reader :connection
-      DB_CONNECTION_DATA = File.expand_path('../../etc/db_connection_data.yml',
-                                            File.dirname(__FILE__))
+
+      DB_CONNECTION_DATA = File.expand_path(
+        '../../etc/db_connection_data.yml', File.dirname(__FILE__))
+
       @@db_data = YAML.load(File.read(DB_CONNECTION_DATA))
+
       def initialize
         reconnect
       end
+
       def reconnect
         @connection = connection
       end
+
       def connection
         Mysql2::Client.new(
-          :host     => @@db_data['host'],
-          :username => @@db_data['user'],
-          :password => @@db_data['password'],
-          :database => @@db_data['db'],
-          :encoding => @@db_data['encoding']
+          host:      @@db_data['host'],
+          username:  @@db_data['user'],
+          password:  @@db_data['password'],
+          database:  @@db_data['db'],
+          encoding:  @@db_data['encoding']  || 'utf8',
+          reconnect: @@db_data['reconnect'] || true
         )
       end
+
+      # @todo Remove retry, Improve delegation
       def method_missing(*args, &block)
         @connection.send(*args, &block)
       rescue Exception => e
@@ -50,36 +54,10 @@ module DAVAZ
           retry
         end
       end
-      def query *args, &block
-        #puts args.first.strip.gsub(/\s+/, ' ')
-        @connection.send(:query, *args, &block)
-      rescue Exception => e
-        puts e.class, e.message
-      end
     end
-		class DbManager
-			def connect
-				connection = DbConnection.new
-				connection.reconnect
-        connection.connection
-			end
-			def connection
-				@connection ||= connect
-        if block_given?
-          yield @connection
-        else
-          @connection
-        end
-      rescue
-			end
-			def set_values(model, row)
-				row.each { |key, value|
-					method = key.to_s + "="
-					if(model.respond_to?(method))
-						model.send(method, value)
-					end
-				}
-			end
+
+    class DbManager
+
 			def add_serie(serie_name)
 				query = <<-EOS
 					SELECT serie_id FROM series
@@ -193,8 +171,8 @@ module DAVAZ
 						links.store(link_id, link)
 					end
 					artobject = Model::ArtObject.new
-					set_values(link, row)
-					set_values(artobject, row)
+					set_attributes(link, row)
+					set_attributes(artobject, row)
 					link.artobjects.push(artobject)
 				}
 				links.values
@@ -385,8 +363,8 @@ module DAVAZ
             links.store(link_id, link)
           end
           artobject = Model::ArtObject.new
-          set_values(link, row)
-          set_values(artobject, row)
+          set_attributes(link, row)
+          set_attributes(artobject, row)
           link.artobjects.push(artobject)
         }
         table.collect do |id, links|
@@ -507,7 +485,7 @@ module DAVAZ
 				artobjects = []
 				result.each { |row|
 					artobject = Model::ArtObject.new
-					set_values(artobject, row)
+					set_attributes(artobject, row)
 					artobjects.push(artobject)
 				}
 				artobjects
@@ -760,7 +738,7 @@ module DAVAZ
 				artobjects = []
 				result.each { |row|
 					artobject = Model::ArtObject.new
-					set_values(artobject, row)
+					set_attributes(artobject, row)
 					artobjects.push(artobject)
 				}
 				artobjects.concat(load_serie_artobjects(tag, 'series.name'))
@@ -898,8 +876,9 @@ module DAVAZ
 				load_series(where)
 			end
 
+      # Updates artobject with tags
       def update_artobject(artobject_id, update_hash)
-        connection { |conn|
+        transaction do |conn|
           delete_artobject_statement = conn.prepare(<<~EOS.gsub(/\n/, ''))
             DELETE FROM tags_artobjects WHERE artobject_id = ?
           EOS
@@ -921,8 +900,7 @@ module DAVAZ
               add_tag_relation_statement.execute(tag_id, artobject_id)
             }
           end
-          update_array = []
-          update_hash.map { |key, val|
+          updated_attrs = update_hash.map { |key, val|
             next if key == :tags
             if key == :date_ch
               date = val.split('.')
@@ -930,15 +908,15 @@ module DAVAZ
             elsif !val
               val = ''
             end
-            update_array << "#{conn.escape(key.to_s)} = '#{conn.escape(val)}'"
-          }
+            "#{conn.escape(key.to_s)} = '#{conn.escape(val)}'"
+          }.compact
           update_artobject_statement = conn.prepare(<<~EOS.gsub(/\n/, ''))
             UPDATE artobjects
-             SET #{update_array.join(', ')} WHERE artobject_id = ?
+             SET #{updated_attrs.join(', ')} WHERE artobject_id = ?
           EOS
           update_artobject_statement.execute(artobject_id)
           conn.affected_rows
-        }
+        end
       end
 
 			def update_currency(origin, target, rate)
@@ -967,7 +945,48 @@ module DAVAZ
 					WHERE guest_id='#{guest_id}'
 				EOS
         query_affected_rows(query)
-			end
-		end
-	end
+      end
+
+      private
+
+      def connect
+        connection = DbConnection.new
+        connection.reconnect
+        connection.connection
+      end
+
+      def connection
+        @connection ||= connect
+        if block_given?
+          yield @connection
+        else
+          @connection
+        end
+      rescue
+      end
+
+      def transaction(&block)
+        raise ArgumentError unless block_given?
+        connection do |conn|
+          begin
+            conn.query('BEGIN')
+            yield(conn)
+            conn.query('COMMIT')
+            return true
+          rescue Exception => e
+            puts e.class, e.message
+            conn.query('ROLLBACK')
+            return false
+          end
+        end
+      end
+
+      def set_attributes(model, row)
+        row.each { |key, value|
+          method = key.to_s + '='
+          model.send(method, value) if model.respond_to?(method)
+        }
+      end
+    end
+  end
 end

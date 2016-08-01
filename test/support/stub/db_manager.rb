@@ -10,7 +10,7 @@ require 'model/tag'
 require 'model/tool'
 require 'util/lookandfeel'
 
-module DAVAZ
+module DaVaz
   module Stub
     class StubArtgroup < Model::Artgroup
       def initialize(id, name=nil)

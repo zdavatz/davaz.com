@@ -104,11 +104,11 @@ div#copyright {
 
 #logo a:visited,
 #logo a:link {
-  background-image: url("/resources/images/global/DaVaz_logo.gif");
+  background-image: url("/resources/images/global/davaz_logo.gif");
 }
 
 #logo a:hover {
-  background-image: url("/resources/images/global/DaVaz_logo_i.gif");
+  background-image: url("/resources/images/global/davaz_logo_i.gif");
 }
 
 #left_navigation_container {

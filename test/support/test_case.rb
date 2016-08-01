@@ -2,7 +2,7 @@ require 'headless'
 require 'util/davazapp'
 require 'util/drbserver'
 
-module DAVAZ
+module DaVaz
   module TestCase
     attr_reader :browser
 
@@ -17,11 +17,11 @@ module DAVAZ
 
       unless @browser
         drb_url = TEST_APP_URI.to_s
-        app = DAVAZ::Util::DavazApp.new
-        app.db_manager = DAVAZ::Stub::DbManager.new
-        app.yus_server = DAVAZ::Stub::YusServer.new
+        app = DaVaz::Util::DaVazApp.new
+        app.db_manager = DaVaz::Stub::DbManager.new
+        app.yus_server = DaVaz::Stub::YusServer.new
 
-        server = DAVAZ::Util::DRbServer.new(app)
+        server = DaVaz::Util::DRbServer.new(app)
         drb ||= Thread.new do
           begin
             @drb_server ||= DRb.start_service(drb_url, server)
@@ -39,7 +39,7 @@ module DAVAZ
         @http_server.shutdown
 
         @webrick ||= Thread.new { @http_server.start }
-        @browser ||= DAVAZ::Browser.new(:firefox)
+        @browser ||= DaVaz::Browser.new(:firefox)
       end
     end
 

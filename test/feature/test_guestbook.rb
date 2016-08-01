@@ -8,7 +8,7 @@ require 'test/unit'
 require 'test/selenium/unit'
 
 class TestGuestbook < Test::Unit::TestCase
-	include DAVAZ::Selenium::TestCase
+	include DaVaz::Selenium::TestCase
   def test_test_guestbook
     @selenium.open "/en/personal/home"
     @selenium.click "link=Guestbook"

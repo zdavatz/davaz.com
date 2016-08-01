@@ -1,6 +1,6 @@
 require 'htmlgrid/divform'
 
-module DAVAZ
+module DaVaz
   module View
     module Admin
       class LinkTitle < HtmlGrid::DivComposite

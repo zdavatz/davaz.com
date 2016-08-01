@@ -1,44 +1,41 @@
-#!/usr/bin/env ruby
-# State::Personal::Global -- davaz.com -- 18.07.2005 -- mhuggler@ywesee.com
-
 require 'state/global'
+require 'state/predefine'
 require 'state/personal/init'
 require 'state/personal/life'
 require 'state/personal/work'
 require 'state/personal/inspiration'
 require 'state/personal/family'
 require 'state/personal/thefamily'
-require 'state/public/global'
-require 'ostruct'
+require 'util/image_helper'
 
-module DAVAZ
-	module State
-		module Personal 
-class Global < State::Global
-	HOME_STATE = State::Personal::Init
-	ZONE = :personal
-	EVENT_MAP = {
-		:home									=>	State::Personal::Init,
-		:family								=>	State::Personal::Family,
-		:inspiration					=>	State::Personal::Inspiration,
-		:life									=>	State::Personal::Life,
-		:the_family						=>	State::Personal::TheFamily,
-		:work									=>	State::Personal::Work,
-	}
-	def add_show_items(ostruct, name)
-		ostruct.show_items = {
-			'images'	=>	[],
-			'titles'	=>	[],
-		}
-		artobjects = @session.app.load_tag_artobjects(name)
-		artobjects.each { |artobject|
-			image = DAVAZ::Util::ImageHelper.image_url(artobject.artobject_id, 'show')
-			@model.show_items['images'].push(image)
-			@model.show_items['titles'].push(artobject.title)
-		}
-		ostruct
-	end
-end
-		end
-	end
+module DaVaz::State
+  module Personal
+    class Global < DaVaz::State::Global
+      HOME_STATE = Init
+      ZONE       = :personal
+      EVENT_MAP  = {
+        :home        => Init,
+        :life        => Life,
+        :work        => Work,
+        :inspiration => Inspiration,
+        :family      => Family,
+        :the_family  => TheFamily
+      }
+
+      def add_show_items(ostruct, name)
+        ostruct.show_items = {
+          'images' => [],
+          'titles' => []
+        }
+        artobjects = @session.app.load_tag_artobjects(name)
+        artobjects.each { |artobject|
+          image = DaVaz::Util::ImageHelper.image_url(
+            artobject.artobject_id, 'show')
+          @model.show_items['images'].push(image)
+          @model.show_items['titles'].push(artobject.title)
+        }
+        ostruct
+      end
+    end
+  end
 end

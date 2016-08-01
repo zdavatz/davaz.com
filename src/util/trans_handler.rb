@@ -1,6 +1,6 @@
 require 'sbsm/trans_handler'
 
-module DAVAZ
+module DaVaz
   module Util
     class TransHandler < SBSM::TransHandler
       # SBSM::TransHandler's default simple_parse method expects

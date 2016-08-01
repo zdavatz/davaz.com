@@ -4,10 +4,10 @@
 require 'htmlgrid/divlist'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/inputfile'
-require 'view/publictemplate'
-require 'view/form'
+require 'view/template'
+require 'view/_partial/form'
 
-module DAVAZ
+module DaVaz
 	module View
 		module Admin
 class LinkImages < HtmlGrid::DivList
@@ -22,7 +22,7 @@ class LinkImages < HtmlGrid::DivList
 	}
 	def image(model)
 		image = HtmlGrid::Image.new(model, @model, @session, self)
-		url = DAVAZ::Util::ImageHelper.image_url(model, 'small')
+		url = DaVaz::Util::ImageHelper.image_url(model, 'small')
 		image.set_attribute('src', url)
 		image.set_attribute('width', '100px')
 		image.set_attribute('height', '100px')
@@ -53,7 +53,7 @@ class ImageChooserList < HtmlGrid::DivList
 			@session, self)
 		image = HtmlGrid::Image.new(model.artobject_id.to_s, @model, \
 			@session, self)
-		url = DAVAZ::Util::ImageHelper.image_url(model.artobject_id, 'small')
+		url = DaVaz::Util::ImageHelper.image_url(model.artobject_id, 'small')
 		image.set_attribute('src', url)
 		#image.set_attribute('width', '100px')
 		#image.set_attribute('height', '100px')
@@ -121,7 +121,7 @@ class ImageChooserContainerComposite < HtmlGrid::DivComposite
     0 => 'image_chooser_container',
   }
 end
-class ImageChooser < AdminPublicTemplate
+class ImageChooser < AdminTemplate
 	CONTENT = ImageChooserContainerComposite
 end
 		end

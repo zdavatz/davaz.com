@@ -1,6 +1,6 @@
 require 'digest/sha2'
 
-module DAVAZ
+module DaVaz
   module Stub
 
     class User

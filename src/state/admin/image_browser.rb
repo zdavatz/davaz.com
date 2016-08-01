@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 # State::Admin::ImageBrowser -- davaz.com -- 12.06.2006 -- mhuggler@ywesee.com
 
-require 'state/global_predefine'
+require 'state/predefine'
 #require 'view/admin/image_browser'
 require 'util/image_helper'
 
-module DAVAZ
+module DaVaz
 	module State
 		module Admin
 =begin

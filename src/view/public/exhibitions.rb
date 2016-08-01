@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 # View::Public::Exhibitions -- davaz.com -- 28.09.2005 -- mhuggler@ywesee.com
 
-require 'view/publictemplate'
+require 'view/template'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
 
-module DAVAZ
+module DaVaz
 	module View
 		module Public
 class ExhibitionsList < HtmlGrid::DivList
@@ -31,7 +31,7 @@ class ExhibitionsComposite < HtmlGrid::DivComposite
 		[1,0]	=> ExhibitionsList,	
 	}
 end
-class Exhibitions < View::ExhibitionsPublicTemplate
+class Exhibitions < View::ExhibitionsTemplate
 	CONTENT = View::Public::ExhibitionsComposite 
 end
 		end

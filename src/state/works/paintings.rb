@@ -1,20 +1,17 @@
-#!/usr/bin/env ruby
-# State::Works::Paintings -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
-
-require 'state/global_predefine'
+require 'state/works/rack'
 require 'view/works/paintings'
 
-module DAVAZ
-	module State
-		module Works
-class AdminPaintings < State::Works::AdminRackState
-	VIEW = View::Works::AdminPaintings
-	ARTGROUP_ID = "PAI"
-end
-class Paintings < State::Works::RackState
-	VIEW = View::Works::Paintings
-	ARTGROUP_ID = "PAI"
-end
-		end
-	end
+module DaVaz::State
+  module Works
+    class Paintings < Rack
+      VIEW        = DaVaz::View::Works::Paintings
+      ARTGROUP_ID = 'PAI'
+    end
+
+    # @api admin
+    class AdminPaintings < AdminRack
+      VIEW        = DaVaz::View::Works::AdminPaintings
+      ARTGROUP_ID = 'PAI'
+    end
+  end
 end

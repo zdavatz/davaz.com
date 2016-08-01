@@ -8,7 +8,7 @@ require 'test/unit'
 require 'test/selenium/unit'
 
 class TestGallery < Test::Unit::TestCase
-	include DAVAZ::Selenium::TestCase
+	include DaVaz::Selenium::TestCase
   def test_test_gallery
     @selenium.open "/en/gallery/gallery/"
     assert_equal "Da Vaz - Abstract Artist from Switzerland | Gallery | Gallery", @selenium.get_title

@@ -1,14 +1,14 @@
-require 'view/publictemplate'
-require 'view/list'
-require 'view/textblock'
-require 'view/oneliner'
-require 'view/serie_widget'
-require 'view/ticker'
+require 'view/template'
+require 'view/_partial/list'
+require 'view/_partial/textblock'
+require 'view/_partial/oneliner'
+require 'view/_partial/serie_widget'
+require 'view/_partial/ticker'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/link'
 require 'htmlgrid/ullist'
 
-module DAVAZ
+module DaVaz
   module View
     module Personal
       class LifeList < HtmlGrid::UlList
@@ -152,7 +152,7 @@ module DAVAZ
         end
       end
 
-      class Life < View::PersonalPublicTemplate
+      class Life < View::PersonalTemplate
         CONTENT = View::Personal::LifeComposite
         TICKER  = 'A passage through India'
       end

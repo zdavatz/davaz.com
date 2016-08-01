@@ -9,7 +9,7 @@ require 'test/selenium/unit'
 require 'util/image_helper'
 
 class TestLiveEditing < Test::Unit::TestCase
-	include DAVAZ::Selenium::TestCase
+	include DaVaz::Selenium::TestCase
 	def live_edit_test1(site, aid)
     @selenium.open "/en/#{site}/"
     @selenium.wait_for_page_to_load "30000"
@@ -136,7 +136,7 @@ class TestLiveEditing < Test::Unit::TestCase
     assert !@selenium.is_text_present("Name of Guest 2 editäd")
 	end
 	def teardown
-		DAVAZ::Util::ImageHelper.delete_image("116")
+		DaVaz::Util::ImageHelper.delete_image("116")
 		super
 	end
 end

@@ -3,10 +3,10 @@
 
 require 'htmlgrid/divlist'
 require 'htmlgrid/divcomposite'
-require 'view/publictemplate'
-require 'view/form'
+require 'view/template'
+require 'view/_partial/form'
 
-module DAVAZ
+module DaVaz
 	module View
 		module Admin
 class ImageBrowserList < HtmlGrid::DivList
@@ -21,7 +21,7 @@ class ImageBrowserList < HtmlGrid::DivList
 			@session, self)
 		image = HtmlGrid::Image.new(model.artobject_id.to_s, @model, \
 			@session, self)
-		url = DAVAZ::Util::ImageHelper.image_url(model.artobject_id, 'small')
+		url = DaVaz::Util::ImageHelper.image_url(model.artobject_id, 'small')
 		image.set_attribute('src', url)
 		image.set_attribute('width', '100px')
 		image.set_attribute('height', '100px')

@@ -1,6 +1,6 @@
 require 'watir-webdriver'
 
-module DAVAZ
+module DaVaz
   class Browser < SimpleDelegator
 
     def initialize(args)

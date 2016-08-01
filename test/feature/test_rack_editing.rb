@@ -10,7 +10,7 @@ require 'util/image_helper'
 require 'fileutils'
 
 class TestRackEditing < Test::Unit::TestCase
-	include DAVAZ::Selenium::TestCase
+	include DaVaz::Selenium::TestCase
   def test_edit_rack_artobject
     @selenium.open "/en/communication/links"
     @selenium.click "link=Drawings"
@@ -68,6 +68,6 @@ class TestRackEditing < Test::Unit::TestCase
 		image_path = File.expand_path('../doc/resources/images/112.png', File.dirname(__FILE__))
 		tmp_image_path = File.expand_path('../doc/resources/images/112_tmp.png', File.dirname(__FILE__))
 		FileUtils.cp(image_path, tmp_image_path)	
-		DAVAZ::Util::ImageHelper.store_tmp_image(tmp_image_path, '112')
+		DaVaz::Util::ImageHelper.store_tmp_image(tmp_image_path, '112')
 	end
 end

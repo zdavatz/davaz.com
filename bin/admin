@@ -22,7 +22,7 @@ Kernel.trap('INT') {
 
 prompt = 'davaz> '
 DRb.start_service('druby://localhost:0')
-davaz = DRbObject.new(nil, DAVAZ.config.server_uri)
+davaz = DRbObject.new(nil, DaVaz.config.server_uri)
 last_error = nil
 priority = -1
 
@@ -33,7 +33,7 @@ while line = readline(prompt, true)
   $stdout.print '-> '
 
   if match = /puts\s+(.*)/.match(line)
-    line = "DAVAZ.logger.debug('admin') { #{match[1]} }"
+    line = "DaVaz.logger.debug('admin') { #{match[1]} }"
   end
 
   case line.downcase

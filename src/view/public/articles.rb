@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # View::Public::Articles -- davaz.com -- 28.09.2005 -- mhuggler@ywesee.com
 
-require 'view/publictemplate'
-require 'view/textblock'
+require 'view/template'
+require 'view/_partial/textblock'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
 require 'htmlgrid/input'
 
-module DAVAZ
+module DaVaz
 	module View
 		module Public
 class ArticlesList < HtmlGrid::DivList
@@ -53,7 +53,7 @@ class ArticlesComposite < HtmlGrid::DivComposite
 		[1,0]	=> ArticlesList,	
 	}
 end
-class Articles < View::ArticlesPublicTemplate
+class Articles < View::ArticlesTemplate
 	CONTENT = View::Public::ArticlesComposite 
 end
 class AdminArticlesList < ArticlesList 
@@ -67,7 +67,7 @@ class AdminArticlesComposite < HtmlGrid::DivComposite
 		[1,0]	=>	AdminArticlesList,
 	}
 end
-class AdminArticles < View::ArticlesPublicTemplate 
+class AdminArticles < View::ArticlesTemplate 
 	CONTENT = AdminArticlesComposite
 end
 		end

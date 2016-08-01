@@ -4,7 +4,7 @@
 require 'htmlgrid/component'
 require 'htmlgrid/dojotoolkit'
 
-module DAVAZ
+module DaVaz
 	module View
 		module Admin
 class LiveEditWidget < HtmlGrid::Div

@@ -1,9 +1,9 @@
-require 'view/form'
-require 'view/publictemplate'
+require 'view/_partial/form'
+require 'view/template'
 require 'htmlgrid/errormessage'
 require 'htmlgrid/textarea'
 
-module DAVAZ
+module DaVaz
   module View
     module Communication
       class GuestbookEntryTitle < HtmlGrid::Div

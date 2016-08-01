@@ -1,17 +1,13 @@
-#!/usr/bin/env ruby
-# index.rbx -- oddb -- hwyss@ywesee.com
-# index.rbx -- davaz.com -- 18.07.2005 -- mhuggler@ywesee.com
-
 require 'sbsm/request'
-require 'util/davaz'
+require 'davaz'
 require 'util/config'
 
 DRb.start_service('druby://localhost:0')
 
 begin
-	SBSM::Request.new(DAVAZ.config.server_uri).process
+	SBSM::Request.new(DaVaz.config.server_uri).process
 rescue Exception => e
-	$stderr << "DAVAZ-Client-Error: " << e.message << "\n"
+	$stderr << 'DaVaz-Client-Error: ' << e.message << "\n"
 	$stderr << e.class << "\n"
 	$stderr << e.backtrace.join("\n") << "\n"
 end

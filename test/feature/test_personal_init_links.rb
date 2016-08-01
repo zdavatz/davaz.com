@@ -8,7 +8,7 @@ require 'test/unit'
 require 'test/selenium/unit'
 
 class TestPersonalInitLinks < Test::Unit::TestCase
-	include DAVAZ::Selenium::TestCase
+	include DaVaz::Selenium::TestCase
   def test_test_personal_init_links_pic_inspiration
     @selenium.open "/en/personal/home"
     @selenium.click "pic_inspiration"

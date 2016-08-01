@@ -6,7 +6,7 @@ require 'state/public/articles'
 require 'state/public/exhibitions'
 require 'state/public/lectures'
 
-module DAVAZ
+module DaVaz
 	module State
 		module Public 
 class Global < State::Global

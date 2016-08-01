@@ -1,17 +1,15 @@
 require 'state/global'
-require 'state/gallery/result'
-require 'state/gallery/gallery'
+require 'state/predefine'
+require 'state/gallery/init'
 
-module DAVAZ
-  module State
-    module Gallery
-      class Global < State::Global
-        HOME_STATE = State::Gallery::Gallery
-        ZONE       = :gallery
-        EVENT_MAP  = {
-          :gallery => State::Gallery::Gallery
-        }
-      end
+module DaVaz::State
+  module Gallery
+    class Global < DaVaz::State::Global
+      HOME_STATE = Init
+      ZONE       = :gallery
+      EVENT_MAP  = {
+        :gallery => Init
+      }
     end
   end
 end

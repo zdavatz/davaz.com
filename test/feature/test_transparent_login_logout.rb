@@ -8,7 +8,7 @@ require 'test/unit'
 require 'test/selenium/unit'
 
 class TestTransparentLoginLogout < Test::Unit::TestCase
-	include DAVAZ::Selenium::TestCase
+	include DaVaz::Selenium::TestCase
 	def test_transparent_login_logout
     @selenium.open "/en/communication/links/"
     @selenium.wait_for_page_to_load "30000"

@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 # View::Public::Lectures -- davaz.com -- 28.09.2005 -- mhuggler@ywesee.com
 
-require 'view/publictemplate'
-require 'view/textblock'
+require 'view/template'
+require 'view/_partial/textblock'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
 
-module DAVAZ
+module DaVaz
 	module View
 		module Public
 class LecturesList < HtmlGrid::DivList
@@ -32,7 +32,7 @@ class LecturesComposite < HtmlGrid::DivComposite
 		[1,0]	=>	LecturesList,	
 	}
 end
-class Lectures < View::LecturesPublicTemplate
+class Lectures < View::LecturesTemplate
 	CONTENT = View::Public::LecturesComposite 
 end
 		end

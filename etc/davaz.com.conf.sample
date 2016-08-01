@@ -17,7 +17,7 @@
 
   RubyRequire 'util/trans_handler'
   SetHandler ruby-object
-  RubyTransHandler DAVAZ::Util::TransHandler.instance
+  RubyTransHandler DaVaz::Util::TransHandler.instance
 
   ErrorLog  "|/usr/sbin/cronolog -l /var/www/davaz.com/log/error_log  /var/www/davaz.com/log/%Y/%m/%d/error_log"
   CustomLog "|/usr/sbin/cronolog -l /var/www/davaz.com/log/access_log /var/www/davaz.com/log/%Y/%m/%d/access_log" combined

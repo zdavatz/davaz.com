@@ -9,7 +9,7 @@ require 'test/selenium/unit'
 require 'util/image_helper'
 
 class TestGalleryEditing < Test::Unit::TestCase
-	include DAVAZ::Selenium::TestCase
+	include DaVaz::Selenium::TestCase
 	def test_selection_editing
 		#prepare for testing
     @selenium.open "/en/gallery/gallery/"

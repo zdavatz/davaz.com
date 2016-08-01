@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 # State::Public::Articles -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
 
-require 'state/global_predefine'
+require 'state/predefine'
 require 'view/public/articles'
 require 'view/public/article'
 
-module DAVAZ
+module DaVaz
 	module State
 		module Public 
 class AjaxArticle < SBSM::State

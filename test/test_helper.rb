@@ -12,8 +12,8 @@ require 'util/davaz'
 
 Dir[root_dir.join('test/support/**/*.rb')].each { |f| require f }
 
-DAVAZ.config.document_root = root_dir.join('doc')
-DAVAZ.config.autologin = false
+DaVaz.config.document_root = root_dir.join('doc')
+DaVaz.config.autologin = false
 
 DEBUG = (ENV['DEBUG'] == 'true' || false)
 TEST_SRV_URI = URI.parse(ENV['TEST_SRV_HOST'] || 'http://127.0.0.1:10080')

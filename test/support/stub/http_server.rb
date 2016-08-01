@@ -20,7 +20,7 @@ module WEBrick
 
     def initialize(*args)
       __old_initialize__(*args)
-      @notes = DAVAZ::Stub::Notes.new
+      @notes = DaVaz::Stub::Notes.new
     end
 
     def headers_in
@@ -90,7 +90,7 @@ class CGI
   public :env_table
 end
 
-module DAVAZ
+module DaVaz
   module Stub
 
     class Notes < Hash

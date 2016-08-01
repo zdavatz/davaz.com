@@ -1,18 +1,17 @@
-require 'view/publictemplate'
-require 'view/works/works'
+require 'view/template'
+require 'view/works/init'
 
-module DAVAZ
-  module View
-    module Works
-      class DrawingsComposite < View::Works::Works; end
+module DaVaz::View
+  module Works
+    class DrawingsComposite < Init; end
 
-      class Drawings < View::DrawingsPublicTemplate
-        CONTENT = View::Works::DrawingsComposite
-      end
+    class Drawings < DrawingsTemplate
+      CONTENT = DrawingsComposite
+    end
 
-      class AdminDrawings < View::AdminDrawingsPublicTemplate
-        CONTENT = View::Works::DrawingsComposite
-      end
+    # @api admin
+    class AdminDrawings < AdminDrawingsTemplate
+      CONTENT = DrawingsComposite
     end
   end
 end

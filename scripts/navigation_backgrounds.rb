@@ -4,7 +4,7 @@
 require 'RMagick'
 require 'src/util/davazconfig'
 
-module DAVAZ
+module DaVaz
 	class NavigationBackgrounds
 		include Magick
 		def write_pngs
@@ -20,4 +20,4 @@ module DAVAZ
 	end
 end
 
-DAVAZ::NavigationBackgrounds.new.write_pngs
+DaVaz::NavigationBackgrounds.new.write_pngs

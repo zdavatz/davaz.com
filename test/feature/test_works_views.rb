@@ -8,7 +8,7 @@ require 'test/unit'
 require 'test/selenium/unit'
 
 class TestWorksViews < Test::Unit::TestCase
-	include DAVAZ::Selenium::TestCase
+	include DaVaz::Selenium::TestCase
 	def test_stub
     @selenium.open "/en/works/multiples/#112"
     @selenium.wait_for_page_to_load "30000"

@@ -8,7 +8,7 @@ require 'test/unit'
 require 'test/selenium/unit'
 
 class TestAjaxBookmarking < Test::Unit::TestCase
-	include DAVAZ::Selenium::TestCase
+	include DaVaz::Selenium::TestCase
 	def test_test_ajax_bookmarking_export
 		@selenium.open "/en/gallery/gallery/#Desk_ABC"
 		sleep 2

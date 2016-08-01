@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class TestShop < Minitest::Test
-  include DAVAZ::TestCase
+  include DaVaz::TestCase
 
   def test_shopping_publications
     browser.visit('/en/gallery/gallery')

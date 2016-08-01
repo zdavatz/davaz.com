@@ -1,28 +1,25 @@
-#!/usr/bin/env ruby
-# State::Communication::Global -- davaz.com -- 06.09.2005 -- mhuggler@ywesee.com
-
 require 'state/global'
+require 'state/predefine'
+require 'state/personal/init'
 require 'state/communication/guestbook'
 require 'state/communication/links'
 require 'state/communication/news'
 require 'state/communication/shop'
 
-module DAVAZ
-	module State
-		module Communication
-class Global < State::Global
-	HOME_STATE = State::Personal::Init
-	ZONE = :communication
-	EVENT_MAP = {
-		:guestbook						=>	State::Communication::Guestbook,
-		:links								=>	State::Communication::Links,
-		:news									=>	State::Communication::News,
-		:send_order						=>	State::Communication::Shop,
-		:shop_thanks					=>	State::Communication::ShopThanks,
-		:shop									=>	State::Communication::Shop,
-		:ajax_shop						=>	State::Communication::AjaxShop,
-	}
-end
-		end
-	end
+module DaVaz::State
+  module Communication
+    class Global < DaVaz::State::Global
+      HOME_STATE = DaVaz::State::Personal::Init
+      ZONE       = :communication
+      EVENT_MAP  = {
+        :guestbook    => Guestbook,
+        :links        => Links,
+        :news         => News,
+        :send_order   => Shop,
+        :shop_thanks  => ShopThanks,
+        :shop         => Shop,
+        :ajax_shop    => AjaxShop
+      }
+    end
+  end
 end

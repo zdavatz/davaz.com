@@ -1,11 +1,11 @@
 require 'htmlgrid/divlist'
 require 'htmlgrid/divform'
-require 'view/publictemplate'
-require 'view/list'
-require 'view/navigation'
-require 'view/gallery/gallery'
+require 'view/template'
+require 'view/_partial/list'
+require 'view/_partial/navigation'
+require 'view/gallery/init'
 
-module DAVAZ
+module DaVaz
   module View
     module Gallery
       class ResultList < View::List
@@ -156,7 +156,7 @@ module DAVAZ
         end
       end
 
-      class Result < View::GalleryPublicTemplate
+      class Result < View::GalleryTemplate
         CONTENT = View::Gallery::ResultComposite
       end
 

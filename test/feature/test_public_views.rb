@@ -8,7 +8,7 @@ require 'test/unit'
 require 'test/selenium/unit'
 
 class TestPublicViews < Test::Unit::TestCase
-	include DAVAZ::Selenium::TestCase
+	include DaVaz::Selenium::TestCase
   def test_test_public_views
     @selenium.open "/en/communication/links/"
     @selenium.click "link=Articles"

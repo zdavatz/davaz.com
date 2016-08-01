@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 # View::Article -- davaz.com -- 27.03.2006 -- mhuggler@ywesee.com
 
-require 'view/publictemplate'
+require 'view/template'
 require 'htmlgrid/divlist'
 
-module DAVAZ
+module DaVaz
 	module View
 		module Public
 class ArticleComposite < HtmlGrid::DivComposite

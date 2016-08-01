@@ -21,6 +21,7 @@ module DAVAZ
         end
       end
 
+      # @return state [SBSM::State]
       def update
         artobject_id = @session.user_input(:artobject_id) ||
           @model.artobject.artobject_id
@@ -30,28 +31,12 @@ module DAVAZ
         keys = %i{
           tags_to_s location form_language price serie_position size text url
         }.concat(mandatory)
-        update_hash = {}
-        user_input(keys, mandatory).each { |key, value|
-          if match = key.to_s.match(/(form_)(.*)/)
-            update_hash.store(match[2].intern, value)
-          elsif key == :tags_to_s
-            unless value
-              update_hash.store(:tags, [])
-            else
-              update_hash.store(:tags, value.split(','))
-            end
-          elsif key == :date
-            update_hash.store(
-              :date, "#{value.year}-#{value.month}-#{value.day}")
-          else
-            update_hash.store(key, value)
-          end
-        }
+        data = update_hash(keys, mandatory)
         unless error?
           if artobject_id
-            @session.app.update_artobject(artobject_id, update_hash)
+            @session.app.update_artobject(artobject_id, data)
           else
-            insert_id = @session.app.insert_artobject(update_hash)
+            insert_id = @session.app.insert_artobject(data)
             if tmp_image_path = @model.artobject.tmp_image_path
               image_path = @model.artobject.tmp_image_path
               Util::ImageHelper.store_tmp_image(image_path, insert_id)
@@ -70,17 +55,7 @@ module DAVAZ
           model = @session.lookandfeel.event_url(:gallery, :art_object, args)
           State::Redirect.new(@session, model)
         else
-          tags = []
-          update_hash.each { |key, value|
-            if key == :tags
-              tag = Model::Tag.new
-              tag.name = value
-              tags.push(tag)
-            end
-            method = (key.to_s + '=').intern
-            @model.artobject.send(method, value)
-          }
-          @model.artobject.send('tags=', tags)
+          reasign_attributes(data)
           build_selections
           self
         end
@@ -104,6 +79,45 @@ module DAVAZ
           sel.send("#{object}_id") == args[:sid]
         }
         select.dup
+      end
+
+      def update_hash(keys, mandatory)
+        hash = {}
+        user_input(keys, mandatory).map { |key, value|
+          if match = key.to_s.match(/(form_)(.*)/)
+            hash.store(match[2].intern, value)
+          elsif key == :tags_to_s
+            unless value
+              hash.store(:tags, [])
+            else
+              hash.store(:tags, value.split(','))
+            end
+          elsif key == :date
+            hash.store(
+              :date, "#{value.year}-#{value.month}-#{value.day}")
+          else
+            hash.store(key, value)
+          end
+        }
+        hash
+      end
+
+      # Re:assigns attributes from artobject data
+      #
+      # @param data [Hash] updated attributes hash
+      # @return void
+      def reasign_attributes(data)
+        tags = []
+        data.map { |key, value|
+          if key == :tags
+            tag = Model::Tag.new
+            tag.name = value
+            tags.push(tag)
+            next
+          end
+          @model.artobject.send((key.to_s + '=').intern, value)
+        }
+        @model.artobject.send('tags=', tags)
       end
     end
 

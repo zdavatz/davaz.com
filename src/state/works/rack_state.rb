@@ -68,6 +68,7 @@ module DAVAZ
         end
       end
 
+      # @api admin
       class AdminRackState < State::Works::RackState
         include AdminArtObjectMethods
 
@@ -76,94 +77,61 @@ module DAVAZ
         end
 
         def delete
-          artobject_id = @session.user_input(:artobject_id)
-          @session.app.delete_artobject(artobject_id)
+          @session.app.delete_artobject(@session.user_input(:artgroup_id))
           model = self.request_path
-          if(fragment = @session.user_input(:fragment))
+          fragment = @session.user_input(:fragment)
+          if fragment
             frag_arr = fragment.split("_")
             model << "##{frag_arr[0]}_#{frag_arr[1]}"
           end
           newstate = State::Redirect.new(@session, model)
         end
 
+        # @return state [SBSM::State]
         def update
           artobject_id = @session.user_input(:artobject_id)
           @model.artobject = @session.app.load_artobject(artobject_id)
-          mandatory = []
-          keys = [
-            :title,
-            :artgroup_id,
-            :serie_id,
-            :serie_position,
-            :tool_id,
-            :material_id,
-            :date,
-            :country_id,
-            :tags_to_s,
-            :location,
-            :form_language,
-            :price,
-            :size,
-            :text,
-            :url,
-          ].concat(mandatory)
-          update_hash = {}
-          user_input(keys, mandatory).each { |key, value|
-            if match = key.to_s.match(/(form_)(.*)/)
-              update_hash.store(match[2].intern, value)
-            elsif key == :tags_to_s
-              if(value.nil?)
-                update_hash.store(:tags, [])
-              else
-                update_hash.store(:tags, value.split(','))
-              end
-            elsif key == :date
-              update_hash.store(
-                :date, "#{value.year}-#{value.month}-#{value.day}")
-            else
-              update_hash.store(key, value)
-            end
+          keys = %i{
+            title artgroup_id serie_id serie_position tool_id material_id date
+            country_id tags_to_s location form_language price size text url
           }
+          data = update_hash(keys, [])
           unless error?
             if artobject_id
-              @session.app.update_artobject(artobject_id, update_hash)
-              model = self.request_path
-              if fragment = @session.user_input(:fragment)
-                fragment_arr = fragment.split('_')
-                if(update_hash[:serie_id] == fragment_arr[1])
-                  model << "##{fragment}" unless fragment.empty?
-                else
-                  fragment_arr[1] = update_hash[:serie_id]
-                  model << "#" + fragment_arr.join("_")
-                end
-              end
+              res = @session.app.update_artobject(artobject_id, data)
+              model = rebuild_model(data[:serie_id])
               newstate = State::Redirect.new(@session, model)
             else
-              insert_id = @session.app.insert_artobject(update_hash)
+              # assumes as new
+              insert_id = @session.app.insert_artobject(data)
               image_path = @model.artobject.tmp_image_path
               Util::ImageHelper.store_tmp_image(image_path, insert_id)
               self
             end
           else
-            update_hash.each { |key, value|
-              method = (key.to_s + '=').intern
-              @model.artobject.send(method, value)
-            }
-            @session.app.update_artobject(artobject_id, update_hash)
-            @model.artobject = @session.app.load_artobject(artobject_id)
+            reasign_attributes(data)
+            @session.app.update_artobject(artobject_id, data)
             build_selections
-            model = self.request_path
-            if fragment = @session.user_input(:fragment)
-              fragment_arr = fragment.split("_")
-              if update_hash[:serie_id] == fragment_arr[1]
-                model << "##{fragment}" unless fragment.empty?
-              else
-                fragment_arr[1] = update_hash[:serie_id]
-                model << "#" + fragment_arr.join("_")
-              end
-            end
-            newstate = State::Redirect.new(@session, model)
+            # new state
+            State::Redirect.new(@session, rebuild_model(data[:serie_id]))
           end
+        end
+
+        private
+
+        def rebuild_model(serie_id)
+          model = self.request_path
+          fragment = @session.user_input(:fragment)
+          if fragment
+            fragment_arr = fragment.split('_')
+            if serie_id && !fragment.empty? && serie_id == fragment_arr[1]
+              model << "##{fragment}"
+            else
+              fragment_arr[1] = serie_id
+              model << "##{fragment_arr.join('_')}"
+            end
+          end
+          model
         end
       end
     end

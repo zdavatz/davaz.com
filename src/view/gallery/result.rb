@@ -112,7 +112,7 @@ module DAVAZ
           args.unshift([ :artgroup_id, artgroup_id]) if artgroup_id
 
           button = HtmlGrid::Button.new(:all_entries, @model, @session, self)
-          button.set_attribute("onclick", <<~EOS)
+          button.set_attribute('onclick', <<~EOS)
             document.location.href='#{ \
               @lookandfeel.event_url(:gallery, :search, args)}';
           EOS
@@ -206,7 +206,8 @@ module DAVAZ
           0 => 'rack_result_list_composite'
         }
         HTTP_HEADERS = {
-          'Content-Type' => 'text/html; charset=UTF-8'
+          'type'    => 'text/html',
+          'charset' => 'UTF-8'
         }
       end
     end

@@ -897,51 +897,50 @@ module DAVAZ
 				EOS
 				load_series(where)
 			end
+
       def update_artobject(artobject_id, update_hash)
-        update_array = []
-        tags = update_hash[:tags]
-        query = <<-EOS
-          DELETE FROM tags_artobjects
-          WHERE artobject_id = '#{artobject_id}'
-        EOS
         connection { |conn|
-          conn.query(query)
-          unless tags.nil? || tags.empty?
+          delete_artobject_statement = conn.prepare(<<~EOS.gsub(/\n/, ''))
+            DELETE FROM tags_artobjects WHERE artobject_id = ?
+          EOS
+          delete_artobject_statement.execute(artobject_id)
+          tags = update_hash[:tags]
+          if tags && !tags.empty?
+            add_tag_statement = conn.prepare(<<~EOS.gsub(/\n/, ''))
+              INSERT INTO tags (name) VALUES(?) ON DUPLICATE KEY UPDATE
+               tag_id = LAST_INSERT_ID(tag_id), name = name
+            EOS
             tags.each { |tag|
-              unless tag.empty?
-                query = <<-EOS
-                  INSERT INTO tags (name) VALUES('#{tag}')
-                  ON DUPLICATE KEY UPDATE tag_id=LAST_INSERT_ID(tag_id), name=name
-                EOS
-                conn.query(query)
-                tag_id = conn.insert_id
-                query = <<-EOS
-                  INSERT INTO tags_artobjects
-                  SET tag_id = '#{tag_id}', artobject_id='#{artobject_id}'
-                EOS
-                conn.query(query)
-              end
+              next if tag.empty?
+              add_tag_statement.execute(tag)
+              tag_id = conn.last_id
+              add_tag_relation_statement = conn.prepare(<<~EOS.gsub(/\n/, ''))
+                INSERT INTO tags_artobjects (tag_id, artobject_id)
+                 VALUES (?, ?)
+              EOS
+              add_tag_relation_statement.execute(tag_id, artobject_id)
             }
           end
-          update_hash.each { |key, value|
-            unless(value.nil? || key == :tags)
-              if(key == :date_ch)
-                date = value.split(".")
-                update_array.push("date='#{date[2]}-#{date[1]}-#{date[0]}'")
-              else
-                update_array.push("#{key}='#{Mysql.quote(value)}'")
-              end
+          update_array = []
+          update_hash.map { |key, val|
+            next if key == :tags
+            if key == :date_ch
+              date = val.split('.')
+              val = "#{date[2]}-#{date[1]}-#{date[0]}"
+            elsif !val
+              val = ''
             end
+            update_array << "#{conn.escape(key.to_s)} = '#{conn.escape(val)}'"
           }
-          query = <<-EOS
+          update_artobject_statement = conn.prepare(<<~EOS.gsub(/\n/, ''))
             UPDATE artobjects
-            SET #{update_array.join(', ')}
-            WHERE artobject_id='#{artobject_id}'
+             SET #{update_array.join(', ')} WHERE artobject_id = ?
           EOS
-          result = conn.query(query)
+          update_artobject_statement.execute(artobject_id)
           conn.affected_rows
         }
       end
+
 			def update_currency(origin, target, rate)
 				query = <<-EOS
 					UPDATE currencies

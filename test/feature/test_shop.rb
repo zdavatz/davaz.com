@@ -13,6 +13,7 @@ class TestShop < Minitest::Test
     item = browser.text_field(:id, 'article[111]')
     item.set('2')
     item.send_keys(:tab)
+    browser.wait(1)
     list = cart.table(:class, 'shopping-cart-list')[1][2]
     assert_equal('Title of ArtObject 111', list.text)
 

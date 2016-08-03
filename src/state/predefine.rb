@@ -1,12 +1,17 @@
 require 'sbsm/state'
+require 'sbsm/viralstate'
 require 'htmlgrid/component'
 
 module DaVaz::State
   class Global < SBSM::State; end
 
   # partials
-  module AdminMethods; end
+  module AdminMethods
+    include SBSM::ViralState
+  end
+
   module LoginMethods; end
+
   class Redirect < SBSM::State; end
 
   module Admin

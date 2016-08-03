@@ -1,9 +1,7 @@
 require 'date'
+require 'state/_partial/element'
 require 'state/communication/global'
-require 'state/admin/ajax'
 require 'view/communication/links'
-require 'view/admin/live_edit'
-require 'view/_partial/ajax'
 
 module DaVaz::State
   module Communication
@@ -16,7 +14,7 @@ module DaVaz::State
     end
 
     # @api admin
-    class AdminAjaxAddNewLinkElement < Admin::AjaxAddNewElement
+    class AdminAjaxAddNewLinkElement < AdminAjaxAddNewElement
       def init
         values = {
           :serie_id => @model.serie_id,
@@ -40,7 +38,7 @@ module DaVaz::State
       end
 
       def ajax_add_new_element
-        AjaxAddNewLinkElement.new(@session, @model)
+        AdminAjaxAddNewLinkElement.new(@session, @model)
       end
     end
   end

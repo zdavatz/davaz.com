@@ -1,9 +1,8 @@
 require 'sbsm/state'
 require 'state/gallery/global'
 require 'state/_partial/art_object'
-require 'state/_partial/admin_methods'
 require 'view/_partial/art_object'
-require 'view/_partial/rack_art_object'
+require 'view/_partial/rack'
 require 'view/_partial/ajax'
 require 'view/gallery/init'
 require 'view/gallery/result'
@@ -28,7 +27,7 @@ module DaVaz::State
     # @note responds to:
     #   /de/gallery/ajax_desk/artgroup_id/XXX/serie_id/XXX/artobject_id/XXX
     class AjaxAdminDeskArtobject < SBSM::State
-      include AdminMethods
+      include AdminArtObjectMethods
       include AjaxDeskArtobjectLoadable
 
       VIEW     = DaVaz::View::AdminRackArtObjectComposite
@@ -115,7 +114,7 @@ module DaVaz::State
 
     # @api admin
     class AdminGallery < Init
-      include AdminMethods
+      include AdminArtObjectMethods
 
       VIEW = DaVaz::View::Gallery::AdminGallery
     end

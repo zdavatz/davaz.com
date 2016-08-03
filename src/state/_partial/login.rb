@@ -1,6 +1,6 @@
-require 'state/_partial/redirect'
-require 'state/_partial/admin_methods'
-require 'state/_partial/login_form'
+require 'state/predefine'
+require 'view/_partial/ajax'
+require 'view/_partial/login'
 
 module DaVaz::State
   module LoginMethods
@@ -18,9 +18,24 @@ module DaVaz::State
 
     def autologin(user)
       if user.valid? && user.allowed?('edit', 'com.davaz')
-        @session.active_state.extend(AdminMethods)
+        @session.active_state.extend(Admin)
       end
       LoginStatus.new(@session, 'success' => true)
+    end
+  end
+
+  class LoginStatus < SBSM::State
+    VIEW     = DaVaz::View::Ajax
+    VOLATILE = true
+  end
+
+  class LoginForm < SBSM::State
+    VIEW     = DaVaz::View::LoginForm
+    VOLATILE = true
+
+    def init
+      @model = OpenStruct.new
+      @model.fragment = @session.user_input(:fragment)
     end
   end
 end

@@ -1,14 +1,15 @@
 require 'rmagick'
 require 'sbsm/state'
 require 'state/predefine'
-require 'state/_partial/admin_methods'
+require 'state/_partial/art_object'
 require 'view/works/movies'
-require 'view/_partial/admin_parts'
+require 'view/_partial/art_object'
+require 'view/_partial/image'
 
 module DaVaz::State
   module Works
     class AjaxAdminMovieGallery < SBSM::State
-      include AdminMethods
+      include AdminArtObjectMethods
 
       VIEW     = DaVaz::View::AdminMoviesArtObjectComposite
       VOLATILE = true
@@ -44,7 +45,7 @@ module DaVaz::State
     class AdminAjaxUploadImage < SBSM::State
       include Magick
 
-      VIEW     = DaVaz::View::Admin::ImageDiv
+      VIEW     = DaVaz::View::AdminImageDiv
       VOLATILE = true
 
       def init

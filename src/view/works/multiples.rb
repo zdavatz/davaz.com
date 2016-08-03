@@ -1,7 +1,8 @@
 require 'htmlgrid/divcomposite'
+require 'htmlgrid/component'
+require 'htmlgrid/div'
 require 'htmlgrid/spanlist'
 require 'util/image_helper'
-require 'view/_partial/add_onload'
 require 'view/template'
 
 module DaVaz::View
@@ -76,12 +77,12 @@ module DaVaz::View
           [:artobject_id, artobject_id]
         ])
         link = HtmlGrid::Link.new(:serie_link, model, @session, self)
-        link.href = 'javascript:void(0);' 
+        link.href = 'javascript:void(0);'
         link.set_attribute('onclick', <<~EOS)
           toggleJavaApplet('#{url}','#{artobject_id}');
         EOS
         img = HtmlGrid::Image.new(artobject_id, model, @session, self)
-        img.attributes['width'] = DaVaz.config.small_image_width 
+        img.attributes['width'] = DaVaz.config.small_image_width
         img.attributes['src']   = DaVaz::Util::ImageHelper.image_url(
           artobject_id, 'medium')
         img.css_class = 'thumb-image'

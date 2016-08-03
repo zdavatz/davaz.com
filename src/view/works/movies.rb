@@ -2,7 +2,7 @@ require 'date'
 require 'htmlgrid/spancomposite'
 require 'htmlgrid/value'
 require 'htmlgrid/link'
-require 'view/_partial/add_onload'
+require 'view/_partial/onload'
 require 'view/template'
 require 'view/_partial/composite'
 require 'view/_partial/list'
@@ -180,7 +180,7 @@ module DaVaz::View
         [0, 1] => :movie_top_link,
         [0, 2] => MoviesList,
         [0, 3] => :movies_gallery_view,
-        [0, 4] => AddOnloadMovies,
+        [0, 4] => OnloadMovies,
       }
       CSS_ID_MAP = {
         2 => 'movies_list',

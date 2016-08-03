@@ -1,12 +1,10 @@
 require 'date'
+require 'state/_partial/element'
 require 'state/communication/global'
-require 'state/admin/ajax'
-require 'state/_partial/admin_parts'
 require 'view/communication/news'
-require 'view/admin/live_edit'
 
 module DaVaz::State
-  module Communication 
+  module Communication
     class News < Global
       VIEW = DaVaz::View::Communication::News
 
@@ -17,7 +15,7 @@ module DaVaz::State
 
     # @api admin
     # @api ajax
-    class AdminAjaxAddNewNewsElement < Admin::AjaxAddNewElement
+    class AdminAjaxAddNewNewsElement < AdminAjaxAddNewElement
       def init
         values = {
           :serie_id => @model.serie_id,

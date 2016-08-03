@@ -1,9 +1,10 @@
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
 require 'htmlgrid/link'
-require 'view/template'
+require 'htmlgrid/div'
 require 'view/_partial/textblock'
-require 'view/admin/ajax'
+require 'view/_partial/element'
+require 'view/template'
 
 module DaVaz::View
   module Communication
@@ -50,7 +51,7 @@ module DaVaz::View
     class AdminLinksComposite < LinksComposite
       COMPONENTS = {
         [0, 0] => LinkTitle,
-        [1, 0] => Admin::AjaxAddNewElementComposite,
+        [1, 0] => AdminAjaxAddNewElementComposite,
         [2, 0] => AdminLinksInnerComposite,
       }
     end

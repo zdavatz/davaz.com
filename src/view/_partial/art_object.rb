@@ -1,12 +1,12 @@
-require 'htmlgrid/divform'
+require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
 require 'htmlgrid/errormessage'
 require 'htmlgrid/inputfile'
 require 'view/template'
 require 'view/_partial/form'
 require 'view/_partial/select'
-require 'view/_partial/admin_parts'
-require 'view/admin/ajax'
+require 'view/_partial/image'
+require 'view/_partial/tag'
 
 module DaVaz
   module View
@@ -294,8 +294,8 @@ module DaVaz
       }
     end
 
-    class ArtObject < View::GalleryTemplate
-      CONTENT = View::ArtObjectComposite
+    class ArtObject < GalleryTemplate
+      CONTENT = ArtObjectComposite
     end
 
     class ShopArtObjectOuterComposite < HtmlGrid::DivComposite
@@ -332,76 +332,8 @@ module DaVaz
       }
     end
 
-    class ShopArtObject < View::GalleryTemplate
-      CONTENT = View::ShopArtObjectComposite
-    end
-
-    class ShowAllTagsLink < HtmlGrid::Div
-      CSS_ID = 'all_tags_link'
-
-      def init
-        super
-        link = HtmlGrid::Link.new(:show_tags, @model, @session, self)
-        link.href = 'javascript:void(0);'
-        link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
-          return toggleInnerHTML(
-            'all_tags_link'
-          , '#{@lookandfeel.event_url(:gallery, :ajax_all_tags)}'
-          );
-        EOS
-        @value = link
-      end
-    end
-
-    class ShowAllTagsList < HtmlGrid::DivList
-      COMPONENTS = {
-        [0, 0] => :tag,
-        [1, 0] => 'pipe_divider'
-      }
-
-      def tag(model)
-        link = HtmlGrid::Link.new(model.name, model, @session, self)
-        link.value = model.name
-        link.href  = 'javascript:void(0);'
-        link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
-          var values    = document.artobjectform.tags_to_s.value.split(',')
-            , has_value = false
-            ;
-          for (idx = 0; idx < values.length; idx++) {
-            if (values[idx] == '#{model.name}') {
-              has_value = true;
-            }
-          }
-          if (!has_value) {
-            values[values.length] = '#{model.name}';
-          }
-          document.artobjectform.tags_to_s.value = values.join(',');
-        EOS
-        link
-      end
-    end
-
-    class ShowAllTags < HtmlGrid::DivComposite
-      COMPONENTS = {
-        [0, 0] => ShowAllTagsList,
-        [0, 1] => :close,
-      }
-      CSS_ID_MAP = {
-        0 => 'all_tags',
-        1 => 'close_all_tags',
-      }
-
-      def close(model)
-        link = HtmlGrid::Link.new(:close, model, @session, self)
-        link.href = 'javascript:void(0);'
-        link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
-          toggleInnerHTML(
-            'all_tags_link',
-            '#{@lookandfeel.event_url(:gallery, :ajax_all_tags_link)}'
-          );
-        EOS
-        link
-      end
+    class ShopArtObject < GalleryTemplate
+      CONTENT = ShopArtObjectComposite
     end
 
     class AddFormComposite < HtmlGrid::DivComposite
@@ -509,7 +441,7 @@ module DaVaz
       end
     end
 
-    class AdminArtobjectDetails < View::Form
+    class AdminArtobjectDetails < Form
       include HtmlGrid::ErrorMessage
 
       DEFAULT_CLASS = HtmlGrid::InputText
@@ -520,24 +452,20 @@ module DaVaz
       FORM_NAME   = 'artobjectform'
       COMPONENTS = {
         [0,  0]    => :title,
-        [0,  1]    => component(
-          View::DynSelect, :select_artgroup, 'artgroup_id'),
-        [0,  2]    => component(
-          View::DynSelect, :select_serie, 'serie_id'),
+        [0,  1]    => component(DynSelect, :select_artgroup, 'artgroup_id'),
+        [0,  2]    => component(DynSelect, :select_serie, 'serie_id'),
         [1,  3]    => :serie,
         [0,  4]    => :serie_position,
         [0,  5]    => :tags,
         [1,  6]    => ShowAllTagsLink,
-        [0,  7]    => component(View::DynSelect, :select_tool, 'tool_id'),
+        [0,  7]    => component(DynSelect, :select_tool, 'tool_id'),
         [1,  8]    => :tool,
-        [0,  9]    => component(
-          View::DynSelect, :select_material, 'material_id'),
+        [0,  9]    => component(DynSelect, :select_material, 'material_id'),
         [1, 10]    => :material,
         [0, 11]    => :size,
         [0, 12]    => :date,
         [0, 13]    => :location,
-        [0, 14]    => component(
-          View::DynSelect, :select_country, 'country_id'),
+        [0, 14]    => component(DynSelect, :select_country, 'country_id'),
         [0, 15]    => :form_language,
         [0, 16]    => :url,
         [0, 17]    => :price,
@@ -729,8 +657,8 @@ module DaVaz
     class AdminArtObjectInnerComposite < HtmlGrid::DivComposite
       COMPONENTS = {
         [0, 0] => :artcode,
-        [0, 1] => View::Admin::ImageDiv,
-        [0, 2] => View::Admin::AjaxUploadImageForm,
+        [0, 1] => AdminImageDiv,
+        [0, 2] => AdminAjaxUploadImageForm,
         [0, 3] => :error_message_container,
         [0, 4] => AdminArtobjectDetails,
       }
@@ -776,8 +704,8 @@ module DaVaz
       }
     end
 
-    class AdminArtObject < View::AdminGalleryTemplate
-      CONTENT = View::AdminArtObjectComposite
+    class AdminArtObject < AdminGalleryTemplate
+      CONTENT = AdminArtObjectComposite
     end
 
     class AdminMoviesArtObjectComposite < HtmlGrid::DivComposite

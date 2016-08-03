@@ -6,30 +6,32 @@ require 'state/gallery/init'
 require 'state/gallery/result'
 require 'state/personal/life'
 require 'state/personal/work'
-require 'state/admin/init'
-require 'state/admin/art_object'
-require 'state/admin/ajax'
 require 'state/_partial/art_object'
-require 'state/_partial/admin_parts'
+require 'state/_partial/element'
+require 'state/_partial/tag'
+require 'state/_partial/form'
+require 'state/_partial/status'
+require 'state/_partial/image'
+require 'state/_partial/guest'
 
 module DaVaz::State
-  module AdminMethods
+  module Admin
 
     EVENT_MAP = {
-      :art_object             => Admin::ArtObject,
-      :new_art_object         => Admin::ArtObject,
-      :ajax_add_element       => Admin::AjaxAddElement,
-      :ajax_add_form          => Admin::AjaxAddForm,
-      :ajax_all_tags          => Admin::AjaxAllTags,
-      :ajax_all_tags_link     => Admin::AjaxAllTagsLink,
-      :ajax_remove_element    => Admin::AjaxRemoveElement,
-      :ajax_delete_element    => Admin::AjaxDeleteElement,
-      :ajax_delete_guest      => Admin::AjaxDeleteGuest,
-      :ajax_delete_image      => Admin::AjaxDeleteImage,
-      :ajax_save_live_edit    => Admin::AjaxSaveLiveEdit,
-      :ajax_save_gb_live_edit => Admin::AjaxSaveGbLiveEdit,
-      :ajax_upload_image      => Admin::AjaxUploadImage,
-      :ajax_upload_image_form => Admin::AjaxUploadImageForm,
+      :art_object             => AdminArtObject,
+      :new_art_object         => AdminArtObject,
+      :ajax_add_element       => AdminAjaxAddNewElement,
+      :ajax_add_form          => AdminAjaxAddForm,
+      :ajax_all_tags          => AdminAjaxAllTags,
+      :ajax_all_tags_link     => AdminAjaxAllTagsLink,
+      :ajax_remove_element    => AdminAjaxRemoveElement,
+      :ajax_delete_element    => AdminAjaxDeleteElement,
+      :ajax_delete_guest      => AdminAjaxDeleteGuest,
+      :ajax_delete_image      => AdminAjaxDeleteImage,
+      :ajax_save_live_edit    => AdminAjaxSaveLiveEdit,
+      :ajax_save_gb_live_edit => AdminAjaxSaveGbLiveEdit,
+      :ajax_upload_image      => AdminAjaxUploadImage,
+      :ajax_upload_image_form => AdminAjaxUploadImageForm,
       :ajax_movie_gallery     => Works::AjaxAdminMovieGallery,
       :design                 => Works::AdminDesign,
       :drawings               => Works::AdminDrawings,
@@ -54,7 +56,7 @@ module DaVaz::State
     end
 
     def ajax_check_removal_status
-      Admin::AjaxCheckRemovalStatus.new(@session, [])
+      AdminAjaxCheckRemovalStatus.new(@session, [])
     end
 
     def foot_navigation

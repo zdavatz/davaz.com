@@ -1,4 +1,5 @@
 require 'rclconf'
+require 'davaz'
 require 'drb/drb'
 
 module DaVaz

@@ -7,10 +7,14 @@ require 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'rclconf'
+require 'davaz'
 require 'util/config'
-require 'util/davaz'
 
 Dir[root_dir.join('test/support/**/*.rb')].each { |f| require f }
+
+module DaVaz
+  module Stub; end
+end
 
 DaVaz.config.document_root = root_dir.join('doc')
 DaVaz.config.autologin = false

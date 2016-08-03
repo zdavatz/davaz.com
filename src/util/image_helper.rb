@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'rmagick'
-require "util/config"
+require 'davaz'
+require 'util/config'
 
 module DaVaz::Util
   class ImageHelper

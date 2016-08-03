@@ -1,5 +1,5 @@
 require 'headless'
-require 'util/davazapp'
+require 'util/app'
 require 'util/drbserver'
 
 module DaVaz
@@ -17,7 +17,7 @@ module DaVaz
 
       unless @browser
         drb_url = TEST_APP_URI.to_s
-        app = DaVaz::Util::DaVazApp.new
+        app = DaVaz::Util::App.new
         app.db_manager = DaVaz::Stub::DbManager.new
         app.yus_server = DaVaz::Stub::YusServer.new
 

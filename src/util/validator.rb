@@ -70,7 +70,6 @@ module DaVaz::Util
       paintings
       personal_life
       photos
-      poems 
       remove_all_items
       schnitzenthesen
       search
@@ -95,7 +94,6 @@ module DaVaz::Util
       gallery
       personal
       public
-      poems
       stream
       tooltip
       works

@@ -2,8 +2,8 @@ require 'rmagick'
 require 'state/works/global'
 require 'state/_partial/art_object'
 require 'state/_partial/redirect'
-require 'state/_partial/admin_methods'
-require 'view/_partial/admin_parts'
+require 'view/_partial/image'
+require 'util/image_helper'
 
 module DaVaz::State
   module Works
@@ -53,7 +53,7 @@ module DaVaz::State
     class AdminAjaxRackUploadImage < SBSM::State
       include Magick
 
-      VIEW     = DaVaz::View::Admin::ImageDiv
+      VIEW     = DaVaz::View::AdminImageDiv
       VOLATILE = true
 
       def init
@@ -74,7 +74,7 @@ module DaVaz::State
     # @note responds to:
     #   /de/works/drawings/#Desk_XXX_XXX
     class AdminRack < Rack
-      include AdminMethods
+      include AdminArtObjectMethods
 
       def ajax_upload_image
         AdminAjaxRackUploadImage.new(@session, @model)

@@ -2,28 +2,14 @@ require 'sbsm/state'
 require 'sbsm/viralstate'
 require 'htmlgrid/component'
 
+# This file exists to avoid cycle dependencies.
+# Note load timing and make sure the includeness of modules.
 module DaVaz::State
   class Global < SBSM::State; end
 
-  # partials
-  module AdminMethods
-    include SBSM::ViralState
-  end
-
-  module LoginMethods; end
-
-  class Redirect < SBSM::State; end
-
+  # partial
   module Admin
-    # partial
-    class AddNewElement     < SBSM::State; end
-    class UploadImageForm   < SBSM::State; end
-    # ajax
-    class AjaxAddNewElement < SBSM::State; end
-
-    class Global       < DaVaz::State::Global; end
-    class Init         < DaVaz::State::Admin::Global; end
-    class ImageChooser < DaVaz::State::Admin::Global; end
+    include SBSM::ViralState
   end
 
   module Gallery

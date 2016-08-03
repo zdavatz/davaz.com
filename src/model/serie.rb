@@ -1,4 +1,4 @@
-require 'model/artobject'
+require 'model/art_object'
 
 module DaVaz::Model
   class Serie

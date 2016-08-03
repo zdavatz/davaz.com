@@ -1,7 +1,7 @@
 require 'htmlgrid/divcomposite'
 require 'view/_partial/serie_links'
 require 'view/_partial/show'
-require 'view/_partial/add_onload'
+require 'view/_partial/onload'
 
 module DaVaz::View
   module Works
@@ -25,7 +25,7 @@ module DaVaz::View
         [0, 0] => WorksTitle,
         [0, 1] => ShowComposite,
         [0, 2] => :series,
-        [0, 3] => AddOnloadShow,
+        [0, 3] => OnloadShow,
       }
       CSS_ID_MAP = {
         1 => 'show_wipearea',

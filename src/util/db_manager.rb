@@ -2,7 +2,8 @@ require 'ftools'
 require 'date'
 require 'mysql2'
 require 'yaml'
-require 'model/artgroup'
+require 'model/art_group'
+require 'model/art_object'
 require 'model/country'
 require 'model/guest'
 require 'model/link'
@@ -124,7 +125,7 @@ module DaVaz
         SQL
         artgroups = []
         result.each { |key, value|
-          model = DaVaz::Model::Artgroup.new
+          model = DaVaz::Model::ArtGroup.new
           key.each { |col_name, col_value|
             model.send(col_name.to_s + '=', col_value)
           }
@@ -149,10 +150,10 @@ module DaVaz
           if links.has_key?(link_id)
             link = links[link_id]
           else
-            link = Model::Link.new
+            link = DaVaz::Model::Link.new
             links.store(link_id, link)
           end
-          artobject = Model::ArtObject.new
+          artobject = DaVaz::Model::ArtObject.new
           set_attributes(link, row)
           set_attributes(artobject, row)
           link.artobjects.push(artobject)
@@ -169,7 +170,7 @@ module DaVaz
            WHERE series_artobjects.artobject_id = '#{artobject_id}'
         SQL
         result.map { |row|
-          serie = Model::Serie.new
+          serie = DaVaz::Model::Serie.new
           serie.serie_id = row['serie_id']
           serie.name     = row['name']
           serie
@@ -187,7 +188,7 @@ module DaVaz
            ORDER BY tags.name
         SQL
         result.map { |row|
-          tag = Model::Tag.new
+          tag = DaVaz::Model::Tag.new
           tag.tag_id = row['tag_id']
           tag.name   = row['name']
           tag
@@ -245,7 +246,7 @@ module DaVaz
            ORDER BY title DESC
         SQL
         result.map { |row|
-          model = Model::ArtObject.new
+          model = DaVaz::Model::ArtObject.new
           model.artobject_id = row['artobject_id']
           model.artgroup_id  = row['artgroup_id']
           model.url          = row['url']
@@ -340,10 +341,10 @@ module DaVaz
           if links.has_key?(link_id)
             link = links[link_id]
           else
-            link = Model::Link.new
+            link = DaVaz::Model::Link.new
             links.store(link_id, link)
           end
-          artobject = Model::ArtObject.new
+          artobject = DaVaz::Model::ArtObject.new
           set_attributes(link, row)
           set_attributes(artobject, row)
           link.artobjects.push(artobject)
@@ -369,7 +370,7 @@ module DaVaz
           if id = row['tag_id']
             artobject_id = row['reference']
             tags = (table[artobject_id] ||= [])
-            tag = Model::Tag.new
+            tag = DaVaz::Model::Tag.new
             tag.tag_id = id
             tag.name = row['name']
             tags.push(tag)
@@ -387,7 +388,7 @@ module DaVaz
         SQL
         countries = []
         result.each { |row|
-          model = Model::Country.new
+          model = DaVaz::Model::Country.new
           model.country_id = row['country_id']
           model.name = row['name']
           countries.push(model)
@@ -450,16 +451,16 @@ module DaVaz
       def load_images_by_tag(tag_name)
         result = connection.query(<<~SQL.gsub(/\n/, ''))
           SELECT artobjects.artobject_id
-          FROM tags
-          LEFT OUTER JOIN tags_artobjects
-            ON tags.tag_id = tags_artobjects.tag_id
-          LEFT OUTER JOIN artobjects
-            ON tags_artobjects.artobject_id = artobjects.artobject_id
-          WHERE tags.name = '#{tag_name}'
+           FROM tags
+           LEFT OUTER JOIN tags_artobjects
+           ON tags.tag_id = tags_artobjects.tag_id
+           LEFT OUTER JOIN artobjects
+           ON tags_artobjects.artobject_id = artobjects.artobject_id
+           WHERE tags.name = '#{tag_name}'
         SQL
         artobjects = []
         result.each { |row|
-          artobject = Model::ArtObject.new
+          artobject = DaVaz::Model::ArtObject.new
           set_attributes(artobject, row)
           artobjects.push(artobject)
         }
@@ -468,13 +469,11 @@ module DaVaz
 
       def load_materials
         result = connection.query(<<~SQL.gsub(/\n/, ''))
-          SELECT *
-          FROM materials
-          ORDER BY name
+          SELECT * FROM materials ORDER BY name
         SQL
         materials = []
         result.each { |row|
-          model = Model::Material.new
+          model = DaVaz::Model::Material.new
           model.material_id = row['material_id']
           model.name        = row['name']
           materials.push(model)
@@ -536,7 +535,7 @@ module DaVaz
         SQL
         series = []
         result.each { |row|
-          serie = Model::Serie.new
+          serie = DaVaz::Model::Serie.new
           serie.serie_id = row['serie_id']
           serie.name = row['name']
           if(load_artobjects)
@@ -602,7 +601,7 @@ module DaVaz
         SQL
         array = []
         result.each { |key, value|
-          model = Model::Serie.new
+          model = DaVaz::Model::Serie.new
           key.each { |column_name, column_value|
             model.send(column_name.to_s + '=', column_value)
           }
@@ -671,7 +670,7 @@ module DaVaz
           SELECT * FROM tags
         SQL
         result.map { |row|
-          tag = Model::Tag.new
+          tag = DaVaz::Model::Tag.new
           tag.tag_id = row['tag_id']
           tag.name   = row['name']
           tag
@@ -705,7 +704,7 @@ module DaVaz
         SQL
         artobjects = []
         result.each { |row|
-          artobject = Model::ArtObject.new
+          artobject = DaVaz::Model::ArtObject.new
           set_attributes(artobject, row)
           artobjects.push(artobject)
         }
@@ -718,7 +717,7 @@ module DaVaz
           SELECT * FROM tools ORDER BY name
         SQL
         result.map { |row|
-          model = Model::Tool.new
+          model = DaVaz::Model::Tool.new
           model.tool_id = row['tool_id']
           model.name = row['name']
           model

@@ -1,9 +1,9 @@
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/value'
+require 'htmlgrid/divlist'
 require 'view/_partial/list'
-require 'view/template'
 require 'view/_partial/textblock'
-require 'view/admin/ajax'
+require 'view/template'
 require 'util/image_helper'
 
 module DaVaz::View
@@ -52,7 +52,7 @@ module DaVaz::View
     class AdminNewsComposite < NewsComposite
       COMPONENTS = {
         [0, 0] => NewsTitle,
-        [1, 0] => Admin::AjaxAddNewElementComposite,
+        [1, 0] => AdminAjaxAddNewElementComposite,
         [2, 0] => AdminNewsInnerComposite,
       }
     end

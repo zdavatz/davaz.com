@@ -1,11 +1,11 @@
 require 'state/predefine'
 require 'state/global'
-require 'state/admin/init'
+require 'state/personal/init'
 
 module DaVaz::State
 	module Admin
     class Global < DaVaz::State::Global
-      HOME_STATE = Init
+      HOME_STATE = Personal::Init
       ZONE       = :admin
     end
 	end

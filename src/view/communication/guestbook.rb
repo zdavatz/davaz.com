@@ -1,11 +1,13 @@
 require 'date'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
+require 'htmlgrid/div'
 require 'htmlgrid/dojotoolkit'
 require 'htmlgrid/button'
+require 'htmlgrid/span'
 require 'view/_partial/list'
+require 'view/_partial/live_edit'
 require 'view/template'
-require 'view/admin/live_edit'
 
 module DaVaz::View
   module Communication
@@ -98,7 +100,7 @@ module DaVaz::View
 
     class AdminGuestList < HtmlGrid::DivList
       COMPONENTS = {
-        [0, 0] => Admin::GuestbookLiveEditWidget
+        [0, 0] => AdminGuestbookLiveEditWidget
       }
       CSS_MAP = {
         0 => 'guestbook'

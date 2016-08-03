@@ -35,7 +35,7 @@ module DaVaz::Util
       super
       if DaVaz.config.autologin
         # use only for debugging purposes as default
-        @state.extend(DaVaz::State::AdminMethods)
+        @state.extend(DaVaz::State::Admin)
       end
     end
 
@@ -50,7 +50,7 @@ module DaVaz::Util
         @token_login_attempted = true
         if user = login_token
           # allow autologin via token
-          @active_state.extend(DaVaz::State::AdminMethods)
+          @active_state.extend(DaVaz::State::Admin)
           if @active_state.respond_to?(:autologin)
             @active_state = @active_state.autologin(user)
           end

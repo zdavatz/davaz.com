@@ -1,10 +1,11 @@
 require 'htmlgrid/divcomposite'
+require 'htmlgrid/div'
+require 'htmlgrid/divlist'
 require 'htmlgrid/image'
 require 'htmlgrid/link'
 require 'view/template'
 require 'view/_partial/textblock'
 require 'view/_partial/oneliner'
-require 'view/admin/ajax'
 
 module DaVaz::View
   module Personal
@@ -48,7 +49,7 @@ module DaVaz::View
     end
 
     class Work < PersonalTemplate
-      CONTENT = Personal::WorkComposite
+      CONTENT = WorkComposite
       TICKER  = 'morphopolis'
     end
 
@@ -66,7 +67,7 @@ module DaVaz::View
         [0, 0] => WorkTitle,
         [1, 0] => component(OneLiner, :oneliner),
         [2, 0] => :morphopolis_ticker_link,
-        [3, 0] => Admin::AjaxAddNewElementComposite,
+        [3, 0] => AdminAjaxAddNewElementComposite,
         [4, 0] => AdminWorkTextInnerComposite,
       }
     end

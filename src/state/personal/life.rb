@@ -1,5 +1,5 @@
 require 'state/personal/global'
-require 'state/_partial/admin_parts'
+require 'state/_partial/art_object'
 require 'view/personal/life'
 
 module DaVaz::State
@@ -11,7 +11,7 @@ module DaVaz::State
       def init
         @model = OpenStruct.new
         lang = @session.user_input(:lang) || 'English'
-        @model.biography_items = @session.app.load_hislife(lang) 
+        @model.biography_items = @session.app.load_hislife(lang)
         add_show_items(@model, 'hislife_show')
         @model.oneliner = @session.app.load_oneliner('hislife')
         @model.serie_id = @session.app.load_serie_id("Site His Life %s" % lang)
@@ -19,7 +19,7 @@ module DaVaz::State
     end
 
     # @api admin
-    class AdminAddNewBioElement < Admin::AddNewElement
+    class AdminAddNewBioElement < AdminAddNewElement
       def init
         lang = @session.user_input(:lang) || 'English'
         insert_id = @session.app.insert_artobject(

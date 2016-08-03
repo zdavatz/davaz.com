@@ -2,7 +2,9 @@ require 'htmlgrid/div'
 require 'htmlgrid/image'
 require 'htmlgrid/link'
 require 'htmlgrid/divcomposite'
+require 'htmlgrid/inputfile'
 require 'view/_partial/form'
+require 'view/_partial/admin_parts'
 
 module DaVaz::View
   module Admin

@@ -1,5 +1,6 @@
 require 'state/predefine'
 require 'view/admin/ajax'
+require 'view/admin/live_edit'
 require 'view/_partial/ajax'
 require 'view/_partial/admin_parts'
 

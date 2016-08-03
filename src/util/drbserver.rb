@@ -1,5 +1,3 @@
-# DaVazApp -- davaz.com -- 18.07.2005 -- mhuggler@ywesee.com
-
 require 'util/validator'
 require 'util/session'
 require 'sbsm/drbserver'

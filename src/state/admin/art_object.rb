@@ -1,6 +1,9 @@
 require 'state/predefine'
 require 'state/_partial/art_object'
+require 'state/_partial/admin_methods'
+require 'state/_partial/redirect'
 require 'state/admin/ajax'
+require 'util/image_helper'
 
 module DaVaz::State
   module Admin

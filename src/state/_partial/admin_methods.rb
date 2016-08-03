@@ -1,4 +1,3 @@
-require 'sbsm/viralstate'
 require 'state/communication/guestbook'
 require 'state/communication/links'
 require 'state/communication/news'
@@ -15,7 +14,6 @@ require 'state/_partial/admin_parts'
 
 module DaVaz::State
   module AdminMethods
-    include SBSM::ViralState
 
     EVENT_MAP = {
       :art_object             => Admin::ArtObject,
@@ -72,9 +70,9 @@ module DaVaz::State
       ]
     end
 
-    #def switch_zone(zone)
-    #  infect(super)
-    #end
+    def switch_zone(zone)
+      infect(super)
+    end
 
     def logout
       model = @previous.request_path

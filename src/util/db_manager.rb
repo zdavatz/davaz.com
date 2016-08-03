@@ -483,7 +483,7 @@ module DaVaz
       end
 
       def load_movies
-        query = connection.query(<<~SQL.gsub(/\n/, ''))
+        result = connection.query(<<~SQL.gsub(/\n/, ''))
           SELECT artobjects.*,
            artgroups.name AS artgroup,
            materials.name AS material,

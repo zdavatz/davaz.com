@@ -441,7 +441,7 @@ module DaVaz
       end
     end
 
-    class AdminArtobjectDetails < Form
+    class AdminArtObjectDetails < Form
       include HtmlGrid::ErrorMessage
 
       DEFAULT_CLASS = HtmlGrid::InputText
@@ -660,7 +660,7 @@ module DaVaz
         [0, 1] => AdminImageDiv,
         [0, 2] => AdminAjaxUploadImageForm,
         [0, 3] => :error_message_container,
-        [0, 4] => AdminArtobjectDetails,
+        [0, 4] => AdminArtObjectDetails,
       }
       CSS_ID_MAP = {
         0 => 'artobject_title',

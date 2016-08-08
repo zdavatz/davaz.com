@@ -1,6 +1,6 @@
+require 'webrick'
 require 'sbsm/request'
 require 'util/trans_handler'
-require 'webrick'
 
 class Object
   def meta_class; class << self; self; end; end

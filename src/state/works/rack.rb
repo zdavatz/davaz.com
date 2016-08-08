@@ -34,7 +34,7 @@ module DaVaz::State
           serie_items.each { |item|
             if DaVaz::Util::ImageHelper.has_image?(item.artobject_id)
               image = DaVaz::Util::ImageHelper.image_url(
-                item.artobject_id, 'show')
+                item.artobject_id, 'slide')
               @model.serie_items['artObjectIds'].push(item.artobject_id)
               @model.serie_items['images'].push(image)
               @model.serie_items['titles'].push(item.title)

@@ -80,7 +80,7 @@ module DaVaz::State
           serie.artobjects.each { |obj|
             if DaVaz::Util::ImageHelper.has_image?(obj.artobject_id)
               image = DaVaz::Util::ImageHelper.image_url(
-                obj.artobject_id, 'show')
+                obj.artobject_id, 'slide')
               images.push(image)
               titles.push(obj.title)
               artobject_ids.push(obj.artobject_id)

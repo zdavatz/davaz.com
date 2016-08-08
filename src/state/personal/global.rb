@@ -30,7 +30,7 @@ module DaVaz::State
         artobjects = @session.app.load_tag_artobjects(name)
         artobjects.each { |artobject|
           image = DaVaz::Util::ImageHelper.image_url(
-            artobject.artobject_id, 'show')
+            artobject.artobject_id, 'slide')
           @model.show_items['images'].push(image)
           @model.show_items['titles'].push(artobject.title)
         }

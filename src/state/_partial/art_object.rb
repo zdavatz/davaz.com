@@ -161,11 +161,11 @@ module DaVaz::State
 
     def init
       super
-      build_selections
       unless @model.artobject
         @model.artobjects = []
         @model.artobject  = DaVaz::Model::ArtObject.new
       end
+      build_selections
     end
 
     def ajax_upload_image

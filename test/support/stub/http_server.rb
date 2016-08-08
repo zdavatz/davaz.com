@@ -125,7 +125,6 @@ module DaVaz
           resp.chunked = true
           resp.body = File.open(File.join(doc, req.uri))
         else
-          ARGV.push('')
           req.server = server
           Util::TransHandler.instance.translate_uri(req)
           # Not Threadsafe!

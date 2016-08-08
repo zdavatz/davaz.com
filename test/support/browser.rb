@@ -3,7 +3,7 @@ require 'watir-webdriver'
 module DaVaz
   class Browser < SimpleDelegator
 
-    def initialize(args)
+    def initialize(*args)
       @browser = Watir::Browser.new(*args)
       super @browser
     end

@@ -21,6 +21,10 @@ end
 
 Dir[root_dir.join('test/support/**/*.rb')].each { |f| require f }
 
+module DaVaz::TestCase
+  include WaitUntil
+end
+
 DaVaz.config.document_root = root_dir.join('doc')
 DaVaz.config.autologin     = false
 

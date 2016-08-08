@@ -8,13 +8,11 @@ class TestShop < Minitest::Test
     link = browser.link(:name, 'shop')
     assert_match('/en/communication/shop', link.href)
     link.click
-    browser.wait(3)
-    cart = browser.table(:id, 'shopping_cart')[0][0]
+    cart = wait_until { browser.table(:id, 'shopping_cart') }[0][0]
     item = browser.text_field(:id, 'article[111]')
     item.set('2')
     item.send_keys(:tab)
-    browser.wait(1)
-    list = cart.table(:class, 'shopping-cart-list')[1][2]
+    list = wait_until { cart.table(:class, 'shopping-cart-list') }[1][2]
     assert_equal('Title of ArtObject 111', list.text)
 
     #browser.text_field(:id, 'article[1046]').set('2')

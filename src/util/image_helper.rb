@@ -89,7 +89,7 @@ module DaVaz::Util
 
       def store_upload_image(string_io, artobject_id)
         delete_image(artobject_id) if has_image?(artobject_id)
-        image = Image.from_blob(string_io.read).first
+        image = Magick::Image.from_blob(string_io.read).first
         extension = image.format.downcase
         path = File.join(
           image_dir,
@@ -101,7 +101,7 @@ module DaVaz::Util
       end
 
       def store_tmp_image(tmp_path, artobject_id)
-        image = Image.read(tmp_path).first
+        image = Magick::Image.read(tmp_path).first
         extension = image.format.downcase
         dir = File.join(image_dir, artobject_id.to_s[-1,1])
         FileUtils.mkdir_p(dir)

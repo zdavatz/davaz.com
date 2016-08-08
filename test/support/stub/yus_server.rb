@@ -7,11 +7,7 @@ module DaVaz
       attr_reader :valid
 
       def allowed?(action, site)
-        if action=='edit' && site =='com.davaz'
-          true
-        else
-          false
-        end
+        action == 'edit' && site =='com.davaz'
       end
 
       def valid?
@@ -22,12 +18,9 @@ module DaVaz
     class YusServer
 
       def login(email, pass, config)
-        puts "email: #{email}, pass: #{pass}, config: #{config}"
-        if email == 'right@user.ch'
-          User.new
-        else
-          raise Yus::YusError
-        end
+        # puts "email: #{email}, pass: #{pass}, config: #{config}"
+        raise Yus::YusError unless email != 'right@user.ch'
+        User.new
       end
 
       def logout(arg)

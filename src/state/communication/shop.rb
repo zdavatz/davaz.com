@@ -1,4 +1,5 @@
 require 'net/smtp'
+require 'securerandom'
 require 'state/predefine'
 require 'view/communication/shop'
 require 'view/_partial/art_object'
@@ -86,41 +87,56 @@ module DaVaz::State
         end
       end
 
+      # @todo
+      #   Add support for testing
       def send_mail(mandatory, hash)
-        lookandfeel = @session.lookandfeel
-        recipients = DaVaz.config.recipients.dup.push(hash[:email])
-        outgoing = Mail.new do
-          content_type 'text/plain; charset=UTF-8'
-          to           recipients
-          from         DaVaz.config.mail_from
-          subject      'Bestellung von davaz.com'
-        end
+        config = DaVaz.config.mailer
         address = mandatory.collect { |key|
-          "#{lookandfeel.lookup(key)}: #{hash[key].to_s}"
+          "#{@session.lookandfeel.lookup(key)}: #{hash[key].to_s}"
         }
-        orders = []
         total = 0
-        @session[:cart_items].each { |item|
+        orders = @session[:cart_items].map { |item|
           subtotal = (item.count * item.price.to_i)
           total += subtotal
-          str = <<~EOS.gsub(/\n/, '')
+          <<~EOS.gsub(/\n/, '')
             #{item.count.to_s} x #{item.title.ljust(15)}
-             (#{item.artgroup_id}): CHF #{subtotal}.-
+             (#{item.artgroup_id}): CHF #{subtotal}.\-
           EOS
-          orders.push(str)
         }
-        orders.push("TOTAL: #{total}.-")
-        parts = [
+        orders.push("TOTAL: #{total}.\-")
+        message = [
+          "Subject: Bestellung von davaz.com",
+          "From: #{config['from']}",
+          "To: #{hash[:email]}",
+          "Date: #{Time.now}",
+          "\n",
           @session.lookandfeel.lookup(:shop_mail_salut),
+          '',
           address.join("\n"),
+          '',
           orders.join("\n"),
+          '',
           @session.lookandfeel.lookup(:shop_mail_bye),
-        ]
-        outgoing.body = parts.join("\n\n")
-        outgoing.date = Time.now
-        Net::SMTP.start(DaVaz.config.smtp_server) { |smtp|
-          smtp.sendmail(outgoing.encoded, DaVaz.config.smtp_from, recipients)
-        }
+          '',
+          "Ref ##{SecureRandom.urlsafe_base64(8, true)}"
+        ].join("\n")
+
+        unless DaVaz.config.environment == 'test'
+          options = [
+            config['domain'],
+            config['user'],
+            config['pass'],
+            config['auth'].to_sym
+          ]
+          smtp = Net::SMTP.new(config['server'], config['port'].to_i)
+          smtp.enable_starttls
+          smtp.start(*options) { |smtp|
+            config['from'] =~ /<(.*)>/
+            from = $1 ? $1 : config['from']
+            to   = config['to'].dup.push(hash[:email])
+            smtp.send_message(message, from, to)
+          }
+        end
         @session.infos.push(:i_order_sent)
       end
     end

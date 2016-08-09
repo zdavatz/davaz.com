@@ -212,9 +212,9 @@ module DaVaz::Util
         serie_id:          'Serie',
         serie_position:    'Serie position',
         shop:              'Shop',
-        shop_mail_salut:   "Hi!\n\nthe following order has been sent:",
+        shop_mail_salut:   "Hi!\n\nThe following order has been sent:",
         shop_mail_bye:     "Thank you very much for your interest in my " \
-                           "site and your order.\n\nwith best regards\n\n" \
+                           "site and your order.\n\nWith best regards\n\n" \
                            "j. davatz",
         shop_thanks:       'Your order has been succesfully sent.' \
                            '<br>Thank you very much.',

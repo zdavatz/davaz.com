@@ -6,14 +6,34 @@ module DaVaz
   project_root = File.expand_path('../..', File.dirname(__FILE__))
   config_file  = File.join(project_root, 'etc', 'config.yml')
   defaults = {
+    'config'      => config_file,
+    'environment' => 'development',
     # use autologin is only for debugging purposes
     'autologin'  => false,
     'currencies' =>  {
       'USD'  => 'CHF',
       'Euro' => 'CHF',
     },
-    'config' => config_file,
-    'colors' => {
+    'server_name'             => 'www.davaz.com',
+    'server_uri'              => 'druby://localhost:9998',
+    'document_root'           => File.expand_path('doc', project_root),
+    'project_root'            => project_root,
+    'run_updater'             => true,
+    'dojo_debug'              => false,
+    'large_image_width'       => '360px',
+    'medium_image_width'      => '180px',
+    'show_image_height'       => '280px',
+    'small_image_width'       => '100px',
+    'uploads_dir'             => 'resources/uploads',
+    'tmp_images_path'         => 'uploads/tmp/images',
+    'upload_images_path'      => 'uploads/images',
+    # ticker
+    'ticker_component_width'  => '180',
+    'ticker_component_height' => '180',
+    # yus
+    'yus_domain' => 'com.davaz',
+    'yus_uri'    => 'drbssl://localhost:9997',
+    :colors => {
       :articles         => '#6d6dff',
       :carpets          => '#ff6c0d',
       :design           => '#FF6600',
@@ -27,29 +47,21 @@ module DaVaz
       :photos           => '#39cece',
       :schnitzenthesen  => '#9eff0c',
     },
-    'document_root'           => File.expand_path('doc', project_root),
-    'dojo_debug'              => false,
-    'uploads_dir'             => 'resources/uploads',
-    'large_image_width'       => '360px',
-    'mail_from'               => '"Admin" <admin@ywesee.com>',
-    'medium_image_width'      => '180px',
-    'project_root'            => project_root,
-    'recipients'              => %w[admin@ywesee.com],
-    'run_updater'             => true,
-    'server_name'             => 'www.davaz.com',
-    'server_uri'              => 'druby://localhost:9998',
-    'show_image_height'       => '280px',
-    'small_image_width'       => '100px',
-    'smtp_server'             => 'mail.ywesee.com',
-    'smtp_from'               => 'admin@ywesee.com',
-    'tmp_images_path'         => 'uploads/tmp/images',
-    'ticker_component_width'  => '180',
-    'ticker_component_height' => '180',
-    'upload_images_path'      => 'uploads/images',
-    'yus_domain'              => 'com.davaz',
-    'yus_uri'                 => 'drbssl://localhost:9997'
+    # smtp
+    :mailer => {
+      :from   => '"Shop" <shop@example.org>',
+      :to     => %w[],
+      :server => '',
+      :domain => 'example.org',
+      :port   => 587,
+      :auth   => 'plain',
+      :user   => '',
+      :pass   => '',
+    }
   }
 
+  # NOTE
+  # RCLConf returns a hash which holds keys as String
   config = RCLConf::RCLConf.new(ARGV, defaults)
   config.load(config.config)
   @config = config

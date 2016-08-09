@@ -628,7 +628,6 @@ module DaVaz
           SELECT artobjects.* FROM artobjects
            WHERE artobject_id='#{artobject_id}'
         SQL
-        result = connection.query(query)
         items = []
         result.each { |key, value|
           artobject = DaVaz::Model::ArtObject.new

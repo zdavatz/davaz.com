@@ -8,7 +8,7 @@ gem 'rmagick', '~> 2.15.4'
 gem 'rclconf', '1.0.0'
 gem 'ftools', '0.0.0'
 
-gem 'sbsm', '~> 1.2.9'
+gem 'sbsm', '~> 1.3.0'
 gem 'htmlgrid', '~> 1.1.1'
 gem 'odba', '~> 1.1.0'
 

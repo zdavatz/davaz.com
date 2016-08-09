@@ -4,6 +4,7 @@ Gemfile.hack
 /etc/*.yml
 !/etc/davaz.yml
 !/etc/trans_handler.yml
+.env
 
 /log
 /doc/resources/dojo*

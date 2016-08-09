@@ -3,74 +3,127 @@ require 'test_helper'
 class TestShop < Minitest::Test
   include DaVaz::TestCase
 
-  def test_shopping_publications
-    browser.visit('/en/gallery/gallery')
+  def setup
+    browser.visit('/en/personal/work')
     link = browser.link(:name, 'shop')
-    assert_match('/en/communication/shop', link.href)
     link.click
-    cart = wait_until { browser.table(:id, 'shopping_cart') }[0][0]
+  end
+
+  def test_shopping_cart_calculation_with_publications
+    assert_match('/en/communication/shop', browser.url)
+
+    shopping_cart = Proc.new {
+      wait_until { browser.table(:id, 'shopping_cart') }[0][0]
+    }
+
     item = browser.text_field(:id, 'article[111]')
     item.set('2')
     item.send_keys(:tab)
-    list = wait_until { cart.table(:class, 'shopping-cart-list') }[1][2]
-    assert_equal('Title of ArtObject 111', list.text)
+    cart = shopping_cart.yield
+    rows = wait_until { cart.table(:class, 'shopping-cart-list') }
+    assert_equal('Title of ArtObject 111', rows[1][2].text)
+    assert_equal('CHF 111.-', rows[1][4].text)
+    assert(cart.text.include?('CHF 222.- / $ 176.- / € 132.'))
 
-    #browser.text_field(:id, 'article[1046]').set('2')
-    #browser.wait(1)
-    #list = cart.table(:class, 'shopping-cart-list')[2][2]
-    #assert_equal('Wunderblock', list.text)
+    item = browser.text_field(:id, 'article[112]')
+    item.set('2')
+    item.send_keys(:tab)
+    cart = shopping_cart.yield
+    rows = wait_until { cart.table(:class, 'shopping-cart-list') }
+    assert_equal('Title of ArtObject 112', rows[1][2].text)
+    assert_equal('CHF 112.-', rows[1][4].text)
+    assert(cart.text.include?('CHF 446.- / $ 354.- / € 266.-'))
 
-    #browser.text_field(:id, 'article[1295]').set('2')
-    #browser.wait(1)
-    #list = cart.table(:class, 'shopping-cart-list')[3][2]
-    #assert_equal('Psychospheres', list.text)
+    item = browser.text_field(:id, 'article[113]')
+    item.set('2')
+    item.send_keys(:tab)
+    cart = shopping_cart.yield
+    assert(cart.text.include?('CHF 672.- / $ 534.- / € 400.-'))
+    rows = wait_until { cart.table(:class, 'shopping-cart-list') }
+    assert_equal('Title of ArtObject 113', rows[1][2].text)
+    assert_equal('CHF 113.-', rows[1][4].text)
 
-    #browser.text_field(:id, 'article[1292]').set('2')
-    #browser.wait(1)
-    #list = cart.table(:class, 'shopping-cart-list')[4][2]
-    #assert_equal('Drawings', list.text)
+    rows = wait_until { cart.table(:class, 'shopping-cart-list') }
+    assert_equal('Title of ArtObject 113', rows[1][2].text)
+    assert_equal('Title of ArtObject 112', rows[2][2].text)
+    assert_equal('Title of ArtObject 111', rows[3][2].text)
 
-    #browser.element(:xpath, )
-    #browser.is_text_present('CHF 222.-')
-    #assert browser.is_text_present('CHF 224.-')
-    #assert browser.is_text_present('CHF 226.-')
-    #assert browser.is_text_present('CHF 672.- / $ 534.- / € 400.-')
-    #browser.click 'link=remove all items'
-    #sleep 3
+    link = browser.link(:text, 'Remove all items')
+    link.click
+  end
 
-    #refute browser.is_text_present('CHF 222.-')
-    #refute browser.is_text_present('CHF 224.-')
-    #refute browser.is_text_present('CHF 226.-')
-    #refute browser.is_text_present('CHF 672.- / $ 534.- / € 400.-')
-    # @browser.type "article[113]", "2"
-    # @browser.type "article[114]", "2"
-    # sleep 3
-    # assert @browser.is_text_present("CHF 226.-")
-    # @browser.type "article[113]", "4"
-    # @browser.type "article[114]", "0"
-		# sleep 3
-    # assert @browser.is_text_present("CHF 452.-")
-    # assert @browser.is_text_present("CHF 452.- / $ 360.- / € 268.-")
-    # @browser.click "order_item"
-    # @browser.wait_for_page_to_load "30000"
-    # assert @browser.is_text_present("Please fill out the fields that are marked with red.")
-    # @browser.type "name", "TestName"
-    # @browser.type "surname", "TestSurname"
-    # @browser.type "street", "TestStreet"
-    # @browser.type "postal_code", "TestZip"
-    # @browser.type "city", "TestCity"
-    # @browser.type "country", "TestCountry"
-    # @browser.type "email", "TestEmail"
-    # @browser.click "order_item"
-    # @browser.wait_for_page_to_load "30000"
-    # assert @browser.is_text_present("Your Postal Code seems to be invalid.")
-    # assert @browser.is_text_present("Sorry, but your email-address seems to be invalid. Please try again.")
-    # @browser.type "postal_code", "8888"
-    # @browser.type "email", "mhuggler@ywesee.com"
-    # @browser.click "order_item"
-    # @browser.wait_for_page_to_load "30000"
-    # assert @browser.is_text_present("Your order has been succesfully sent.")
-	end
+  #def test_checkout_fails_without_user_info
+  #  assert_match('/en/communication/shop', browser.url)
+
+  #  item = browser.text_field(:id, 'article[113]')
+  #  item.set('2')
+  #  item.send_keys(:tab)
+
+  #  item = browser.text_field(:id, 'article[114]')
+  #  item.set('1')
+  #  item.send_keys(:tab)
+
+  #  #link = browser.button(:text, 'Order item(s)')
+  #  #link.click
+
+  #  assert(browser.text.include?(
+  #    'Please fill out the fields that are marked with red.'))
+  #end
+
+  # def test_checkout_fails_with_validation_error
+  #   assert_match('/en/communication/shop', browser.url)
+
+  #   item = browser.text_field(:id, 'article[113]')
+  #   item.set('2')
+  #   item.send_keys(:tab)
+
+  #   item = browser.text_field(:id, 'article[114]')
+  #   item.set('1')
+  #   item.send_keys(:tab)
+
+  #   browser.text_field(:name, 'name').set('John Smith')
+  #   browser.text_field(:name, 'surname').set('Mr.')
+  #   browser.text_field(:name, 'postal_code').set('INVALID')
+  #   browser.text_field(:name, 'city').set('Zürich')
+  #   browser.text_field(:name, 'country').set('Switzerland')
+  #   browser.text_field(:name, 'email').set('john@example.org')
+
+  #   link = browser.button(:text, 'Order item(s)')
+  #   link.click
+
+  #   assert(browser.text.include?(
+  #     'Your Postal Code seems to be invalid.'))
+  #   assert(browser.text.include?(
+  #     'Sorry, but your email-address seems to be invalid. Please try again.'))
+  # end
+
+  #def test_checkout
+  #  @browser.type "article[113]", "2"
+  #  @browser.type "article[114]", "2"
+  #  sleep 3
+  #  assert @browser.is_text_present("CHF 226.-")
+  #  @browser.type "article[113]", "4"
+  #  @browser.type "article[114]", "0"
+  #  sleep 3
+  #  assert @browser.is_text_present("CHF 452.-")
+  #  assert @browser.is_text_present("CHF 452.- / $ 360.- / € 268.-")
+  #  @browser.type "name", "TestName"
+  #  @browser.type "surname", "TestSurname"
+  #  @browser.type "street", "TestStreet"
+  #  @browser.type "postal_code", "TestZip"
+  #  @browser.type "city", "TestCity"
+  #  @browser.type "country", "TestCountry"
+  #  @browser.type "email", "TestEmail"
+  #  @browser.click "order_item"
+  #  @browser.wait_for_page_to_load "30000"
+  #  assert @browser.is_text_present("Your Postal Code seems to be invalid.")
+  #  assert @browser.is_text_present("Sorry, but your email-address seems to be invalid. Please try again.")
+  #  @browser.type "postal_code", "8888"
+  #  @browser.type "email", "mhuggler@ywesee.com"
+  #  @browser.click "order_item"
+  #  @browser.wait_for_page_to_load "30000"
+  #  assert @browser.is_text_present("Your order has been succesfully sent.")
+  #end
 
 	#def test_test_shop2
   #  @browser.open "/en/communication/shop"

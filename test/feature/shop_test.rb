@@ -52,50 +52,57 @@ class TestShop < Minitest::Test
     link.click
   end
 
-  #def test_checkout_fails_without_user_info
-  #  assert_match('/en/communication/shop', browser.url)
+  def test_checkout_fails_without_user_info
+    assert_match('/en/communication/shop', browser.url)
 
-  #  item = browser.text_field(:id, 'article[113]')
-  #  item.set('2')
-  #  item.send_keys(:tab)
+    item = browser.text_field(:id, 'article[113]')
+    item.set('2')
+    item.send_keys(:tab)
 
-  #  item = browser.text_field(:id, 'article[114]')
-  #  item.set('1')
-  #  item.send_keys(:tab)
+    item = browser.text_field(:id, 'article[114]')
+    item.set('1')
+    item.send_keys(:tab)
 
-  #  #link = browser.button(:text, 'Order item(s)')
-  #  #link.click
+    link = browser.button(:text, 'Order item(s)')
+    link.click
 
-  #  assert(browser.text.include?(
-  #    'Please fill out the fields that are marked with red.'))
-  #end
+    assert(browser.text.include?(
+      'Please fill out the fields that are marked with red.'))
 
-  # def test_checkout_fails_with_validation_error
-  #   assert_match('/en/communication/shop', browser.url)
+    link = browser.link(:text, 'Remove all items')
+    link.click
+  end
 
-  #   item = browser.text_field(:id, 'article[113]')
-  #   item.set('2')
-  #   item.send_keys(:tab)
+  def test_checkout_fails_with_validation_error
+    assert_match('/en/communication/shop', browser.url)
 
-  #   item = browser.text_field(:id, 'article[114]')
-  #   item.set('1')
-  #   item.send_keys(:tab)
+    item = browser.text_field(:id, 'article[113]')
+    item.set('2')
+    item.send_keys(:tab)
 
-  #   browser.text_field(:name, 'name').set('John Smith')
-  #   browser.text_field(:name, 'surname').set('Mr.')
-  #   browser.text_field(:name, 'postal_code').set('INVALID')
-  #   browser.text_field(:name, 'city').set('Zürich')
-  #   browser.text_field(:name, 'country').set('Switzerland')
-  #   browser.text_field(:name, 'email').set('john@example.org')
+    item = browser.text_field(:id, 'article[114]')
+    item.set('1')
+    item.send_keys(:tab)
 
-  #   link = browser.button(:text, 'Order item(s)')
-  #   link.click
+    browser.text_field(:name, 'name').set('John Smith')
+    browser.text_field(:name, 'surname').set('Mr.')
+    browser.text_field(:name, 'street').set('Winterthurerstrasse')
+    browser.text_field(:name, 'postal_code').set('A')
+    browser.text_field(:name, 'city').set('Zürich')
+    browser.text_field(:name, 'country').set('Switzerland')
+    browser.text_field(:name, 'email').set('john@example.org')
 
-  #   assert(browser.text.include?(
-  #     'Your Postal Code seems to be invalid.'))
-  #   assert(browser.text.include?(
-  #     'Sorry, but your email-address seems to be invalid. Please try again.'))
-  # end
+    link = browser.button(:text, 'Order item(s)')
+    link.click
+
+    assert(browser.text.include?(
+      'Your Postal Code seems to be invalid.'))
+    assert(browser.text.include?(
+      'Sorry, but your email-address seems to be invalid. Please try again.'))
+
+    link = browser.link(:text, 'Remove all items')
+    link.click
+  end
 
   #def test_checkout
   #  @browser.type "article[113]", "2"

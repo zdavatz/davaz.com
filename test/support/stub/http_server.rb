@@ -34,6 +34,10 @@ module WEBrick
     def uri
       @uri || unparsed_uri
     end
+
+    def content_length
+      return Integer(self['content-length'] || '0')
+    end
   end
 
   class HTTPResponse
@@ -121,8 +125,9 @@ module DaVaz
 
       davaz = Proc.new do |req, resp|
         resp.chunked = true
-        if req.uri == '/favicon.ico'
-          resp.chunked = true
+        if req.uri =~ /\.css\z/
+          resp.body = ''
+        elsif req.uri == '/favicon.ico'
           resp.body = File.open(File.join(doc, req.uri))
         else
           req.server = server
@@ -136,6 +141,7 @@ module DaVaz
           sbsm.cgi.env_table['SERVER_NAME'] = \
             "#{TEST_SRV_URI.host}:#{TEST_SRV_URI.port}"
           sbsm.cgi.env_table['REQUEST_METHOD'] = req.request_method
+          sbsm.cgi.env_table['CONTENT_LENGTH'] = req.content_length.to_s
           sbsm.cgi.cookies['_session_id'] = 'test:preset-session-id'
           sbsm.cgi.output = output
           sbsm.process

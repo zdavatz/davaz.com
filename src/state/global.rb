@@ -84,7 +84,12 @@ module DaVaz::State
 
     def switch_zone(zone)
       name  = zone.to_s.split('_').collect { |word| word.capitalize }.join
-      klass = DaVaz::State.const_get(name).const_get('Global')
+      klass = case name
+              when /\Atooltip\z/i # partial
+                DaVaz::State.const_get(name)
+              else
+                DaVaz::State.const_get(name).const_get('Global')
+              end
       newstate = klass.new(@session, @model)
       newstate.unset_previous
       newstate.switched_zone = true

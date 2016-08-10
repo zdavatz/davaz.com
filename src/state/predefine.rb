@@ -12,6 +12,8 @@ module DaVaz::State
     include SBSM::ViralState
   end
 
+  class Tooltip < DaVaz::State::Global; end
+
   module Gallery
     class Global    < DaVaz::State::Global; end
     class Init      < DaVaz::State::Gallery::Global; end

@@ -26,7 +26,7 @@ module DaVaz::State
     # @api ajax
     # @note responds to:
     #   /de/gallery/ajax_desk/artgroup_id/XXX/serie_id/XXX/artobject_id/XXX
-    class AjaxAdminDeskArtobject < SBSM::State
+    class AdminAjaxDeskArtobject < SBSM::State
       include AdminArtObjectMethods
       include AjaxDeskArtobjectLoadable
 

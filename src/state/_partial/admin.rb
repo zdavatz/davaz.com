@@ -32,7 +32,7 @@ module DaVaz::State
       :ajax_save_gb_live_edit => AdminAjaxSaveGbLiveEdit,
       :ajax_upload_image      => AdminAjaxUploadImage,
       :ajax_upload_image_form => AdminAjaxUploadImageForm,
-      :ajax_movie_gallery     => Works::AjaxAdminMovieGallery,
+      :ajax_movie_gallery     => Works::AdminAjaxMovieGallery,
       :design                 => Works::AdminDesign,
       :drawings               => Works::AdminDrawings,
       :movies                 => Works::AdminMovies,
@@ -49,7 +49,7 @@ module DaVaz::State
 
     def ajax_desk
       if @session.user_input(:artobject_id)
-        Gallery::AjaxAdminDeskArtobject.new(@session, [])
+        Gallery::AdminAdminDeskArtobject.new(@session, [])
       else
         Gallery::AjaxDesk.new(@session, [])
       end

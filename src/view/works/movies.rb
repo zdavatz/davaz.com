@@ -105,13 +105,11 @@ module DaVaz::View
           :artobject_id, model.artobject_id
         ]
         url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, args)
-        link.href  = 'javascript:void(0)'
+        link.href  = 'javascript:void(0);'
         link.value = @lookandfeel.lookup(:more)
         link.set_attribute('name', "#{model.artobject_id}-more")
-        replace_id = 'movies-list'
-        div_id     = 'movies-gallery-view'
         link.set_attribute('onclick', <<~EOS)
-          showMovieGallery('#{div_id}', '#{replace_id}', '#{url}')
+          showMovieGallery('movies_gallery_view', 'movies_list', '#{url}')
         EOS
         link
       end

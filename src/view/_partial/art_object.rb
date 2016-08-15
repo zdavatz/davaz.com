@@ -71,7 +71,7 @@ module DaVaz
       end
 
       def wordpress_url(model=@model)
-        return '' if !model || model.wordpress_url.empty?
+        return '' if !model || !model.wordpress_url
         link = HtmlGrid::HttpLink.new(:wordpress_link, model, @session, self)
         link.href  = model.url
         link.value = @lookandfeel.lookup(:read_wordpress)

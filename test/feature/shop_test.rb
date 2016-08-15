@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# /communication/shop
 class TestShop < Minitest::Test
   include DaVaz::TestCase
 

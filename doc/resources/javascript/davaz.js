@@ -75,7 +75,7 @@ function checkRemovalStatus(selectValue, url) {
           ;
         if (status == 'goodForRemoval') {
           if (link) {
-            linx.style.color = 'blue';
+            link.style.color = 'blue';
           }
         } else {
           if (link) {
@@ -208,34 +208,63 @@ function removeFromShoppingCart(url, fieldId) {
 	});
 }
 
+// Shows movie detail view using replaceDiv
 function showMovieGallery(divId, replaceDivId, url) {
-	var node = dojo.byId(divId);
-	var artobjectId = url.split("/").pop();
-	var display = node.style.display; 
-	if(display=="none") {
-		dojo.xhrGet({
-			url: url,
-			load: function(data, request) {
-        var pane = new dijit.layout.ContentPane({executeScripts: true}, node);
-        pane.setContent(data);
-				replaceDiv(replaceDivId, divId);
-        dojo.back.addToHistory({changeUrl:artobjectId});
-			},
-			handleAs: 'text'
-		});
-	} else {
-		replaceDiv(divId, replaceDivId);
-		node.innerHTML = "";			
-	}
+  require([
+    'dojo/_base/xhr'
+  , 'dojo/dom'
+  , 'dojo/dom-attr'
+  , 'dojo/back'
+  , 'dijit/dijit'
+  ], function(xhr, dom, attr, back, dijit) {
+	  var node = dom.byId(divId);
+    if (node.style.display == 'none') {
+	    var artobjectId = url.split('/').pop();
+      xhr.get({
+        url:      url
+      , handleAs: 'text'
+      , load:      function(data, request) {
+          var pane = dijit.byId(divId);
+          if (pane == null) {
+            pane = new dijit.layout.ContentPane({
+              executeScripts: true
+            }, node);
+          }
+          pane.setContent(data);
+          replaceDiv(replaceDivId, divId);
+          back.addToHistory({
+            changeUrl:artobjectId
+          });
+        },
+      });
+    } else {
+      replaceDiv(divId, replaceDivId);
+      node.innerHTML = '';
+    }
+  });
 }
 
-function replaceDiv(id, replace_id) {
-	var node = dojo.byId(id);	
-	var replace = dojo.byId(replace_id);
-	var callback = function() {
-		dojo.fx.wipeIn({node:replace, duration:100}).play();
-	};
-	dojo.fx.wipeOut({node:node, duration:1000, onEnd:callback}).play();
+// Replaces with wipe animation
+function replaceDiv(id, replaceId) {
+  require([
+    'dojo/dom'
+  , 'dojo/fx'
+  ], function(dom, fx) {
+    var node    = dom.byId(id)
+      , replace = dom.byId(replaceId)
+      ;
+    var callback = function() {
+      fx.wipeIn({
+        node:     replace
+      , duration: 100
+      }).play();
+    };
+    fx.wipeOut({
+      node:     node
+    , duration: 1000
+    , onEnd:    callback
+    }).play();
+  });
 }
 
 function toggleDeskContent(id, serieId, objectId, url, wipe) {
@@ -303,7 +332,7 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
       if (lastId != serieId) {
         var lastSerieLink = dom.byId(lastId);
         if (lastSerieLink) {
-          lastSerieLink.className = 
+          lastSerieLink.className =
             lastSerieLink.className.replace(/ ?active/, '');
         }
       }

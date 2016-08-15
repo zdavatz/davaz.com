@@ -48,23 +48,19 @@ module DaVaz::View
 
   class OnloadMovies < HtmlGrid::JavaScript
     def init
-      replace_id = "movies-list"
-      div_id = "movies-gallery-view"
-      args = [
-        :artobject_id, ""
-      ]
-      url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, args)
-      script = <<-EOS
+      url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, [
+        :artobject_id, ''
+      ])
+      @value = <<-EOS
         dojo.addOnLoad(function() {
           var artobjectId = location.hash;
-          if(artobjectId && artobjectId != '#top'){
+          if (artobjectId && artobjectId != '#top') {
             artobjectId = artobjectId.substring(1, artobjectId.length);
-            var url = '#{url}' + artobjectId
-            showMovieGallery('#{div_id}', '#{replace_id}', url)
+            var url = '#{url}' + artobjectId;
+            showMovieGallery('movies_gallery_view', 'movies_list', url);
           }
         })
       EOS
-      @value = script
     end
   end
 end

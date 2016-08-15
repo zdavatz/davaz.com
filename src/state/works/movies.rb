@@ -8,24 +8,8 @@ require 'view/_partial/image'
 
 module DaVaz::State
   module Works
-    class AjaxAdminMovieGallery < SBSM::State
-      include AdminArtObjectMethods
 
-      VIEW     = DaVaz::View::AdminMoviesArtObjectComposite
-      VOLATILE = true
-
-      def init
-        @model = OpenStruct.new
-        artobject_id = @session.user_input(:artobject_id)
-        @model.artobjects  = @session.load_movies
-        object = @model.artobjects.find { |artobject|
-          artobject.artobject_id == artobject_id
-        }
-        @model.artobject = object
-        build_selections
-      end
-    end
-
+    # @api ajax
     class AjaxMovieGallery < SBSM::State
       VIEW     = DaVaz::View::MoviesArtObjectComposite
       VOLATILE = true
@@ -42,6 +26,20 @@ module DaVaz::State
     end
 
     # @api admin
+    # @api ajax
+    class AdminAjaxMovieGallery < AjaxMovieGallery
+      include AdminArtObjectMethods
+
+      VIEW = DaVaz::View::AdminMoviesArtObjectComposite
+
+      def init
+        super
+        build_selections
+      end
+    end
+
+    # @api admin
+    # @api ajax
     class AdminAjaxUploadImage < SBSM::State
       include Magick
 
@@ -52,13 +50,11 @@ module DaVaz::State
         @model = OpenStruct.new
         string_io = @session.user_input(:image_file)
         artobject_id = @session.user_input(:artobject_id)
-        unless(string_io.nil?)
-          if artobject_id
-            DaVaz::Util::ImageHelper.store_upload_image(
-              string_io, artobject_id)
-            @model.artobject = @session.app.load_artobject(artobject_id)
-          # no 'else' => src/state/_partial/art_object handles new artobjects
-          end
+        if string_io && artobject_id
+          DaVaz::Util::ImageHelper.store_upload_image(
+            string_io, artobject_id)
+          @model.artobject = @session.app.load_artobject(artobject_id)
+        # no 'else' => src/state/_partial/art_object handles new artobjects
         end
       end
     end
@@ -92,38 +88,27 @@ module DaVaz::State
 
       def update
         artobject_id = @session.user_input(:artobject_id)
-        mandatory = [
-          :title,
-          :artgroup_id,
-          :serie_id,
-          :serie_position,
-          :tool_id,
-          :material_id,
-          :date,
-          :country_id,
+        mandatory = %i[
+          title artgroup_id serie_id serie_position tool_id material_id date
+          country_id
         ]
-        keys = [
-          :tags_to_s,
-          :location,
-          :form_language,
-          :price,
-          :size,
-          :text,
-          :url,
-          :wordpress_url,
+        keys = %i[
+          tags_to_s location form_language price size text url
+          wordpress_url
         ].concat(mandatory)
         update_hash = {}
         user_input(keys, mandatory).each { |key, value|
-          if(match = key.to_s.match(/(form_)(.*)/))
+          if match = key.to_s.match(/(form_)(.*)/)
             update_hash.store(match[2].intern, value)
-          elsif(key == :tags_to_s)
-            if(value.nil?)
-              update_hash.store(:tags, [])  
+          elsif key == :tags_to_s
+            if value
+              update_hash.store(:tags, value.split(','))
             else
-              update_hash.store(:tags, value.split(','))  
+              update_hash.store(:tags, [])
             end
-          elsif(key == :date)
-            update_hash.store(:date, "#{value.year}-#{value.month}-#{value.day}")
+          elsif key == :date
+            update_hash.store(
+              :date, "#{value.year}-#{value.month}-#{value.day}")
           else
             update_hash.store(key, value)
           end
@@ -135,10 +120,10 @@ module DaVaz::State
             model << "##{artobject_id}"
             DaVaz::State::Redirect.new(@session, model)
           else
-            insert_id = @session.app.insert_artobject(update_hash)
+            insert_id  = @session.app.insert_artobject(update_hash)
             image_path = @model.artobject.tmp_image_path
             DaVaz::Util::ImageHelper.store_tmp_image(image_path, insert_id)
-            AjaxAdminMovieGallery.new(@session, [])
+            AdminAjaxMovieGallery.new(@session, [])
           end
         else
           model = @session.lookandfeel.event_url(:works, :movies)

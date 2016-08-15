@@ -15,13 +15,12 @@ module DaVaz::State
       VOLATILE = true
 
       def init
-        @model = OpenStruct.new
         artobject_id = @session.user_input(:artobject_id)
-        @model.artobjects  = @session.load_movies
-        object = @model.artobjects.find { |artobject|
-          artobject.artobject_id == artobject_id
+        @model = OpenStruct.new
+        @model.artobjects = @session.load_movies
+        @model.artobject  = @model.artobjects.find { |obj|
+          obj.artobject_id.to_s == artobject_id
         }
-        @model.artobject = object
       end
     end
 

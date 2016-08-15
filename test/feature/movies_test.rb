@@ -26,8 +26,22 @@ class TestMovies < Minitest::Test
 
     link.click
     view = wait_until { browser.div(:id, 'movies_gallery_view') }
-    assert_equal('Back to overview', view.a(:name, 'back_to_overview').text)
+    assert_equal('Back To Overview', view.a(:name, 'back_to_overview').text)
     assert_match('/en/works/movies/#111', browser.url)
+  end
+
+  def test_movies_show_has_a_thumbnail_of_its_movie
+    assert_match('/en/works/movies', browser.url)
+
+    link = browser.link(:name, '111-more')
+    link.click
+
+    view = wait_until { browser.div(:id, 'movies_gallery_view') }
+    assert_match('/en/works/movies/#111', browser.url)
+
+    image = view.img(:id, 'artobject_image')
+    assert_match(
+      '/resources/uploads/images/1/111.jpeg', image.attribute_value('src'))
   end
 
   #def test_stub

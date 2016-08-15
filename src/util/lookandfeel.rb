@@ -29,8 +29,8 @@ module DaVaz::Util
         author:                 'Author',
         # b
         back:             '<< Back',
-        back_to_overview: 'Back to overview',
-        back_to_shop:     'Back to shop',
+        back_to_overview: 'Back To Overview',
+        back_to_shop:     'Back To Shop',
         blog:             'Blog',
         bottleneck:       'Bottleneck',
         br:               '<br />',

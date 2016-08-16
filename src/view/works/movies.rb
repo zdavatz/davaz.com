@@ -1,7 +1,9 @@
 require 'date'
 require 'htmlgrid/spancomposite'
+require 'htmlgrid/divcomposite'
 require 'htmlgrid/value'
 require 'htmlgrid/link'
+require 'htmlgrid/div'
 require 'view/_partial/onload'
 require 'view/template'
 require 'view/_partial/composite'
@@ -59,20 +61,18 @@ module DaVaz::View
       def init
         super
         comment = @model.text.gsub(/\n/, "[[>>]]")
-        comment.gsub! /<[^>]+>/ do |match|
-          match.gsub /\s+/, '#SPC#'
+        comment.gsub!(/<[^>]+>/) do |match|
+          match.gsub(/\s+/, '#SPC#')
         end
         comment.gsub!(/ (<\/[^>]+> )/, '\1')
-        comment.gsub! /( <[^>]+>) /, '\1'
-        comment_arr = comment.split(" ")
-        comment = comment_arr.slice(0,50).join(" ").gsub(/\[\[>>\]\]/, "\n")
-        comment.gsub! /<[^>]+>/ do |match|
-          match.gsub '#SPC#', ' '
+        comment.gsub!(/( <[^>]+>) /, '\1')
+        comment_arr = comment.split(' ')
+        comment = comment_arr.slice(0, 50).join(' ').gsub(/\[\[>>\]\]/, "\n")
+        comment.gsub!(/<[^>]+>/) do |match|
+          match.gsub('#SPC#', ' ')
         end
-        if comment.size > 0
-          comment << ' ...'
-        end
-        hpricot = Hpricot comment, :fixup_tags => true
+        comment << ' ...' if comment.size > 0
+        hpricot = Hpricot(comment, :fixup_tags => true)
         @value = hpricot.to_html
       end
     end
@@ -80,12 +80,12 @@ module DaVaz::View
     class GoogleVideoLink < HtmlGrid::Div
       def init
         super
+        url = @model.url
+        return if url.empty?
         link = HtmlGrid::HttpLink.new(:url, @model, @session, self)
-        link.href = @model.url
+        link.href  = url
         link.value = @lookandfeel.lookup(:watch_movie)
-        unless(@model.url.empty?)
-          @value = link
-        end
+        @value = link
       end
     end
 
@@ -100,24 +100,22 @@ module DaVaz::View
       }
 
       def more_link(model)
-        link = HtmlGrid::Link.new(:more, model, @session, self)
-        args = [
+        url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, [
           :artobject_id, model.artobject_id
-        ]
-        url = @lookandfeel.event_url(:gallery, :ajax_movie_gallery, args)
+        ])
+        link = HtmlGrid::Link.new(:more, model, @session, self)
         link.href  = 'javascript:void(0);'
         link.value = @lookandfeel.lookup(:more)
         link.set_attribute('name', "#{model.artobject_id}-more")
         link.set_attribute('onclick', <<~EOS)
-          showMovieGallery('movies_gallery_view', 'movies_list', '#{url}')
+          showMovieGallery('movies_gallery_view', 'movies_list', '#{url}');
         EOS
         link
       end
 
       def up_link(model)
         link = HtmlGrid::Link.new(:site_top, model, @session, self)
-        args = [ '#top' ]
-        link.href  = @lookandfeel.event_url(:works, :movies, args)
+        link.href  = @lookandfeel.event_url(:works, :movies, %w{#top})
         link.value = HtmlGrid::Image.new(:icon_toparrow, model, @session, self)
         link
       end
@@ -125,18 +123,18 @@ module DaVaz::View
 
     class MovieComposite < HtmlGrid::DivComposite
       COMPONENTS = {
-        [0,0]  =>  MovieDetails,
-        [0,1]  =>  MovieImage,
-        [0,2]  =>  GoogleVideoLink,
-        [0,3]  =>  MovieComment,
-        [0,4]  =>  MoreLink,
+        [0, 0] => MovieDetails,
+        [0, 1] => MovieImage,
+        [0, 2] => GoogleVideoLink,
+        [0, 3] => MovieComment,
+        [0, 4] => MoreLink,
       }
       CSS_MAP = {
-        0  =>  'movies-details',
-        1  =>  'movies-image',
-        2  =>  'movies-google-link',
-        3  =>  'movies-comment',
-        4  =>  'movies-details-link',
+        0 => 'movies-details',
+        1 => 'movies-image',
+        2 => 'movies-google-link',
+        3 => 'movies-comment',
+        4 => 'movies-details-link',
       }
 
       def movie_details_div(model)

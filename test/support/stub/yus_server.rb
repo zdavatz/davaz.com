@@ -1,30 +1,33 @@
 require 'digest/sha2'
 
-module DaVaz
-  module Stub
+module DaVaz::Stub
+  class User
+    attr_reader :valid
 
-    class User
-      attr_reader :valid
-
-      def allowed?(action, site)
-        action == 'edit' && site =='com.davaz'
-      end
-
-      def valid?
-        true
-      end
+    def name
+      'name'
     end
 
-    class YusServer
+    def valid?
+      true
+    end
 
-      def login(email, pass, config)
-        # puts "email: #{email}, pass: #{pass}, config: #{config}"
-        raise Yus::YusError unless email != 'right@user.ch'
-        User.new
-      end
+    def allowed?(action, site)
+      action == 'edit' && site =='com.davaz'
+    end
 
-      def logout(arg)
-      end
+    def generate_token
+      '1234'
+    end
+  end
+
+  class YusServer
+    def login(email, pass, config)
+      raise Yus::YusError unless email == 'right@user.ch'
+      User.new
+    end
+
+    def logout(*args)
     end
   end
 end

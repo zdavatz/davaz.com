@@ -30,6 +30,8 @@ module DaVaz::TestCase
 end
 
 TEST_HEADLESS = true
+TEST_CLIENT_TIMEOUT = 20
+
 TEST_SRV_URI  = URI.parse(ENV['TEST_SRV_URL'] || 'http://127.0.0.1:11080')
 TEST_APP_URI  = URI.parse(ENV['TEST_APP_URL'] || 'druby://127.0.0.1:11081')
 TEST_YUS_URI  = URI.parse(ENV['TEST_YUS_URL'] || 'drbssl://127.0.0.1:10007')

@@ -85,7 +85,7 @@ module DaVaz
       return if @browser
 
       client = Selenium::WebDriver::Remote::Http::Default.new
-      client.timeout = 90
+      client.timeout = TEST_CLIENT_TIMEOUT
       @browser = DaVaz::Browser.new(:firefox, http_client: client)
     end
 
@@ -95,14 +95,5 @@ module DaVaz
       @browser.close
       @browser = nil
     end
-
-    #def login
-    #	@selenium.click "link=Login"
-    #	sleep 1
-    #  @selenium.type "login_email", "right@user.ch"
-    #  @selenium.type "login_password", "abcd"
-    #	@selenium.click "document.loginform.login"
-    #  @selenium.wait_for_page_to_load "30000"
-    #end
   end
 end

@@ -49,7 +49,7 @@ module DaVaz::State
 
     def ajax_desk
       if @session.user_input(:artobject_id)
-        Gallery::AdminAdminDeskArtobject.new(@session, [])
+        Gallery::AdminAjaxDeskArtobject.new(@session, [])
       else
         Gallery::AjaxDesk.new(@session, [])
       end

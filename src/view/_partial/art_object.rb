@@ -105,7 +105,7 @@ module DaVaz::View
       link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
       link.href = 'javascript:void(0);'
       link.set_attribute('onclick', <<~EOS)
-        showMovieGallery('movies_gallery_view', 'movies_list', '');
+        return showMovieGallery('movies_gallery_view', 'movies_list', '');
       EOS
       link
     end
@@ -213,22 +213,23 @@ module DaVaz::View
       [2, 0] => 'pipe_divider',
       [3, 0] => :cancel,
     }
+
     def build_script(model)
       name = model.name
       url  = @lookandfeel.event_url(:gallery, :ajax_add_element, [
         [:select_name,  name],
         [:select_value, '']
       ])
-      <<-EOS.gsub(/(^\s*)|\n/, '')
+      <<~EOS.gsub(/^\s*|\n/, '')
         var value  = document.artobjectform.#{name}_add_form_input.value
           , select = document.artobjectform.#{name}_id_select
           ;
-        addElement(
+        return addElement(
           select
         , '#{url}'
         , value
-        , '#{name}-add-form'
-        , '#{name}-remove-link'
+        , '#{name}_add_form'
+        , '#{name}_remove_link'
         );
       EOS
     end
@@ -247,16 +248,16 @@ module DaVaz::View
 
     def submit(model)
       link = HtmlGrid::Link.new(:submit, model, @session, self)
-      link.href = 'javascript:void(0)'
+      link.href = 'javascript:void(0);'
       link.set_attribute('onclick', build_script(model))
       link
     end
 
     def cancel(model)
       link = HtmlGrid::Link.new(:cancel, model, @session, self)
-      link.href = 'javascript:void(0)'
+      link.href = 'javascript:void(0);'
       link.set_attribute('onclick', <<~EOS.gsub(/^\s*|\n/, ''))
-        toggleInnerHTML('#{model.name}_add_form', 'null')
+        return toggleInnerHTML('#{model.name}_add_form', 'null');
       EOS
       link
     end
@@ -279,7 +280,7 @@ module DaVaz::View
       link = HtmlGrid::Link.new("add_#{model.name}", model, @session, self)
       link.href = 'javascript:void(0)'
       link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
-        toggleInnerHTML(
+        return toggleInnerHTML(
           '#{model.name}_add_form'
         , '#{@lookandfeel.event_url(:gallery, :ajax_add_form, [
             [:artobject_id, model.artobject.artobject_id],
@@ -355,9 +356,12 @@ module DaVaz::View
       [0, 0]  => 'label red',
       [0, 1]  => 'label red',
       [0, 2]  => 'label red',
+      [1, 2]  => 'serie_id_container',
       [0, 4]  => 'label red',
       [0, 7]  => 'label red',
+      [1, 7]  => 'tool_id_container',
       [0, 9]  => 'label red',
+      [1, 9]  => 'material_id_container',
       [0, 12] => 'label red',
       [0, 14] => 'label red',
       [0, 20] => 'label'
@@ -366,18 +370,13 @@ module DaVaz::View
       :form_language => :language,
     }
 
-    class << self
-      def edit_links(*args)
-        args.each { |key|
-          define_method(key) { |model|
-            model.name = key.to_s
-            EditLinks.new(model, @session, self)
-          }
-        }
+    # edit links
+    %i{serie tool material}.map do |method|
+      define_method(method) do |model|
+        model.name = method.to_s
+        EditLinks.new(model, @session, self)
       end
     end
-
-    edit_links :serie, :tool, :material
 
     def init
       super

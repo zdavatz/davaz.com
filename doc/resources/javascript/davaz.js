@@ -88,22 +88,46 @@ function checkRemovalStatus(selectValue, url) {
   });
 }
 
+// Adds new element {serie|tool|material}
 function addElement(inputSelect, url, value, addFormId, removeLinkId) {
-	url += value;	
-	toggleInnerHTML(inputSelect.parentNode, url, '', function() {
-		dojo.byId(addFormId).innerHTML='&nbsp;';
-		var removeLink = dojo.byId(removeLinkId);
-		removeLink.style.color = 'blue';
-	});
+  require([
+    'dojo/dom'
+  , 'dojo/dom-attr'
+  ], function(dom, attr) {
+    url += value;
+    // NOTE:
+    //   htmlgrid does not provide way to set id attribute for container
+    //   element in composite (CSS_ID_MAP is a config for inner component).
+    //   Therefore id attribute is needed to be set at here.
+    klass = attr.get(inputSelect.parentNode, 'class');
+    klass = klass.replace(' dijitContentPane', '');
+    attr.set(inputSelect.parentNode, 'id', klass);
+    return toggleInnerHTML(inputSelect.parentNode.id, url, '', function() {
+      var form = dom.byId(addFormId);
+      form.innerHTML = '&nbsp;';
+      var removeLink = dom.byId(removeLinkId);
+      removeLink.style.color = 'blue';
+      toggleInnerHTML(addFormId, 'null');
+    });
+  });
 }
 
+// Removes element {serie|tool|material}
 function removeElement(inputSelect, url, removeLinkId) {
-	var selectedId = inputSelect.value;
-	url += selectedId;
-	toggleInnerHTML(inputSelect.parentNode, url, '', function() {
-		var removeLink = dojo.byId(removeLinkId);
-		removeLink.style.color = 'grey';
-	});
+  require([
+    'dojo/dom'
+  , 'dojo/dom-attr'
+  ], function(dom, attr) {
+    url += inputSelect.value;
+    // See NOTE at addElement
+    klass = attr.get(inputSelect.parentNode, 'class');
+    klass = klass.replace(' dijitContentPane', '');
+    attr.set(inputSelect.parentNode, 'id', klass);
+    return toggleInnerHTML(inputSelect.parentNode.id, url, '', function() {
+      var removeLink = dom.byId(removeLinkId);
+      removeLink.style.color = 'grey';
+    });
+  });
 }
 
 // Toggles content with response of ajax request
@@ -124,21 +148,28 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
       fragmentidentifier = changeUrl;
     }
     var node = dom.byId(divId)
-      , container = node.parentNode
+      , wdgt = dijit.byId(divId)
       ;
-    var wdgt = dijit.byId(divId);
     if (url == 'null' || // cancel
         wdgt != null) {  // re:click
+      var container = node.parentNode;
       if (wdgt && wdgt.id) {
         wdgt.destroy();
         cnst.destroy(wdgt.id);
       }
+      var tag;
+      var select = String(divId).match(/container/);
+      if (select) {
+        tag = 'td';
+      } else {
+        tag = 'div';
+      }
       // re:create node as new one
-      node = cnst.create('div');
+      node = cnst.create(tag);
       attr.set(node, 'id', divId);
       cnst.place(node, container);
       // form for artobject
-      if (String(divId).match(/serie|tool|material/)) {
+      if (!select && String(divId).match(/serie|tool|material/)) {
         return;
       }
     }

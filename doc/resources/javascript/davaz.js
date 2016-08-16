@@ -106,7 +106,9 @@ function removeElement(inputSelect, url, removeLinkId) {
 	});
 }
 
-// Toggles input widgets {serie|tool|material}
+// Toggles content with response of ajax request
+//   * input widgets {serie|tool|material}
+//   * movies
 function toggleInnerHTML(divId, url, changeUrl, callback) {
   require([
     'dojo/_base/xhr'
@@ -127,7 +129,7 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
     var wdgt = dijit.byId(divId);
     if (url == 'null' || // cancel
         wdgt != null) {  // re:click
-      if (wdgt) {
+      if (wdgt && wdgt.id) {
         wdgt.destroy();
         cnst.destroy(wdgt.id);
       }
@@ -135,7 +137,10 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
       node = cnst.create('div');
       attr.set(node, 'id', divId);
       cnst.place(node, container);
-      return;
+      // form for artobject
+      if (String(divId).match(/serie|tool|material/)) {
+        return;
+      }
     }
     document.body.style.cursor = 'progress';
     xhr.get({
@@ -233,7 +238,7 @@ function showMovieGallery(divId, replaceDivId, url) {
           pane.setContent(data);
           replaceDiv(replaceDivId, divId);
           back.addToHistory({
-            changeUrl:artobjectId
+            changeUrl: artobjectId
           });
         },
       });

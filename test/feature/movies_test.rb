@@ -44,6 +44,34 @@ class TestMovies < Minitest::Test
       '/resources/uploads/images/1/111.jpeg', image.attribute_value('src'))
   end
 
+  def test_movies_pagination
+    assert_match('/en/works/movies', browser.url)
+
+    link = browser.link(:name, '111-more')
+    link.click
+
+    view = wait_until { browser.div(:id, 'movies_gallery_view') }
+    assert_match('/en/works/movies/#111', browser.url)
+    pager = view.div(:id, 'artobject_pager')
+    assert_match('Item 1 of 5', pager.text)
+
+    next_link = pager.a(:name, 'paging_next')
+    next_link.click
+
+    view = wait_until { browser.div(:id, 'movies_gallery_view') }
+    assert_match('/en/works/movies/#112', browser.url)
+    pager = view.div(:id, 'artobject_pager')
+    assert_match('Item 2 of 5', pager.text)
+
+    prev_link = pager.a(:name, 'paging_last')
+    prev_link.click
+
+    view = wait_until { browser.div(:id, 'movies_gallery_view') }
+    assert_match('/en/works/movies/#111', browser.url)
+    pager = view.div(:id, 'artobject_pager')
+    assert_match('Item 1 of 5', pager.text)
+  end
+
   #def test_stub
   #  @selenium.open "/en/works/multiples/#112"
   #  @selenium.wait_for_page_to_load "30000"

@@ -282,3 +282,8 @@ div#upload_image_div {
 div#artobject_admin_details form td.red {
   color: red;
 }
+
+/* dijit.Editor */
+.tundra .dijitToolbar {
+  border-top: 1px solid #cccccc;
+}

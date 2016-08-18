@@ -497,8 +497,11 @@ module DaVaz::View
     end
 
     def text(model)
-      dojo_tag('dijit.Editor', {id: 'html-editor', class: 'tundra'},
-               model.artobject.text)
+      # html-editor-N needs unique id for dojo widget
+      dojo_tag('dijit.Editor', {
+        'data-dojo-props':
+          "id: 'html-editor-#{model.artobject.artobject_id}', class: 'tundra'"
+      }, model.artobject.text)
     end
 
     def tags(model)

@@ -53,7 +53,7 @@ module DaVaz::Util
     end
 
     def delete_artobject(artobject_id)
-      Util::ImageHelper.delete_image(artobject_id)
+      DaVaz::Util::ImageHelper.delete_image(artobject_id)
       @db_manager.delete_artobject(artobject_id)
     end
 
@@ -62,7 +62,7 @@ module DaVaz::Util
     end
 
     def delete_image(artobject_id)
-      Util::ImageHelper.delete_image(artobject_id)
+      DaVaz::Util::ImageHelper.delete_image(artobject_id)
     end
 
     def delete_link(link_id)
@@ -282,7 +282,7 @@ module DaVaz::Util
     # save file
 
     def store_upload_image(image_file, artobject_id)
-      Util::ImageHelper.store_upload_image(image_file, artobject_id)
+      DaVaz::Util::ImageHelper.store_upload_image(image_file, artobject_id)
     end
 
     # login/logout

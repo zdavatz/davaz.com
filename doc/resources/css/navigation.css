@@ -214,73 +214,67 @@ li.left-navigation-small {
   color: white;
 }
 
-li#design_active,
+li#design_navi_active,
 a#design:hover {
   /*background-color: #FF6600;*/
   background-image: url(/resources/images/navigation/design.png);
 }
 
-li#drawings_active,
+li#drawings_navi_active,
 a#drawings:hover {
   /*background-color: #74ba7c;*/
   background-image: url(/resources/images/navigation/drawings.png);
 }
 
-li#paintings_active,
+li#paintings_navi__active,
 a#paintings:hover {
   /*background-color: #c60c6d;*/
   background-image: url(/resources/images/navigation/paintings.png);
 }
 
-li#multiples_active,
+li#multiples_navi_active,
 a#multiples:hover {
   /*background-color: #ce3dff;*/
   background-image: url(/resources/images/navigation/multiples.png);
 }
 
-li#movies_active,
+li#movies_navi_active,
 a#movies:hover {
   /*background-color: #7a8a99;*/
   background-image: url(/resources/images/navigation/movies.png);
 }
 
-li#photos_active,
+li#photos_navi_active,
 a#photos:hover {
   /*background-color: #39cece;*/
   background-image: url(/resources/images/navigation/photos.png);
 }
 
-li#carpets_active,
-a#carpets:hover {
-  /*background-color: #ff6c0d;*/
-  background-image: url(/resources/images/navigation/carpets.png);
-}
-
-li#schnitzenthesen_active,
+li#schnitzenthesen_navi_active,
 a#schnitzenthesen:hover {
   /*background-color: #9eff0c;*/
   background-image: url(/resources/images/navigation/schnitzenthesen.png);
 }
 
-li#gallery_active,
+li#gallery_navi_active,
 a#gallery:hover {
   /*background-color: #f1171d;*/
   background-image: url(/resources/images/navigation/gallery.png);
 }
 
-li#lectures_active,
+li#lectures_navi_active,
 a#lectures:hover {
   /*background-color: #6d3d0c;*/
   background-image: url(/resources/images/navigation/lectures.png);
 }
 
-li#exhibitions_active,
+li#exhibitions_navi_active,
 a#exhibitions:hover {
   /*background-color: #f1a309;*/
   background-image: url(/resources/images/navigation/exhibitions.png);
 }
 
-li#articles_active,
+li#articles_navi_active,
 a#articles:hover {
   /*background-color: #6d6dff;*/
   background-image: url(/resources/images/navigation/articles.png);

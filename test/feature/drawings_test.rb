@@ -41,9 +41,7 @@ class TestDrawings < Minitest::Test
     # cancel by re:click
     add_link.click
     input = form_table.text_field(name: 'serie_add_form_input')
-    assert_raises(Watir::Exception::UnknownObjectException) do
-      input.text
-    end
+    refute(input.exists?)
 
     # add
     add_link.click
@@ -54,9 +52,7 @@ class TestDrawings < Minitest::Test
     cancel_link = form_table.a(name: 'cancel')
     cancel_link.click
     input = form_table.text_field(name: 'serie_add_form_input')
-    assert_raises(Watir::Exception::UnknownObjectException) do
-      input.text
-    end
+    refute(input.exists?)
   end
 
   def test_admin_drawings_removing_serie_failure

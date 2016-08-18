@@ -114,7 +114,7 @@ module DaVaz::View
       ]
       links.concat(@small_links).each_with_index { |key, idx|
         components.store(idx, key)
-        css_id    = key.to_s
+        css_id    = "#{key}_navi".to_s
         css_class = 'left-navigation'
         zone = @session.zone
         if @evt == key

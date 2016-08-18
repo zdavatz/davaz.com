@@ -381,6 +381,23 @@ module DaVaz::View
     def init
       super
       error_message
+      self.onsubmit = <<~EOS.gsub(/(^\s*)|\n/, '')
+        (function(e) {
+          e.preventDefault();
+
+          return require([
+            'dojo/query'
+          , 'dijit/dijit'
+          ], function(query ,dijit) {
+            var form   = query('form[name=artobjectform]')[0]
+              , editor = dijit.byId('#{html_editor_id(@model)}')
+              ;
+            form.text.value = editor.value;
+            form.submit();
+            return true;
+          });
+        })(event);
+      EOS
     end
 
     def hidden_fields(context)
@@ -496,8 +513,8 @@ module DaVaz::View
       @lookandfeel.lookup(:text)
     end
 
+    # @note The id attribute needs unique value for dojo widget
     def text(model)
-      # html-editor-N needs unique id for dojo widget
       dojo_tag('dijit.Editor', {
         'data-dojo-props': "id: '#{html_editor_id(model)}', class: 'tundra'"
       }, model.artobject.text)
@@ -510,18 +527,7 @@ module DaVaz::View
     def update(model)
       key = (model.artobject.artobject_id ? :update : :save)
       button = HtmlGrid::Button.new(key, model, @session, self)
-      button.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
-        require([
-          'dojo/query'
-        , 'dijit/dijit'
-        ], function(query ,dijit) {
-          var form   = query('form[name=artobjectform]')[0]
-            , editor = dijit.byId('#{html_editor_id(model)}')
-            ;
-          form.text.value = editor.value;
-          form.submit();
-        });
-      EOS
+      button.set_attribute('type', 'submit')
       button
     end
 
@@ -541,7 +547,7 @@ module DaVaz::View
     # @param [OpenStruct] model the model object cotnains artobject
     # @return [String] Id string for html editor widget
     def html_editor_id(model)
-      'html-editor-' +
+      'html_editor_' +
         ((!model.artobject || !model.artobject.artobject_id) ? \
          '0' : model.artobject.artobject_id.to_s)
     end

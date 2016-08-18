@@ -56,7 +56,6 @@ module DaVaz::View
     DOJO_REQUIRE = [
       'dojo/ready',
       'dojo/back',
-      'dijit/Editor',
       'ywesee/widget/oneliner',
       'ywesee/widget/ticker',
       #'ywesee/widget/login',
@@ -233,6 +232,7 @@ module DaVaz::View
   end
 
   class AdminMoviesTemplate < CommonTemplate
+    DOJO_REQUIRE = %w{dojo/ready dojo/back dijit/Editor}
     CSS_FILES = %i{navigation_css movies_css admin_css}
   end
 

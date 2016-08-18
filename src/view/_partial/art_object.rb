@@ -499,8 +499,7 @@ module DaVaz::View
     def text(model)
       # html-editor-N needs unique id for dojo widget
       dojo_tag('dijit.Editor', {
-        'data-dojo-props':
-          "id: 'html-editor-#{model.artobject.artobject_id}', class: 'tundra'"
+        'data-dojo-props': "id: '#{html_editor_id(model)}', class: 'tundra'"
       }, model.artobject.text)
     end
 
@@ -509,13 +508,19 @@ module DaVaz::View
     end
 
     def update(model)
-      key = model.artobject.artobject_id ? :update : :save
-      button = submit(model)
+      key = (model.artobject.artobject_id ? :update : :save)
       button = HtmlGrid::Button.new(key, model, @session, self)
       button.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
-        this.form.text.value =
-         document.getElementById('html-editor').innerHTML;
-        this.form.submit();
+        require([
+          'dojo/query'
+        , 'dijit/dijit'
+        ], function(query ,dijit) {
+          var form   = query('form[name=artobjectform]')[0]
+            , editor = dijit.byId('#{html_editor_id(model)}')
+            ;
+          form.text.value = editor.value;
+          form.submit();
+        });
       EOS
       button
     end
@@ -526,6 +531,19 @@ module DaVaz::View
 
     def wordpress_url(model)
       input_text(:wordpress_url, '300', '80')
+    end
+
+    private
+
+    # Creates id for html editor (dijit.Editor) using model artobject_id.
+    # The id will be 0 for new art object.
+    #
+    # @param [OpenStruct] model the model object cotnains artobject
+    # @return [String] Id string for html editor widget
+    def html_editor_id(model)
+      'html-editor-' +
+        ((!model.artobject || !model.artobject.artobject_id) ? \
+         '0' : model.artobject.artobject_id.to_s)
     end
   end
 

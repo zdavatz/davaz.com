@@ -9,7 +9,7 @@ gem 'rclconf', '1.0.0'
 gem 'ftools', '0.0.0'
 
 gem 'sbsm', '~> 1.3.0'
-gem 'htmlgrid', '~> 1.1.1'
+gem 'htmlgrid', '~> 1.1.3'
 gem 'odba', '~> 1.1.0'
 
 gem 'yus', '1.0.1'

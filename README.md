@@ -72,20 +72,27 @@ davaz> exit
 
 ## Test
 
-### Requirements
+### Dependencies
 
-* xvfb
-
-### Dependencies (via rubygems)
-
+* Node.js
 * [minitest](https://github.com/seattlerb/minitest)
-* [Selenium](http://docs.seleniumhq.org/) ([watir-webdriver](https://watirwebdriver.com/))
+* [Selenium](http://docs.seleniumhq.org/) (via [watir](https://github.com/watir/watir))
+* [PhantomJS](https://github.com/ariya/phantomjs)
+
+### Setup
+
+```zsh
+% npm install
+% bundle install
+```
 
 ### How to run
 
 #### Test suite
 
-__TODO__
+```zsh
+% bundle exec rake test
+```
 
 #### Single feature test
 
@@ -101,19 +108,4 @@ Run options: --seed 12380
 Fabulous run in 9.634901s, 0.1038 runs/s, 0.3114 assertions/s.
 
 1 runs, 3 assertions, 0 failures, 0 errors, 0 skips
-```
-
-### Tips
-
-#### Install xvfb on Gentoo Linux
-
-The testing on davaz.com uses `xvfb` as __headless__ environment (for selenium)
-
-```zsh
-% sudo su
-...
-# echo 'x11-base/xorg-server xvfb' >> /etc/portage/package.use/xorg-server
-# exit
-
-% sudo emerge -av xorg-server
 ```

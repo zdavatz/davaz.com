@@ -22,8 +22,7 @@ gem 'dbd-pg', '0.3.9'
 
 group :test do
   gem 'minitest', '~> 5.9'
-  gem 'watir-webdriver'
-  gem 'headless'
+  gem 'watir', '~> 5.0.0'
 end
 
 group :development, :test do

@@ -11,3 +11,4 @@ Gemfile.hack
 /doc/resources/uploads/*
 
 /env
+/node_modules

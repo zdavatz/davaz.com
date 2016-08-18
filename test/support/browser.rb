@@ -1,10 +1,23 @@
-require 'watir-webdriver'
+require 'selenium-webdriver'
+require 'watir'
 
 module DaVaz
   class Browser < SimpleDelegator
 
-    def initialize(*args)
-      @browser = Watir::Browser.new(*args)
+    def initialize
+      client = Selenium::WebDriver::Remote::Http::Default.new
+      client.timeout = 90
+      path = File.expand_path(
+        '../../../node_modules/phantomjs-prebuilt/bin/phantomjs', __FILE__)
+      Selenium::WebDriver::PhantomJS.path = path
+      phantomjs_args = [
+        '--debug=true',
+        '--load-images=no',
+        '--ignore-ssl-errors=yes',
+        '--ssl-protocol=TLSv1'
+      ]
+      @browser = Watir::Browser.new(
+        :phantomjs, args: phantomjs_args, http_client: client)
       super @browser
     end
 

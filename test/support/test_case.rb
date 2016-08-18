@@ -1,4 +1,3 @@
-require 'headless'
 require 'util/app'
 require 'util/drbserver'
 
@@ -8,12 +7,6 @@ module DaVaz
 
     def before_setup
       super
-
-      if TEST_HEADLESS && !@headless
-        @headless = Headless.new
-        @headless.start
-        at_exit { @headless.destroy if @headless }
-      end
 
       startup_server
       boot_browser
@@ -31,11 +24,6 @@ module DaVaz
       close_browser
       shutdown_server
 
-      if TEST_HEADLESS && @headless
-        @headless.destroy
-        @headless = nil
-      end
-
       super
     end
 
@@ -43,6 +31,7 @@ module DaVaz
 
     def startup_server
       return if @server
+      at_exit { shutdown_server }
 
       drb_url = TEST_APP_URI.to_s
       app = DaVaz::Util::App.new
@@ -60,7 +49,7 @@ module DaVaz
           raise
         end
       end
-      #@drb.abort_on_exception = true
+      @drb.abort_on_exception = true
       @http_server = Stub.http_server(drb_url)
       @http_server.shutdown
       trap('INT') { @http_server.shutdown }
@@ -83,10 +72,9 @@ module DaVaz
 
     def boot_browser
       return if @browser
+      at_exit { close_browser }
 
-      client = Selenium::WebDriver::Remote::Http::Default.new
-      client.timeout = TEST_CLIENT_TIMEOUT
-      @browser = DaVaz::Browser.new(:firefox, http_client: client)
+      @browser = DaVaz::Browser.new
     end
 
     def close_browser

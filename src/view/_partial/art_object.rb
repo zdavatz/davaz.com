@@ -278,7 +278,7 @@ module DaVaz::View
 
     def add(model)
       link = HtmlGrid::Link.new("add_#{model.name}", model, @session, self)
-      link.href = 'javascript:void(0)'
+      link.href = 'javascript:void(0);'
       link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
         return toggleInnerHTML(
           '#{model.name}_add_form'
@@ -295,7 +295,7 @@ module DaVaz::View
       link = HtmlGrid::Link.new(
         "remove_#{model.name}", model, @session, self)
       link.css_id = "#{model.name}_remove_link"
-      link.href   = 'javascript:void(0)'
+      link.href   = 'javascript:void(0);'
       link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
         return removeElement(
           document.artobjectform.#{model.name}_id
@@ -493,7 +493,7 @@ module DaVaz::View
 
     def reset(model)
       button = HtmlGrid::Button.new(:reset, model, @session, self)
-      button.set_attribute("type", "reset")
+      button.set_attribute('type', 'reset')
       button
     end
 
@@ -547,9 +547,9 @@ module DaVaz::View
     # @param [OpenStruct] model the model object cotnains artobject
     # @return [String] Id string for html editor widget
     def html_editor_id(model)
-      'html_editor_' +
-        ((!model.artobject || !model.artobject.artobject_id) ? \
-         '0' : model.artobject.artobject_id.to_s)
+      obj = model.artobject
+      "html_editor_#{obj.artgroup.downcase}_" +
+        ((!obj || !obj.artobject_id) ? '0' : obj.artobject_id.to_s)
     end
   end
 
@@ -602,10 +602,10 @@ module DaVaz::View
       0 => 'artobject_outer_composite',
       1 => 'artobject_inner_composite',
     }
-  end
-
-  class AdminArtObject < AdminGalleryTemplate
-    CONTENT = AdminArtObjectComposite
+    HTTP_HEADERS = {
+      'type'    => 'text/html',
+      'charset' => 'UTF-8'
+    }
   end
 
   class AdminMoviesArtObjectComposite < HtmlGrid::DivComposite
@@ -621,5 +621,9 @@ module DaVaz::View
       'type'    => 'text/html',
       'charset' => 'UTF-8'
     }
+  end
+
+  class AdminArtObject < AdminGalleryTemplate
+    CONTENT = AdminArtObjectComposite
   end
 end

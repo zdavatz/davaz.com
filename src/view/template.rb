@@ -175,7 +175,7 @@ module DaVaz::View
     CSS_FILES = %i{navigation_css exhibitions_css}
   end
 
-  class GalleryTemplate < Template
+  class GalleryTemplate < CommonTemplate
     CSS_FILES = %i{navigation_css gallery_css}
   end
 
@@ -219,40 +219,43 @@ module DaVaz::View
     CSS_FILES = %i{navigation_css communication_css}
   end
 
-  class AdminDesignTemplate < CommonTemplate
+  class AdminTemplate < CommonTemplate
+    DOJO_REQUIRE = %w{dojo/ready dojo/back dijit/Editor}
+  end
+
+  class AdminDesignTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css design_css admin_css}
   end
 
-  class AdminDrawingsTemplate < CommonTemplate
+  class AdminDrawingsTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css drawings_css admin_css}
   end
 
-  class AdminGalleryTemplate < CommonTemplate
+  class AdminGalleryTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css gallery_css admin_css}
   end
 
-  class AdminMoviesTemplate < CommonTemplate
-    DOJO_REQUIRE = %w{dojo/ready dojo/back dijit/Editor}
+  class AdminMoviesTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css movies_css admin_css}
   end
 
-  class AdminPaintingsTemplate < CommonTemplate
+  class AdminPaintingsTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css paintings_css admin_css}
   end
 
-  class AdminPersonalTemplate < CommonTemplate
+  class AdminPersonalTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css personal_css admin_css}
   end
 
-  class AdminPhotosTemplate < CommonTemplate
+  class AdminPhotosTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css photos_css admin_css}
   end
 
-  class AdminSchnitzenthesenTemplate < CommonTemplate
+  class AdminSchnitzenthesenTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css schnitzenthesen_css admin_css}
   end
 
-  class AdminCommunicationTemplate < CommonTemplate
+  class AdminCommunicationTemplate < AdminTemplate
     CSS_FILES = %i{
       navigation_css communication_css admin_css communication_admin_css
     }

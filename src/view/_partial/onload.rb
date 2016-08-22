@@ -17,7 +17,7 @@ module DaVaz::View
 
     def init
       url = @lookandfeel.event_url(:gallery, :ajax_rack, [:serie_id, nil])
-      self.onload = <<~EOS
+      self.onload = <<~EOS.gsub(/\n|^\s*/, '')
         (function() {
           if (location.hash == '') {
             #{add_location_hash}
@@ -25,18 +25,18 @@ module DaVaz::View
           var bookmarkId = location.hash;
           if (bookmarkId) {
             bookmarkId = bookmarkId.substring(1, bookmarkId.length);
-            var show_type    = bookmarkId.split('_')[0]
-              , serie_id     = bookmarkId.split('_')[1]
-              , artobject_id = bookmarkId.split('_')[2]
+            var showType    = bookmarkId.split('_')[0]
+              , serieId     = bookmarkId.split('_')[1]
+              , artobjectId = bookmarkId.split('_')[2]
               ;
-            var url = '#{url}' + serie_id;
-            if (artobject_id) {
-              url += '/artobject_id/' + artobject_id;
-              toggleShow('show', url, show_type,
-                'show_wipearea', serie_id, artobject_id);
+            var url = '#{url}' + serieId;
+            if (artobjectId) {
+              url += '/artobject_id/' + artobjectId;
+              toggleShow('show', url, showType,
+                'show_wipearea', serieId, artobjectId);
             } else {
-              toggleShow('show', url, show_type,
-                'show_wipearea', serie_id);
+              toggleShow('show', url, showType,
+                'show_wipearea', serieId);
             }
           }  else {
             #{add_location_hash}

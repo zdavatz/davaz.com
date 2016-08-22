@@ -2,38 +2,6 @@ require 'view/_partial/art_object'
 
 module DaVaz
   module View
-    class RackPager < Pager
-
-      def pager_link(link)
-        artobject_id = link.attributes['href'].split('/').last
-        serie_id     = @session.user_input(:serie_id)
-        url = @lookandfeel.event_url(:gallery, :ajax_rack, [
-          [:serie_id, serie_id],
-          [:artobject_id, artobject_id],
-        ])
-        link.href = "javascript:void(0)"
-        link.set_attribute('onclick', <<~TGGL)
-          toggleShow(
-            'show', '#{url}', 'desk', null, '#{serie_id}', '#{artobject_id}');
-        TGGL
-        link
-      end
-
-      def next(model)
-        unless (link = super).nil?
-          link = super
-          pager_link(link)
-        end
-      end
-
-      def last(model)
-        unless (link = super).nil?
-          link = super
-          pager_link(link)
-        end
-      end
-    end
-
     class RackArtObjectOuterComposite < HtmlGrid::DivComposite
       COMPONENTS = {
         [0, 0] => RackPager,

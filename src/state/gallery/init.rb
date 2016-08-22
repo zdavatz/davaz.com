@@ -4,7 +4,7 @@ require 'state/_partial/art_object'
 require 'view/_partial/art_object'
 require 'view/_partial/rack'
 require 'view/_partial/ajax'
-require 'view/gallery/init'
+require 'view/gallery/gallery'
 require 'view/gallery/result'
 
 module DaVaz::State

@@ -60,8 +60,8 @@ module DaVaz::State
       VOLATILE = true
 
       def init
-        serie_id = @session.user_input(:serie_id)
-        @model = @session.app.load_serie(serie_id).artobjects
+        serie = @session.app.load_serie(@session.user_input(:serie_id))
+        @model = serie.artobjects if serie
       end
     end
 

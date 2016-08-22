@@ -226,7 +226,7 @@ a#drawings:hover {
   background-image: url(/resources/images/navigation/drawings.png);
 }
 
-li#paintings_navi__active,
+li#paintings_navi_active,
 a#paintings:hover {
   /*background-color: #c60c6d;*/
   background-image: url(/resources/images/navigation/paintings.png);

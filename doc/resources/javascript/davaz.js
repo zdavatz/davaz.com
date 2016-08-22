@@ -345,7 +345,7 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
   , 'ywesee/widget/slide'
   , 'ywesee/widget/desk'
   ], function(win, xhr, parser, dom, attr, cnst, query, fx, back, dijit) {
-    var wrapper   = dom.byId('show_wipearea')
+    var wrapper   = dom.byId(replaceId)
       , container = dom.byId(id + '_container')
       ;
 
@@ -396,7 +396,7 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
       anchor = anchor + '_' + artobjectId;
     }
 
-    var loadWidget = function(type, container, callback) {
+    var loadWidget = function(type, url, anchor, container, callback) {
       var data      = {dataUrl: url, anchor: anchor}
         , domNode   = win.doc.createElement('div')
         ;
@@ -455,12 +455,25 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
             cnst.destroy(wdgt.id);
             wdgt = null;
 
-            loadWidget.call(this, type, container, callback);
+            loadWidget.call(this, type, url, anchor, container, callback);
           }
         }
       }).play();
     } else { // initialize
-      attr.set(wrapper, 'data-toggle-action', 'false');
+      if (type == 'desk') {
+        // jump to detail view
+        var btns  = query('#' + replaceId + ' .multimedia-buttons')[0]
+          , links = query('#serie_links')[0]
+          ;
+        cnst.destroy(btns);
+        cnst.destroy(links);
+        container.innerHTML = '';
+        loadWidget.call(this, type, url, anchor, container, function() {
+          attr.set(wrapper, 'data-toggle-action', 'false');
+        });
+      } else {
+        attr.set(wrapper, 'data-toggle-action', 'false');
+      }
     }
   });
 }

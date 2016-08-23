@@ -31,22 +31,25 @@ module DaVaz::View
         else
           @link_id ||= 0
           @link_id += 1
-          args = [ :artobject_id, artobject.artobject_id  ]
-          url = @lookandfeel.event_url(:tooltip, :tooltip, args)
           span = HtmlGrid::Span.new(@model, @session, self)
-          span.value        = link.word
-          span.css_class    = 'blue'
-          span.css_id       = ['connect', link.link_id, @link_id].join('_')
-          span.dojo_tooltip = url
+          span.value     = link.word
+          span.css_id    = ['tooltip', link.link_id, @link_id].join('_')
+          span.css_class = 'tooltip blue'
+          span.set_attribute(
+            :href,
+            @lookandfeel.event_url(:tooltip, :tooltip, [
+              [:artobject_id, artobject.artobject_id]
+            ])
+          )
           span.to_html(context)
         end
       elsif link.artobjects.size > 1
         lnk = HtmlGrid::Link.new(link.word, @model, @session, self)
         lnk.href  = 'javascript:void(0)'
         lnk.value = link.word
-        lnk.set_attribute('onclick', <<~TGGL)
-          toggleHiddenDiv('#{link.link_id}-hidden-div');
-        TGGL
+        lnk.set_attribute('onclick', <<~EOS)
+          return toggleHiddenDiv('#{link.link_id}-hidden-div');
+        EOS
         lnk.to_html(context)
       end
     end
@@ -120,14 +123,14 @@ module DaVaz::View
     def hide_link(link, context)
       hide_link = HtmlGrid::Link.new(:hide_link, @model,
         @session, self)
-      hide_link.href = 'javascript:void(0)'
+      hide_link.href = 'javascript:void(0);'
       span = HtmlGrid::Span.new(@model, @session, self)
       span.css_class = 'hide-hidden-div-link'
       span.value     = @lookandfeel.lookup(:hide)
       hide_link.value = span.to_html(context)
-      hide_link.set_attribute('onclick', <<~TGGL)
-        toggleHiddenDiv('#{link.link_id}-hidden-div');
-      TGGL
+      hide_link.set_attribute('onclick', <<~EOS)
+        return toggleHiddenDiv('#{link.link_id}-hidden-div');
+      EOS
       hide_link.to_html(context)
     end
 
@@ -156,7 +159,7 @@ module DaVaz::View
     def title_to_html(context)
       return '' if @model.title.empty?
       context.div('class' => 'block-title') {
-        link = context.a('name' => @model.title.downcase.gsub(/\s+/,"")) {
+        link = context.a('name' => @model.title.downcase.gsub(/\s+/, '')) {
           add_links(@model.title, context)
         }
       }

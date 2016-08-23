@@ -24,6 +24,26 @@ module DaVaz::View
       COMPONENTS = {
         [0, 0] => TextBlock,
       }
+
+      def init
+        super
+        self.onload = <<~EOS.gsub(/\n|^\s*/, '')
+          (function() {
+            require([
+              'dojo/query'
+            ], function(query) {
+              query('span.tooltip').forEach(function(node) {
+                return setHrefTooltip(
+                  node.id,
+                  node.id,
+                  'tooltip_' + String(node.id),
+                  ['below-alt', 'above-centered']
+                );
+              });
+            });
+          })();
+        EOS
+      end
     end
 
     class InspirationComposite < HtmlGrid::DivComposite
@@ -37,9 +57,9 @@ module DaVaz::View
 
       def india_ticker_link(model)
         link = HtmlGrid::Link.new(:india_ticker_link, model, @session, self)
-        link.href = "javascript:void(0)"
+        link.href  = 'javascript:void(0);'
         link.value = @lookandfeel.lookup(:india_ticker_link)
-        link.set_attribute('onclick', 'toggleTicker();')
+        link.set_attribute('onclick', 'return toggleTicker();')
         div = HtmlGrid::Div.new(model, @session, self)
         div.css_id = 'ticker_link'
         div.value  = link

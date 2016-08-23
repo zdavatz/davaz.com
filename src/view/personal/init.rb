@@ -38,6 +38,7 @@ module DaVaz::View
     class Photo < HtmlGrid::Div
       CSS_CLASS = 'photo'
       CSS_ID    = 'photo_davaz'
+
       def init
         super
         img = HtmlGrid::Image.new(:photo_davaz, model, @session, self)
@@ -282,6 +283,18 @@ module DaVaz::View
         [10, 0] => MovieLinks,
         [11, 0] => PayPalDiv,
       }
+
+      def init
+        super
+        self.onload = <<~EOS.gsub(/\n|^\s*/, '')
+          (function() {
+            setHrefTooltip('photo_davaz',
+              'davaz', 'art', ['below-alt']);
+            setHrefTooltip('pic_bottleneck',
+              'bottleneck', 'bottleneck', ['below-alt']);
+          })();
+        EOS
+      end
     end
 
     class Init < Template

@@ -135,7 +135,9 @@ div.tooltip-container {
 }
 
 img.image-tooltip-image {
-  display: inline;
+  display:    inline;
+  max-width:  375px;
+  max-height: 400px;
 }
 
 div.tooltip-title {

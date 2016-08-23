@@ -673,8 +673,8 @@ function setHrefTooltip(domId, hrefHolderId, dialogId, orient) {
       ;
     if (targetDom === null || holder === null) { return }
     var artDialog = new TooltipDialog({
-          id:           dialogId + 'Dialog'
-        , style:        'width:400px;'
+          id:           dialogId + '_dialog'
+        , style:        'width: 400px;'
         , href:         attr.get(holder, 'href')
         , onMouseLeave: function() {
             popup.close(artDialog);
@@ -692,6 +692,3 @@ function setHrefTooltip(domId, hrefHolderId, dialogId, orient) {
     });
   });
 }
-
-setHrefTooltip('photo_davaz',    'davaz',      'art',        ['below-alt']);
-setHrefTooltip('pic_bottleneck', 'bottleneck', 'bottleneck', ['below-alt']);

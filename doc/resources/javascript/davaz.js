@@ -115,8 +115,9 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
   , 'dojo/dom-attr'
   , 'dojo/dom-construct'
   , 'dijit/dijit'
+  , 'dijit/layout/ContentPane'
   , 'dojo/domReady!'
-  ], function(xhr, back, dom, attr, cnst, dijit) {
+  ], function(xhr, back, dom, attr, cnst, dijit, contentPane) {
     var fragmentidentifier = '';
     if (changeUrl) {
       fragmentidentifier = changeUrl;
@@ -152,7 +153,7 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
       url:      url
     , handleAs: 'text'
     , load:     function(data, request) {
-        var pane = new dijit.layout.ContentPane({
+        var pane = new contentPane({
           id:             divId
         , executeScripts: true
         }, node);
@@ -175,7 +176,8 @@ function showMovieGallery(divId, replaceDivId, url) {
   , 'dojo/dom-attr'
   , 'dojo/back'
   , 'dijit/dijit'
-  ], function(xhr, dom, attr, back, dijit) {
+  , 'dijit/layout/ContentPane'
+  ], function(xhr, dom, attr, back, dijit, contentPane) {
 	  var node = dom.byId(divId);
     if (node.style.display == 'none') {
 	    var artobjectId = url.split('/').pop();
@@ -185,7 +187,7 @@ function showMovieGallery(divId, replaceDivId, url) {
       , load:      function(data, request) {
           var pane = dijit.byId(divId);
           if (pane == null) {
-            pane = new dijit.layout.ContentPane({
+            pane = new contentPane({
               id:             divId
             , executeScripts: true
             }, node);

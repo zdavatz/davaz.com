@@ -250,13 +250,16 @@ img.slide-control-image {
 
 
 div#show_container {
-  width:  700px !important;
+  width:  800px !important;
   margin: 0 auto;
 }
 
+div.desk-content {
+  width: 800px;
+}
+
 div#rack_result_list_composite {
-  width:       800px;
-  margin-left: -52px;
+  width: 800px;
 }
 
 table#result_list_column_names {

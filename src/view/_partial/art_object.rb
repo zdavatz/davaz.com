@@ -61,7 +61,7 @@ module DaVaz::View
     def image(model=@model)
       return '' unless model
       img = HtmlGrid::Image.new(model.artobject_id, model, @session, self)
-      img.css_id = 'artobject_image'
+      img.css_id = "artobject_image_#{model.artobject_id}"
       img.set_attribute(
         'src', DaVaz::Util::ImageHelper.image_url(model.artobject_id))
       return img if model.url.empty?

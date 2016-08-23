@@ -32,7 +32,8 @@ module DaVaz::View
         end
         link.href = @lookandfeel.event_url(:gallery, :art_object, args)
         image = HtmlGrid::Image.new(:paging_next, model, @session, self)
-        image_src = @lookandfeel.resource(:paging_next)
+        image_src  = @lookandfeel.resource(:paging_next)
+        image.set_attribute('name', 'paging_next_image')
         image.set_attribute('src', image_src)
         link.value = image
         link
@@ -57,7 +58,8 @@ module DaVaz::View
 
         link.href = @lookandfeel.event_url(:gallery, :art_object, args)
         image = HtmlGrid::Image.new(:paging_last, model, @session, self)
-        image_src = @lookandfeel.resource(:paging_last)
+        image_src  = @lookandfeel.resource(:paging_last)
+        image.set_attribute('name', 'paging_last_image')
         image.set_attribute('src', image_src)
         link.value = image
         link

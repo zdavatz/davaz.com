@@ -39,7 +39,7 @@ class TestMovies < Minitest::Test
     view = wait_until { browser.div(:id, 'movies_gallery_view') }
     assert_match('/en/works/movies/#111', browser.url)
 
-    image = view.img(:id, 'artobject_image')
+    image = view.img(:id, 'artobject_image_111')
     assert_match(
       '/resources/uploads/images/1/111.jpeg', image.attribute_value('src'))
   end
@@ -56,7 +56,7 @@ class TestMovies < Minitest::Test
     assert_match('Item 1 of 5', pager.text)
 
     next_link = pager.a(:name, 'paging_next')
-    next_link.click
+    next_link.fire_event('onclick')
 
     view = wait_until { browser.div(:id, 'movies_gallery_view') }
     assert_match('/en/works/movies/#112', browser.url)
@@ -64,7 +64,7 @@ class TestMovies < Minitest::Test
     assert_match('Item 2 of 5', pager.text)
 
     prev_link = pager.a(:name, 'paging_last')
-    prev_link.click
+    prev_link.fire_event('onclick')
 
     view = wait_until { browser.div(:id, 'movies_gallery_view') }
     assert_match('/en/works/movies/#111', browser.url)

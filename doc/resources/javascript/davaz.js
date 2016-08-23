@@ -460,20 +460,10 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
         }
       }).play();
     } else { // initialize
-      if (type == 'desk') {
-        // jump to detail view
-        var btns  = query('#' + replaceId + ' .multimedia-buttons')[0]
-          , links = query('#serie_links')[0]
-          ;
-        cnst.destroy(btns);
-        cnst.destroy(links);
-        container.innerHTML = '';
-        loadWidget.call(this, type, url, anchor, container, function() {
-          attr.set(wrapper, 'data-toggle-action', 'false');
-        });
-      } else {
+      container.innerHTML = '';
+      loadWidget.call(this, type, url, anchor, container, function() {
         attr.set(wrapper, 'data-toggle-action', 'false');
-      }
+      });
     }
   });
 }

@@ -10,6 +10,29 @@ class TestGallery < Minitest::Test
 
   def test_gallery
     assert_match('/en/gallery/gallery', browser.url)
+
+    show_container = Proc.new {
+      wait_until { browser.div(id: 'show_container') }
+    }
+    container = show_container.yield
+    widget = wait_until { container.div(id: 'ywesee_widget_rack_0') }
+    refute(widget.exists?)
+
+    # serie ABC
+    link = wait_until { browser.link(id: 'ABC') }
+    link.click
+
+    container = show_container.yield
+    widget = wait_until { container.div(id: 'ywesee_widget_rack_0') }
+    assert(widget.exists?)
+
+    # serie ABD
+    link = wait_until { browser.link(id: 'ABD') }
+    link.click
+
+    container = show_container.yield
+    widget = wait_until { container.div(id: 'ywesee_widget_rack_1') }
+    assert(widget.exists?)
   end
 
   #def test_test_gallery

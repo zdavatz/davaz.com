@@ -66,18 +66,24 @@ module DaVaz::State
     end
 
     # @api ajax
+    # @note responds to:
+    #   /de/gallery/ajax_rack/artgroup_id/XXX/serie_id/XXX
     class AjaxRack < SBSM::State
       VOLATILE = true
       VIEW     = DaVaz::View::Ajax
 
       def init
         artobject_ids = []
-        images = []
-        titles = []
-        serie_id = @session.user_input(:serie_id)
+        images        = []
+        titles        = []
+        artobject_id = @session.user_input(:artobject_id)
+        artgroup_id  = @session.user_input(:artgroup_id)
+        serie_id     = @session.user_input(:serie_id)
         serie = @session.load_serie(serie_id)
         if serie
           serie.artobjects.each { |obj|
+            next if artobject_id && obj.artobject_id != artobject_id
+            next if artgroup_id && obj.artgroup_id != artgroup_id
             if DaVaz::Util::ImageHelper.has_image?(obj.artobject_id)
               image = DaVaz::Util::ImageHelper.image_url(
                 obj.artobject_id, 'slide')

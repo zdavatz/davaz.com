@@ -86,7 +86,7 @@ module DaVaz
 
       def count_artobjects(by, id)
         result = connection.query(<<~SQL.gsub(/\n/, ''))
-          SELECT count(*) FROM artobjects WHERE #{by}='#{id}'
+          SELECT count(*) FROM artobjects WHERE #{by} = '#{id}'
         SQL
         return 0 unless result
         result.first['count(*)']
@@ -724,46 +724,47 @@ module DaVaz
       end
 
       def insert_artobject(values_hash)
-        values = values_hash.each { |key, value|
+        data = values_hash.map { |key, value|
           next if !value || key == :tags
-          "#{key}='#{Mysql.quote(value)}'"
-        }
+          [key.to_s, "'#{connection.escape(value)}'"]
+        }.compact.to_h
+        artobject_id = nil
         transaction do |conn|
-          result = connection.query(<<~SQL.gsub(/\n/, ''))
-            INSERT INTO artobjects SET #{values.join(', ')}
+          result = conn.query(<<~SQL.gsub(/\n/, ''))
+            INSERT INTO artobjects (#{data.keys.join(',')})
+             VALUES (#{data.values.join(',')})
           SQL
-          artobject_id = conn.insert_id
+          artobject_id = conn.last_id
           tags = values_hash[:tags]
           unless tags.nil? || tags.empty?
             tags.each do |tag|
               unless tag.empty?
-                connection.query(<<~SQL.gsub(/\n/, ''))
-                  INSERT INTO tags (name) VALUES('#{tag}')
+                conn.query(<<~SQL.gsub(/\n/, ''))
+                  INSERT INTO tags (name) VALUES ('#{tag}')
                    ON DUPLICATE KEY UPDATE
-                   tag_id=LAST_INSERT_ID(tag_id), name=name
+                   tag_id = LAST_INSERT_ID(tag_id), name = name
                 SQL
-                connection.query(<<~SQL.gsub(/\n/, ''))
-                  INSERT INTO tags_artobjects
-                   SET
-                   tag_id = '#{conn.insert_id}',
-                   artobject_id='#{artobject_id}'
+                conn.query(<<~SQL.gsub(/\n/, ''))
+                  INSERT INTO tags_artobjects (tag_id, artobject_id)
+                   VALUES ('#{conn.last_id}', '#{artobject_id}')
                 SQL
               end
             end
           end
-          artobject_id
         end
+        artobject_id
       end
 
       def insert_guest(user_values)
         values = [Time.now.strftime('%Y-%m-%d')]
         %i{name city country email messagetxt}.each do |key|
-          values.push(Mysql.escape_string(user_values[key].to_s))
+          values.push(connection.escape(user_values[key].to_s))
         end
         connection.query(<<~SQL.gsub(/\n/, ''))
           INSERT INTO guestbook
-           VALUES ('','#{values.join("','")}')
+           VALUES ('', '#{values.join("','")}')
         SQL
+        connection.last_id
       end
 
       def create_model_array(model_class, result)
@@ -792,19 +793,19 @@ module DaVaz
 
       def remove_serie(serie_id)
         query_affected_rows(<<~SQL.gsub(/\n/, ''))
-          DELETE FROM series WHERE serie_id='#{serie_id}'
+          DELETE FROM series WHERE serie_id = '#{serie_id}'
         SQL
       end
 
       def remove_tool(tool_id)
         query_affected_rows(<<~SQL.gsub(/\n/, ''))
-          DELETE FROM tools WHERE tool_id='#{tool_id}'
+          DELETE FROM tools WHERE tool_id = '#{tool_id}'
         SQL
       end
 
       def remove_material(material_id)
         query_affected_rows(<<~SQL.gsub(/\n/, ''))
-          DELETE FROM materials WHERE material_id='#{material_id}'
+          DELETE FROM materials WHERE material_id = '#{material_id}'
         SQL
       end
 
@@ -835,7 +836,7 @@ module DaVaz
           tags = update_hash[:tags]
           if tags && !tags.empty?
             add_tag_statement = conn.prepare(<<~SQL.gsub(/\n/, ''))
-              INSERT INTO tags (name) VALUES(?) ON DUPLICATE KEY UPDATE
+              INSERT INTO tags (name) VALUES (?) ON DUPLICATE KEY UPDATE
                tag_id = LAST_INSERT_ID(tag_id), name = name
             SQL
             tags.each { |tag|
@@ -871,8 +872,8 @@ module DaVaz
       def update_currency(origin, target, rate)
         query_affected_rows(<<~SQL.gsub(/\n/, ''))
           UPDATE currencies
-           SET rate='#{rate}'
-           WHERE origin='#{origin}' AND target='#{target}';
+           SET rate = '#{rate}'
+           WHERE origin = '#{origin}' AND target = '#{target}';
         SQL
       end
 
@@ -882,15 +883,15 @@ module DaVaz
           next unless key == :tags
           if key == :date_gb
             date = value.split(".")
-            "date='#{date[2]}-#{date[1]}-#{date[0]}'"
+            "date = '#{date[2]}-#{date[1]}-#{date[0]}'"
           else
-            "#{key}='#{Mysql.quote(value)}'"
+            "#{key} = '#{connection.escape(value)}'"
           end
         }.compact
         query_affected_rows(<<~SQL.gsub(/\n/, ''))
           UPDATE guestbook
            SET #{values.join(', ')}
-           WHERE guest_id='#{guest_id}'
+           WHERE guest_id = '#{guest_id}'
         SQL
       end
 

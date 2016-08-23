@@ -69,7 +69,8 @@ module DaVaz::State
           @session.app.update_artobject(artobject_id, data)
         else
           insert_id = @session.app.insert_artobject(data)
-          if tmp_image_path = @model.artobject.tmp_image_path
+          tmp_image_path = @model.artobject.tmp_image_path
+          if insert_id && tmp_image_path
             image_path = @model.artobject.tmp_image_path
             DaVaz::Util::ImageHelper.store_tmp_image(image_path, insert_id)
           end

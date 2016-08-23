@@ -4,6 +4,7 @@ require 'htmlgrid/errormessage'
 require 'htmlgrid/inputfile'
 require 'htmlgrid/link'
 require 'htmlgrid/image'
+require 'htmlgrid/button'
 require 'view/template'
 require 'view/_partial/form'
 require 'view/_partial/select'
@@ -548,7 +549,7 @@ module DaVaz::View
     # @return [String] Id string for html editor widget
     def html_editor_id(model)
       obj = model.artobject
-      "html_editor_#{obj.artgroup.downcase}_" +
+      "html_editor_#{obj.artgroup ? obj.artgroup.downcase : 'new'}_" +
         ((!obj || !obj.artobject_id) ? '0' : obj.artobject_id.to_s)
     end
   end

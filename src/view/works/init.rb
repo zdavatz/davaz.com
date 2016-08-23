@@ -33,7 +33,7 @@ module DaVaz::View
       }
 
       def series(model)
-        super(model, 'null')
+        super(model, 'show_container')
       end
     end
   end

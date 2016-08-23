@@ -88,7 +88,7 @@ define([
       this.fillInTemplate();
     }
   });
-  //ready(function() {
-  //  parser.parse();
-  //});
+  ready(function() {
+    parser.parse();
+  });
 });

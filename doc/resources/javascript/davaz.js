@@ -1,21 +1,4 @@
-function submitForm(form, dataDivId, formDivId, keepForm) {
-	var formDiv = dojo.byId(formDivId);
-	var dataDiv = dojo.byId(dataDivId);
-	document.body.style.cursor = 'progress';
-	dojo.io.iframe.send({
-		url: form.action,
-		form: form,
-		load: function(data, request) {
-			dataDiv.innerHTML = data.body.innerHTML;	
-			if(!keepForm) {
-				formDiv.innerHTML = "";
-			}	
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'html'
-	});
-}
-
+// Displays ticker widget
 function toggleTicker() {
   require([
     'dojo/dom'
@@ -49,16 +32,7 @@ function toggleTicker() {
   });
 }
 
-function toggleHiddenDiv(divId) {
-	var node = dojo.byId(divId);
-	var display = node.style.display; 
-	if(display=="none") {
-		dojo.fx.wipeIn(node, 300).play();	
-	} else {
-		dojo.fx.wipeOut(node, 300).play();	
-	}
-}
-
+// Checks removable states
 function checkRemovalStatus(selectValue, url) {
   require([
     'dojo/_base/xhr'
@@ -193,57 +167,6 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
   });
 }
 
-function toggleUploadImageForm(divId, url) {
-	var node = dojo.byId(divId);
-	if(node.innerHTML === '') {
-		document.body.style.cursor = 'progress';
-		dojo.xhrGet({
-			url: url,
-			load: function(data, request) {
-				node.style.display = 'none';
-				node.innerHTML = data;
-				dojo.fx.wipeIn(node, 300).play();
-				document.body.style.cursor = 'auto';
-			},
-			handleAs: 'text'
-		});
-	} else {
-		dojo.fx.wipeOut(node, 300, null, function() {
-			node.innerHTML = "";
-		}).play();
-	}
-}
-
-function reloadShoppingCart(url, count) {	
-	if(parseInt(count)===count-0) {
-		var node = dojo.byId('shopping_cart');
-		document.body.style.cursor = 'progress';
-		dojo.xhrGet({
-			url: url + count,
-			load: function(data, request) {
-				node.innerHTML = data;
-				document.body.style.cursor = 'auto';
-			},
-			handleAs: 'text'
-		});	
-	}
-}
-
-function removeFromShoppingCart(url, fieldId) {
-	var node = dojo.byId('shopping_cart');
-	var inputNode = dojo.byId(fieldId);
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-			node.innerHTML = data;
-			inputNode.value = '0';
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'text'
-	});
-}
-
 // Shows movie detail view using replaceDiv
 function showMovieGallery(divId, replaceDivId, url) {
   require([
@@ -263,7 +186,8 @@ function showMovieGallery(divId, replaceDivId, url) {
           var pane = dijit.byId(divId);
           if (pane == null) {
             pane = new dijit.layout.ContentPane({
-              executeScripts: true
+              id:             divId
+            , executeScripts: true
             }, node);
           }
           pane.setContent(data);
@@ -301,30 +225,6 @@ function replaceDiv(id, replaceId) {
     , onEnd:    callback
     }).play();
   });
-}
-
-function toggleDeskContent(id, serieId, objectId, url, wipe) {
-	var fragmentIdentifier = 'Detail_' + serieId + '_' + objectId;
-	var reloadDesk = function() {
-		var desk = dijit.byId(id);
-		dojo.xhrGet({
-			url: url,	
-			load: function(data, event) {
-				desk.toggleInnerHTML(data);
-				if(wipe === true) {
-					dojo.fx.wipeIn('show_wipearea', 1000).play();
-				}
-        dojo.back.addToHistory({changeUrl:fragmentIdentifier});
-			}, 
-			handleAs: "text"
-		});
-	};
-
-	if(wipe === true) {
-		dojo.fx.wipeOut({node:'show_wipearea', duration:1000, onEnd:reloadDesk}).play();
-	} else {
-		reloadDesk();
-	}
 }
 
 // Toggles show widgets {rack|slide|desk}
@@ -468,6 +368,166 @@ function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
   });
 }
 
+// Displays login form
+function toggleLoginForm(loginLink, url) {
+  require([
+    'dojo/_base/window'
+  , 'dojo/domReady!'
+  , 'ywesee/widget/login'
+  ], function(win) {
+    var newDiv = document.createElement('div');
+    win.body().appendChild(newDiv);
+    loginLink.onclick = 'return false;';
+    var login = new ywesee.widget.login({
+      loginLink:    loginLink
+    , loginFormUrl: url
+    , oldOnclick:   loginLink.onclick
+    }, newDiv);
+    login.startup();
+  });
+}
+
+// Makes tooltips
+function setHrefTooltip(domId, hrefHolderId, dialogId, orient) {
+  require([
+    'dijit/TooltipDialog'
+  , 'dijit/popup'
+  , 'dojo/on'
+  , 'dojo/dom'
+  , 'dojo/dom-attr'
+  , 'dojo/domReady!'
+  ], function(TooltipDialog, popup, on, dom, attr) {
+    var targetDom = dom.byId(domId)
+      , holder    = dom.byId(hrefHolderId)
+      ;
+    if (targetDom === null || holder === null) { return }
+    var artDialog = new TooltipDialog({
+          id:           dialogId + '_dialog'
+        , style:        'width: 400px;'
+        , href:         attr.get(holder, 'href')
+        , onMouseLeave: function() {
+            popup.close(artDialog);
+          }
+        });
+    on(targetDom, 'mouseover', function() {
+      popup.open({
+        popup:  artDialog
+      , around: targetDom
+      , orient: orient
+      });
+    });
+    on(targetDom, 'mouseleave', function() {
+      popup.close(artDialog);
+    });
+  });
+}
+
+//
+
+function toggleUploadImageForm(divId, url) {
+	var node = dojo.byId(divId);
+	if(node.innerHTML === '') {
+		document.body.style.cursor = 'progress';
+		dojo.xhrGet({
+			url: url,
+			load: function(data, request) {
+				node.style.display = 'none';
+				node.innerHTML = data;
+				dojo.fx.wipeIn(node, 300).play();
+				document.body.style.cursor = 'auto';
+			},
+			handleAs: 'text'
+		});
+	} else {
+		dojo.fx.wipeOut(node, 300, null, function() {
+			node.innerHTML = "";
+		}).play();
+	}
+}
+
+function toggleDeskContent(id, serieId, objectId, url, wipe) {
+	var fragmentIdentifier = 'Detail_' + serieId + '_' + objectId;
+	var reloadDesk = function() {
+		var desk = dijit.byId(id);
+		dojo.xhrGet({
+			url: url,
+			load: function(data, event) {
+				desk.toggleInnerHTML(data);
+				if(wipe === true) {
+					dojo.fx.wipeIn('show_wipearea', 1000).play();
+				}
+        dojo.back.addToHistory({changeUrl:fragmentIdentifier});
+			},
+			handleAs: "text"
+		});
+	};
+
+	if(wipe === true) {
+		dojo.fx.wipeOut({node:'show_wipearea', duration:1000, onEnd:reloadDesk}).play();
+	} else {
+		reloadDesk();
+	}
+}
+
+function reloadShoppingCart(url, count) {
+	if(parseInt(count)===count-0) {
+		var node = dojo.byId('shopping_cart');
+		document.body.style.cursor = 'progress';
+		dojo.xhrGet({
+			url: url + count,
+			load: function(data, request) {
+				node.innerHTML = data;
+				document.body.style.cursor = 'auto';
+			},
+			handleAs: 'text'
+		});
+	}
+}
+
+function removeFromShoppingCart(url, fieldId) {
+	var node = dojo.byId('shopping_cart');
+	var inputNode = dojo.byId(fieldId);
+	document.body.style.cursor = 'progress';
+	dojo.xhrGet({
+		url: url,
+		load: function(data, request) {
+			node.innerHTML = data;
+			inputNode.value = '0';
+			document.body.style.cursor = 'auto';
+		},
+		handleAs: 'text'
+	});
+}
+
+
+function submitForm(form, dataDivId, formDivId, keepForm) {
+	var formDiv = dojo.byId(formDivId);
+	var dataDiv = dojo.byId(dataDivId);
+	document.body.style.cursor = 'progress';
+	dojo.io.iframe.send({
+		url: form.action,
+		form: form,
+		load: function(data, request) {
+			dataDiv.innerHTML = data.body.innerHTML;
+			if(!keepForm) {
+				formDiv.innerHTML = "";
+			}
+			document.body.style.cursor = 'auto';
+		},
+		handleAs: 'html'
+	});
+}
+
+function toggleHiddenDiv(divId) {
+	var node = dojo.byId(divId);
+	var display = node.style.display;
+	if(display=="none") {
+		dojo.fx.wipeIn(node, 300).play();
+	} else {
+		dojo.fx.wipeOut(node, 300).play();
+	}
+}
+
 function toggleJavaApplet(url, artobjectId) {
 	dojo.xhrGet({
 		url: url,
@@ -604,7 +664,7 @@ function addNewElement(url) {
 			pane.setContent(data);
 		},
 		handleAs: 'text'
-	});	
+	});
 }
 
 function deleteElement(url) {
@@ -616,7 +676,7 @@ function deleteElement(url) {
 			window.location.href=data.url;
 		},
 		handleAs: 'text'
-	});	
+	});
 }
 
 function deleteImage(url, image_div_id) {
@@ -639,56 +699,4 @@ function reloadImageAction(url, div_id) {
 		},
 		handleAs: 'text'
 	});
-}
-
-function toggleLoginForm(loginLink, url) {
-  require([
-    'dojo/_base/window'
-  , 'dojo/domReady!'
-  , 'ywesee/widget/login'
-  ], function(win) {
-    var newDiv = document.createElement('div');
-    win.body().appendChild(newDiv);
-    loginLink.onclick = 'return false;';
-    var login = new ywesee.widget.login({
-      loginLink:    loginLink
-    , loginFormUrl: url
-    , oldOnclick:   loginLink.onclick
-    }, newDiv);
-    login.startup();
-  });
-}
-
-function setHrefTooltip(domId, hrefHolderId, dialogId, orient) {
-  require([
-    'dijit/TooltipDialog'
-  , 'dijit/popup'
-  , 'dojo/on'
-  , 'dojo/dom'
-  , 'dojo/dom-attr'
-  , 'dojo/domReady!'
-  ], function(TooltipDialog, popup, on, dom, attr) {
-    var targetDom = dom.byId(domId)
-      , holder    = dom.byId(hrefHolderId)
-      ;
-    if (targetDom === null || holder === null) { return }
-    var artDialog = new TooltipDialog({
-          id:           dialogId + '_dialog'
-        , style:        'width: 400px;'
-        , href:         attr.get(holder, 'href')
-        , onMouseLeave: function() {
-            popup.close(artDialog);
-          }
-        });
-    on(targetDom, 'mouseover', function() {
-      popup.open({
-        popup:  artDialog
-      , around: targetDom
-      , orient: orient
-      });
-    });
-    on(targetDom, 'mouseleave', function() {
-      popup.close(artDialog);
-    });
-  });
 }

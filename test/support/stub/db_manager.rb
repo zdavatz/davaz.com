@@ -254,7 +254,7 @@ module DaVaz::Stub
       case by
       when 'serie_id'
         serie = @series.select { |serie| serie.serie_id == id }.first
-        return serie.artobjects.size
+        serie ? serie.artobjects.size : 0
       when 'tool_id'
         @artobjects.select { |aobject|
           aobject.tool_id == id

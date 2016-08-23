@@ -17,16 +17,13 @@ module DaVaz::State
         serie_id = series.first.serie_id if !serie_id || series.empty?
         @model.series   = series
         @model.serie_id = serie_id
-        url = @session.lookandfeel.event_url(:gallery, :ajax_rack, [
-          [:artgroup_id, artgroup_id],
-          [:serie_id,    serie_id]
-        ])
         @model.serie_items = {
           'artObjectIds' => [],
           'images'       => [],
           'titles'       => [],
-          'dataUrl'      => url,
           'serieId'      => serie_id,
+          'dataUrl'      => @session.lookandfeel.event_url(
+            :gallery, :ajax_rack, [[:serie_id, serie_id]])
         }
         serie = @session.app.load_serie(serie_id)
         if serie

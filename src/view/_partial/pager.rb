@@ -80,13 +80,14 @@ module DaVaz::View
       artobject_id = link.attributes['href'].split('/').last
       serie_id     = @session.user_input(:serie_id)
       url = @lookandfeel.event_url(:gallery, :ajax_rack, [
-        [:serie_id, serie_id],
         [:artobject_id, artobject_id],
+        [:serie_id,     serie_id],
       ])
       link.href = "javascript:void(0)"
       link.set_attribute('onclick', <<~TGGL)
         toggleShow(
-          'show', '#{url}', 'desk', 'show_wipearea', '#{serie_id}', '#{artobject_id}');
+          'show', '#{url}', 'desk', 'show_wipearea',
+          '#{serie_id}', '#{artobject_id}');
       TGGL
       link
     end

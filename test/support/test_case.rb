@@ -7,23 +7,13 @@ module DaVaz
 
     def before_setup
       super
-
       startup_server
       boot_browser
-    end
-
-    def setup
-      # pass
-    end
-
-    def teardown
-      # pass
     end
 
     def after_teardown
       close_browser
       shutdown_server
-
       super
     end
 
@@ -50,11 +40,22 @@ module DaVaz
         end
       end
       @drb.abort_on_exception = true
+      trap('INT') { @drb_server.stop_service; @drb.exit }
+
       @http_server = Stub.http_server(drb_url)
       @http_server.shutdown
       trap('INT') { @http_server.shutdown }
 
       @server = Thread.new { @http_server.start }
+      trap('INT') { @server.exit }
+    end
+
+    def boot_browser
+      return if @browser
+      at_exit { close_browser }
+
+      @browser = DaVaz::Browser.new
+      trap('INT') { @browser.close }
     end
 
     def shutdown_server
@@ -70,17 +71,13 @@ module DaVaz
       @server = nil
     end
 
-    def boot_browser
-      return if @browser
-      at_exit { close_browser }
-
-      @browser = DaVaz::Browser.new
-    end
-
     def close_browser
       return unless @browser
 
-      @browser.close
+      begin
+        @browser.close
+      rescue Errno::ECONNREFUSED
+      end
       @browser = nil
     end
   end

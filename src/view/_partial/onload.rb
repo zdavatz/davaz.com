@@ -16,7 +16,9 @@ module DaVaz::View
     end
 
     def init
-      url = @lookandfeel.event_url(:gallery, :ajax_rack, [:serie_id, nil])
+      url = @lookandfeel.event_url(:gallery, :ajax_rack, [
+        [:serie_id, nil]
+      ])
       self.onload = <<~EOS.gsub(/\n|^\s*/, '')
         (function() {
           if (location.hash == '') {

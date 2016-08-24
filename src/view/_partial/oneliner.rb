@@ -1,5 +1,6 @@
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/dojotoolkit'
+require 'ext/htmlgrid/component'
 
 module DaVaz::View
   class OneLiner < HtmlGrid::Component
@@ -7,25 +8,21 @@ module DaVaz::View
 
     def to_html(context)
       return '' unless model
-      args = {
+      props = {
         'colors'        => [],
         'messageString' => ''
       }
       messages = []
       model.each { |oneliner|
         oneliner.text.split("\r\n").each { |line|
-          args['colors'].push(oneliner.color_in_hex)
+          props['colors'].push(oneliner.color_in_hex)
           messages.push(line.gsub('\'', '\\\'').strip)
         }
       }
-      args['messageString'] = "'#{messages.join('|')}'"
-      dojo_args = {
-        'data-dojo-props' => args.map { |k, v|
-          v = "[#{v.map { |s| "'#{s}'"}.join(',')}]" if v.is_a?(Array)
-          "#{k}:#{v}"
-        }.join(',')
-      }
-      dojo_tag('ywesee.widget.oneliner', dojo_args).to_html(context)
+      props['messageString'] = messages.join('|')
+      dojo_tag('ywesee.widget.oneliner', {
+        'data-dojo-props' => dojo_props(props)
+      }).to_html(context)
     end
   end
 end

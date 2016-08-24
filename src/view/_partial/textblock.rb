@@ -4,7 +4,7 @@ require 'htmlgrid/span'
 require 'htmlgrid/link'
 require 'htmlgrid/image'
 require 'util/image_helper'
-require 'view/_partial/live_edit'
+require 'view/_partial/live_editor'
 
 module DaVaz::View
   module TextBlockLinksMethods
@@ -181,7 +181,7 @@ module DaVaz::View
 
   class AdminTextBlockList < HtmlGrid::DivList
     COMPONENTS = {
-      [0, 0] => AdminLiveEditWidget
+      [0, 0] => AdminLiveEditor
     }
   end
 end

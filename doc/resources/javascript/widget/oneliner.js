@@ -3,13 +3,11 @@ define([
 , 'dojo/_base/connect'
 , 'dojo/_base/fx'
 , 'dojo/_base/lang'
-, 'dojo/ready'
-, 'dojo/parser'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
 , 'dijit/_WidgetsInTemplateMixin'
-], function(declare, connect, fx, lang, ready, parser, _wb, _tm, _witm) {
-  declare('ywesee.widget.oneliner', [_wb, _tm], {
+], function(declare, connect, fx, lang, _wb, _tm, _witm) {
+  return declare('ywesee.widget.oneliner', [_wb, _tm], {
     baseClass:    'oneliner-widget'
   , templatePath: require.toUrl(
       '/resources/javascript/widget/templates/oneliner.html')
@@ -65,9 +63,5 @@ define([
       this.nodeIn  = tmp;
       this.display();
     }
-  });
-
-  ready(function() {
-    parser.parse();
   });
 });

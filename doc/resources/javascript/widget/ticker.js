@@ -1,16 +1,14 @@
 define([
   'dojo/_base/declare'
 , 'dojo/_base/fx'
-, 'dojo/ready'
-, 'dojo/parser'
 , 'dojo/query'
 , 'dojo/dom'
 , 'dojo/dom-geometry'
 , 'dojo/dom-style'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
-], function(declare, fx, ready, parser, query, dom, geo, style, _wb, _tm) {
-  declare('ywesee.widget.ticker', [_wb, _tm], {
+], function(declare, fx, query, dom, geo, style, _wb, _tm) {
+  return declare('ywesee.widget.ticker', [_wb, _tm], {
     base_class:  'ticker-widget'
   , constructor: function(params, srcNodeRef) {
       // pass
@@ -125,9 +123,5 @@ define([
         this.stopped  = true;
       }
     }
-  });
-
-  ready(function() {
-    parser.parse();
   });
 });

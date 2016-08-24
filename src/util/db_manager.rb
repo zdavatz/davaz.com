@@ -880,9 +880,9 @@ module DaVaz
       def update_guest(guest_id, update_hash)
         values = update_hash.map { |key, value|
           next unless value
-          next unless key == :tags
+          next if key == :tags
           if key == :date_gb
-            date = value.split(".")
+            date = value.split('.')
             "date = '#{date[2]}-#{date[1]}-#{date[0]}'"
           else
             "#{key} = '#{connection.escape(value)}'"

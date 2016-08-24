@@ -6,7 +6,7 @@ require 'htmlgrid/dojotoolkit'
 require 'htmlgrid/button'
 require 'htmlgrid/span'
 require 'view/_partial/list'
-require 'view/_partial/live_edit'
+require 'view/_partial/live_editor'
 require 'view/template'
 require 'ext/htmlgrid/component'
 
@@ -102,9 +102,10 @@ module DaVaz::View
       CONTENT = GuestbookComposite
     end
 
+    # @api admin
     class AdminGuestList < HtmlGrid::DivList
       COMPONENTS = {
-        [0, 0] => AdminGuestbookLiveEditWidget
+        [0, 0] => AdminGuestbookLiveEditor
       }
       CSS_MAP = {
         0 => 'guestbook'

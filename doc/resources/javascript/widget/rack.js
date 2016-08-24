@@ -1,13 +1,11 @@
 define([
   'dojo/_base/declare'
-, 'dojo/ready'
-, 'dojo/parser'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
 , 'dijit/_WidgetsInTemplateMixin'
 , 'ywesee/widget/show'
-], function(declare, ready, parser, _wb, _tm, _witm, _sw) {
-  declare('ywesee.widget.rack', [_wb, _tm, _sw], {
+], function(declare, _wb, _tm, _witm, _sw) {
+  return declare('ywesee.widget.rack', [_wb, _tm, _sw], {
     // attributes
     baseClass:    'rack-widget'
   , templatePath: require.toUrl(
@@ -87,8 +85,5 @@ define([
       }
       this.fillInTemplate();
     }
-  });
-  ready(function() {
-    parser.parse();
   });
 });

@@ -1,23 +1,21 @@
 define([
   'dojo/_base/declare'
 , 'dojo/_base/xhr'
-, 'dojo/ready'
-, 'dojo/parser'
 , 'dojo/on'
 , 'dojo/dom'
 , 'dojo/fx'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
-], function(declare, xhr, ready, parser, on, dom, fx, _wb, _tm) {
-  declare('ywesee.widget.guestbook', [_wb, _tm], {
+], function(declare, xhr, on, dom, fx, _wb, _tm) {
+  return declare('ywesee.widget.guestbook', [_wb, _tm], {
     // attributes
     baseClass:    'guestbook-widget'
   , templatePath: require.toUrl(
       '/resources/javascript/widget/templates/guestbook.html')
-    //widget variables
+    // widget variables
   , form_url:  ''
   , form_node: ''
-    //dojo attach points
+    // dojo attach points
   , guestbookWidgetContainer: null
   , addEntryLink:             null
   , formContainer:            null
@@ -81,9 +79,5 @@ define([
         }
       });
     }
-  });
-
-  ready(function() {
-    parser.parse();
   });
 });

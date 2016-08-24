@@ -1,6 +1,7 @@
 require 'htmlgrid/dojotoolkit'
 require 'htmlgrid/component'
 require 'util/image_helper'
+require 'ext/htmlgrid/component'
 
 module DaVaz
   module View
@@ -14,41 +15,35 @@ module DaVaz
       end
 
       def to_html(context)
-        args = { # as html attributes
+        props = { # as html attributes
           'images'          => [],
           'eventUrls'       => [],
           'windowWidth'     => 780,
           'componentWidth'  => @component_width.to_i,
           'componentHeight' => @component_height.to_i,
-          'widgetId'        => "'ticker'",
+          'widgetId'        => 'ticker',
           'stopped'         => 'true',
         }
         (model || []).each { |item|
-          unless item.artobject_id.nil?
+          if item.artobject_id
             if Util::ImageHelper.has_image?(item.artobject_id)
               path = Util::ImageHelper.image_url(item.artobject_id, 'medium')
-              args['images'].push(path)
-              event_args = [
-                ['artgroup_id' , item.artgroup_id],
-                ['artobject_id', item.artobject_id]
-              ]
+              props['images'].push(path)
               unless item.url.nil? || item.url.empty?
                 event_url = item.url
               else
-                event_url = @lookandfeel.event_url(:gallery, :art_object, \
-                                                   event_args)
+                event_url = @lookandfeel.event_url(:gallery, :art_object, [
+                  ['artgroup_id' , item.artgroup_id],
+                  ['artobject_id', item.artobject_id]
+                ])
               end
-              args['eventUrls'].push(event_url)
+              props['eventUrls'].push(event_url)
             end
           end
         }
-        dojo_args = {
-          'data-dojo-props' => args.map { |k, v|
-            v = "[#{v.map { |s| "'#{s}'"}.join(',')}]" if v.is_a?(Array)
-            "#{k}:#{v}"
-          }.join(',')
-        }
-        dojo_tag('ywesee.widget.ticker', dojo_args).to_html(context)
+        dojo_tag('ywesee.widget.ticker', {
+          'data-dojo-props' => dojo_props(props)
+        }).to_html(context)
       end
     end
 

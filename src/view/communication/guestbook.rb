@@ -8,6 +8,7 @@ require 'htmlgrid/span'
 require 'view/_partial/list'
 require 'view/_partial/live_edit'
 require 'view/template'
+require 'ext/htmlgrid/component'
 
 module DaVaz::View
   module Communication
@@ -86,12 +87,14 @@ module DaVaz::View
         [2, 0] => :guestbook_widget,
         [3, 0] => GuestList,
       }
+
       def guestbook_widget(model)
-        url = @lookandfeel.event_url(:communication, :ajax_guestbookentry)
-        args = [
-          [ 'form_url' , url ],
-        ]
-        dojo_tag("ywesee.widget.GuestbookWidget", args)
+        dojo_tag('ywesee.widget.guestbook', {
+          'data-dojo-props' => dojo_props({
+            'form_url' => @lookandfeel.event_url(
+              :communication, :ajax_guestbookentry)
+          })
+        })
       end
     end
 
@@ -118,11 +121,12 @@ module DaVaz::View
         [3, 0] => AdminGuestList,
       }
       def guestbook_widget(model)
-        url = @lookandfeel.event_url(:communication, :ajax_guestbookentry)
-        args = [
-          [ 'form_url' , url ],
-        ]
-        dojo_tag("ywesee.widget.GuestbookWidget", args)
+        dojo_tag('ywesee.widget.guestbook', {
+          'data-dojo-props' => dojo_props({
+            'form_url' => @lookandfeel.event_url(
+              :communication, :ajax_guestbookentry)
+          })
+        })
       end
     end
 

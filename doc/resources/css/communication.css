@@ -13,6 +13,10 @@ div#top_navigation {
   padding-left: 200px;
 }
 
+div#foot_navigation {
+  background: #990099;
+}
+
 div#zone_image {
   background-image:  url("/resources/images/global/topleft_communication.gif");
   background-repeat: no-repeat;

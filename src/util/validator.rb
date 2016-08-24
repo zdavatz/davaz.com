@@ -26,6 +26,7 @@ module DaVaz::Util
       ajax_desk
       ajax_desk_artobject
       ajax_guestbookentry
+      ajax_submit_entry
       ajax_home
       ajax_images
       ajax_image_action
@@ -78,7 +79,6 @@ module DaVaz::Util
       shop_art_object
       shop_thanks
       shopitem
-      submit_entry
       the_family
       tooltip
       update

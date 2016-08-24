@@ -21,6 +21,7 @@ module DaVaz::Util
         ajax_add_new_element:   'Add',
         ajax_save_live_edit:    'Save',
         ajax_upload_image:      'Upload Image',
+        ajax_submit_entry:      'Submit entry',
         all_entries:            'All Entries',
         art_object:             'Art Object',
         artgroup:               'Artgroup',
@@ -226,7 +227,6 @@ module DaVaz::Util
         space_divider:     '&nbsp;',
         street:            'Street',
         submit:            'Submit',
-        submit_entry:      'Submit entry',
         successfull_login: 'You have been successfully logged in.',
         surname:           'Surname',
         # t

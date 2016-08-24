@@ -6,13 +6,14 @@ require 'view/communication/guestbook_entry'
 
 module DaVaz::State
   module Communication
-    class GuestbookEntry < Global
+    # @api ajax
+    class AjaxGuestbookEntry < SBSM::State
       VIEW     = DaVaz::View::Communication::GuestbookEntryForm
       VOLATILE = true
     end
 
     # @api ajax
-    class SubmitStatus < SBSM::State
+    class AjaxSubmitStatus < SBSM::State
       VIEW     = DaVaz::View::Ajax
       VOLATILE = true
 
@@ -47,12 +48,18 @@ module DaVaz::State
         @model = @session.app.load_guests
       end
 
+      # @api ajax
+      # @note responds to:
+      #   GET /de/communication/ajax_guestbookentry
       def ajax_guestbookentry
-        GuestbookEntry.new(@session, @model)
+        AjaxGuestbookEntry.new(@session, @model)
       end
 
+      # @api ajax
+      # @note responds to:
+      #   POST /de/communication
       def ajax_submit_entry
-        SubmitStatus.new(@session, @model)
+        AjaxSubmitStatus.new(@session, @model)
       end
     end
 

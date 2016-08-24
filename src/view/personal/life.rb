@@ -6,7 +6,6 @@ require 'view/_partial/textblock'
 require 'view/_partial/oneliner'
 require 'view/_partial/serie_widget'
 require 'view/_partial/ticker'
-require 'view/_partial/composite'
 require 'view/template'
 
 module DaVaz::View
@@ -18,7 +17,8 @@ module DaVaz::View
       }
     end
 
-    class LifeTimePeriods < Composite
+    class LifeTimePeriods < HtmlGrid::Composite
+      LEGACY_INTERFACE = false
       CSS_ID     = 'life_time_periods'
       COMPONENTS = {
         [0, 0] => :early_years,

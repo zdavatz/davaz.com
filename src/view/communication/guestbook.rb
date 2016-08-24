@@ -11,12 +11,13 @@ require 'view/template'
 
 module DaVaz::View
   module Communication
-    class Guest < Composite
-      CSS_CLASS     = 'guestbook-entry'
-      LABELS        = true
-      DEFAULT_CLASS = HtmlGrid::Value
-      OFFSET_STEP   = [0, 4]
-      COMPONENTS    = {
+    class Guest < HtmlGrid::Composite
+      LEGACY_INTERFACE = false
+      CSS_CLASS        = 'guestbook-entry'
+      LABELS           = true
+      DEFAULT_CLASS    = HtmlGrid::Value
+      OFFSET_STEP      = [0, 4]
+      COMPONENTS       = {
         [0, 0] => :name,
         [0, 1] => :date_gb,
         [0, 2] => :city,

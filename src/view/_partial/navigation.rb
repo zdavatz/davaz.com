@@ -1,12 +1,10 @@
 require 'htmlgrid/divcomposite'
-require 'htmlgrid/div'
-require 'htmlgrid/divcomposite'
-require 'view/_partial/maillink'
-require 'htmlgrid/span'
-require 'htmlgrid/ulcomposite'
 require 'htmlgrid/spancomposite'
-require 'view/_partial/composite'
+require 'htmlgrid/ulcomposite'
+require 'htmlgrid/div'
+require 'htmlgrid/span'
 require 'htmlgrid/dojotoolkit'
+require 'view/_partial/maillink'
 
 module DaVaz::View
   class NavigationComposite < HtmlGrid::SpanComposite
@@ -75,17 +73,15 @@ module DaVaz::View
     end
   end
 
-  module TopNavigationModule
-    class Composite < NavigationComposite
-      CSS_CLASS  = 'top-navigation'
-      NAV_METHOD = :top_navigation
-    end
+  class TopNavigationComposite < NavigationComposite
+    CSS_CLASS  = 'top-navigation'
+    NAV_METHOD = :top_navigation
   end
 
   class InitTopNavigation < HtmlGrid::DivComposite
     CSS_CLASS  = 'top-navigation'
     COMPONENTS = {
-      [0, 0] => TopNavigationModule::Composite,
+      [0, 0] => TopNavigationComposite,
     }
   end
 

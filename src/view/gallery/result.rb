@@ -66,7 +66,8 @@ module DaVaz::View
       end
     end
 
-    class ResultColumnNames < Composite
+    class ResultColumnNames < HtmlGrid::Composite
+      LEGACY_INTERFACE = false
       CSS_ID     = 'result-list-column-names'
       COMPONENTS = {
         [0, 0] => 'title',

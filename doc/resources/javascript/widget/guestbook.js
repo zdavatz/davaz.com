@@ -46,7 +46,8 @@ define([
       });
     }
   , toggleForm: function() {
-      if (this.formContainer.style.display == 'block') {
+      if ((this.formContainer.style.display == '') ||
+          (this.formContainer.style.display == 'block')) {
         var _this = this;
         var callback = function() {
           _this.errorMessages.innerHTML    = '';

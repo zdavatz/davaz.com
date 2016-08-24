@@ -46,7 +46,7 @@ module DaVaz::View
       def init
         super
         span = HtmlGrid::Span.new(model, @session, self)
-        span.css_class = 'table-title'
+        span.css_class = 'guestbook-title'
         span.value     = @lookandfeel.lookup(:davaz_guestbook)
         @value = span
       end
@@ -58,7 +58,7 @@ module DaVaz::View
       def init
         super
         span = HtmlGrid::Span.new(model, @session, self)
-        span.css_class = 'table-info'
+        span.css_class = 'guestbook-info'
         span.value     = @lookandfeel.lookup(:guestbook_info)
         @value = span
       end

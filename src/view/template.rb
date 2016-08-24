@@ -58,14 +58,12 @@ module DaVaz::View
       'dojo/back',
       'ywesee/widget/oneliner',
       'ywesee/widget/ticker',
-      #'ywesee/widget/login',
+      'ywesee/widget/guestbook',
       # TODO
-      #'ywesee/widget/Tooltip',
       #'ywesee/widget/InputText',
       #'ywesee/widget/InputTextarea',
       #'ywesee/widget/EditWidget',
       #'ywesee/widget/EditButtons',
-      #'ywesee/widget/GuestbookWidget',
     ]
     CONTENT = nil
     TICKER  = nil

@@ -102,9 +102,10 @@ module DaVaz::View
       end
     end
 
-    class ShopFormAddress < Composite
+    class ShopFormAddress < HtmlGrid::Composite
       include HtmlGrid::ErrorMessage
 
+      LEGACY_INTERFACE = false
       CSS_ID = 'shopping_address'
       LABELS = true
       DEFAULT_CLASS = HtmlGrid::InputText
@@ -198,7 +199,8 @@ module DaVaz::View
       end
     end
 
-    class ShoppingCart < Composite
+    class ShoppingCart < HtmlGrid::Composite
+      LEGACY_INTERFACE = false
       CSS_ID = 'shopping_cart'
       COMPONENTS = {
         [0, 0] => :shopping_cart_list,

@@ -4,11 +4,10 @@ require 'htmlgrid/link'
 require 'htmlgrid/urllink'
 require 'htmlgrid/div'
 require 'view/_partial/form'
-require 'view/template'
-require 'view/_partial/composite'
 require 'view/_partial/oneliner'
 require 'view/_partial/ticker'
 require 'view/_partial/maillink'
+require 'view/template'
 
 module DaVaz::View
   module Personal
@@ -105,7 +104,8 @@ module DaVaz::View
       end
     end
 
-    class CommunicationLinksComposite < Composite
+    class CommunicationLinksComposite < HtmlGrid::Composite
+      LEGACY_INTERFACE = false
       CSS_CLASS  = 'communication-links'
       COMPONENTS = {
         [0, 0] => :blog,

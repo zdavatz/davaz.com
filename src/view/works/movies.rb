@@ -6,7 +6,6 @@ require 'htmlgrid/link'
 require 'htmlgrid/div'
 require 'view/template'
 require 'view/_partial/onload'
-require 'view/_partial/composite'
 require 'view/_partial/list'
 require 'util/image_helper'
 

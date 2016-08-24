@@ -26,7 +26,7 @@ module DaVaz
             "#{k}:#{v}"
           }.join(',')
         }
-        dojo_tag("ywesee.widget.#@name", dojo_args).to_html(context)
+        dojo_tag("ywesee.widget.#{@name}", dojo_args).to_html(context)
       end
     end
   end

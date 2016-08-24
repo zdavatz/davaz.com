@@ -1,11 +1,11 @@
 require 'sbsm/state'
 require 'state/predefine'
-require 'view/_partial/live_edit'
+require 'view/_partial/live_editor'
 
 module DaVaz::State
   # @api admin
   class AdminAddNewElement < SBSM::State
-    VIEW     = DaVaz::View::AdminLiveEditWidget
+    VIEW     = DaVaz::View::AdminLiveEditor
     VOLATILE = true
   end
 

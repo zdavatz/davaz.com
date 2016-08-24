@@ -3,13 +3,11 @@ define([
 , 'dojo/_base/connect'
 , 'dojo/_base/fx'
 , 'dojo/_base/lang'
-, 'dojo/ready'
-, 'dojo/parser'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
 , 'dijit/_WidgetsInTemplateMixin'
 , 'ywesee/widget/show'
-], function(declare, connect, fx, lang, ready, parser, _wb, _tm, _witm, _sw) {
+], function(declare, connect, fx, lang, _wb, _tm, _witm, _sw) {
   declare('ywesee.widget.slide', [_wb, _tm, _sw], {
     baseClass: 'slide-widget'
   , templatePath: require.toUrl(
@@ -174,9 +172,5 @@ define([
         this.imageIdx = 0;
       }
     }
-  });
-
-  ready(function() {
-    parser.parse();
   });
 });

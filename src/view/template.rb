@@ -58,12 +58,7 @@ module DaVaz::View
       'dojo/back',
       'ywesee/widget/oneliner',
       'ywesee/widget/ticker',
-      'ywesee/widget/guestbook',
-      # TODO
-      #'ywesee/widget/InputText',
-      #'ywesee/widget/InputTextarea',
-      #'ywesee/widget/EditWidget',
-      #'ywesee/widget/EditButtons',
+      'ywesee/widget/guestbook'
     ]
     CONTENT = nil
     TICKER  = nil
@@ -218,7 +213,13 @@ module DaVaz::View
   end
 
   class AdminTemplate < CommonTemplate
-    DOJO_REQUIRE = %w{dojo/ready dojo/back dijit/Editor}
+    DOJO_REQUIRE = %w{
+      dojo/ready
+      dojo/back
+      dijit/Editor
+      ywesee/widget/guestbook
+      ywesee/widget/live_editor
+    }
   end
 
   class AdminDesignTemplate < AdminTemplate

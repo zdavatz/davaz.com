@@ -33,7 +33,6 @@ module DaVaz::State
       update_hash = {field_key => update_value}
       target_id = @session.user_input("#{target}_id")
       @session.app.send("update_#{target}".to_sym, target_id, update_hash)
-
       data = @session.app.send("load_#{target}".to_sym, target_id)
       @model = {
         'updated_value' => data.send(field_key),
@@ -56,6 +55,8 @@ module DaVaz::State
 
   # @api admin
   # @api ajax
+  # @note responds to:
+  #   POST /de/admin/ajax_save_gb_live_edit
   class AdminAjaxSaveGbLiveEdit < SBSM::State
     include AdminValueEditable
 

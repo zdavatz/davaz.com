@@ -1,13 +1,11 @@
 define([
   'dojo/_base/declare'
 , 'dojo/_base/xhr'
-, 'dojo/ready'
-, 'dojo/parser'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
 , 'ywesee/widget/show'
-], function(declare, xhr, ready, parser, _wb, _tm, _sw) {
-  declare('ywesee.widget.desk', [_wb, _tm, _sw], {
+], function(declare, xhr, _wb, _tm, _sw) {
+  return declare('ywesee.widget.desk', [_wb, _tm, _sw], {
     // attributes
     baseClass:    'desk-widget'
   , templatePath: require.toUrl(

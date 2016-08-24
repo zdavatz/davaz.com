@@ -3,13 +3,11 @@ define([
 , 'dojo/_base/connect'
 , 'dojo/_base/xhr'
 , 'dojo/_base/html'
-, 'dojo/ready'
-, 'dojo/parser'
 , 'dojo/dom'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
 , 'dijit/_WidgetsInTemplateMixin'
-], function(declare, connect, xhr, html, ready, parser, dom, _wb, _tm, _witm) {
+], function(declare, connect, xhr, html, dom, _wb, _tm, _witm) {
   declare('ywesee.widget.login', [_wb, _tm], {
     baseClass: 'login-widget'
   , templatePath: require.toUrl(
@@ -60,9 +58,5 @@ define([
         }
       });
     }
-  });
-
-  ready(function() {
-    parser.parse();
   });
 });

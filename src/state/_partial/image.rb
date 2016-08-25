@@ -61,8 +61,9 @@ module DaVaz::State
 
     def init
       string_io = @session.user_input(:image_file)
+      obj = @model.artobject ? @model.artobject : @model
       if string_io
-        artobject_id = @model.artobject.artobject_id
+        artobject_id = obj.artobject_id
         if artobject_id
           DaVaz::Util::ImageHelper.store_upload_image(
             string_io, artobject_id)
@@ -75,7 +76,7 @@ module DaVaz::State
             Time.now.to_i.to_s + "." + image.format.downcase
           )
           image.write(path)
-          @model.artobject.tmp_image_path = path
+          obj.tmp_image_path = path
         end
       end
     end

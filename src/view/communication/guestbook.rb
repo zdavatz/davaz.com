@@ -121,6 +121,7 @@ module DaVaz::View
         [2, 0] => :guestbook_widget,
         [3, 0] => AdminGuestList,
       }
+
       def guestbook_widget(model)
         dojo_tag('ywesee.widget.guestbook', {
           'data-dojo-props' => dojo_props({

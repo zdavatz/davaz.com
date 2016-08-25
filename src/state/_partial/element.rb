@@ -88,8 +88,7 @@ module DaVaz::State
 
     def init
       @model = Hash.new
-      if @session.app \
-          .delete_artobject(@session.user_input(:artobject_id)) > 0
+      if @session.app.delete_artobject(@session.user_input(:artobject_id))
         @model['deleted'] = true
       end
     end

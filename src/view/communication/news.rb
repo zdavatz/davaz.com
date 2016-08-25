@@ -43,7 +43,7 @@ module DaVaz::View
     end
 
     class AdminNewsInnerComposite < HtmlGrid::DivComposite
-      CSS_ID     = 'element-container'
+      CSS_ID     = 'element_container'
       COMPONENTS = {
         [0,0]  =>  component(AdminTextBlockList, :news),
       }

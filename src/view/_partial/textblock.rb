@@ -183,5 +183,8 @@ module DaVaz::View
     COMPONENTS = {
       [0, 0] => AdminLiveEditor
     }
+    CSS_MAP = {
+      0 => 'text'
+    }
   end
 end

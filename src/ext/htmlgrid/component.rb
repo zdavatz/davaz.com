@@ -4,10 +4,18 @@ module HtmlGrid
   class Component
     def dojo_props(args)
       args.map { |k, v|
-        v = "'#{v}'" if v.is_a?(String)
-        v = "[#{v.map { |s| "'#{s}'"}.join(',')}]" if v.is_a?(Array)
+        v = "\"#{escape(v)}\"" if v.is_a?(String)
+        v = "[#{v.map { |s| "\"#{escape(s)}\""}.join(',')}]" if v.is_a?(Array)
         "#{k}:#{v}"
       }.join(',')
+    end
+
+    private
+
+    def escape(v)
+      v = v.gsub(',', '<comma/>').gsub(/\r?\n/, '<br/>')
+      v = v.gsub(/"/, '\"')
+      CGI::escapeHTML(v)
     end
   end
 end

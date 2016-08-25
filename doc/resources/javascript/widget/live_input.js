@@ -73,9 +73,9 @@ define([
       // stub function to be filled by live-input-text or live-textarea widgets
     }
   , toggleInput: function() {
-      this.labelConn.remove();
-      this.divConn.remove();
-      this.textConn.remove();
+      if (this.labelConn) { this.labelConn.remove(); }
+      if (this.divConn) { this.divConn.remove(); }
+      if (this.textConn) { this.textConn.remove(); }
       this.inputDiv.className = this.css_class + ' live-edit active';
       this.inputDiv.removeChild(this.leText);
       this.addInputToForm();

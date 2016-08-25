@@ -1,3 +1,31 @@
+// Adds new element for admin
+//   * /personal/work
+//   * /communication/news
+//   * /communication/links
+function addNewElement(url) {
+  require([
+    'dojo/dom'
+  , 'dojo/_base/xhr'
+  , 'dijit/layout/ContentPane'
+  , 'dojo/domReady!'
+  ], function(dom, xhr, cpane) {
+    xhr.get({
+      url:       url,
+      handleAs: 'text',
+      load:      function(data, request) {
+        var container = dom.byId('element_container');
+        var div = document.createElement('div');
+        container.insertBefore(div,container.firstChild);
+        var pane = new cpane({
+          executeScripts: true
+        }, div);
+        pane.setContent(data);
+        pane.startup();
+      },
+    });
+  });
+}
+
 // Displays ticker widget
 function toggleTicker() {
   require([
@@ -117,7 +145,7 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
   , 'dijit/dijit'
   , 'dijit/layout/ContentPane'
   , 'dojo/domReady!'
-  ], function(xhr, back, dom, attr, cnst, dijit, contentPane) {
+  ], function(xhr, back, dom, attr, cnst, dijit, cpane) {
     var fragmentidentifier = '';
     if (changeUrl) {
       fragmentidentifier = changeUrl;
@@ -153,7 +181,7 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
       url:      url
     , handleAs: 'text'
     , load:     function(data, request) {
-        var pane = new contentPane({
+        var pane = new cpane({
           id:             divId
         , executeScripts: true
         }, node);
@@ -177,7 +205,7 @@ function showMovieGallery(divId, replaceDivId, url) {
   , 'dojo/back'
   , 'dijit/dijit'
   , 'dijit/layout/ContentPane'
-  ], function(xhr, dom, attr, back, dijit, contentPane) {
+  ], function(xhr, dom, attr, back, dijit, cpane) {
 	  var node = dom.byId(divId);
     if (node.style.display == 'none') {
 	    var artobjectId = url.split('/').pop();
@@ -187,7 +215,7 @@ function showMovieGallery(divId, replaceDivId, url) {
       , load:      function(data, request) {
           var pane = dijit.byId(divId);
           if (pane == null) {
-            pane = new contentPane({
+            pane = new cpane({
               id:             divId
             , executeScripts: true
             }, node);
@@ -653,20 +681,6 @@ function logout(link) {
 	var hash = document.location.hash;
 	var href = link.href + "fragment/" + hash.replace(/#/, '');
 	link.href = href;
-}
-
-function addNewElement(url) {
-	var container = dojo.byId('element_container');
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-			var div = document.createElement("div");
-			container.insertBefore(div,container.firstChild);
-			var pane = new dijit.layout.ContentPane({executeScripts: true}, div);
-			pane.setContent(data);
-		},
-		handleAs: 'text'
-	});
 }
 
 function deleteElement(url) {

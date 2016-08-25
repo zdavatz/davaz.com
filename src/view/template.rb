@@ -216,8 +216,11 @@ module DaVaz::View
     DOJO_REQUIRE = %w{
       dojo/ready
       dojo/back
-      dijit/Editor
+      ywesee/widget/oneliner
+      ywesee/widget/ticker
       ywesee/widget/guestbook
+
+      dijit/Editor
       ywesee/widget/live_editor
     }
   end

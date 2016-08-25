@@ -1,5 +1,5 @@
+require 'state/_partial/element'
 require 'state/personal/global'
-require 'state/_partial/art_object'
 require 'view/personal/work'
 
 module DaVaz::State
@@ -17,7 +17,7 @@ module DaVaz::State
     end
 
     # @api admin
-    class AdminAddNewElement < AdminAddNewElement
+    class AdminAddNewTxtElement < AdminAddNewElement
       def init
         values = {
           :text => @session.lookandfeel.lookup(:click2edit)
@@ -31,8 +31,8 @@ module DaVaz::State
     class AdminWork < Work
       VIEW = DaVaz::View::Personal::AdminWork
 
-      def admin_add_new_element
-        AdminAddNewElement.new(@session, @model)
+      def ajax_add_new_element
+        AdminAddNewTxtElement.new(@session, @model)
       end
     end
   end

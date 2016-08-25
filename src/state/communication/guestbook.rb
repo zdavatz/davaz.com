@@ -1,4 +1,3 @@
-require 'state/global'
 require 'state/communication/global'
 require 'view/_partial/ajax'
 require 'view/communication/guestbook'

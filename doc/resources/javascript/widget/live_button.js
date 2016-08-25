@@ -115,10 +115,12 @@ define([
         , load:     function(data, request) {
             var container = _this.uploadImageFormDiv;
             _this.uploadImageForm = container.firstChild;
+            if (_this.uploadImageForm) {
+              on(_this.uploadImageForm, 'submit', function() {
+                _this.submitForm();
+              });
+            }
             container.innerHTML = data;
-            on(_this.uploadImageForm, 'submit', function() {
-              _this.submitForm();
-            });
             fx.wipeIn({
               node:     container
             , duration: 300

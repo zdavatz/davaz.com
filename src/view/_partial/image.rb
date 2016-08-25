@@ -23,6 +23,7 @@ module DaVaz::View
     def init
       super
       obj = @model.artobject
+      return unless obj
       if obj.artobject_id
         url = DaVaz::Util::ImageHelper.image_url(obj.artobject_id, nil, true)
         image(obj, url)
@@ -87,7 +88,7 @@ module DaVaz::View
     }
 
     def hidden_fields(context)
-      super << context.hidden('artobject_id', @model.artobject.artobject_id)
+      super << context.hidden('artobject_id', artobject(@model).artobject_id)
     end
 
     def init
@@ -96,7 +97,7 @@ module DaVaz::View
         if (this.image_file.value != '') {
           submitForm(
             this
-          , 'artobject_image_#{@model.artobject.artobject_id}'
+          , 'artobject_image_#{artobject(@model).artobject_id}'
           , 'upload_image_form'
           , true
           );
@@ -110,17 +111,21 @@ module DaVaz::View
       input.value = @lookandfeel.lookup(:delete_image)
       input.set_attribute('type', 'button')
       url = @lookandfeel.event_url(:admin, :ajax_delete_image, [
-        [:artobject_id, model.artobject.artobject_id]
+        [:artobject_id, artobject(model).artobject_id]
       ])
       input.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
         if (confirm('#{@lookandfeel.lookup(:ask_for_image_deletion)}')) {
           deleteImage(
             '#{url}'
-          , 'artobject_image_#{model.artobject.artgroup_id}'
+          , 'artobject_image_#{artobject(model).artgroup_id}'
           );
         }
       EOS
       input
+    end
+
+    def artobject(model)
+      model.respond_to?(:artobject) ? model.artobject : model
     end
   end
 end

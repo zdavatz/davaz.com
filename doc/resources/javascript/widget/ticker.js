@@ -10,9 +10,6 @@ define([
 ], function(declare, fx, query, dom, geo, style, _wb, _tm) {
   return declare('ywesee.widget.ticker', [_wb, _tm], {
     base_class:  'ticker-widget'
-  , constructor: function(params, srcNodeRef) {
-      // pass
-    }
   , templatePath: require.toUrl(
       '/resources/javascript/widget/templates/ticker.html')
   , images:          []
@@ -23,6 +20,10 @@ define([
   , imagePosition:   0
   , stopped:         false
   , critical:        false
+    // callbacks
+  , constructor: function(params, srcNodeRef) {
+      // pass
+    }
   , postCreate: function() {
       this.divWidth    = this.componentWidth  + 2 + 'px';
       this.divHeight   = this.componentHeight + 2 + 'px';

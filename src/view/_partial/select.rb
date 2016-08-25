@@ -13,7 +13,8 @@ module DaVaz
           [:select_name,  @name],
           [:selected_id,  nil]
         ])
-        selected_id = @model.selected ? @model.selected.send(@name.intern) : ''
+        selected_id = ''
+        #selected_id = @model.selected ? @model.selected.send(@name.intern) : ''
         set_attribute('onchange', <<~EOS)
           checkRemovalStatus(this.value, '#{url}');
         EOS

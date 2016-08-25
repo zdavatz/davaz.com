@@ -14,8 +14,7 @@ module DaVaz::State
     end
 
     # @api admin
-    # @api ajax
-    class AdminAjaxAddNewNewsElement < AdminAjaxAddNewElement
+    class AdminAddNewNwsElement < AdminAddNewElement
       def init
         values = {
           :serie_id => @model.serie_id,
@@ -39,7 +38,7 @@ module DaVaz::State
       end
 
       def ajax_add_new_element
-        AdminAjaxAddNewNewsElement.new(@session, @model)
+        AdminAddNewNwsElement.new(@session, @model)
       end
     end
   end

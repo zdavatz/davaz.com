@@ -83,7 +83,7 @@ module DaVaz::Model
         end
       rescue ArgumentError, TypeError
         Date.today
-      end.strftime("%d.%m.%Y")
+      end.strftime('%d.%m.%Y')
     end
 
     def image_string_io

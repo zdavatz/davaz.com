@@ -2,12 +2,11 @@ define([
   'dojo/_base/declare'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
-, 'dijit/_WidgetsInTemplateMixin'
 , 'ywesee/widget/live_input_text'
 , 'ywesee/widget/live_textarea'
 , 'ywesee/widget/live_button'
-], function(declare, _wb, _tm, _witm, lvInputText, lvTextarea, lvButton) {
-  return declare('ywesee.widget.live_editor', [_wb, _tm, _witm], {
+], function(declare, _wb, _tm, lvit, lvta, lvbtn) {
+  return declare('ywesee.widget.live_editor', [_wb, _tm], {
     // attributes
     baseClass:    'live-editor-widget'
   , templatePath: require.toUrl(
@@ -78,9 +77,9 @@ define([
       };
       var widget;
       if (value.length > 30) {
-        widget = new lvTextarea(properties, inputDiv);
+        widget = new lvta(properties, inputDiv);
       } else {
-        widget = new lvInputText(properties, inputDiv);
+        widget = new lvit(properties, inputDiv);
       }
       widget.startup();
     }
@@ -108,7 +107,7 @@ define([
   , addEditButtons: function() {
       var buttonDiv = document.createElement('div');
       this.editButtonsContainer.appendChild(buttonDiv);
-      var widget = new lvButton({
+      var widget = new lvbtn({
         delete_icon_src:       this.delete_icon_src
       , delete_icon_txt:       this.delete_icon_txt
       , delete_image_icon_src: this.delete_image_icon_src

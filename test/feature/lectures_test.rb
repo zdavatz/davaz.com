@@ -30,6 +30,8 @@ class TestLectures < Minitest::Test
     span = wait_until { browser.span(class: 'tooltip') }
     assert_equal('tooltip_3_1', span.attribute_value(:id))
 
+    sleep(1)
+
     span.hover
     span.fire_event('onmouseover')
 

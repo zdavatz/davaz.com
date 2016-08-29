@@ -2,6 +2,9 @@ module DaVaz
   module TestCase
     attr_reader :browser
 
+    @@server  = nil
+    @@browser = nil
+
     def before_setup
       super
       startup_server
@@ -17,38 +20,42 @@ module DaVaz
     private
 
     def startup_server
-      return if @server
+      return if @@server
       at_exit { shutdown_server }
 
-      @server = DaVaz::Server.new
+      @@server = DaVaz::Server.new
     end
 
     def boot_browser
-      return if @browser
+      return if @@browser
       at_exit { close_browser }
 
-      @browser = DaVaz::Browser.new
+      @@browser = DaVaz::Browser.new
     end
 
     def close_browser
-      return unless @browser
+      return unless @@browser
 
       begin
-        @browser.close
+        @@browser.close
       rescue Errno::ECONNREFUSED
       end
-      @browser = nil
+      @@browser = nil
     end
 
     def shutdown_server
-      return unless @server
+      return unless @@server
 
       begin
-        @server.exit
+        @@server.exit
       rescue Exception => e
         $stdout.puts e.class
       end
-      @server = nil
+      @@server = nil
+    end
+
+    def browser
+      @@browser
     end
   end
 end

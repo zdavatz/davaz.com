@@ -13,7 +13,7 @@ module DaVaz
       @drb = Thread.new do
         begin
           DRb.stop_service
-          DRb.start_service(drb_url, server)
+          @drb_server = DRb.start_service(drb_url, server)
           DRb.thread.join
         rescue Exception => e
           $stdout.puts e.class
@@ -37,10 +37,12 @@ module DaVaz
 
     def exit
       @http_server.shutdown
+      @http_server = nil
 
-      #@drb.exit
-      #Thread.kill(@drb)
-      #@drb = nil
+      @drb_server.stop_service
+      @drb_server = nil
+      @drb.exit
+      @drb = nil
 
       @server.exit
       Thread.kill(@server)

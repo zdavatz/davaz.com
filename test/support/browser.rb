@@ -5,6 +5,7 @@ module DaVaz
   class Browser < SimpleDelegator
 
     def initialize
+      # @browser = Watir::Browser.new(:firefox)
       client = Selenium::WebDriver::Remote::Http::Default.new
       client.timeout = TEST_CLIENT_TIMEOUT
       path = File.expand_path(

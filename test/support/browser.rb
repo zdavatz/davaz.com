@@ -6,7 +6,7 @@ module DaVaz
 
     def initialize
       client = Selenium::WebDriver::Remote::Http::Default.new
-      client.timeout = 30
+      client.timeout = TEST_CLIENT_TIMEOUT
       path = File.expand_path(
         '../../../node_modules/phantomjs-prebuilt/bin/phantomjs', __FILE__)
       Selenium::WebDriver::PhantomJS.path = path

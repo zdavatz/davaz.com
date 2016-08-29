@@ -12,5 +12,11 @@ module DaVaz
       form.checkbox(name: 'remember_me').set
       form.button(name: 'login', type: 'submit').click
     end
+
+    def logout
+      foot_container = wait_until { browser.div(id: 'foot_container') }
+      logout_link = foot_container.a(name: 'logout')
+      logout_link.click
+    end
   end
 end

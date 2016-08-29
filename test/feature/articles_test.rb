@@ -8,7 +8,7 @@ class TestArticles < Minitest::Test
     browser.visit('/en/public/articles')
   end
 
-  def test_article_has_toggle_article_links
+  def test_article_toggle_article_links
     assert_match('/en/public/articles', browser.url)
 
     link = wait_until { browser.a(name: 'toggle-article') }

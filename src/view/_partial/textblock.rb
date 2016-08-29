@@ -14,9 +14,8 @@ module DaVaz::View
         map.store(link.word, link)
       }
       txt.gsub(/(#{map.keys.join(')|(')})/) { |match|
-        if link = map[match]
-          linkify(link, context)
-        end.to_s
+        link = map[match]
+        link ? linkify(link, context).to_s : ''
       }
     end
 
@@ -48,7 +47,7 @@ module DaVaz::View
         lnk.href  = 'javascript:void(0)'
         lnk.value = link.word
         lnk.set_attribute('onclick', <<~EOS)
-          return toggleHiddenDiv('#{link.link_id}-hidden-div');
+          return toggleHiddenDiv('#{link.link_id}_hidden_div');
         EOS
         lnk.to_html(context)
       end
@@ -129,7 +128,7 @@ module DaVaz::View
       span.value     = @lookandfeel.lookup(:hide)
       hide_link.value = span.to_html(context)
       hide_link.set_attribute('onclick', <<~EOS)
-        return toggleHiddenDiv('#{link.link_id}-hidden-div');
+        return toggleHiddenDiv('#{link.link_id}_hidden_div');
       EOS
       hide_link.to_html(context)
     end

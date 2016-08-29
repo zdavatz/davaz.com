@@ -39,7 +39,7 @@ function toggleTicker() {
       , ticker = dijit.byId('ywesee_widget_ticker_0')
       ;
     var display = node.style.display;
-    if (display === "none" || display === '' || display == undefined) {
+    if (display === 'none' || display === '' || display == undefined) {
       fx.wipeIn({
         node:     node
       , duration: 300
@@ -452,6 +452,36 @@ function setHrefTooltip(domId, hrefHolderId, dialogId, orient) {
   });
 }
 
+// Show/Hides hidden div using fx wipe animation
+function toggleHiddenDiv(divId) {
+  require([
+    'dojo/fx'
+  , 'dojo/dom'
+  , 'dojo/dom-style'
+  , 'dojo/domReady!'
+  ], function(fx, dom, styl) {
+    var node = dom.byId(divId);
+    var display = node.style.display;
+    if (display === 'none' || display === '' || display == undefined) {
+      fx.wipeIn({
+        node:     node
+      , duration: 300
+      , onEnd:    function() {
+          styl.set(node, 'display', 'block');
+      }
+      }).play();
+    } else {
+      fx.wipeOut({
+        node:     node
+      , duration: 300
+      , onEnd:    function() {
+          styl.set(node, 'display', 'none');
+      }
+      }).play();
+    }
+  });
+}
+
 //
 
 function toggleUploadImageForm(divId, url) {
@@ -546,16 +576,6 @@ function submitForm(form, dataDivId, formDivId, keepForm) {
 		},
 		handleAs: 'html'
 	});
-}
-
-function toggleHiddenDiv(divId) {
-	var node = dojo.byId(divId);
-	var display = node.style.display;
-	if(display=="none") {
-		dojo.fx.wipeIn(node, 300).play();
-	} else {
-		dojo.fx.wipeOut(node, 300).play();
-	}
 }
 
 function toggleJavaApplet(url, artobjectId) {

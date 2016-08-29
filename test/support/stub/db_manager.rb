@@ -203,29 +203,44 @@ module DaVaz::Stub
       artobject1 = StubArtObject.new('111')
       artobject1.set_artgroup_id('234')
       artobject1.set_serie_id('ABC')
-      artobject1.set_tags([ StubTag.new("hislife_show") ])
+      artobject1.set_tags([StubTag.new('hislife_show')])
+
       artobject2 = StubArtObject.new('112')
       artobject2.set_artgroup_id('234')
       artobject2.set_serie_id('ABC')
-      artobject2.set_tags([ StubTag.new("hislife_show") ])
+      artobject2.set_tags([ StubTag.new('hislife_show') ])
+
       artobject3 = StubArtObject.new('113')
       artobject3.set_artgroup_id('234')
       artobject3.set_serie_id('ABD')
+
       artobject4 = StubArtObject.new('114')
       artobject4.set_artgroup_id('235')
       artobject4.set_serie_id('ABD')
-      link1 = StubLink.new('1', 'Title', '115')
-      link1.set_artobjects([artobject1])
-      artobject1.set_links([link1])
-      link2 = StubLink.new('2', 'Text', '115')
-      link2.set_artobjects([artobject2, artobject3])
-      artobject2.set_links([link2])
-      artobject3.set_links([link2])
+
       artobject5 = StubArtObject.new('115')
       artobject5.set_artgroup_id('235')
       artobject5.set_serie_id('ABE')
-      artobject5.set_tags([ StubTag.new("hisfamily_show") ])
-      artobject5.set_links([ link1, link2 ])
+      artobject5.set_tags([StubTag.new('hisfamily_show')])
+
+      link1 = StubLink.new('1', 'Title', '115')
+      link1.set_artobjects([artobject1])
+
+      link2 = StubLink.new('2', 'Text', '115') # link
+      link2.set_artobjects([artobject2, artobject3, artobject5])
+
+      link3 = StubLink.new('3', 'Text', '115') # tooltip
+      link3.set_artobjects([artobject4])
+
+      link4 = StubLink.new('4', 'Title', '115')
+      link4.set_artobjects([artobject1, artobject5])
+
+      artobject1.set_links([link1])
+      artobject2.set_links([link2])
+      artobject3.set_links([link2])
+      artobject4.set_links([link3])
+      artobject5.set_links([link1, link2])
+
       @artobjects = [
         artobject1, artobject2, artobject3, artobject4, artobject5
       ]

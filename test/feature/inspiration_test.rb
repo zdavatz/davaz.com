@@ -11,17 +11,18 @@ class InspirationTest < Minitest::Test
   def test_tooltips_on_textblock
     text = wait_until { browser.div(class: 'intro-text') }
     span = text.element(id: 'tooltip_1_1')
-    # TODO
-    span.hover
-    text = wait_until { browser.div(class: 'intro-text') }
 
-    dialog = text.div(id: 'tooltip_tooltip_1_1_dialog')
+    span.hover
+    span.fire_event('onmouseover')
+
+    dialog = browser.div(id: 'tooltip_tooltip_1_1_dialog')
     assert(dialog.exists?)
 
-    span.blur
 
-    text = wait_until { browser.div(class: 'intro-text') }
-    dialog = text.div(id: 'tooltip_tooltip_1_1_dialog')
+    # TODO
+    span.fire_event('onmouseleave')
+
+    dialog = browser.div(id: 'tooltip_tooltip_1_1_dialog')
     refute(dialog.exists?)
   end
 

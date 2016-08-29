@@ -20,6 +20,7 @@ module DaVaz::View
     end
 
     def linkify(link, context)
+      return unless link.artobjects.size >= 1
       if link.artobjects.size == 1
         artobject = link.artobjects.first
         if artobject.is_url?
@@ -42,7 +43,7 @@ module DaVaz::View
           )
           span.to_html(context)
         end
-      elsif link.artobjects.size > 1
+      else
         lnk = HtmlGrid::Link.new(link.word, @model, @session, self)
         lnk.href  = 'javascript:void(0)'
         lnk.value = link.word
@@ -57,10 +58,29 @@ module DaVaz::View
   class TextBlock < HtmlGrid::Component
     include TextBlockLinksMethods
 
+    def self.onload_tooltips
+      <<~EOS.gsub(/\n|^\s*/, '')
+        (function() {
+          require([
+            'dojo/query'
+          ], function(query) {
+            query('span.tooltip').forEach(function(node) {
+              return setHrefTooltip(
+                node.id,
+                node.id,
+                'tooltip_' + String(node.id),
+                ['below-alt', 'above-centered']
+              );
+            });
+          });
+        })();
+      EOS
+    end
+
     def add_hidden_divs(html, context)
       links = @model.links
       links.each { |link|
-        div_content = ""
+        div_content = ''
         if link.artobjects.size > 1
           link.artobjects.each { |aobject|
             artobject_id = aobject.artobject_id

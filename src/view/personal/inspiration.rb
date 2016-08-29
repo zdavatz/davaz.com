@@ -27,22 +27,7 @@ module DaVaz::View
 
       def init
         super
-        self.onload = <<~EOS.gsub(/\n|^\s*/, '')
-          (function() {
-            require([
-              'dojo/query'
-            ], function(query) {
-              query('span.tooltip').forEach(function(node) {
-                return setHrefTooltip(
-                  node.id,
-                  node.id,
-                  'tooltip_' + String(node.id),
-                  ['below-alt', 'above-centered']
-                );
-              });
-            });
-          })();
-        EOS
+        self.onload = DaVaz::View::TextBlock.onload_tooltips
       end
     end
 

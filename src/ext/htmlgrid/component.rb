@@ -5,7 +5,7 @@ module HtmlGrid
     def dojo_props(args)
       args.map { |k, v|
         v = "\"#{escape(v)}\"" if v.is_a?(String)
-        v = "[#{v.map { |s| "\"#{escape(s)}\""}.join(',')}]" if v.is_a?(Array)
+        v = "[#{v.map { |s| "\"#{escape(s.to_s)}\""}.join(',')}]" if v.is_a?(Array)
         "#{k}:#{v}"
       }.join(',')
     end

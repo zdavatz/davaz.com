@@ -8,7 +8,7 @@ define([
 , 'dijit/_WidgetsInTemplateMixin'
 , 'ywesee/widget/show'
 ], function(declare, connect, fx, lang, _wb, _tm, _witm, _sw) {
-  declare('ywesee.widget.slide', [_wb, _tm, _sw], {
+  return declare('ywesee.widget.slide', [_wb, _tm, _sw], {
     baseClass: 'slide-widget'
   , templatePath: require.toUrl(
       '/resources/javascript/widget/templates/slide.html')

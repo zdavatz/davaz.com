@@ -53,13 +53,14 @@ module DaVaz::View
     DOJO_PREFIX      = {
       'ywesee' => '/resources/javascript'
     }
-    DOJO_REQUIRE = [
-      'dojo/ready',
-      'dojo/back',
-      'ywesee/widget/oneliner',
-      'ywesee/widget/ticker',
-      'ywesee/widget/guestbook'
-    ]
+    DOJO_REQUIRE = %w{
+      dojo/ready
+      dojo/back
+      ywesee/widget/oneliner
+      ywesee/widget/ticker
+      ywesee/widget/slide
+      ywesee/widget/guestbook
+    }
     CONTENT = nil
     TICKER  = nil
     COMPONENTS = {
@@ -213,13 +214,7 @@ module DaVaz::View
   end
 
   class AdminTemplate < CommonTemplate
-    DOJO_REQUIRE = %w{
-      dojo/ready
-      dojo/back
-      ywesee/widget/oneliner
-      ywesee/widget/ticker
-      ywesee/widget/guestbook
-
+    DOJO_REQUIRE = CommonTemplate::DOJO_REQUIRE + %w{
       dijit/Editor
       ywesee/widget/live_editor
     }

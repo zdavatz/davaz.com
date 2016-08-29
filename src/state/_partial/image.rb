@@ -1,3 +1,4 @@
+require 'sbsm/state'
 require 'state/global'
 require 'state/predefine'
 require 'view/_partial/ajax'

@@ -23,4 +23,20 @@ class TestLectures < Minitest::Test
     assert_match(/display:\sblock;/, div.attribute_value('style'))
     assert(div.a(name: 'hide_link').exists?)
   end
+
+  def test_lectures_tooltips
+    assert_match('/en/public/lectures', browser.url)
+
+    span = wait_until { browser.span(class: 'tooltip') }
+    assert_equal('tooltip_3_1', span.attribute_value(:id))
+
+    span.hover
+    span.fire_event('onmouseover')
+
+    dialog = wait_until { browser.div(id: 'tooltip_tooltip_3_1_dialog') }
+    assert(dialog.exists?)
+
+    tooltip = wait_until { browser.div(id: 'tooltip_3_1_dropdown') }
+    assert(tooltip.exists?)
+  end
 end

@@ -11,6 +11,11 @@ module DaVaz::View
       COMPONENTS = {
         [0, 0] => DaVaz::View::TextBlock
       }
+
+      def init
+        super
+        self.onload = DaVaz::View::TextBlock.onload_tooltips
+      end
     end
 
     class LecturesTitle < HtmlGrid::Div

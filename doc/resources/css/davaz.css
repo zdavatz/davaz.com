@@ -134,7 +134,8 @@ div.tooltip-container {
   text-align:       center;
 }
 
-img.image-tooltip-image {
+img.image-tooltip-image,
+div.tooltip-text img {
   display:    inline;
   max-width:  375px;
   max-height: 400px;

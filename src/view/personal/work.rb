@@ -23,27 +23,12 @@ module DaVaz::View
     class WorkText < HtmlGrid::DivList
       CSS_CLASS  = 'intro-text'
       COMPONENTS = {
-        [0, 0] => TextBlock,
+        [0, 0] => DaVaz::View::TextBlock
       }
 
       def init
         super
-        self.onload = <<~EOS.gsub(/\n|^\s*/, '')
-          (function() {
-            require([
-              'dojo/query'
-            ], function(query) {
-              return query('span.tooltip').forEach(function(node) {
-                return setHrefTooltip(
-                  node.id,
-                  node.id,
-                  'tooltip_' + String(node.id),
-                  ['below-alt', 'above-centered']
-                );
-              });
-            });
-          })();
-        EOS
+        self.onload = DaVaz::View::TextBlock.onload_tooltips
       end
     end
 

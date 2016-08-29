@@ -10,7 +10,7 @@ class TestMovies < Minitest::Test
     link.click
   end
 
-  def test_movies_movie_entry_has_clickable_more_link
+  def test_movies_movie_entry_clickable_more_link
     assert_match('/en/works/movies', browser.url)
 
     list = browser.div(:id, 'movies_list')
@@ -30,7 +30,7 @@ class TestMovies < Minitest::Test
     assert_match('/en/works/movies/#111', browser.url)
   end
 
-  def test_movies_show_has_a_thumbnail_of_its_movie
+  def test_movies_show_a_thumbnail_of_its_movie
     assert_match('/en/works/movies', browser.url)
 
     link = browser.link(:name, '111-more')

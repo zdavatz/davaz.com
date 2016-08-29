@@ -8,7 +8,7 @@ class TestFamily < Minitest::Test
     browser.visit('/en/personal/family')
   end
 
-  def test_family_has_slide_show_widget
+  def test_family_slide_show_widget
     assert_match('/en/personal/family', browser.url)
 
     widget = wait_until { browser.div(:id, 'ywesee_widget_slide_0') }

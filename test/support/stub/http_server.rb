@@ -96,8 +96,6 @@ end
 
 module DaVaz
   module Stub
-    @server = nil
-
     class Notes < Hash
       alias :add :store
     end
@@ -108,7 +106,6 @@ module DaVaz
     end
 
     def self.http_server(drburi)
-      return @server if @server
       doc = File.expand_path('../../../doc', File.dirname(__FILE__))
       server_args = {
         :Port         => TEST_SRV_URI.port,
@@ -121,9 +118,9 @@ module DaVaz
         server_args[:Logger]    = WEBrick::Log.new($stdout)
         server_args[:AccessLog] = nil
       end
-      @server = WEBrick::HTTPServer.new(server_args)
+      server = WEBrick::HTTPServer.new(server_args)
       # for SBSM::TransHandler
-      @server.document_root = doc
+      server.document_root = doc
 
       davaz = Proc.new do |req, resp|
         resp.chunked = true
@@ -132,7 +129,7 @@ module DaVaz
         elsif req.uri == '/favicon.ico'
           resp.body = File.open(File.join(doc, req.uri))
         else
-          req.server = @server
+          req.server = server
           Util::TransHandler.instance.translate_uri(req)
           # Not Threadsafe!
           SBSM::Apache.request = req
@@ -155,17 +152,17 @@ module DaVaz
         end
       end
 
-      @server.mount_proc('/', &davaz)
-      @server.mount_proc('/en', &davaz)
-      @server.mount_proc('/en/.*', &davaz)
+      server.mount_proc('/', &davaz)
+      server.mount_proc('/en', &davaz)
+      server.mount_proc('/en/.*', &davaz)
       res = File.join(doc, 'resources')
-      @server.mount('/resources',
+      server.mount('/resources',
         WEBrick::HTTPServlet::FileHandler, res, {})
       ups = File.join(res, 'uploads')
-      @server.mount('/resources/uploads',
+      server.mount('/resources/uploads',
         WEBrick::HTTPServlet::FileHandler, ups, {})
 
-      @server
+      server
     end
   end
 end

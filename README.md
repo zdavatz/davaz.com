@@ -1,5 +1,7 @@
 # The [davaz.com](http://davaz.com/)
 
+[![Build Status](https://travis-ci.org/ywesee/davaz.com.svg?branch=master)](https://travis-ci.org/ywesee/davaz.com)
+
 ![davaz.com](https://raw.githubusercontent.com/ywesee/davaz.com/master/doc/screenshot-davaz-com.png)
 
 ## Setup

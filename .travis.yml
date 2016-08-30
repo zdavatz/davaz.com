@@ -1,0 +1,30 @@
+language: ruby
+
+bundler_args: --without development
+
+cache: bundler
+
+before_install:
+  - gem --version
+
+before_script:
+  - npm install
+  - mv etc/config.yml.ci etc/config.yml
+
+script: bundle exec rake test
+
+rvm:
+  - 2.3.1
+  - ruby-head
+
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+    recipients:
+      - ngiger@ywesee.com
+      - yasaka@ywesee.com

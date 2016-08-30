@@ -1,0 +1,8 @@
+---
+environment: development
+server_name: davaz.com
+yus_uri: druby://localhost:12006
+mailer:
+  from: '"CI (davaz.com)" <admin@ywesee.com>'
+  to:
+    - admin@ywesee.com

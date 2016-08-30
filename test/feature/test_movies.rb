@@ -86,21 +86,22 @@ class TestMovies < Minitest::Test
     frame = wait_until { browser.iframe(index: 0) }
     editor = frame.div(id: 'dijitEditorBody')
     editor.focus
+    sleep(1)
     editor.send_keys('UPDATED: ')
     editor.send_keys(:tab)
     assert_equal('UPDATED: Text of ArtObject 111', editor.text)
 
     # TODO :'(
-    #button = browser.element(name: 'update')
-    #button.click
+    button = browser.element(name: 'update')
+    button.click
 
-    #view = wait_until { browser.div(:id, 'movies_gallery_view') }
-    #assert_match('/en/works/movies/#111', browser.url)
+    view = wait_until { browser.div(:id, 'movies_gallery_view') }
+    assert_match('/en/works/movies/#111', browser.url)
 
-    #frame = wait_until { browser.iframe(:index, 0) }
-    #editor = frame.div(:id, 'dijitEditorBody')
-    #assert_equal('UPDATED: Text of ArtObject 111', editor.text)
-    
+    frame = wait_until { browser.iframe(:index, 0) }
+    editor = frame.div(:id, 'dijitEditorBody')
+    assert_equal('UPDATED: Text of ArtObject 111', editor.text)
+
     logout
   end
 end

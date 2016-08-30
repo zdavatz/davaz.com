@@ -12,17 +12,18 @@ class TestWork < Minitest::Test
     assert_match('/en/personal/work', browser.url)
 
     span = wait_until { browser.span(class: 'tooltip') }
-    assert_equal('tooltip_1_1', span.attribute_value(:id))
+    assert_equal('tooltip_4_1', span.attribute_value(:id))
 
-    sleep(1)
-
+    span.focus
+    span.click
     span.hover
     span.fire_event('onmouseover')
+    sleep(1)
 
-    dialog = wait_until { browser.div(id: 'tooltip_tooltip_1_1_dialog') }
+    dialog = wait_until { browser.div(id: 'tooltip_tooltip_4_1_dialog') }
     assert(dialog.exists?)
 
-    tooltip = wait_until { browser.div(id: 'tooltip_1_1_dropdown') }
+    tooltip = wait_until { browser.div(id: 'tooltip_4_1_dropdown') }
     assert(tooltip.exists?)
   end
 end

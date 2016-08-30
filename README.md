@@ -1,5 +1,7 @@
 # The [davaz.com](http://davaz.com/)
 
+![davaz.com](https://raw.githubusercontent.com/ywesee/davaz.com/master/doc/screenshot-davaz-com.png)
+
 ## Setup
 
 ### Requirements

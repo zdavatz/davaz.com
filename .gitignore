@@ -12,3 +12,4 @@ Gemfile.hack
 
 /env
 /node_modules
+/vendor

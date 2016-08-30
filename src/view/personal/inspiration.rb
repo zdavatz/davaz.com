@@ -32,7 +32,7 @@ module DaVaz::View
     end
 
     class InspirationComposite < HtmlGrid::DivComposite
-      CSS_ID = 'inner-content'
+      CSS_ID = 'inner_content'
       COMPONENTS = {
         [0, 0] => InspirationTitle,
         [1, 0] => component(OneLiner, :oneliner),

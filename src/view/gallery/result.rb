@@ -68,7 +68,7 @@ module DaVaz::View
 
     class ResultColumnNames < HtmlGrid::Composite
       LEGACY_INTERFACE = false
-      CSS_ID     = 'result-list-column-names'
+      CSS_ID     = 'result_list_column_names'
       COMPONENTS = {
         [0, 0] => 'title',
         [1, 0] => 'year',
@@ -121,7 +121,7 @@ module DaVaz::View
     end
 
     class EmptyResultList < HtmlGrid::Div
-      CSS_ID = 'empty-result-list'
+      CSS_ID = 'empty_result_list'
 
       def init
         super
@@ -137,8 +137,8 @@ module DaVaz::View
         [0, 3] => :result_list
       }
       CSS_ID_MAP = {
-        0 => 'gallery-navigation',
-        1 => 'new-search'
+        0 => 'gallery_navigation',
+        1 => 'new_search'
       }
 
       def result_list(model)

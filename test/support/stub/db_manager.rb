@@ -232,14 +232,14 @@ module DaVaz::Stub
       link3 = StubLink.new('3', 'Text', '115') # tooltip
       link3.set_artobjects([artobject4])
 
-      link4 = StubLink.new('4', 'Title', '115')
-      link4.set_artobjects([artobject1, artobject5])
+      link4 = StubLink.new('4', 'Text', '115')
+      link4.set_artobjects([artobject5])
 
       artobject1.set_links([link1])
       artobject2.set_links([link2])
       artobject3.set_links([link2])
       artobject4.set_links([link3])
-      artobject5.set_links([link1, link2])
+      artobject5.set_links([link2, link4])
 
       @artobjects = [
         artobject1, artobject2, artobject3, artobject4, artobject5

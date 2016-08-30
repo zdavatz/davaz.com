@@ -1,11 +1,11 @@
 require 'test_helper'
 
-# /communication/shop
+# /communication/guestbook
 class TestGuestbook < Minitest::Test
   include DaVaz::TestCase
 
   def setup
-    browser.visit('/en/personal/work')
+    browser.visit('/en/communication/link')
     link = browser.a(name: 'guestbook')
     link.click
   end
@@ -30,12 +30,37 @@ class TestGuestbook < Minitest::Test
     form = wait_until { browser.form(name: 'stdform') }
     assert(form.exists?)
 
+    sleep(1) # wait until elements are visible :'(
+    form.textarea(name: 'messagetxt').set('Hoi')
     button = form.input(type: 'submit')
-    button.fire_event('onclick')
+    button.click
 
     assert_match('/en/communication/guestbook', browser.url)
     message = wait_until { browser.div(class: 'error') }
     assert_equal('Please enter a name.', message.text)
+  end
+
+  def test_zoo_boo
+    assert_match('/en/communication/guestbook', browser.url)
+
+    button = wait_until { browser.input(class: 'new-entry') }
+    button.click
+
+    form = wait_until { browser.form(name: 'stdform') }
+    assert(form.exists?)
+
+    sleep(1) # wait until elements are visible :'(
+    form.textarea(name: 'messagetxt').set('Hoi')
+    button = form.input(type: 'submit')
+    button.click
+
+    assert_match('/en/communication/guestbook', browser.url)
+    message = wait_until { browser.div(class: 'error') }
+    assert_equal('Please enter a name.', message.text)
+
+    browser.visit('/en/communication/link')
+
+    assert_match('/en/communication/link', browser.url)
   end
 
   def test_guestbook_comment
@@ -47,6 +72,7 @@ class TestGuestbook < Minitest::Test
     form = wait_until { browser.form(name: 'stdform') }
     assert(form.exists?)
 
+    sleep(1) # wait until elements are visible :'(
     form.text_field(name: 'name').set('John Smith')
     form.text_field(type: 'text', name: 'surname').set('Dr.')
     form.text_field(name: 'email').set('john@example.org')
@@ -54,10 +80,10 @@ class TestGuestbook < Minitest::Test
     form.text_field(name: 'city').set('Zürich')
     form.textarea(name: 'messagetxt').set('Hoi')
     button = form.input(type: 'submit')
-    button.fire_event('onclick')
+    button.click
 
     assert_match('/en/communication/guestbook', browser.url)
-    message = browser.div(class: 'error')
+    message = wait_until { browser.div(class: 'error') }
     assert_empty(message.text)
   end
 end

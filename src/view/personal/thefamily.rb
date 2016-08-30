@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 # View::Personal::TheFamily -- davaz.com -- 11.10.2005 -- mhuggler@ywesee.com
 
-require 'view/publictemplate'
-require 'view/textblock'
+require 'view/template'
+require 'view/_partial/textblock'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/divlist'
 
-module DAVAZ
+module DaVaz
 	module View
 		module Personal
 class TheFamilyTitle < HtmlGrid::Div
@@ -43,7 +43,7 @@ class TheFamilyComposite < HtmlGrid::DivComposite
 		[2,0]	=>	TheFamilyBackLink,
 	}
 end
-class TheFamily < View::PersonalPublicTemplate 
+class TheFamily < View::PersonalTemplate 
 	CONTENT = View::Personal::TheFamilyComposite
 end
 		end

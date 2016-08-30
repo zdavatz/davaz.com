@@ -1,19 +1,17 @@
-#!/usr/bin/env ruby
-# View::Works::Drawings -- davaz.com -- 28.09.2005 -- mhuggler@ywesee.com
+require 'view/template'
+require 'view/works/init'
 
-require 'view/publictemplate'
-require 'view/works/works'
+module DaVaz::View
+  module Works
+    class DrawingsComposite < Init; end
 
-module DAVAZ
-	module View
-		module Works
-class DrawingsComposite < View::Works::Works; end
-class Drawings < View::DrawingsPublicTemplate
-	CONTENT = View::Works::DrawingsComposite 
-end
-class AdminDrawings < View::AdminDrawingsPublicTemplate
-	CONTENT = View::Works::DrawingsComposite 
-end
-		end
-	end
+    class Drawings < DrawingsTemplate
+      CONTENT = DrawingsComposite
+    end
+
+    # @api admin
+    class AdminDrawings < AdminDrawingsTemplate
+      CONTENT = DrawingsComposite
+    end
+  end
 end

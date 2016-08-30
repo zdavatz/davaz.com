@@ -1,126 +1,131 @@
-div#top-navigation {
-	padding-left: 200px;
+div#top_navigation {
+  padding-left: 200px;
 }
 
 div#content {
-	background-image: url("/resources/images/global/background.jpg");
-	background-position: top center;
-	background-repeat: no-repeat;
+  background-image:    url("/resources/images/global/background.jpg");
+  background-position: top center;
+  background-repeat:   no-repeat;
 }
 
-div#foot-navigation {
-	background: #f1171d;
+div#top_navigation {
+  background:   #f1171d;
+  color:        white;
+  padding-left: 200px;
 }
 
-a.foot-navigation:visited,a.foot-navigation:link {
-	background: #f1171d;
-}
-
-a.foot-navigation:hover {
-	background: #f1171d;
-}
-
-div#copyright {
-	background: #f1171d;
-}
-
-div#top-navigation {
-	color: white;
-	background: #f1171d;
-	padding-left: 200px;
-}
-
-a.top-navigation:visited, a.top-navigation:link {
-	color: white;
-	background: #f1171d;
+a.top-navigation:visited,
+a.top-navigation:link {
+  background: #f1171d;
+  color:      white;
 }
 
 a.top-navigation:hover {
-	color: blue;	
-	background: #f1171d;
+  background: #f1171d;
+  color:      blue;
 }
 
-div#zone-image {
-	background-image: url("/resources/images/global/topleft.gif");
-	background-repeat: no-repeat;
+div#foot_navigation {
+  background: #f1171d;
+}
+
+a.foot-navigation:visited
+a.foot-navigation:link {
+  background: #f1171d;
+}
+
+a.foot-navigation:hover {
+  background: #f1171d;
+}
+
+div#copyright {
+  background: #f1171d;
+}
+
+div#zone_image {
+  background-image: url("/resources/images/global/topleft.gif");
+  background-repeat: no-repeat;
 }
 
 div.oneliner {
-	padding-top: 15px;
-	font: bold 16pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
-	text-align: center;
+  font:        bold 16pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  padding-top: 15px;
+  text-align:  center;
 }
 
 .center {
-	margin-left: auto; margin-right: auto;
-	text-align: center;
+  margin-left:  auto;
+  margin-right: auto;
+  text-align:   center;
 }
 
-div#gallery-navigation {
-	padding-bottom: 40px;
-	width: 600px;
-	height: 40px;
-	margin-left: auto; margin-right: auto;
+div#gallery_navigation {
+  padding-bottom: 40px;
+  width:          600px;
+  height:         40px;
+  margin-left:    auto;
+  margin-right:   auto;
 }
 
-div#new-search {
-	padding-top: 20px;
-	width: 600px;
-	height: 30px;
-	margin-left: auto; margin-right: auto;
+div#new_search {
+  padding-top:  20px;
+  width:        600px;
+  height:       30px;
+  margin-left:  auto;
+  margin-right: auto;
 }
 
-a.gallery-navigation:link, a.gallery-navigation:visited,
+a.gallery-navigation:link,
+a.gallery-navigation:visited,
 a.gallery-navigation:hover {
-	font-weight: bold;
-	text-decoration: none;
-	color: blue;
+  font-weight:     bold;
+  text-decoration: none;
+  color:           blue;
 }
 
-div#slideshow-rack {
-	display: none;
+div#close_x {
+  width:        700px;
+  margin-left:  auto;
+  margin-right: auto;
+  text-align:   right;
+  z-index:      10;
 }
 
-div#close-x { 
-	width: 700px;
-	margin-left: auto; margin-right: auto;
-	text-align: right;
-	z-index: 10;
+div#close_x a:link,
+div#close_x a:hover,
+div#close_x a:visited {
+  text-decoration: none;
+  color:           black;
+  font-weight:     bold;
 }
 
-div#close-x a:link, div#close-x a:hover,
-div#close-x a:visited {
-	text-decoration: none;
-	color: black;
-	font-weight: bold;
-}
-
-div#show-wipearea {
-	display: none;
-}
-
-table#result-list-column-names td {
-	background-color: #f1171d;
+table#result_list_column_names td {
+  background-color: #f1171d;
 }
 
 table.result-list th {
-	background-color: #F96C70;
+  background-color: #F96C70;
 }
 
-td.result-title-bg, td.result-year-bg, td.result-tool-bg, 
-td.result-material-bg, td.result-size-bg, td.result-country-bg,
+td.result-title-bg,
+td.result-year-bg,
+td.result-tool-bg,
+td.result-material-bg,
+td.result-size-bg,
+td.result-country-bg,
 td.result-serie-bg {
-	background-color: #F6BFC0;
+  background-color: #F6BFC0;
 }
 
-div#artobject-title {
-	background-color: #f1171d;
+div#artobject_title {
+  background-color: #f1171d;
 }
 
-div#artobject-subtitle-left, div#artobject-subtitle-right {
-	background-color: #F96C70;
+div#artobject_subtitle_left,
+div#artobject_subtitle_right {
+  background-color: #F96C70;
 }
 
 div.gallery-table-title {
-	padding-top: 20px;
+  padding-top: 20px;
 }

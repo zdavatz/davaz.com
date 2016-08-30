@@ -1,19 +1,17 @@
-#!/usr/bin/env ruby
-# View::Works::Schnitzenthesen -- davaz.com -- 28.09.2005 -- mhuggler@ywesee.com
-
-require 'view/publictemplate'
 require 'htmlgrid/divcomposite'
+require 'view/works/init'
+require 'view/template'
 
-module DAVAZ
-	module View
-		module Works
-class SchnitzenthesenComposite < View::Works::Works; end
-class Schnitzenthesen < View::SchnitzenthesenPublicTemplate
-	CONTENT = View::Works::SchnitzenthesenComposite 
-end
-class AdminSchnitzenthesen < View::AdminSchnitzenthesenPublicTemplate
-	CONTENT = View::Works::SchnitzenthesenComposite 
-end
-		end
-	end
+module DaVaz::View
+  module Works
+    class SchnitzenthesenComposite < Init; end
+
+    class Schnitzenthesen < SchnitzenthesenTemplate
+      CONTENT = SchnitzenthesenComposite
+    end
+
+    class AdminSchnitzenthesen < AdminSchnitzenthesenTemplate
+      CONTENT = SchnitzenthesenComposite
+    end
+  end
 end

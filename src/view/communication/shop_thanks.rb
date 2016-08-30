@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 # View::Communication::ShopThanks -- davaz.com -- 04.10.2005 -- mhuggler@ywesee.com
 
-require 'view/publictemplate'
+require 'view/template'
 require 'htmlgrid/divcomposite'
 
-module DAVAZ
+module DaVaz
 	module View
 		module Communication
 class ShopThanksComposite < HtmlGrid::DivComposite
@@ -13,7 +13,7 @@ class ShopThanksComposite < HtmlGrid::DivComposite
 		[0,0]	=>	'shop_thanks',
 	}
 end
-class ShopThanks < View::CommunicationPublicTemplate
+class ShopThanks < View::CommunicationTemplate
 	CONTENT = ShopThanksComposite
 end
 		end

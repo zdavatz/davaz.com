@@ -1,272 +1,289 @@
-div#image-chooser-container {
-	width: 800px;
-	margin-left: auto; margin-right: auto;
+div#image_chooser_container {
+  width:        800px;
+  margin-left:  auto;
+  margin-right: auto;
 }
 
 div.image-chooser-image {
-	float: left;
+  float: left;
 }
 
 div.image-chooser-title {
-	clear: both;
-	margin-top: 30px;
-	margin-bottom: 20px;
-	color: white;
-	background-color: #990099;
+  clear:            both;
+  margin-top:       30px;
+  margin-bottom:    20px;
+  color:            white;
+  background-color: #990099;
 }
 
 div.upload-image-title {
-	clear: both;
-	margin-top: 30px;
-	margin-bottom: 20px;
-	color: white;
-	background-color: #990099;
+  clear:            both;
+  margin-top:       30px;
+  margin-bottom:    20px;
+  color:            white;
+  background-color: #990099;
 }
 
 span.image-tags {
-	margin-right: 10px;
+  margin-right: 10px;
 }
 
-span.image-tags a:link, span.image-tags a:visited, 
+span.image-tags a:link,
+span.image-tags a:visited,
 span.image-tags a:hover {
-	text-decoration: none;
-	color: blue;
+  text-decoration: none;
+  color:           blue;
 }
 
 div.links-list-link {
-	clear: both;
-	color: white;
-	font-weight: bold;
-	height: 30px;
-	background-color: #990099;
+  clear:            both;
+  color:            white;
+  font-weight:      bold;
+  height:           30px;
+  background-color: #990099;
 }
 
 div.links-list-link-word {
-	text-align: left;
-	float: left;
+  text-align: left;
+  float:      left;
 }
 
 div.links-list-remove-link {
-	text-align: right;
+  text-align: right;
 }
 
-div.links-list-remove-link a:link, div.links-list-remove-link a:hover,
+div.links-list-remove-link a:link,
+div.links-list-remove-link a:hover,
 div.links-list-remove-link a:visited {
-	color: white;
-	text-decoration: none;
+  color:           white;
+  text-decoration: none;
 }
 
-div.links-list-add-element a:link, div.links-list-add-element a:hover,
+div.links-list-add-element a:link,
+div.links-list-add-element a:hover,
 div.links-list-add-element a:visited {
-	color: blue;
-	text-decoration: none;
+  color:           blue;
+  text-decoration: none;
 }
 
 div.links-list-add-element {
-	margin-top: 10px;
-	margin-bottom: 10px;
+  margin-top:    10px;
+  margin-bottom: 10px;
 }
 
 div.links-list-image {
-	clear: both;
-	margin-top: 5px;
-	margin-bottom: 5px;
+  clear:         both;
+  margin-top:    5px;
+  margin-bottom: 5px;
 }
 
 div.links-list-image div {
-	float: left;
+  float: left;
 }
 
-a.links-list-action:link, a.links-list-action:visited,
+a.links-list-action:link,
+a.links-list-action:visited,
 a.links-list-action:hover {
-	text-decoration: none;
-	margin-bottom: 10px;
+  text-decoration: none;
+  margin-bottom:   10px;
 }
 
 div.links-list-image-chooser {
-	display: none;
+  display: none;
 }
 
 div.image-chooser-link-images {
-	float: left;
-	margin-bottom: 20px;
+  float:         left;
+  margin-bottom: 20px;
 }
 
-div.image-chooser-link-images a:link, a:visited, a:hover {
-	color: blue;
-	text-decoration: none;
+div.image-chooser-link-images a:link,
+div.image-chooser-link-images a:visited,
+div.image-chooser-link-images a:hover {
+  color:           blue;
+  text-decoration: none;
 }
 
-div#image-upload-composite {
-	width: 700px;
-	text-align: left;
-	margin-left: auto; margin-right: auto;
+div#image_upload_composite {
+  width:        700px;
+  text-align:   left;
+  margin-left:  auto;
+  margin-right: auto;
 }
 
-div#image-upload-form td {
-	color: black;
-	text-align: left;
+div#image_upload_form td {
+  color:      black;
+  text-align: left;
 }
 
 div.display-element-form-reset {
-	clear: both;
+  clear: both;
 }
 
 div#breadcrumbs {
-	font-size: 10pt;
-	color: white;
-	position: absolute;
-	top: 15px;
-	left: 10px;
-	width: 400px;
-	height: 200px;
-	z-index: 3;
+  font-size: 10pt;
+  color:     white;
+  position:  absolute;
+  top:       15px;
+  left:      10px;
+  width:     400px;
+  height:    200px;
+  z-index:   3;
 }
 
 div.displayelement {
-	float: left;
-	width: 200px;
+  float: left;
+  width: 200px;
 }
 
 div.displayelement div {
-	clear: both;	
+  clear: both;
 }
 
-div#links-list-container {
-	width: 700px;
-	color: black;
-	text-align: left;
-	margin-left: auto; margin-right: auto;
-	padding-top: 5px;
+div#links_list_container {
+  width:        700px;
+  color:        black;
+  text-align:   left;
+  margin-left:  auto;
+  margin-right: auto;
+  padding-top:  5px;
 }
 
-div#image-browser {
-	padding-top: 20px;
-	padding-bottom: 20px;
+div#image_browser {
+  padding-top:    20px;
+  padding-bottom: 20px;
 }
 
 div.display-element-form-title {
-	clear: both;
+  clear: both;
 }
 
-div#artobject-details {
-	clear: both;
-	padding-left: 10px;
-	text-align: left; 
+div#artobject_details {
+  clear:        both;
+  padding-left: 10px;
+  text-align:   left;
 }
 
-div#artobject-inner-composite {
-	width: 900px;
+div#artobject_inner_composite {
+  width: 900px;
 }
 
-div#artobject-admin-image {
-	padding-top: 10px;
-	padding-bottom: 10px;
+div#artobject_admin_image {
+  padding-top:    10px;
+  padding-bottom: 10px;
 }
 
-div#artobject-admin-details {
-	width: 100%;
+div#artobject_admin_details {
+  width: 100%;
 }
 
-div#artobject-image-upload-form {
-	color: black;
-	margin-left: auto; margin-right: auto;
-	text-align: center;
-	width: 520px;
-	padding-bottom: 20px;
+div#artobject_image_upload_form {
+  color:          black;
+  margin-left:    auto;
+  margin-right:   auto;
+  text-align:     center;
+  width:          520px;
+  padding-bottom: 20px;
 }
 
-table#artobject-details td {
-	text-align: left;	
-	padding-bottom: 5px;
+table#artobject_details td {
+  text-align:     left;
+  padding-bottom: 5px;
 }
 
 div.edit-buttons {
-	width: 100%;
-	text-align: left;
+  width:      100%;
+  text-align: left;
 }
 
 div.edit-buttons input {
-	margin: 5px;
+  margin: 5px;
 }
 
 input {
-	background-color: none;
+  background-color: none;
 }
 
 textarea {
-	background-color: none;
-	font-size: 10pt;
+  background-color: none;
+  font-size: 10pt;
 }
 
 div.block-url:hover {
-	background-color: #f3fb98;
+  background-color: #f3fb98;
 }
 
 input.block-url {
-	border: none;
-	width: 100%;
-	font-size: 13pt;
-	font-weight: bold;
-	font-color: blue;
+  border:      none;
+  width:       100%;
+  font-size:   13pt;
+  font-weight: bold;
+  font-color:  blue;
 }
 
-div#element-container {
-	width: 600px;
-	margin-left: auto; margin-right: auto;
+div#element_container {
+  width:        600px;
+  margin-left:  auto;
+  margin-right: auto;
 }
 
 div.block-title:hover {
-	background-color: #f3fb98;
+  background-color: #f3fb98;
 }
 
 input.block-title {
-	border: none;
-	width: 100%;
-	font-size: 13pt;
-	font-weight: bold;
+  border:      none;
+  width:       100%;
+  font-size:   13pt;
+  font-weight: bold;
 }
 
 div.block-date_ch:hover {
-	background-color: #f3fb98;
+  background-color: #f3fb98;
 }
 
 input.block-date_ch {
-	border: none;
-	width: 100%;
+  border: none;
+  width:  100%;
 }
 
 div.block-text:hover {
-	background-color: #f3fb98;
+  background-color: #f3fb98;
 }
 
 input.block-text {
-	border: none;
-	width: 100%;
+  border: none;
+  width: 100%;
 }
 
 textarea.block-text {
-	border: none;
-	width: 100%;
+  border: none;
+  width:  100%;
 }
 
 .active {
-	background-color: #e6e6fa;
+  background-color: #e6e6fa;
 }
 
 div.edit-element {
-	text-align: left;
+  text-align: left;
 }
 
-a.edit-element:link, a.edit-element:active,
+a.edit-element:link,
+a.edit-element:active,
 a.edit-element:hover {
-	color: red;
-}
-
-div#upload-image-div {
-	clear: both;
-}
-
-div#artobject-admin-details form td.red {
   color: red;
+}
+
+div#upload_image_div {
+  clear: both;
+}
+
+div#artobject_admin_details form td.red {
+  color: red;
+}
+
+/* dijit.Editor */
+.tundra .dijitToolbar {
+  border-top: 1px solid #cccccc;
 }

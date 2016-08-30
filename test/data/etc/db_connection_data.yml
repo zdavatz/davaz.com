@@ -3,3 +3,4 @@ host: localhost
 user: test_user
 password: test_password
 db: test_db
+encoding: utf8

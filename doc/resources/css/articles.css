@@ -4,7 +4,7 @@ div#content {
 	background-repeat: no-repeat;
 }
 
-div#foot-navigation {
+div#foot_navigation {
 	background: #6666FF;
 }
 
@@ -20,7 +20,7 @@ a.foot-navigation:hover {
 	background: #6666FF;
 }
 
-div#top-navigation {
+div#top_navigation {
 	color: #DAA520;
 	background: #6666FF;
 	padding-left: 200px;
@@ -34,7 +34,7 @@ a.top-navigation:hover {
 	color: white;
 }
 
-a#zone-image:link, a#zone-image:visited, a#zone-image:hover {
+a#zone_image:link, a#zone_image:visited, a#zone_image:hover {
 	background-image: url("/resources/images/global/topleft_articles.gif");
 	background-repeat: no-repeat;
 	display: block;

@@ -4,12 +4,12 @@
 require 'logger'
 require 'net/http'
 
-module DAVAZ
+module DaVaz
 	module Util
 		class Updater
 			def initialize(app)
 				@app = app
-				log_path = File.join(DAVAZ.config.project_root, "log")
+				log_path = File.join(DaVaz.config.project_root, "log")
 				log_file = File.join(log_path, 'update_log')
 				@logger = Logger.new(log_file)
 			end
@@ -37,7 +37,7 @@ module DAVAZ
 				@app = app 
 			end
 			def run
-				curr = DAVAZ.config.currencies.dup
+				curr = DaVaz.config.currencies.dup
 				affected_rows = []
 				curr.each { |target, origin| 
 					affected_rows.push(update_conversion(origin, target))

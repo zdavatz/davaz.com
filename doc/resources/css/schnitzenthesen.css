@@ -4,7 +4,7 @@ div#content {
 	background-repeat: no-repeat;
 }
 
-div#foot-navigation {
+div#foot_navigation {
 	background: #99FF00;
 }
 
@@ -16,7 +16,7 @@ a.foot-navigation:hover {
 	background: #99FF00;
 }
 
-div#top-navigation {
+div#top_navigation {
 	color: #3333CC;
 	background: #99FF00;
 	padding-left: 200px;
@@ -36,12 +36,12 @@ div#copyright {
 	background: #99FF00;
 }
 
-div#zone-image {
+div#zone_image {
 	background-image: url("/resources/images/global/topleft_schnitzenthesen.gif");
 	background-repeat: no-repeat;
 }
 
-table#result-list-column-names td {
+table#result_list_column_names td {
 	background-color: #99FF00;
 }
 
@@ -55,10 +55,11 @@ td.result-serie-bg {
 	background-color: #E6FBC5;
 }
 
-div#artobject-title {
+div#artobject_title {
 	background-color: #99FF00;
 }
 
-div#artobject-subtitle-left, div#artobject-subtitle-right {
+div#artobject_subtitle_left,
+div#artobject_subtitle_right {
 	background-color: #CCF986;
 }

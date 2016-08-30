@@ -1,240 +1,218 @@
 div.init-container {
-/*	background-color: black; */
-	position: relative;
-	width: 780px;
-	height: 460px;
-	margin-left: auto; margin-right: auto;
-	margin-bottom: auto;
-	text-align: left;
+  position:      relative;
+  width:         780px;
+  height:        460px;
+  margin-left:   auto; margin-right: auto;
+  margin-bottom: auto;
+  text-align:    left;
 }
 
 div.display-inline {
-	display: inline;
+  display: inline;
 }
 
-a:link.slide-control, a:visited.slide-control, a:hover.slide-control {
-	background-color: black;
-	padding: 0px;
-	margin: 0px;
+a:link.slide-control,
+a:visited.slide-control,
+a:hover.slide-control {
+  background-color: black;
+  padding:          0px;
+  margin:           0px;
 }
-
-/* container content */
 
 div.drawing {
-	position: absolute;
-	text-align: left;
-	left: 0px;
-	z-index: 1;
+  position:   absolute;
+  text-align: left;
+  left:       0px;
+  z-index:    1;
 }
 
 div.photo {
-	width: 160px;
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	z-index: 5;
+  width:    160px;
+  position: absolute;
+  right:    0px;
+  top:      0px;
+  z-index:  5;
 }
 
 div.signature {
-	position: absolute;
-	right: 25px;
-	top: 130px;
-	z-index: 2;
+  position: absolute;
+  right:    25px;
+  top:      130px;
+  z-index:  2;
 }
 
 div.communication-links {
-	width: 100px;
-	position: absolute;
-	right: 20px;
-	top: 240px;
-	text-align: center;
-	z-index: 2;
+  width:      100px;
+  position:   absolute;
+  right:      20px;
+  top:        240px;
+  text-align: center;
+  z-index:    2;
 }
 
 table.communication-links {
-	text-align: center;
+  text-align: center;
 }
 
 td.communication-links {
-	text-align: center;
+  text-align: center;
 }
 
-a.communication-link:link, a.communication-link:visited {
-	color: #CC0000;
-	font: bold 10pt Arial, Helvetica, sans-serif;
-	text-decoration: none;
+a.communication-link:link,
+a.communication-link:visited {
+  color:           #CC0000;
+  font:            bold 10pt Arial, Helvetica, sans-serif;
+  text-decoration: none;
 }
 
 a.communication-link:hover {
-	color: #0000CC;
-	font: bold 10pt Arial, Helvetica, sans-serif;
-	text-decoration: none;
+  color:           #0000CC;
+  font:            bold 10pt Arial, Helvetica, sans-serif;
+  text-decoration: none;
 }
 
 div.init-copyright {
-	width: 100px;
-	position: absolute;
-	right: 35px;
-	top: 370px;
-	text-align: center;
-	z-index: 2;
+  width:      100px;
+  position:   absolute;
+  right:      35px;
+  top:        370px;
+  text-align: center;
+  z-index:    2;
 }
 
-div.init-copyright a:link, 
-div.init-copyright a:visited, 
+div.init-copyright a:link,
+div.init-copyright a:visited,
 div.init-copyright a:hover {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 div.intro-text {
-	position: absolute;
-	width: 560px;
-	left: 0px;
-	top: 260px;
-	font-size: 9pt;
-	text-align: center;
-	z-index: 2;
+  position:   absolute;
+  width:      560px;
+  left:       0px;
+  top:        260px;
+  font-size:  9pt;
+  text-align: center;
+  z-index:    2;
 }
 
 div.lines {
-	position: absolute; 
-	width: 100%;
-	text-align: center;
-	z-index: 3;
-}
-
-div#oneliner {
-	position: absolute;
-	width: 560px;
-	left: 0px;
-	top: 380px;
-	z-index: 2;
+  position:   absolute;
+  width:      100%;
+  text-align: center;
+  z-index:    3;
 }
 
 div.oneliner {
-	font: bold 16pt Verdana, Geneva, Arial, Helvetica, sans-serif; 
-	text-align: center;
+  position: absolute;
+  width:    560px;
+  left:     0px;
+  top:      380px;
+  z-index:  2;
+}
+
+div.oneliner {
+  font:       bold 16pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  text-align: center;
 }
 
 div.movie-links {
-	position: absolute;
-	width: 560px;
-	left: 0px;
-	top: 440px;
-	text-align: center;
-	z-index: 2;
+  position:   absolute;
+  width:      560px;
+  left:       0px;
+  top:        440px;
+  text-align: center;
+  z-index:    2;
 }
 
-a.movies-div-link:visited,a.movies-div-link:link {
-	color: red;
-	left: 80px;
-	font: bold 10pt Verdana, Geneva, Arial, Helvetica, sans-serif;
-	text-decoration: none;
-	text-align: center;
+a.movies-div-link:visited,
+a.movies-div-link:link {
+  color:           red;
+  left:            80px;
+  font:            bold 10pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  text-align:      center;
 }
 
 a.movies-div-link:hover {
-	color: blue;
-	left: 80px;
-	font: bold 10pt Verdana, Geneva, Arial, Helvetica, sans-serif;
-	text-decoration: none;
-	text-align: center;
+  color:           blue;
+  left:            80px;
+  font:            bold 10pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  text-align:      center;
 }
 
-a#close-div:link, a#close-div:visited, a#close-div:hover {
-	text-decoration: none;
-	font-weight: bold;
+a#close_div:link,
+a#close_div:visited,
+a#close_div:hover {
+  text-decoration: none;
+  font-weight:     bold;
 }
 
 div.movie-page {
-	position: absolute;
-	left: 290px;
-	top: 0px;
-	text-align: center;
-	z-index: 2;
+  position:   absolute;
+  left:       290px;
+  top:        0px;
+  text-align: center;
+  z-index:    2;
 }
 
-a.movie-page:visited,a.movie-page:link {
-	color: blue;
-	font: 9pt Verdana, Geneva, Arial, Helvetica, sans-serif;
-	text-decoration: none;
-	text-align: center;
+a.movie-page:visited,
+a.movie-page:link {
+  color:            blue;
+  font:            9pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  text-align:      center;
 }
 
 a.movie-page:hover {
-	color: red;
-	font: 9pt Verdana, Geneva, Arial, Helvetica, sans-serif;
-	text-decoration: none;
-	text-align: center;
+  color:           red;
+  font:            9pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  text-align:      center;
 }
 
 div.player-download {
-	position: absolute;
-	text-align: center;
-	width: 560px;
-	left: 0px;
-	top: 460px;
-	font-size: 7pt;
-	z-index: 2;
+  position:   absolute;
+  text-align: center;
+  width:      560px;
+  left:       0px;
+  top:        460px;
+  font-size:  7pt;
+  z-index:    2;
 }
 
 div.pic-inspiration {
-	position: absolute;
-	right: 320px;
-	top: 45px;
-	z-index: 2;
+  position: absolute;
+  right:    320px;
+  top:      45px;
+  z-index:  2;
 }
 
 div.pic-family {
-	position: absolute;
-	right: 260px;
-	top: 50px;
-	z-index: 2;
+  position: absolute;
+  right:    260px;
+  top:      50px;
+  z-index:  2;
 }
 
 div.pic-bottleneck {
-	position: absolute;
-	right: 180px;
-	top: 70px;
-	z-index: 2;
+  position: absolute;
+  right:    180px;
+  top:      70px;
+  z-index:  2;
 }
 
 div#paypal {
-	position: absolute;
-	width: 560px;
-	left: 0px;
-	top: 500px;
-	z-index: 2;
+  position: absolute;
+  width:    560px;
+  left:     0px;
+  top:      500px;
+  z-index:  2;
 }
 
-div#paypal-button {
-	margin-left: auto; margin-right: auto;
-	width: 90px;
-	height: 21px;
+div#paypal_button {
+  margin-left: auto; margin-right: auto;
+  width:       90px;
+  height:      21px;
 }
-
-/* Ticker */
-
-div#ticker-container {
-	margin-left: auto; margin-right: auto;
-	overflow: hidden;
-	display: none;
-	height: 183px;
-	/* width: 780px;
-	background-image: url('/resources/images/global/movie.gif');*/
-}
-
-div.ticker-window {
-	height: 183px;
-	overflow: hidden;
-}
-
-div.ticker-window div {
-	float: left;
-	overflow: hidden;
-}
-
-div.ticker-window div img {
-	padding: 2px;
-}
-

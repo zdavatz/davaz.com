@@ -1,0 +1,16 @@
+<div data-dojo-attach-point="slideContainer" class="slide-container">
+  <a href="javascript:void(0)" data-dojo-attach-point="startStopButton" data-dojo-attach-event="onclick: togglePaused">
+    <img data-dojo-attach-point="startStopImage" class="slide-control-image" src="/resources/images/global/pause.gif" />
+  </a>
+  <br>
+  <div class="slide-image-container" style="display: none;" data-dojo-attach-point="container1" data-dojo-attach-event="onclick: togglePaused">
+    <img data-dojo-attach-point="img1" class="slide-image" />
+    <br>
+    <span data-dojo-attach-point="title1" class="slide-image-title"></span>
+  </div>
+  <div class="slide-image-container" data-dojo-attach-point="container2" data-dojo-attach-event="onclick: togglePaused">
+    <img data-dojo-attach-point="img2" class="slide-image"/>
+    <br>
+    <span data-dojo-attach-point="title2" class="slide-image-title"></span>
+  </div>
+</div>

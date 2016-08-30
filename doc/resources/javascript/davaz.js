@@ -505,30 +505,6 @@ function toggleUploadImageForm(divId, url) {
 	}
 }
 
-function toggleDeskContent(id, serieId, objectId, url, wipe) {
-	var fragmentIdentifier = 'Detail_' + serieId + '_' + objectId;
-	var reloadDesk = function() {
-		var desk = dijit.byId(id);
-		dojo.xhrGet({
-			url: url,
-			load: function(data, event) {
-				desk.toggleInnerHTML(data);
-				if(wipe === true) {
-					dojo.fx.wipeIn('show_wipearea', 1000).play();
-				}
-        dojo.back.addToHistory({changeUrl:fragmentIdentifier});
-			},
-			handleAs: "text"
-		});
-	};
-
-	if(wipe === true) {
-		dojo.fx.wipeOut({node:'show_wipearea', duration:1000, onEnd:reloadDesk}).play();
-	} else {
-		reloadDesk();
-	}
-}
-
 function reloadShoppingCart(url, count) {
 	if(parseInt(count)===count-0) {
 		var node = dojo.byId('shopping_cart');
@@ -592,13 +568,13 @@ function toggleJavaApplet(url, artobjectId) {
 
 function toggleArticle(link, articleId, url) {
 	var node = dojo.byId(articleId);
-	display = node.style.display; 
+	display = node.style.display;
 	if(display=="none") {
 		document.body.style.cursor = 'progress';
 		link.style.cursor = 'progress';
 		dojo.xhrGet({
 			url: url,
-			load: function(data, request) { 
+			load: function(data, request) {
 				node.innerHTML = data;
 				dojo.fx.wipeIn({node:node, duration:1000, onEnd:function() {
 					/*
@@ -620,81 +596,12 @@ function toggleArticle(link, articleId, url) {
 			handleAs: "text"
 		});
 	} else {
-		dojo.fx.wipeOut({node:node, duration:100}).play();	
+		dojo.fx.wipeOut({node:node, duration:100}).play();
 	}
 }
 
 function jumpTo(nodeId) {
 	document.location.hash = nodeId;
-}
-
-function reloadLinkListComposite(url) {
-	var node = dojo.byId('links_list_container');
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,	
-		load: function(data, request) {
-			node.innerHTML = data;
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'text'
-	});
-}
-
-function addImage(url) {
-	var node = dojo.byId('displayelement_form');
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,	
-		load: function(data, request) {
-			node.innerHTML = data;
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'text'
-	});
-}
-
-function addLink(url) {
-	var node = dojo.byId('links_list_container');
-	var linkWord = dojo.byId('link_word').value;
-	dojo.xhrGet({
-		url: url + linkWord,	
-		load: function(data, request) {
-			node.innerHTML = data;
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'text'
-	});
-}
-
-function addImageFromChooser(url) {
-	var node = dojo.byId('links_list_container');
-	var chooser = dojo.byId('links_list_image_chooser');
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,	
-		load: function(data, request) {
-			node.innerHTML = data;
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'text'
-	});
-}
-
-function showImageChooser(url) {
-	var node = dojo.byId('links_list_image_chooser');
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-			node.innerHTML = data;
-			var callback = function() {
-				document.body.style.cursor = 'auto';
-			};
-			dojo.fx.wipeIn(node, 300, callback);
-		},
-		handleAs: 'text'
-	});
 }
 
 function logout(link) {
@@ -703,35 +610,12 @@ function logout(link) {
 	link.href = href;
 }
 
-function deleteElement(url) {
-	var container = dojo.byId('element_container');
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-			//window.location.href=data['url'];
-			window.location.href=data.url;
-		},
-		handleAs: 'text'
-	});
-}
-
 function deleteImage(url, image_div_id) {
 	var image_div = dojo.byId(image_div_id);
 	dojo.xhrGet({
 		url: url,
 		load: function(type, data, event) {
 			image_div.innerHTML = "";
-		},
-		handleAs: 'text'
-	});
-}
-
-function reloadImageAction(url, div_id) {
-	var image_action_div = dojo.byId(div_id) ;
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-			image_action_div.innerHTML = data;
 		},
 		handleAs: 'text'
 	});

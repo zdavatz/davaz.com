@@ -52,8 +52,8 @@ module DaVaz::Util
         close_window:        'Close window',
         close_window_href:   'javascript:window.close()',
         comma_divider:       ',&nbsp;',
-        copyright:           "LGPL ywesee #{Time.now.year}",
-        copyright_url:       'http://scm.ywesee.com/?p=davaz.com;a=summary',
+        copyright:           "GPLv2 ywesee #{Time.now.year}",
+        copyright_url:       'http://scm.ywesee.com/?p=davaz.com/.git;a=summary',
         # d
         dash_divider:    '&nbsp;-&nbsp;',
         date:            'Date',

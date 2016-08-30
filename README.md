@@ -11,6 +11,7 @@
 * Apache2
 * [mod_ruby](https://github.com/shugo/mod_ruby) (It works with Ruby `1.8.6`)
 * cronolog (optional)
+* daemontools (for davazd, yusd)
 
 ### Install
 
@@ -23,10 +24,13 @@ ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-linux]
 % echo 'gem: --no-ri --no-rdoc' > ~/.gemrc
 
 % cd /path/to/davaz.com
-% bundle install --path .bundle/gems
+% bundle install --path vendor
 
 : JavaScript libraries
-: __TODO__
+% cd doc/resources
+% curl -sLO http://download.dojotoolkit.org/release-1.7.10/dojo-release-1.7.10.tar.gz
+% tar zxvf dojo-release-1.7.10
+% mv dojo-release-1.7.10 dojo
 ```
 
 ### Configureation
@@ -45,7 +49,7 @@ Use sample files in `etc` directory.
 
 __TODO__
 
-### Booting
+### Boot
 
 Setup [daemontools](http://cr.yp.to/daemontools.html) then let supervise these
 servers.
@@ -74,7 +78,9 @@ davaz> exit
 
 ### Dependencies
 
+* Ruby
 * Node.js
+
 * [minitest](https://github.com/seattlerb/minitest)
 * [Selenium](http://docs.seleniumhq.org/) (via [watir](https://github.com/watir/watir))
 * [PhantomJS](https://github.com/ariya/phantomjs)
@@ -82,8 +88,16 @@ davaz> exit
 ### Setup
 
 ```zsh
-% npm install
-% bundle install
+% git clone https://github.com/ywesee/davaz.com.git
+% cd davaz.com
+
+: e.g. use nodeenv
+% pip install nodeenv
+% nodeenv --node=0.12.15 env
+% source env/bin/activate
+
+(env) % npm install
+(env) % bundle install
 ```
 
 ### How to run
@@ -98,14 +112,23 @@ davaz> exit
 
 ```zsh
 : `DEBUG=true` is useful for debug (but it might be not interested)
-% bundle exec ruby -I.:test test/feature/test_shop.rb
-Run options: --seed 12380
+bundle exec foreman run ruby -I.:test test/feature/lectures_test.rb
+Run options: --seed 33427
 
 # Running:
 
-*
+**
 
-Fabulous run in 9.634901s, 0.1038 runs/s, 0.3114 assertions/s.
+Fabulous run in 3.490279s, 0.5730 runs/s, 3.7246 assertions/s.
 
-1 runs, 3 assertions, 0 failures, 0 errors, 0 skips
+2 runs, 13 assertions, 0 failures, 0 errors, 0 skips
 ```
+
+## License
+
+Copyright (C) 2006-2016 ywesee GmbH.
+
+This is free software;
+You can redistribute it and/or modify it under the terms of the GNU General Public License (GPL v2.0).
+
+See `LICENSE`.

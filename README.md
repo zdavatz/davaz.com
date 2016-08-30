@@ -60,7 +60,7 @@ servers.
 
 : Boot yus server (for user authencitation, setup this also before use)
 : See https://github.com/zdavatz/yus/blob/master/Guide.txt
-% bundle exec yusd
+% bundle exec yusd config=/var/www/davaz.com/etc/yus.yml
 ```
 
 How to boot developer console.

@@ -18,24 +18,19 @@ module DaVaz::State
 
       def init
         mandatory = [:name, :messagetxt]
-        keys = mandatory + [:surname, :email, :city, :country]
+        keys      = mandatory + [:surname, :email, :city, :country]
         hash = user_input(keys, mandatory)
         hash[:name] = "#{hash[:name]} #{hash[:surname]}"
         hash.delete(:surname)
         @model = {}
-        messages = []
         if error?
-          @model[:success] = false
-          @errors.each { |key, value|
-            messages.push(@session.lookandfeel.lookup(value.message))
-          }
-          @model[:messages] = messages.join('<br />')
+          @model[:success]  = false
+          @model[:messages] = @errors.map { |_, value|
+            @session.lookandfeel.lookup(value.message)
+          }.join('<br />')
         else
-          hash.each { |key, value|
-            hash[key] = value
-          }
-          @session.app.insert_guest(hash)
           @model[:success] = true
+          @session.app.insert_guest(hash)
         end
       end
     end

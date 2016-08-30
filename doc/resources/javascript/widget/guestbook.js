@@ -34,11 +34,13 @@ define([
           _this.formContainer.innerHTML = data;
           _this.form_node               = _this.formContainer.firstChild;
           var cancelButton = dom.byId('cancel_add_entry');
-          on(_this.form_node, 'submit', function() {
-            _this.submitForm();
+          on(_this.form_node, 'submit', function(e) {
+            e.preventDefault();
+            return _this.submitForm();
           });
-          on(cancelButton, 'click', function() {
-            _this.toggleForm();
+          on(cancelButton, 'click', function(e) {
+            e.preventDefault();
+            return _this.toggleForm();
           });
         }
       });
@@ -70,12 +72,13 @@ define([
         url:      this.form_node.action
       , form:     this.form_node
       , handleAs: 'json'
-      , load: function(data, request) {
+      , load:     function(data, request) {
           if (data['success'])  {
             document.location.reload();
           } else {
             _this.errorMessages.innerHTML = data['messages'];
           }
+          return data;
         }
       });
     }

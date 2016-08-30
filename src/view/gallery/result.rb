@@ -206,8 +206,7 @@ module DaVaz::View
         0 => 'rack_result_list_composite'
       }
       HTTP_HEADERS = {
-        'type'    => 'text/html',
-        'charset' => 'UTF-8'
+        'Content-Type' => 'text/html;charset=UTF-8'
       }
     end
   end

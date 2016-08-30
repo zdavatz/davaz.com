@@ -149,8 +149,7 @@ module DaVaz::View
       1 => 'artobject_inner_composite'
     }
     HTTP_HEADERS = {
-      'type'    => 'text/html',
-      'charset' => 'UTF-8'
+      'Content-Type' => 'text/html;charset=UTF-8'
     }
   end
 
@@ -604,8 +603,7 @@ module DaVaz::View
       1 => 'artobject_inner_composite',
     }
     HTTP_HEADERS = {
-      'type'    => 'text/html',
-      'charset' => 'UTF-8'
+      'Content-Type' => 'text/html;charset=UTF-8'
     }
   end
 
@@ -619,8 +617,7 @@ module DaVaz::View
       1 => 'artobject_inner_composite'
     }
     HTTP_HEADERS = {
-      'type'    => 'text/html',
-      'charset' => 'UTF-8'
+      'Content-Type' => 'text/html;charset=UTF-8'
     }
   end
 

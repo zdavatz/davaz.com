@@ -40,7 +40,7 @@ module DaVaz
         [ 0, 0] =>  TooltipComposite,
       }
       HTTP_HEADERS = {
-        'Content-Type' => 'text/html; charset=UTF-8',
+        'Content-Type' => 'text/html;charset=UTF-8'
       }
     end
   end

@@ -1,19 +1,16 @@
-#!/usr/bin/env ruby
-# View::Works::Design -- davaz.com -- 05.05.2006 -- mhuggler@ywesee.com
+require 'view/template'
+require 'view/works/init'
 
-require 'view/publictemplate'
-require 'view/works/works'
+module DaVaz::View
+  module Works
+    class DesignComposite < Init; end
 
-module DAVAZ
-	module View
-		module Works
-class DesignComposite < View::Works::Works; end
-class Design < View::DesignPublicTemplate
-	CONTENT = View::Works::DesignComposite 
-end
-class AdminDesign < View::AdminDesignPublicTemplate
-	CONTENT = View::Works::DesignComposite 
-end
-		end
-	end
+    class Design < DesignTemplate
+      CONTENT = DesignComposite
+    end
+
+    class AdminDesign < AdminDesignTemplate
+      CONTENT = DesignComposite
+    end
+  end
 end

@@ -1,21 +1,16 @@
-#!/usr/bin/env ruby
-# State::Personal::Init -- davaz.com -- 18.07.2005 -- mhuggler@ywesee.com
-
-require 'state/global_predefine'
+require 'state/global'
 require 'view/personal/init'
-require 'model/oneliner'
 
-module DAVAZ
-	module State
-		module Personal 
-class Init < State::Personal::Global
-	VIEW = View::Personal::Init
-	def init
-		@model = OpenStruct.new
-		@model.movies = @session.app.load_movies_ticker
-		@model.oneliner = @session.app.load_oneliner('index')
-	end
-end
-		end
-	end
+module DaVaz::State
+  module Personal 
+    class Init < Global
+      VIEW = DaVaz::View::Personal::Init
+
+      def init
+        @model = OpenStruct.new
+        @model.movies   = @session.app.load_movies_ticker
+        @model.oneliner = @session.app.load_oneliner('index')
+      end
+    end
+  end
 end

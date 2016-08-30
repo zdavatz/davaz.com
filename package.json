@@ -1,0 +1,11 @@
+{
+  "name": "davaz.com"
+, "private": true
+, "scripts": {
+  }
+, "dependencies": {
+  }
+, "devDependencies": {
+    "phantomjs-prebuilt": "2.1.2"
+  }
+}

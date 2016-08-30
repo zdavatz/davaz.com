@@ -1,20 +1,16 @@
-#!/usr/bin/env ruby
-# State::Personal::Inspiration -- davaz.com -- 27.09.2005 -- mhuggler@ywesee.com
-
-require 'state/global_predefine'
+require 'state/personal/global'
 require 'view/personal/inspiration'
 
-module DAVAZ
-	module State
-		module Personal
-class Inspiration < State::Personal::Global
-	VIEW = View::Personal::Inspiration
-	def init
-		@model = OpenStruct.new
-		@model.text = @session.app.load_hisinspiration_text
-		@model.oneliner = @session.app.load_oneliner('hisinspiration')
-	end
-end
-		end
-	end
+module DaVaz::State
+  module Personal
+    class Inspiration < Global
+      VIEW = DaVaz::View::Personal::Inspiration
+
+      def init
+        @model = OpenStruct.new
+        @model.text = @session.app.load_hisinspiration_text
+        @model.oneliner = @session.app.load_oneliner('hisinspiration')
+      end
+    end
+  end
 end

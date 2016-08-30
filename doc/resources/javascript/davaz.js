@@ -1,109 +1,488 @@
-function submitForm(form, dataDivId, formDivId, keepForm) {
-	var formDiv = dojo.byId(formDivId);
-	var dataDiv = dojo.byId(dataDivId);
-	document.body.style.cursor = 'progress';
-	dojo.io.iframe.send({
-		url: form.action,
-		form: form,
-		load: function(data, request) {
-			dataDiv.innerHTML = data.body.innerHTML;	
-			if(!keepForm) {
-				formDiv.innerHTML = "";
-			}	
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'html'
-	});
+// Adds new element for admin
+//   * /personal/work
+//   * /communication/news
+//   * /communication/links
+function addNewElement(url) {
+  require([
+    'dojo/dom'
+  , 'dojo/_base/xhr'
+  , 'dijit/layout/ContentPane'
+  , 'dojo/domReady!'
+  ], function(dom, xhr, cpane) {
+    xhr.get({
+      url:       url,
+      handleAs: 'text',
+      load:      function(data, request) {
+        var container = dom.byId('element_container');
+        var div = document.createElement('div');
+        container.insertBefore(div,container.firstChild);
+        var pane = new cpane({
+          executeScripts: true
+        }, div);
+        pane.setContent(data);
+        pane.startup();
+      },
+    });
+  });
 }
 
+// Displays ticker widget
 function toggleTicker() {
-	var node = dojo.byId('ticker-container');
-	var ticker = dijit.byId('ywesee_widget_Ticker_0');
-	var display = node.style.display; 
-	if(display==="none" || display==='' || display == undefined) {
-		dojo.fx.wipeIn({node:node, duration:300}).play();
-	} else {
-		dojo.fx.wipeOut({node:node, duration:300}).play();	
-	}
-  ticker.togglePaused();
+  require([
+    'dojo/dom'
+  , 'dojo/dom-style'
+  , 'dojo/fx'
+  , 'dijit/dijit'
+  , 'dojo/domReady!'
+  ], function(dom, styl, fx, dijit) {
+    var node   = dom.byId('ticker_container')
+      , ticker = dijit.byId('ywesee_widget_ticker_0')
+      ;
+    var display = node.style.display;
+    if (display === 'none' || display === '' || display == undefined) {
+      fx.wipeIn({
+        node:     node
+      , duration: 300
+      , onEnd:    function() {
+          styl.set(node, 'display', 'block');
+        }
+      }).play();
+    } else {
+      fx.wipeOut({
+        node:     node
+      , duration: 300
+      , onEnd:    function() {
+          styl.set(node, 'display', 'none');
+        }
+      }).play();
+    }
+    ticker.TogglePaused();
+  });
 }
 
-function toggleHiddenDiv(divId) {
-	var node = dojo.byId(divId);
-	var display = node.style.display; 
-	if(display=="none") {
-		dojo.fx.wipeIn(node, 300).play();	
-	} else {
-		dojo.fx.wipeOut(node, 300).play();	
-	}
-}
-
+// Checks removable states
 function checkRemovalStatus(selectValue, url) {
-	document.body.style.cursor = 'progress';
-	url = url + selectValue; 
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) { 
-			//var removalStatus = data['removalStatus'];
-			var removalStatus = data.removalStatus;
-			//var removeLink = dojo.byId(data['removeLinkId']);
-			var removeLink = dojo.byId(data.removeLinkId);
-			if(removalStatus == 'goodForRemoval') {
-				if(removeLink) {
-					removeLink.style.color = 'blue';
-				}
-			} else {
-				if(removeLink) {
-					removeLink.style.color = 'grey';
-				}
-			}
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: "json-comment-filtered"
-	});
+  require([
+    'dojo/_base/xhr'
+  , 'dojo/dom'
+  , 'dojo/domReady!'
+  ], function(xhr, dom) {
+    document.body.style.cursor = 'progress';
+    xhr.get({
+      url:      url + selectValue
+    , handleAs: 'json'
+    , load:     function(data, request) {
+        var status = data.removalStatus
+          , link   = dom.byId(data.removeLinkId)
+          ;
+        if (status == 'goodForRemoval') {
+          if (link) {
+            link.style.color = 'blue';
+          }
+        } else {
+          if (link) {
+            link.style.color = 'grey';
+          }
+        }
+        document.body.style.cursor = 'auto';
+      }
+    });
+  });
 }
 
+// Adds new element {serie|tool|material}
 function addElement(inputSelect, url, value, addFormId, removeLinkId) {
-	url += value;	
-	toggleInnerHTML(inputSelect.parentNode, url, '', function() {
-		dojo.byId(addFormId).innerHTML='&nbsp;';
-		var removeLink = dojo.byId(removeLinkId);
-		removeLink.style.color = 'blue';
-	});
+  require([
+    'dojo/dom'
+  , 'dojo/dom-attr'
+  ], function(dom, attr) {
+    url += value;
+    // NOTE:
+    //   htmlgrid does not provide way to set id attribute for container
+    //   element in composite (CSS_ID_MAP is a config for inner component).
+    //   Therefore id attribute is needed to be set at here.
+    klass = attr.get(inputSelect.parentNode, 'class');
+    klass = klass.replace(' dijitContentPane', '');
+    attr.set(inputSelect.parentNode, 'id', klass);
+    return toggleInnerHTML(inputSelect.parentNode.id, url, '', function() {
+      var form = dom.byId(addFormId);
+      form.innerHTML = '&nbsp;';
+      var removeLink = dom.byId(removeLinkId);
+      removeLink.style.color = 'blue';
+      toggleInnerHTML(addFormId, 'null');
+    });
+  });
 }
 
+// Removes element {serie|tool|material}
 function removeElement(inputSelect, url, removeLinkId) {
-	var selectedId = inputSelect.value;
-	url += selectedId;
-	toggleInnerHTML(inputSelect.parentNode, url, '', function() {
-		var removeLink = dojo.byId(removeLinkId);
-		removeLink.style.color = 'grey';
-	});
+  require([
+    'dojo/dom'
+  , 'dojo/dom-attr'
+  ], function(dom, attr) {
+    url += inputSelect.value;
+    // See NOTE at addElement
+    klass = attr.get(inputSelect.parentNode, 'class');
+    klass = klass.replace(' dijitContentPane', '');
+    attr.set(inputSelect.parentNode, 'id', klass);
+    return toggleInnerHTML(inputSelect.parentNode.id, url, '', function() {
+      var removeLink = dom.byId(removeLinkId);
+      removeLink.style.color = 'grey';
+    });
+  });
 }
 
+// Toggles content with response of ajax request
+//   * input widgets {serie|tool|material}
+//   * movies
 function toggleInnerHTML(divId, url, changeUrl, callback) {
-	var fragmentidentifier = "";
-	if(changeUrl) {
-		fragmentidentifier = changeUrl;
-	} 
-	var node = dojo.byId(divId);
-	if(url == 'null') {
-		node.innerHTML = '';
-		return;
-	}
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-      var pane = new dijit.layout.ContentPane({executeScripts: true}, node);
-      pane.setContent(data);
-			if(callback) { callback(); }
-			document.body.style.cursor = 'auto';
-      dojo.back.addToHistory({changeUrl:fragmentidentifier});
-		},
-		handleAs: 'text'
-	});
+  require([
+    'dojo/_base/xhr'
+  , 'dojo/back'
+  , 'dojo/dom'
+  , 'dojo/dom-attr'
+  , 'dojo/dom-construct'
+  , 'dijit/dijit'
+  , 'dijit/layout/ContentPane'
+  , 'dojo/domReady!'
+  ], function(xhr, back, dom, attr, cnst, dijit, cpane) {
+    var fragmentidentifier = '';
+    if (changeUrl) {
+      fragmentidentifier = changeUrl;
+    }
+    var node = dom.byId(divId)
+      , wdgt = dijit.byId(divId)
+      ;
+    if (url == 'null' || // cancel
+        wdgt != null) {  // re:click
+      var container = node.parentNode;
+      if (wdgt && wdgt.id) {
+        wdgt.destroy();
+        cnst.destroy(wdgt.id);
+      }
+      var tag;
+      var select = String(divId).match(/container/);
+      if (select) {
+        tag = 'td';
+      } else {
+        tag = 'div';
+      }
+      // re:create node as new one
+      node = cnst.create(tag);
+      attr.set(node, 'id', divId);
+      cnst.place(node, container);
+      // form for artobject
+      if (!select && String(divId).match(/serie|tool|material/)) {
+        return;
+      }
+    }
+    document.body.style.cursor = 'progress';
+    xhr.get({
+      url:      url
+    , handleAs: 'text'
+    , load:     function(data, request) {
+        var pane = new cpane({
+          id:             divId
+        , executeScripts: true
+        }, node);
+        pane.setContent(data);
+        if (callback) { callback(); }
+        document.body.style.cursor = 'auto';
+        back.addToHistory({
+          changeUrl: fragmentidentifier
+        });
+      }
+    });
+  });
 }
+
+// Shows movie detail view using replaceDiv
+function showMovieGallery(divId, replaceDivId, url) {
+  require([
+    'dojo/_base/xhr'
+  , 'dojo/dom'
+  , 'dojo/dom-attr'
+  , 'dojo/back'
+  , 'dijit/dijit'
+  , 'dijit/layout/ContentPane'
+  ], function(xhr, dom, attr, back, dijit, cpane) {
+	  var node = dom.byId(divId);
+    if (node.style.display == 'none') {
+	    var artobjectId = url.split('/').pop();
+      xhr.get({
+        url:      url
+      , handleAs: 'text'
+      , load:      function(data, request) {
+          var pane = dijit.byId(divId);
+          if (pane == null) {
+            pane = new cpane({
+              id:             divId
+            , executeScripts: true
+            }, node);
+          }
+          pane.setContent(data);
+          replaceDiv(replaceDivId, divId);
+          back.addToHistory({
+            changeUrl: artobjectId
+          });
+        },
+      });
+    } else {
+      replaceDiv(divId, replaceDivId);
+      node.innerHTML = '';
+    }
+  });
+}
+
+// Replaces with wipe animation
+function replaceDiv(id, replaceId) {
+  require([
+    'dojo/dom'
+  , 'dojo/fx'
+  ], function(dom, fx) {
+    var node    = dom.byId(id)
+      , replace = dom.byId(replaceId)
+      ;
+    var callback = function() {
+      fx.wipeIn({
+        node:     replace
+      , duration: 100
+      }).play();
+    };
+    fx.wipeOut({
+      node:     node
+    , duration: 1000
+    , onEnd:    callback
+    }).play();
+  });
+}
+
+// Toggles show widgets {rack|slide|desk}
+function toggleShow(id, url, view, replaceId, serieId, artobjectId) {
+  require([
+    'dojo/_base/window'
+  , 'dojo/_base/xhr'
+  , 'dojo/parser'
+  , 'dojo/dom'
+  , 'dojo/dom-attr'
+  , 'dojo/dom-construct'
+  , 'dojo/query'
+  , 'dojo/fx'
+  , 'dojo/back'
+  , 'dijit/dijit'
+  , 'dojo/domReady!'
+  , 'ywesee/widget/rack'
+  , 'ywesee/widget/slide'
+  , 'ywesee/widget/desk'
+  ], function(win, xhr, parser, dom, attr, cnst, query, fx, back, dijit) {
+    var wrapper   = dom.byId(replaceId)
+      , container = dom.byId(id + '_container')
+      ;
+
+    if (attr.get(wrapper, 'data-toggle-action') == 'true') {
+      return;
+    }
+    // prevents multiple clicks
+    attr.set(wrapper, 'data-toggle-action', 'true');
+
+    var show = query('#' + id + '_container > div')[0]
+      , wdgt = dijit.byId(attr.get(show, 'widgetid'))
+      ;
+    if (wdgt) { // current widget
+      var lastUrl = wdgt.dataUrl
+        , lastId  = lastUrl.split('/').pop()
+        ;
+    }
+    var serieLink = dom.byId(serieId);
+    if (serieId && wdgt) {
+      if (lastId != serieId) {
+        var lastSerieLink = dom.byId(lastId);
+        if (lastSerieLink) {
+          lastSerieLink.className =
+            lastSerieLink.className.replace(/ ?active/, '');
+        }
+      }
+    }
+    if (view === null) {
+      if (wdgt) {
+        view = wdgt.view;
+      } else  { // default widget
+        view = 'rack';
+      }
+    }
+    var reuse = false; // reuse widget without ajax
+    if (url === null && wdgt) {
+      reuse = true;
+      url = lastUrl;
+    }
+    if (serieId === null && wdgt) {
+      serieId = wdgt.serieId;
+    }
+    var type = view.toLowerCase();
+
+    var flag = type.charAt(0).toUpperCase() + view.slice(1);
+    var anchor = flag + '_' + serieId;
+    if (artobjectId) {
+      anchor = anchor + '_' + artobjectId;
+    }
+
+    var loadWidget = function(type, url, anchor, container, callback) {
+      var data      = {dataUrl: url, anchor: anchor}
+        , domNode   = win.doc.createElement('div')
+        ;
+      switch (type) {
+      case 'slide':
+        var wdgt = new ywesee.widget.slide(data, domNode);
+        break;
+      case 'desk':
+        var wdgt = new ywesee.widget.desk(data, domNode);
+        break;
+      default:
+        var wdgt = new ywesee.widget.rack(data, domNode);
+      }
+      wdgt.startup();
+      wdgt.placeAt(container);
+      // change color of active link to black
+      if (serieLink != null && !serieLink.className.match(/ ?active/)) {
+        serieLink.className += ' active';
+      }
+      back.addToHistory({
+        changeUrl: anchor
+      });
+      callback.call();
+    };
+
+    if (wdgt) {
+      fx.wipeOut({
+        node:     container
+      , duration: 1200
+      , onEnd: function() {
+          var container = wdgt.domNode.parentNode
+            , current   = wdgt.view
+            ;
+          // wipeIn animation callback
+          var callback = function() {
+            setTimeout(function() {
+              var style = container.style.display;
+              if (style === '' || style === 'none') {
+                fx.wipeIn({
+                  node:     container
+                , duration: 800
+                , onEnd: function() {
+                    attr.set(wrapper, 'data-toggle-action', 'false');
+                  }
+                }).play();
+              }
+            }, 3);
+          }
+
+          if (type == current && reuse) { // same as current widget
+            callback.call();
+          } else {
+            // destroy current widget
+            // NOTE: this might remains widgt in registry :'(
+            wdgt.destroy(true);
+            cnst.destroy(wdgt.id);
+            wdgt = null;
+
+            loadWidget.call(this, type, url, anchor, container, callback);
+          }
+        }
+      }).play();
+    } else { // initialize
+      container.innerHTML = '';
+      loadWidget.call(this, type, url, anchor, container, function() {
+        attr.set(wrapper, 'data-toggle-action', 'false');
+      });
+    }
+  });
+}
+
+// Displays login form
+function toggleLoginForm(loginLink, url) {
+  require([
+    'dojo/_base/window'
+  , 'dojo/domReady!'
+  , 'ywesee/widget/login'
+  ], function(win) {
+    var newDiv = document.createElement('div');
+    win.body().appendChild(newDiv);
+    loginLink.onclick = 'return false;';
+    var login = new ywesee.widget.login({
+      loginLink:    loginLink
+    , loginFormUrl: url
+    , oldOnclick:   loginLink.onclick
+    }, newDiv);
+    login.startup();
+  });
+}
+
+// Makes tooltips
+function setHrefTooltip(domId, hrefHolderId, dialogId, orient) {
+  require([
+    'dijit/TooltipDialog'
+  , 'dijit/popup'
+  , 'dojo/on'
+  , 'dojo/dom'
+  , 'dojo/dom-attr'
+  , 'dojo/domReady!'
+  ], function(TooltipDialog, popup, on, dom, attr) {
+    var targetDom = dom.byId(domId)
+      , holder    = dom.byId(hrefHolderId)
+      ;
+    if (targetDom === null || holder === null) { return }
+    var artDialog = new TooltipDialog({
+          id:           dialogId + '_dialog'
+        , style:        'width: 400px;'
+        , href:         attr.get(holder, 'href')
+        , onMouseLeave: function() {
+            popup.close(artDialog);
+          }
+        });
+    on(targetDom, 'mouseover', function() {
+      popup.open({
+        popup:  artDialog
+      , around: targetDom
+      , orient: orient
+      });
+    });
+    on(targetDom, 'mouseleave', function() {
+      popup.close(artDialog);
+    });
+  });
+}
+
+// Show/Hides hidden div using fx wipe animation
+function toggleHiddenDiv(divId) {
+  require([
+    'dojo/fx'
+  , 'dojo/dom'
+  , 'dojo/dom-style'
+  , 'dojo/domReady!'
+  ], function(fx, dom, styl) {
+    var node = dom.byId(divId);
+    var display = node.style.display;
+    if (display === 'none' || display === '' || display == undefined) {
+      fx.wipeIn({
+        node:     node
+      , duration: 300
+      , onEnd:    function() {
+          styl.set(node, 'display', 'block');
+      }
+      }).play();
+    } else {
+      fx.wipeOut({
+        node:     node
+      , duration: 300
+      , onEnd:    function() {
+          styl.set(node, 'display', 'none');
+      }
+      }).play();
+    }
+  });
+}
+
+//
 
 function toggleUploadImageForm(divId, url) {
 	var node = dojo.byId(divId);
@@ -126,9 +505,9 @@ function toggleUploadImageForm(divId, url) {
 	}
 }
 
-function reloadShoppingCart(url, count) {	
+function reloadShoppingCart(url, count) {
 	if(parseInt(count)===count-0) {
-		var node = dojo.byId('shopping-cart');
+		var node = dojo.byId('shopping_cart');
 		document.body.style.cursor = 'progress';
 		dojo.xhrGet({
 			url: url + count,
@@ -137,12 +516,12 @@ function reloadShoppingCart(url, count) {
 				document.body.style.cursor = 'auto';
 			},
 			handleAs: 'text'
-		});	
+		});
 	}
 }
 
 function removeFromShoppingCart(url, fieldId) {
-	var node = dojo.byId('shopping-cart');
+	var node = dojo.byId('shopping_cart');
 	var inputNode = dojo.byId(fieldId);
 	document.body.style.cursor = 'progress';
 	dojo.xhrGet({
@@ -156,154 +535,30 @@ function removeFromShoppingCart(url, fieldId) {
 	});
 }
 
-function showMovieGallery(divId, replaceDivId, url) {
-	var node = dojo.byId(divId);
-	var artobjectId = url.split("/").pop();
-	var display = node.style.display; 
-	if(display=="none") {
-		dojo.xhrGet({
-			url: url,
-			load: function(data, request) {
-        var pane = new dijit.layout.ContentPane({executeScripts: true}, node);
-        pane.setContent(data);
-				replaceDiv(replaceDivId, divId);
-        dojo.back.addToHistory({changeUrl:artobjectId});
-			},
-			handleAs: 'text'
-		});
-	} else {
-		replaceDiv(divId, replaceDivId);
-		node.innerHTML = "";			
-	}
-}
 
-function replaceDiv(id, replace_id) {
-	var node = dojo.byId(id);	
-	var replace = dojo.byId(replace_id);
-	var callback = function() {
-		dojo.fx.wipeIn({node:replace, duration:100}).play();
-	};
-	dojo.fx.wipeOut({node:node, duration:1000, onEnd:callback}).play();
-}
-
-function toggleDeskContent(id, serieId, objectId, url, wipe) {
-	var fragmentIdentifier = 'Detail_' + serieId + '_' + objectId;
-	var reloadDesk = function() {
-		var desk = dijit.byId(id);
-		dojo.xhrGet({
-			url: url,	
-			load: function(data, event) {
-				desk.toggleInnerHTML(data);
-				if(wipe === true) {
-					dojo.fx.wipeIn('show-wipearea', 1000).play();
-				}
-        dojo.back.addToHistory({changeUrl:fragmentIdentifier});
-			}, 
-			handleAs: "text"
-		});
-	};
-
-	if(wipe === true) {
-		dojo.fx.wipeOut({node:'show-wipearea', duration:1000, onEnd:reloadDesk}).play();
-	} else {
-		reloadDesk();
-	}
-}
-
-function toggleShow(id, url, view, replace_id, serie_id, artobject_id) {
-	var show = dijit.byId(id);
-	if(show) {
-		var lastUrl = show.dataUrl;
-		var lastId = lastUrl.split("/").pop();
-	}
-
-  var serieLink = dojo.byId(serie_id);
-
-	if(serie_id && show) {
-		if(lastId != serie_id) {
-			var lastSerieLink = dojo.byId(lastId);	
-			if(lastSerieLink) {
-        lastSerieLink.className = lastSerieLink.className.replace(/ ?active/, '');
+function submitForm(form, dataDivId, formDivId, keepForm) {
+	var formDiv = dojo.byId(formDivId);
+	var dataDiv = dojo.byId(dataDivId);
+	document.body.style.cursor = 'progress';
+	dojo.io.iframe.send({
+		url: form.action,
+		form: form,
+		load: function(data, request) {
+			dataDiv.innerHTML = data.body.innerHTML;
+			if(!keepForm) {
+				formDiv.innerHTML = "";
 			}
-		} 
-	}
-	var container = dojo.byId(id + "-container");
-	var wipearea = dojo.byId(id + "-wipearea");
-	var display;
-	var replace = dojo.byId(replace_id);
-
-	if(view === null) {
-		if(show) {
-			view = show.view;
-		} else  {
-			view = 'Rack';	
-		}
-	}
-
-	if(url === null && show) {
-		url = lastUrl;	
-	}
-
-	if(serie_id === null) {
-		serie_id = show.serieId;	
-	}
-
-	var fragmentIdentifier = view + "_" + serie_id;
-
-	if(artobject_id) {
-		fragmentIdentifier = fragmentIdentifier + "_" + artobject_id;
-	}
-
-	var loadShow = function() {
-		dojo.xhrGet({
-			url: url,
-			load: function(data, args) { 
-				data.id = id;
-				if(show) {
-					show.destroy();	
-				}
-        var domNode = dojo.doc.createElement('div');
-        switch(view) {
-          case "SlideShow":
-				    var widget = new ywesee.widget.SlideShow(data, domNode);
-            break;
-          case "Desk":
-				    var widget = new ywesee.widget.Desk(data, domNode);
-            break;
-          default:
-				    var widget = new ywesee.widget.Rack(data, domNode);
-        }
-        container.appendChild(widget.domNode);
-        widget.startup();
-        var style = wipearea.style.display;
-				if(!style || style === 'none') {
-          wipearea.style.overflow = "hidden";
-          dojo.fx.wipeIn({node:wipearea, duration:1000 }).play();
-				}
-
-        // change color of active link to black
-        if(serieLink != null && !serieLink.className.match(/ ?active/))
-        {
-          serieLink.className += " active";
-        }
-				dojo.back.addToHistory({changeUrl:fragmentIdentifier});
-			},
-			handleAs: "json-comment-filtered"
-
-		});
-	};
-	if(replace && replace.style.display !== 'none') {
-		dojo.fx.wipeOut({node:replace, duration:1000, onEnd:loadShow}).play();
-	} else {
-		loadShow.call();	
-	}
+			document.body.style.cursor = 'auto';
+		},
+		handleAs: 'html'
+	});
 }
 
 function toggleJavaApplet(url, artobjectId) {
 	dojo.xhrGet({
 		url: url,
 		load: function(data, request) {
-			var container = dojo.byId('java-applet');
+			var container = dojo.byId('java_applet');
 			container.innerHTML = data;
       dojo.back.addToHistory({changeUrl:artobjectId});
 		},
@@ -313,13 +568,13 @@ function toggleJavaApplet(url, artobjectId) {
 
 function toggleArticle(link, articleId, url) {
 	var node = dojo.byId(articleId);
-	display = node.style.display; 
+	display = node.style.display;
 	if(display=="none") {
 		document.body.style.cursor = 'progress';
 		link.style.cursor = 'progress';
 		dojo.xhrGet({
 			url: url,
-			load: function(data, request) { 
+			load: function(data, request) {
 				node.innerHTML = data;
 				dojo.fx.wipeIn({node:node, duration:1000, onEnd:function() {
 					/*
@@ -341,7 +596,7 @@ function toggleArticle(link, articleId, url) {
 			handleAs: "text"
 		});
 	} else {
-		dojo.fx.wipeOut({node:node, duration:100}).play();	
+		dojo.fx.wipeOut({node:node, duration:100}).play();
 	}
 }
 
@@ -349,138 +604,10 @@ function jumpTo(nodeId) {
 	document.location.hash = nodeId;
 }
 
-function reloadLinkListComposite(url) {
-	var node = dojo.byId('links-list-container');
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,	
-		load: function(data, request) {
-			node.innerHTML = data;
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'text'
-	});
-}
-
-function addImage(url) {
-	var node = dojo.byId('displayelement-form');
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,	
-		load: function(data, request) {
-			node.innerHTML = data;
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'text'
-	});
-}
-
-function addLink(url) {
-	var node = dojo.byId('links-list-container');
-	var linkWord = dojo.byId('link-word').value;
-	dojo.xhrGet({
-		url: url + linkWord,	
-		load: function(data, request) {
-			node.innerHTML = data;
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'text'
-	});
-}
-
-function addImageFromChooser(url) {
-	var node = dojo.byId('links-list-container');
-	var chooser = dojo.byId('links-list-image-chooser');
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,	
-		load: function(data, request) {
-			node.innerHTML = data;
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'text'
-	});
-}
-
-function showImageChooser(url) {
-	var node = dojo.byId('links-list-image-chooser');
-	document.body.style.cursor = 'progress';
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-			node.innerHTML = data;
-			var callback = function() {
-				document.body.style.cursor = 'auto';
-			};
-			dojo.fx.wipeIn(node, 300, callback);
-		},
-		handleAs: 'text'
-	});
-}
-/*
-function login_form(link, url) {
-	var hash = document.location.hash;
-	var login_url = url + "fragment/" + hash.replace(/#/, '');
-	dojo.io.bind({
-		url: login_url,
-		load: function(type, data, event) {
-			var form = dojo.byId('login-form');
-			if(form) {
-				dojo.html.body().removeChild(form);
-			} else {
-				var div = document.createElement("div");
-				div.innerHTML = data; 
-				div.id = 'login-form';
-				div.style.position="absolute";
-				dojo.html.body().appendChild(div);
-				var position = dojo.html.getAbsolutePosition(link, true);
-				var left = position[0];
-				var top = position[1] - 5 - div.offsetHeight;
-				div.style.left = left+"px";
-				div.style.top = top+"px";
-			}
-		},
-		mimetype: 'text/html'
-	});
-}
-
-function loginError(errorMessage) {
-	var form = dojo.byId('login-form');	
-	var div = document.createElement("div");
-	div.innerHTML = errorMessage;
-	form.appendChild(div); 
-}
-*/
 function logout(link) {
 	var hash = document.location.hash;
 	var href = link.href + "fragment/" + hash.replace(/#/, '');
 	link.href = href;
-}
-
-function addNewElement(url) {
-	var container = dojo.byId('element-container');
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-			var div = document.createElement("div");
-			container.insertBefore(div,container.firstChild);
-			var pane = new dijit.layout.ContentPane({executeScripts: true}, div);
-			pane.setContent(data);
-		},
-		handleAs: 'text'
-	});	
-}
-
-function deleteElement(url) {
-	var container = dojo.byId('element-container');
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-			//window.location.href=data['url'];
-			window.location.href=data.url;
-		},
-		handleAs: 'text'
-	});	
 }
 
 function deleteImage(url, image_div_id) {
@@ -492,24 +619,4 @@ function deleteImage(url, image_div_id) {
 		},
 		handleAs: 'text'
 	});
-}
-
-function reloadImageAction(url, div_id) {
-	var image_action_div = dojo.byId(div_id) ;
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-			image_action_div.innerHTML = data;
-		},
-		handleAs: 'text'
-	});
-}
-
-function toggleLoginWidget(loginLink, url) {
-	var newDiv = document.createElement("div");	
-	dojo.body().appendChild(newDiv);
-  var login = new ywesee.widget.LoginWidget({ loginLink: loginLink,
-      loginFormUrl: url, oldOnclick: loginLink.onclick }, newDiv);
-	loginLink.onclick = "return false;";
-  login.startup();
 }

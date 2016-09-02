@@ -109,8 +109,8 @@ module DaVaz::Util
                            'return true\'>go back</a>',
         home:              'Home',
         html_title:        'Da Vaz - Abstract Artist from Switzerland',
-        hungarian:         'Dungarian',
-        hunting:           'Dunting',
+        hungarian:         'Hungarian',
+        hunting:           'Hunting',
         # i
         image_file:        'Image file',
         image_title:       'Image title',

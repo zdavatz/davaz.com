@@ -13,8 +13,13 @@ module DaVaz::View
     class LifeList < HtmlGrid::UlList
       CSS_ID     = 'biography'
       COMPONENTS = {
-        [0, 0] => TextBlock,
+        [0, 0] => DaVaz::View::TextBlock,
       }
+
+      def init
+        super
+        self.onload = DaVaz::View::TextBlock.onload_tooltips
+      end
     end
 
     class LifeTimePeriods < HtmlGrid::Composite

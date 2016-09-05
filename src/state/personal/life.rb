@@ -36,7 +36,7 @@ module DaVaz::State
     class AdminLife < Life
       VIEW = DaVaz::View::Personal::AdminLife
 
-      def admin_add_new_element
+      def ajax_add_new_element
         AdminAddNewBioElement.new(@session, @model)
       end
     end

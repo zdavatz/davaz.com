@@ -11,24 +11,25 @@ module DaVaz::View
     }
 
     def items(model)
-      "Item #{model.artobjects.index(model.artobject).to_i + 1} of" \
-      " #{model.artobjects.size}"
+      index        = model.artobjects.map(&:artobject_id)
+      active_index = index.index(model.artobject.artobject_id).to_i
+      "Item #{active_index + 1} of #{index.length}"
     end
 
     def next(model)
-      artobjects = model.artobjects
-      active_index = artobjects.index(model.artobject).to_i
-      unless (active_index + 1) == artobjects.size
+      index        = model.artobjects.map(&:artobject_id)
+      active_index = index.index(model.artobject.artobject_id).to_i
+      unless (active_index + 1) == index.size
         link = HtmlGrid::Link.new(:paging_next, model, @session, self)
         args = [
-          [:artobject_id, artobjects.at(active_index+1).artobject_id]
+          [:artobject_id, index.at(active_index + 1)]
         ]
         unless (search_query = @session.user_input(:search_query)).nil?
-          args.unshift([ :search_query, search_query])
+          args.unshift([:search_query, search_query])
         end
 
         unless (artgroup_id = @session.user_input(:artgroup_id)).nil?
-          args.unshift([ :artgroup_id, artgroup_id])
+          args.unshift([:artgroup_id, artgroup_id])
         end
         link.href = @lookandfeel.event_url(:gallery, :art_object, args)
         image = HtmlGrid::Image.new(:paging_next, model, @session, self)
@@ -41,19 +42,19 @@ module DaVaz::View
     end
 
     def last(model)
-      artobjects = model.artobjects
-      active_index = artobjects.index(model.artobject).to_i
+      index        = model.artobjects.map(&:artobject_id)
+      active_index = index.index(model.artobject.artobject_id).to_i
       unless (active_index - 1) == -1
         link = HtmlGrid::Link.new(:paging_last, model, @session, self)
         args = [
-          [:artobject_id, artobjects.at(active_index-1).artobject_id]
+          [:artobject_id, index.at(active_index - 1)]
         ]
         unless (search_query = @session.user_input(:search_query)).nil?
-          args.unshift([ :search_query, search_query])
+          args.unshift([:search_query, search_query])
         end
 
         unless (artgroup_id = @session.user_input(:artgroup_id)).nil?
-          args.unshift([ :artgroup_id, artgroup_id])
+          args.unshift([:artgroup_id, artgroup_id])
         end
 
         link.href = @lookandfeel.event_url(:gallery, :art_object, args)
@@ -130,18 +131,19 @@ module DaVaz::View
     }
 
     def items(model)
-      "Item #{model.artobjects.index(model.artobject).to_i + 1} of" \
-      " #{model.artobjects.size}"
+      index        = model.artobjects.map(&:artobject_id)
+      active_index = index.index(model.artobject.artobject_id).to_i
+      "Item #{active_index + 1} of #{index.length}"
     end
 
     def next(model)
-      artobjects = model.artobjects
-      active_index = artobjects.index(model.artobject).to_i
-      unless (active_index + 1) == artobjects.size
+      index        = model.artobjects.map(&:artobject_id)
+      active_index = index.index(model.artobject.artobject_id).to_i
+      unless (active_index + 1) == index.size
         link = HtmlGrid::Link.new(:paging_next, model, @session, self)
         args = [
           [:artgroup_id, @session.user_input(:artgroup_id)],
-          [:artobject_id, artobjects.at(active_index + 1).artobject_id],
+          [:artobject_id, index.at(active_index + 1)],
         ]
         link.href = @lookandfeel.event_url(
           :communication, :shop_art_object, args)
@@ -154,13 +156,13 @@ module DaVaz::View
     end
 
     def last(model)
-      artobjects = model.artobjects
-      active_index = artobjects.index(model.artobject).to_i
+      index        = model.artobjects.map(&:artobject_id)
+      active_index = index.index(model.artobject.artobject_id).to_i
       unless (active_index - 1) == -1
         link = HtmlGrid::Link.new(:paging_last, model, @session, self)
         link.href = @lookandfeel.event_url(:communication, :shop_art_object, [
           [:artgroup_id,  @session.user_input(:artgroup_id)],
-          [:artobject_id, artobjects.at(active_index-1).artobject_id]
+          [:artobject_id, index.at(active_index - 1)]
         ])
         image = HtmlGrid::Image.new(:paging_last, model, @session, self)
         image_src = @lookandfeel.resource(:paging_last)

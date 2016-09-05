@@ -221,6 +221,11 @@ input.block-url {
   font-color:  blue;
 }
 
+div#biography div#add_new_element_composite {
+  text-align: center;
+  margin-top: 30px;
+}
+
 div#element_container {
   width:        600px;
   margin-left:  auto;

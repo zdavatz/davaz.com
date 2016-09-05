@@ -4,17 +4,17 @@ define([
 , 'dojo/_base/xhr'
 , 'dojo/_base/html'
 , 'dojo/dom'
+, 'dojo/dom-style'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
 , 'dijit/_WidgetsInTemplateMixin'
-], function(declare, connect, xhr, html, dom, _wb, _tm, _witm) {
+], function(declare, connect, xhr, html, dom, styl, _wb, _tm, _witm) {
   declare('ywesee.widget.login', [_wb, _tm], {
     baseClass: 'login-widget'
   , templatePath: require.toUrl(
       '/resources/javascript/widget/templates/login.html')
     // properties
   , loginLink:    null
-  , oldOnclick:   ''
   , loginFormUrl: ''
   , widgetDiv:    ''
     // dom nodes
@@ -40,7 +40,6 @@ define([
       });
     }
   , cancelLogin: function() {
-      this.loginLink.onclick = this.oldOnclick;
       this.destroy();
     }
   , submitForm: function() {

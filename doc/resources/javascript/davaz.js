@@ -411,7 +411,6 @@ function toggleLoginForm(loginLink, url) {
     var login = new ywesee.widget.login({
       loginLink:    loginLink
     , loginFormUrl: url
-    , oldOnclick:   loginLink.onclick
     }, newDiv);
     login.startup();
   });
@@ -482,7 +481,7 @@ function toggleHiddenDiv(divId) {
   });
 }
 
-// Upload as using iframe
+// Uploads as using iframe
 //   * /works/drawings etc.
 function submitForm(form, dataDivId, formDivId, keepForm) {
   require([
@@ -510,7 +509,6 @@ function submitForm(form, dataDivId, formDivId, keepForm) {
   });
 }
 
-
 // Upload as using iframe
 //   * /works/drawings etc.
 function deleteImage(url, image_div_id) {
@@ -527,6 +525,18 @@ function deleteImage(url, image_div_id) {
       },
     });
   })
+}
+
+// This is used at shopping cart
+function jumpTo(nodeId) {
+	document.location.hash = nodeId;
+}
+
+// Changes as logged out
+function logout(link) {
+	var hash = document.location.hash;
+	var href = link.href + 'fragment/' + hash.replace(/#/, '');
+	link.href = href;
 }
 
 //
@@ -628,14 +638,4 @@ function toggleArticle(link, articleId, url) {
 	} else {
 		dojo.fx.wipeOut({node:node, duration:100}).play();
 	}
-}
-
-function jumpTo(nodeId) {
-	document.location.hash = nodeId;
-}
-
-function logout(link) {
-	var hash = document.location.hash;
-	var href = link.href + "fragment/" + hash.replace(/#/, '');
-	link.href = href;
 }

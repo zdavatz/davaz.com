@@ -13,7 +13,7 @@ module DaVaz::View
     def items(model)
       index        = model.artobjects.map(&:artobject_id)
       active_index = index.index(model.artobject.artobject_id).to_i
-      "Item #{active_index + 1} of #{index.length}"
+      "Item #{active_index + 1} of #{index.length - 1}"
     end
 
     def next(model)
@@ -133,7 +133,7 @@ module DaVaz::View
     def items(model)
       index        = model.artobjects.map(&:artobject_id)
       active_index = index.index(model.artobject.artobject_id).to_i
-      "Item #{active_index + 1} of #{index.length}"
+      "Item #{active_index + 1} of #{index.length - 1}"
     end
 
     def next(model)

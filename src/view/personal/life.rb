@@ -3,6 +3,7 @@ require 'htmlgrid/link'
 require 'htmlgrid/ullist'
 require 'view/_partial/list'
 require 'view/_partial/textblock'
+require 'view/_partial/element'
 require 'view/_partial/oneliner'
 require 'view/_partial/serie_widget'
 require 'view/_partial/ticker'
@@ -167,6 +168,9 @@ module DaVaz::View
       COMPONENTS = {
         [0, 0] => component(AdminTextBlockList, :biography_items),
       }
+      CSS_MAP = {
+        0 => 'text'
+      }
     end
 
     class AdminLifeComposite < LifeComposite
@@ -176,13 +180,13 @@ module DaVaz::View
 
       def reorganize_components
         components.update(
-          [2,3] => AdminAjaxAddNewElementComposite,
-          [3,3] => AdminLifeList
+          [2, 3] => AdminAjaxAddNewElementComposite,
+          [3, 3] => AdminLifeList
         )
       end
     end
 
-    class AdminLife < Life
+    class AdminLife < AdminPersonalTemplate
       CONTENT = AdminLifeComposite
     end
   end

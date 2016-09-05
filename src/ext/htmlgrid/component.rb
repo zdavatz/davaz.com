@@ -14,7 +14,7 @@ module HtmlGrid
 
     def escape(v)
       v = v.gsub(',', '<comma/>').gsub(/\r?\n/, '<br/>')
-      v = v.gsub(/"/, '\"')
+      v = v.gsub(/\&quot;|"/, '')
       CGI::escapeHTML(v)
     end
   end

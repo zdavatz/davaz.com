@@ -482,6 +482,55 @@ function toggleHiddenDiv(divId) {
   });
 }
 
+// Upload as using iframe
+//   * /works/drawings etc.
+function submitForm(form, dataDivId, formDivId, keepForm) {
+  require([
+    'dojo/dom'
+  , 'dojo/io/iframe'
+  , 'dojo/_base/xhr'
+  ], function(dom, iframe, xhr) {
+    var formDiv = dom.byId(formDivId);
+    var dataDiv = dom.byId(dataDivId);
+    document.body.style.cursor = 'progress';
+    iframe.send({
+      url:       form.action
+    , form:      form
+    , handleAs: 'html'
+    , load:      function(data, request) {
+        if (dataDiv) {
+          dataDiv.innerHTML = data.body.innerHTML;
+        }
+        if (!keepForm) {
+          formDiv.innerHTML = '';
+        }
+        document.body.style.cursor = 'auto';
+      },
+    });
+  });
+}
+
+
+// Upload as using iframe
+//   * /works/drawings etc.
+function deleteImage(url, image_div_id) {
+  require([
+    'dojo/dom'
+  , 'dojo/_base/xhr'
+  ], function(dom, xhr) {
+    var image_div = dom.byId(image_div_id);
+    xhr.get({
+      url:      url
+    , handleAs: 'text'
+    , load:     function(type, data, event) {
+        image_div.innerHTML = '';
+      },
+    });
+  })
+}
+
+//
+//
 //
 
 function toggleUploadImageForm(divId, url) {
@@ -532,25 +581,6 @@ function removeFromShoppingCart(url, fieldId) {
 			document.body.style.cursor = 'auto';
 		},
 		handleAs: 'text'
-	});
-}
-
-
-function submitForm(form, dataDivId, formDivId, keepForm) {
-	var formDiv = dojo.byId(formDivId);
-	var dataDiv = dojo.byId(dataDivId);
-	document.body.style.cursor = 'progress';
-	dojo.io.iframe.send({
-		url: form.action,
-		form: form,
-		load: function(data, request) {
-			dataDiv.innerHTML = data.body.innerHTML;
-			if(!keepForm) {
-				formDiv.innerHTML = "";
-			}
-			document.body.style.cursor = 'auto';
-		},
-		handleAs: 'html'
 	});
 }
 
@@ -608,15 +638,4 @@ function logout(link) {
 	var hash = document.location.hash;
 	var href = link.href + "fragment/" + hash.replace(/#/, '');
 	link.href = href;
-}
-
-function deleteImage(url, image_div_id) {
-	var image_div = dojo.byId(image_div_id);
-	dojo.xhrGet({
-		url: url,
-		load: function(type, data, event) {
-			image_div.innerHTML = "";
-		},
-		handleAs: 'text'
-	});
 }

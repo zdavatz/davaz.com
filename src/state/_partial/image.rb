@@ -26,31 +26,11 @@ module DaVaz::State
 
     def init
       @model = {'status' => 'not deleted'}
-      if Util::ImageHelper.delete_image(@session.user_input(:artobject_id))
+      if DaVaz::Util::ImageHelper.delete_image(@session.user_input(:artobject_id))
         @model['status'] = 'deleted'
       end
     end
   end
-
-  # @todo
-  #class AjaxUploadImage < SBSM::State
-  #  include Magick
-
-  #  VIEW     = DaVaz::View::AjaxText
-  #  VOLATILE = true
-
-  #  def init
-  #    artobject_id = @session.user_input(:artobject_id)
-  #    @model = 'not uploaded'
-  #    string_io = @session.user_input(:image_file)
-  #    if string_io && artobject_id
-  #      DaVaz::Util::ImageHelper.store_upload_image(string_io, artobject_id)
-  #      @model = DaVaz::Util::ImageHelper.image_url(artobject_id, nil, true)
-  #      # no 'else' => new artobject images pass src/state/_partial/art_object
-  #      # this is actually highly confusing: why does that happen?
-  #    end
-  #  end
-  #end
 
   # @api admin
   # @api ajax

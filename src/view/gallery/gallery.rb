@@ -127,6 +127,7 @@ module DaVaz::View
       CONTENT = GalleryComposite
     end
 
+    # @api admin
     class AdminGallery < AdminGalleryTemplate
       CONTENT = GalleryComposite
     end

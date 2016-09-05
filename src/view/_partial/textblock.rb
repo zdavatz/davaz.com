@@ -200,7 +200,8 @@ module DaVaz::View
 
   class AdminTextBlockList < HtmlGrid::DivList
     COMPONENTS = {
-      [0, 0] => AdminLiveEditor
+      [0, 0] => AdminLiveEditor,
+      [0, 1] => AdminImageDiv
     }
     CSS_MAP = {
       0 => 'text'

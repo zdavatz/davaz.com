@@ -41,7 +41,7 @@ define([
       this.deleteIcon.src   = this.delete_icon_src;
       this.deleteIcon.title = this.delete_icon_txt;
       this.deleteIcon.alt   = this.delete_icon_txt;
-      this.deleteIcon.id    = 'delete-item-' + this.element_id_value;
+      this.deleteIcon.id    = 'delete_item_' + this.element_id_value;
       on(this.deleteLink, 'click', function() {
         _this.deleteItem();
       });
@@ -53,7 +53,7 @@ define([
         this.imageButtonIcon.src   = this.delete_image_icon_src;
         this.imageButtonIcon.title = this.delete_image_icon_txt;
         this.imageButtonIcon.alt   = this.delete_image_icon_txt;
-        this.imageButtonIcon.id    = 'delete-image-' + this.element_id_value;
+        this.imageButtonIcon.id    = 'delete_image_' + this.element_id_value;
         if (this._imgBtnLnk) {
            this._imgBtnLnk.remove();
         }
@@ -64,7 +64,7 @@ define([
         this.imageButtonIcon.src   = this.add_image_icon_src;
         this.imageButtonIcon.title = this.add_image_icon_txt;
         this.imageButtonIcon.alt   = this.add_image_icon_txt;
-        this.imageButtonIcon.id    = 'add-image-' + this.element_id_value;
+        this.imageButtonIcon.id    = 'add_image_' + this.element_id_value;
         if (this._imgBtnLnk) {
            this._imgBtnLnk.remove();
         }
@@ -114,13 +114,13 @@ define([
         , handleAs: 'text'
         , load:     function(data, request) {
             var container = _this.uploadImageFormDiv;
-            _this.uploadImageForm = container.firstChild;
+            container.innerHTML = data;
+            _this.uploadImageForm = container.firstElementChild;
             if (_this.uploadImageForm) {
               on(_this.uploadImageForm, 'submit', function() {
                 _this.submitForm();
               });
             }
-            container.innerHTML = data;
             fx.wipeIn({
               node:     container
             , duration: 300

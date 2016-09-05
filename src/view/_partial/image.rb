@@ -10,7 +10,7 @@ module DaVaz::View
   class AdminImageDiv < HtmlGrid::Div
     def image(artobject, url)
       img = HtmlGrid::Image.new('artobject_image', artobject, @session, self)
-      img.css_id = 'artobject_image'
+      img.css_id = "artobject_image_#{artobject.artobject_id}"
       img.set_attribute('src', url)
       link = HtmlGrid::HttpLink.new(:url, artobject, @session, self)
       link.href  = artobject.url
@@ -22,7 +22,7 @@ module DaVaz::View
 
     def init
       super
-      obj = @model.artobject
+      obj = @model.is_a?(DaVaz::Model::ArtObject) ? @model : @model.artobject
       return unless obj
       if obj.artobject_id
         url = DaVaz::Util::ImageHelper.image_url(obj.artobject_id, nil, true)
@@ -93,16 +93,21 @@ module DaVaz::View
 
     def init
       super
-      self.set_attribute('onsubmit', <<-EOS.gsub(/(^\s*)|\n/, ''))
-        if (this.image_file.value != '') {
-          submitForm(
-            this
-          , 'artobject_image_#{artobject(@model).artobject_id}'
-          , 'upload_image_form'
-          , true
-          );
-        }
-        return false;
+      @form_properties.update('name'     => 'ajax_upload_image_form')
+      @form_properties.update('onsubmit' => <<-EOS.gsub(/(^\s*)|\n/, ''))
+        (function(e) {
+          e.preventDefault();
+          form = document.forms.ajax_upload_image_form;
+          if (form.image_file.value != '') {
+            submitForm(
+              form
+            , 'artobject_image_#{artobject(@model).artobject_id}'
+            , 'upload_image_form'
+            , true
+            );
+          }
+          return false;
+        })(event);
       EOS
     end
 
@@ -114,12 +119,15 @@ module DaVaz::View
         [:artobject_id, artobject(model).artobject_id]
       ])
       input.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
-        if (confirm('#{@lookandfeel.lookup(:ask_for_image_deletion)}')) {
-          deleteImage(
-            '#{url}'
-          , 'artobject_image_#{artobject(model).artgroup_id}'
-          );
-        }
+        (function(e) {
+          e.preventDefault();
+          if (confirm('#{@lookandfeel.lookup(:ask_for_image_deletion)}')) {
+            deleteImage(
+              '#{url}'
+            , 'artobject_image_#{artobject(model).artobject_id}'
+            );
+          }
+        })(event);
       EOS
       input
     end

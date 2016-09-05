@@ -10,7 +10,10 @@ module DaVaz::State
     VOLATILE = true
 
     def init
-      select_class = @session.user_input(:select_name).split('_').first
+      super
+      # server does not respond :(
+      sleep([0.4, 0.5, 0.6, 0.7, 0.8].sample)
+      select_class = @session.user_input(:select_name).to_s.split('_').first
       count_method = "count_#{select_class}_artobjects".to_sym
       @model = {'removalStatus' => 'unknown'}
       return unless @session.app.respond_to?(count_method)

@@ -279,3 +279,8 @@ a#articles:hover {
   /*background-color: #6d6dff;*/
   background-image: url(/resources/images/navigation/articles.png);
 }
+
+li#oneliners_navi_active,
+a#oneliners:hover {
+  background-image: url(/resources/images/navigation/schnitzenthesen.png);
+}

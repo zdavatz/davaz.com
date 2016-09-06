@@ -56,6 +56,7 @@ module DaVaz::State
   module Public
     class Global        < DaVaz::State::Global; end
     class Articles      < DaVaz::State::Public::Global; end
+    class AjaxArticle   < SBSM::State; end
     class Exhibitions   < DaVaz::State::Public::Global; end
     class GallerySearch < DaVaz::State::Public::Global; end
     class Lectures      < DaVaz::State::Public::Global; end

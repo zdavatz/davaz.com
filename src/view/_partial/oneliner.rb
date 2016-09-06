@@ -3,7 +3,7 @@ require 'htmlgrid/dojotoolkit'
 require 'ext/htmlgrid/component'
 
 module DaVaz::View
-  class OneLiner < HtmlGrid::Component
+  class Oneliner < HtmlGrid::Component
     CSS_ID = 'oneliner'
 
     def to_html(context)
@@ -14,7 +14,7 @@ module DaVaz::View
       }
       messages = []
       model.each { |oneliner|
-        oneliner.text.split("\r\n").each { |line|
+        oneliner.text.split(/(\r?\n)|\<br\s\/\>/).each { |line|
           props['colors'].push(oneliner.color_in_hex)
           messages.push(line.gsub('\'', '\\\'').strip)
         }

@@ -91,4 +91,33 @@ module DaVaz::View
       props
     end
   end
+
+  # @api admin
+  class AdminOnelinerLiveEditor < AdminLiveEditor
+    def compose_widget_props
+      props = {
+        'class'            => 'tundra',
+        'labels'           => true,
+        'element_id_name'  => 'oneliner_id',
+        'element_id_value' => @model.oneliner_id,
+        'update_url'       => @lookandfeel.event_url(
+          :admin, :ajax_save_ol_live_edit),
+        'delete_item_url'  => @lookandfeel.event_url(
+           @session.zone, :ajax_delete_oneliner, {:oneliner_id => @model.oneliner_id}),
+        'delete_icon_src'  => @lookandfeel.resource(:icon_cancel),
+        'delete_icon_txt'  => @lookandfeel.lookup(:delete)
+      }
+      values = []
+      [:text, :location, :color, :size, :active].each { |field|
+        value = @model.send(field)
+        if value # key, value, label
+          values.push(field.to_s)
+          values.push(value)
+          values.push(@lookandfeel.lookup(field))
+        end
+      }
+      props['values'] = values
+      props
+    end
+  end
 end

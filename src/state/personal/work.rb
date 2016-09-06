@@ -12,7 +12,7 @@ module DaVaz::State
         @model = OpenStruct.new
         @model.text     = @session.app.load_hiswork_text
         @model.show     = @session.app.load_tag_artobjects('Morphopolis')
-        @model.oneliner = @session.app.load_oneliner('hiswork')
+        @model.oneliner = @session.app.load_oneliner_by_location('hiswork')
       end
     end
 

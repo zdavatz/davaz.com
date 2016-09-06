@@ -39,7 +39,7 @@ module DaVaz::State
                        rescue
                          Date.today
                        end.strftime('%Y-%m-%d')
-      else 
+      else
         origin_key = field_key
       end
       update_hash = {field_key => update_value}
@@ -79,6 +79,21 @@ module DaVaz::State
 
     def init
       super :guest
+    end
+  end
+
+  # @api admin
+  # @api ajax
+  # @note responds to:
+  #   POST /de/admin/ajax_save_ol_live_edit
+  class AdminAjaxSaveOlLiveEdit < SBSM::State
+    include AdminValueUpdatable
+
+    VIEW     = DaVaz::View::Ajax
+    VOLATILE = true
+
+    def init
+      super :oneliner
     end
   end
 end

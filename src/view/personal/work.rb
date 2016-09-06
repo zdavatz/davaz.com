@@ -36,7 +36,7 @@ module DaVaz::View
       CSS_CLASS  = 'content'
       COMPONENTS = {
         [0, 0] => WorkTitle,
-        [1, 0] => component(OneLiner, :oneliner),
+        [1, 0] => component(Oneliner, :oneliner),
         [2, 0] => :morphopolis_ticker_link,
         [3, 0] => component(WorkText, :text),
       }
@@ -75,7 +75,7 @@ module DaVaz::View
       CSS_CLASS = 'content'
       COMPONENTS = {
         [0, 0] => WorkTitle,
-        [1, 0] => component(OneLiner, :oneliner),
+        [1, 0] => component(Oneliner, :oneliner),
         [2, 0] => :morphopolis_ticker_link,
         [3, 0] => AdminAjaxAddNewElementComposite,
         [4, 0] => AdminWorkInnerComposite

@@ -35,7 +35,7 @@ module DaVaz::View
       CSS_ID = 'inner_content'
       COMPONENTS = {
         [0, 0] => InspirationTitle,
-        [1, 0] => component(OneLiner, :oneliner),
+        [1, 0] => component(Oneliner, :oneliner),
         [2, 0] => :india_ticker_link,
         [3, 0] => component(InspirationText, :text),
       }

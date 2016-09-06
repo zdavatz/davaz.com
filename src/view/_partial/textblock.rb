@@ -195,9 +195,29 @@ module DaVaz::View
     end
   end
 
+  class OnelinerTextBlock < TextBlock
+    def text_to_html(context)
+      return '' if @model.text.empty?
+      attrs = {
+        'class' => 'block-oneliner-text',
+        'style' => "color: #{@model.color}"
+      }
+      context.div(attrs) {
+        @model.text
+      }
+    end
+
+    def to_html(context)
+      html = text_to_html(context)
+      html
+    end
+  end
+
+  # @api admin
   class AdminTextBlock < HtmlGrid::Component
   end
 
+  # @api admin
   class AdminTextBlockList < HtmlGrid::DivList
     COMPONENTS = {
       [0, 0] => AdminLiveEditor,
@@ -205,6 +225,16 @@ module DaVaz::View
     }
     CSS_MAP = {
       0 => 'text'
+    }
+  end
+
+  # @api admin
+  class AdminOnelinerTextBlockList < HtmlGrid::DivList
+    COMPONENTS = {
+      [0, 0] => AdminOnelinerLiveEditor
+    }
+    CSS_MAP = {
+      0 => 'oneliner-text'
     }
   end
 end

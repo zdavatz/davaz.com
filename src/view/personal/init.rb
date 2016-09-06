@@ -279,7 +279,7 @@ module DaVaz::View
         [ 5, 0] => PicFamily,
         [ 6, 0] => PicBottleneck,
         [ 7, 0] => CommunicationLinks,
-        [ 9, 0] => component(OneLiner, :oneliner),
+        [ 9, 0] => component(Oneliner, :oneliner),
         [10, 0] => MovieLinks,
         [11, 0] => PayPalDiv,
       }

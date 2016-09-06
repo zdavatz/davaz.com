@@ -23,6 +23,7 @@ module DaVaz::Util
       ajax_delete_guest
       ajax_delete_image
       ajax_delete_link
+      ajax_delete_oneliner
       ajax_desk
       ajax_desk_artobject
       ajax_guestbookentry
@@ -38,6 +39,7 @@ module DaVaz::Util
       ajax_remove_element
       ajax_save_live_edit
       ajax_save_gb_live_edit
+      ajax_save_ol_live_edit
       ajax_shop
       ajax_upload_image
       ajax_upload_image_form
@@ -68,6 +70,7 @@ module DaVaz::Util
       new
       new_art_object
       news
+      oneliners
       paintings
       personal_life
       photos
@@ -104,6 +107,7 @@ module DaVaz::Util
       author
       breadcrumbs
       city
+      color
       charset
       country
       country_id
@@ -127,6 +131,7 @@ module DaVaz::Util
       node_id
       object_type
       old_serie_id
+      oneliner_id
       price
       remember
       search_query
@@ -142,6 +147,7 @@ module DaVaz::Util
       tags
       tags_to_s
       target
+      text
       title
       tool_id
       url
@@ -150,6 +156,7 @@ module DaVaz::Util
     NUMERIC = %i{
       artobject_id
       count
+      size
       link_id
       parent_link_id
       postal_code

@@ -119,6 +119,12 @@ module DaVaz
         SQL
       end
 
+      def delete_oneliner(oneliner_id)
+        query_affected_rows(<<~SQL.gsub(/\n/, ''))
+          DELETE FROM oneliner WHERE oneliner_id = '#{oneliner_id}'
+        SQL
+      end
+
       def load_artgroups(order_by='artgroup_id')
         result = connection.query(<<~SQL.gsub(/\n/, ''))
           SELECT * FROM artgroups ORDER BY #{order_by} ASC;
@@ -522,11 +528,31 @@ module DaVaz
         artobjects
       end
 
-      def load_oneliner(location)
+      def load_oneliners
         result = connection.query(<<~SQL.gsub(/\n/, ''))
-          SELECT * FROM oneliner WHERE location='#{location}'
+          SELECT * FROM oneliner
+           ORDER BY location ASC, oneliner_id DESC
         SQL
-        create_model_array(DaVaz::Model::OneLiner, result)
+        create_model_array(DaVaz::Model::Oneliner, result)
+      end
+
+      def load_oneliner(oneliner_id)
+        result = connection.query(<<~SQL.gsub(/\n/, ''))
+          SELECT * FROM oneliner
+            WHERE active = 1
+            AND oneliner_id = '#{oneliner_id}'
+        SQL
+        create_model_array(DaVaz::Model::Oneliner, result).first
+      end
+
+      def load_oneliner_by_location(location)
+        result = connection.query(<<~SQL.gsub(/\n/, ''))
+          SELECT * FROM oneliner
+           WHERE active = 1
+           AND location = '#{location}'
+           ORDER BY location ASC, oneliner_id DESC
+        SQL
+        create_model_array(DaVaz::Model::Oneliner, result)
       end
 
       def load_series(where, load_artobjects=true)
@@ -767,6 +793,17 @@ module DaVaz
         connection.last_id
       end
 
+      def insert_oneliner(user_values)
+        values = %i{text location color size active}.map do |key|
+          connection.escape(user_values[key].to_s)
+        end
+        connection.query(<<~SQL.gsub(/\n/, ''))
+          INSERT INTO oneliner
+           VALUES ('', '#{values.join("','")}')
+        SQL
+        connection.last_id
+      end
+
       def create_model_array(model_class, result)
         array = []
         result.each { |key, value|
@@ -892,6 +929,18 @@ module DaVaz
           UPDATE guestbook
            SET #{values.join(', ')}
            WHERE guest_id = '#{guest_id}'
+        SQL
+      end
+
+      def update_oneliner(oneliner_id, update_hash)
+        values = update_hash.map { |key, value|
+          next unless value
+          "#{key} = '#{connection.escape(value)}'"
+        }.compact
+        query_affected_rows(<<~SQL.gsub(/\n/, ''))
+          UPDATE oneliner
+           SET #{values.join(', ')}
+           WHERE oneliner_id = '#{oneliner_id}'
         SQL
       end
 

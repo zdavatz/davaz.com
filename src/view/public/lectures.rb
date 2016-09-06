@@ -41,5 +41,9 @@ module DaVaz::View
     class Lectures < LecturesTemplate
       CONTENT = LecturesComposite
     end
+
+    class AdminLectures < AdminLecturesTemplate
+      CONTENT = LecturesComposite
+    end
   end
 end

@@ -1,5 +1,6 @@
 require 'sbsm/state'
 require 'state/predefine'
+require 'view/_partial/select'
 require 'view/_partial/live_editor'
 
 module DaVaz::State

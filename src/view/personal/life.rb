@@ -132,7 +132,7 @@ module DaVaz::View
       COMPONENTS = {
         [0, 0] => :india_ticker_link,
         [0, 1] => component(SerieWidget, :show_items, 'slide'),
-        [0, 2] => component(OneLiner, :oneliner),
+        [0, 2] => component(Oneliner, :oneliner),
         [0, 3] => LifeTimePeriods,
         [1, 3] => LifeTranslations,
       }

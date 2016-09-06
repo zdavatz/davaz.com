@@ -1,18 +1,18 @@
-#!/usr/bin/env ruby
-# State::Public::Lectures -- davaz.com -- 31.08.2005 -- mhuggler@ywesee.com
-
-require 'state/predefine'
+require 'state/public/global'
 require 'view/public/lectures'
 
-module DaVaz
-	module State
-		module Public 
-class Lectures < State::Public::Global
-	VIEW = View::Public::Lectures
-	def init
-		@model = @session.load_lectures
-	end
-end
-		end
-	end
+module DaVaz::State
+  module Public
+    class Lectures < Global
+      VIEW = DaVaz::View::Public::Lectures
+
+      def init
+        @model = @session.load_lectures
+      end
+    end
+
+    class AdminLectures < Lectures
+      VIEW = DaVaz::View::Public::AdminLectures
+    end
+  end
 end

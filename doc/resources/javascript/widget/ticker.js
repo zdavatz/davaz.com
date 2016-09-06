@@ -7,7 +7,7 @@ define([
 , 'dojo/dom-style'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
-], function(declare, fx, query, dom, geo, style, _wb, _tm) {
+], function(declare, fx, query, dom, geo, styl, _wb, _tm) {
   return declare('ywesee.widget.ticker', [_wb, _tm], {
     base_class:  'ticker-widget'
   , templatePath: require.toUrl(
@@ -22,11 +22,14 @@ define([
   , critical:        false
     // callbacks
   , constructor: function(params, srcNodeRef) {
-      // pass
+      if (location.href.match(/\/personal\/home\/?$/i)) {
+        // full width
+        this.windowWidth = screen.width;
+      }
     }
   , postCreate: function() {
       this.divWidth    = this.componentWidth  + 2 + 'px';
-      this.divHeight   = this.componentHeight + 2 + 'px';
+      this.divHeight   = this.componentHeight + 1 + 'px';
       this.imageWidth  = this.componentWidth  + 'px';
       this.imageHeight = this.componentHeight + 'px';
       var container = dom.byId('ticker_container');
@@ -70,7 +73,7 @@ define([
         }
       };
       var wipeOutDiv = query('div', this.domNode)[0];
-      this.wipe(wipeOutDiv, 3820, this.componentWidth, 0, callback).play();
+      this.wipe(wipeOutDiv, 3620, this.componentWidth, 0, callback).play();
     }
   , updateImageDiv: function(div) {
       var link = query('a', div)[0]

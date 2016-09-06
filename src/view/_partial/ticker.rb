@@ -18,7 +18,6 @@ module DaVaz
         props = { # as html attributes
           'images'          => [],
           'eventUrls'       => [],
-          'windowWidth'     => 780,
           'componentWidth'  => @component_width.to_i,
           'componentHeight' => @component_height.to_i,
           'widgetId'        => 'ticker',

@@ -94,9 +94,6 @@ module DaVaz::View
     META_TAGS = [{
       'http-equiv' => 'robots',
       'content'    => 'follow, index',
-    }, {
-      'name'    => 'viewport',
-      'content' => 'width=device-width, height=device-height'
     }]
 
     def dojo_container(model)

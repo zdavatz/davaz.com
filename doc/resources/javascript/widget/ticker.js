@@ -26,7 +26,7 @@ define([
         // full width
         // NOTE:
         //  firefox and chromium might return different screen size
-        this.windowWidth = screen.width - 16;
+        this.windowWidth = window.innerWidth - 4;
       }
     }
   , postCreate: function() {

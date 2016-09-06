@@ -13,7 +13,7 @@ module DaVaz::State
         lang = @session.user_input(:lang) || 'English'
         @model.biography_items = @session.app.load_hislife(lang)
         add_show_items(@model, 'hislife_show')
-        @model.oneliner = @session.app.load_oneliner('hislife')
+        @model.oneliner = @session.app.load_oneliner_by_location('hislife')
         @model.serie_id = @session.app.load_serie_id("Site His Life %s" % lang)
       end
     end

@@ -112,12 +112,16 @@ module DaVaz::View
       div = HtmlGrid::Div.new(model, @session, self)
       div.css_id    = 'left_navigation_container'
       div.css_class = 'column'
-      div.value = LeftNavigation.new(model, @session, self)
+      div.value = left_navigation(model)
       divs << div
       # dojo/back
       self.onload = sprintf(
         "back.setInitialState('%s');", @session.request_path)
       divs
+    end
+
+    def left_navigation(model)
+      LeftNavigation.new(model, @session, self)
     end
 
     def title(context)
@@ -218,6 +222,10 @@ module DaVaz::View
       dijit/Editor
       ywesee/widget/live_editor
     }
+
+    def left_navigation(model)
+      AdminLeftNavigation.new(model, @session, self)
+    end
   end
 
   class AdminDesignTemplate < AdminTemplate
@@ -250,6 +258,18 @@ module DaVaz::View
 
   class AdminSchnitzenthesenTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css schnitzenthesen_css admin_css}
+  end
+
+  class AdminArticlesTemplate < AdminTemplate
+    CSS_FILES = %i{navigation_css articles_css admin_css}
+  end
+
+  class AdminLecturesTemplate < AdminTemplate
+    CSS_FILES = %i{navigation_css lectures_css admin_css}
+  end
+
+  class AdminExhibitionsTemplate < AdminTemplate
+    CSS_FILES = %i{navigation_css exhibitions_css admin_css}
   end
 
   class AdminCommunicationTemplate < AdminTemplate

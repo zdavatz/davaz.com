@@ -52,6 +52,10 @@ module DaVaz::Util
       @db_manager.insert_guest(values_hsh)
     end
 
+    def insert_oneliner(values_hash)
+      @db_manager.insert_oneliner(values_hash)
+    end
+
     def delete_artobject(artobject_id)
       DaVaz::Util::ImageHelper.delete_image(artobject_id)
       @db_manager.delete_artobject(artobject_id)
@@ -67,6 +71,10 @@ module DaVaz::Util
 
     def delete_link(link_id)
       @db_manager.delete_link(link_id)
+    end
+
+    def delete_oneliner(oneliner_id)
+      @db_manager.delete_oneliner(oneliner_id)
     end
 
     def remove_element(artobject_id, link_id)
@@ -91,6 +99,10 @@ module DaVaz::Util
 
     def update_guest(guest_id, update_hash)
       @db_manager.update_guest(guest_id, update_hash)
+    end
+
+    def update_oneliner(oneliner_id, update_hash)
+      @db_manager.update_oneliner(oneliner_id, update_hash)
     end
 
     # counting
@@ -217,8 +229,16 @@ module DaVaz::Util
       @db_manager.load_serie_artobjects('Site News', 'series.name')
     end
 
-    def load_oneliner(location)
-      @db_manager.load_oneliner(location)
+    def load_oneliners
+      @db_manager.load_oneliners
+    end
+
+    def load_oneliner(oneliner_id)
+      @db_manager.load_oneliner(oneliner_id)
+    end
+
+    def load_oneliner_by_location(location)
+      @db_manager.load_oneliner_by_location(location)
     end
 
     def load_serie(serie_id, select_by='serie_id')

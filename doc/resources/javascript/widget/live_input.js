@@ -130,6 +130,7 @@ define([
       this.inputForm.appendChild(oldvalue);
     }
   , toHtml: function(strText) {
+      strText = String(strText);
       var strTarget    = '\n'
         , strSubString = '<br />'
         , intIndexOfMatch = strText.indexOf(strTarget)

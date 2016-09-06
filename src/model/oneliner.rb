@@ -1,5 +1,5 @@
 module DaVaz::Model
-  class OneLiner
+  class Oneliner
     attr_accessor :oneliner_id, :text, :location, :color, :size, :active
 
     COLORS = {

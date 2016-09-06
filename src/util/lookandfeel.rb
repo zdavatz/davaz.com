@@ -9,6 +9,7 @@ module DaVaz::Util
       'en' => {
         # a
         a_divider:              '&nbsp;&aacute;&nbsp;',
+        active:                 'Status',
         add_country:            'Add New Country',
         add_element:            'Add New Element',
         add_image:              'Add Image',
@@ -41,6 +42,7 @@ module DaVaz::Util
         choose_image:        'Choose an existing image',
         click2edit:          'Please click here to edit.',
         click2edit_textarea: 'Please click here to edit the textarea.',
+        color:               'Color',
         contact_email:       'Email',
         country:             'Country',
         country_id:          'Country',
@@ -165,7 +167,9 @@ module DaVaz::Util
         no_name:             '',
         no_works:            'There are no works in this category yet.',
         # o
-        order_item: 'Order item(s)',
+        order_item:         'Order item(s)',
+        oneliners:          'Oneliners',
+        oneliners_by_davaz: 'Oneliners by Da Vaz',
         # p
         photo_davaz:          'Photo of J&uuml;rg DaVaz',
         pic_bottleneck:       'Link to Bottleneck',

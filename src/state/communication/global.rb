@@ -5,6 +5,7 @@ require 'state/communication/guestbook'
 require 'state/communication/links'
 require 'state/communication/news'
 require 'state/communication/shop'
+require 'state/communication/oneliners'
 
 module DaVaz::State
   module Communication
@@ -18,7 +19,8 @@ module DaVaz::State
         :send_order   => Shop,
         :shop_thanks  => ShopThanks,
         :shop         => Shop,
-        :ajax_shop    => AjaxShop
+        :ajax_shop    => AjaxShop,
+        :oneliners    => Oneliners
       }
     end
   end

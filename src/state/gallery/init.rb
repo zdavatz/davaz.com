@@ -112,7 +112,7 @@ module DaVaz::State
 
       def init
         @model = OpenStruct.new
-        @model.oneliner  = @session.app.load_oneliner('index')
+        @model.oneliner  = @session.app.load_oneliner_by_location('index')
         @model.series    = @session.app.load_series
         @model.artgroups = @session.app.load_artgroups
       end

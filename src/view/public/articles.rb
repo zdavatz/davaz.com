@@ -75,7 +75,7 @@ module DaVaz::View
       }
     end
 
-    class AdminArticles < ArticlesTemplate
+    class AdminArticles < AdminArticlesTemplate
       CONTENT = AdminArticlesComposite
     end
   end

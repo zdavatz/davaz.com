@@ -9,7 +9,7 @@ module DaVaz::State
       def init
         @model = OpenStruct.new
         @model.text = @session.app.load_hisinspiration_text
-        @model.oneliner = @session.app.load_oneliner('hisinspiration')
+        @model.oneliner = @session.app.load_oneliner_by_location('hisinspiration')
       end
     end
   end

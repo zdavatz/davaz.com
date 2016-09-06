@@ -105,7 +105,7 @@ module DaVaz::View
         :drawings, :paintings, :multiples, :movies, :photos,
         :design, :schnitzenthesen, :empty_link
       ]
-      @small_links = [
+      @small_links ||= [
         :gallery, :articles, :lectures, :exhibitions
       ]
       links.concat(@small_links).each_with_index { |key, idx|
@@ -187,6 +187,21 @@ module DaVaz::View
       link.css_class = css
       link.value = @lookandfeel.lookup(key)
       link
+    end
+  end
+
+  # @api admin
+  class AdminLeftNavigation < LeftNavigation
+    def init
+      @small_links = [
+        :gallery, :articles, :lectures, :exhibitions,
+        :oneliners
+      ]
+      super
+    end
+
+    def oneliners(model)
+      navigation_link(model, :communication, :oneliners)
     end
   end
 

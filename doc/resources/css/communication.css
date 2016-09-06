@@ -299,6 +299,8 @@ td.shopping-cart-title {
 }
 
 div#element_container,
+div.element_container,
+div.oneliner-note,
 div.news,
 div.links {
   width:        700px;
@@ -345,5 +347,53 @@ div.block-text {
 }
 
 div.block-image {
+  text-align: left;
+}
+
+.block-location,
+.block-color,
+.block-size {
+  text-align: left;
+  margin:     3px 0;
+}
+
+.block-oneliner-text {
+  text-align:  left;
+  width:       100%;
+  margin:      18px 0 4px 0;
+  size:        1.3em;
+  font-weight: bold;
+}
+
+.oneliner-title {
+  color:   black;
+  padding: 20px 0;
+  font:    12pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color:   red;
+}
+
+.oneliner-text {
+  margin: 12px 0;
+}
+
+.oneliner-text .live-editor-button {
+  margin: 6px 0;
+}
+
+.oneliner-note {
+  border:           1px solid gray;
+  background-color: #dfdfdf;
+  margin:           15px 0;
+  padding:          10px 0 10px 12px;
+}
+
+.oneliner-note h4 {
+  text-align: left;
+  margin:     0;
+}
+
+.oneliner-note ul {
+  padding:    0 0 0 18px;
+  margin:     0;
   text-align: left;
 }

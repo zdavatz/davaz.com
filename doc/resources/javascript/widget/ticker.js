@@ -24,7 +24,7 @@ define([
   , constructor: function(params, srcNodeRef) {
       if (location.href.match(/\/personal\/home\/?$/i)) {
         // full width
-        this.windowWidth = screen.width;
+        this.windowWidth = screen.width - 2;
       }
     }
   , postCreate: function() {

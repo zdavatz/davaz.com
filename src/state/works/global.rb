@@ -15,7 +15,6 @@ module DaVaz::State
       HOME_STATE = Init
       ZONE       = :works
       EVENT_MAP  = {
-        :ajax_multiples  => AjaxMultiples,
         :design          => Design,
         :drawings        => Drawings,
         :multiples       => Multiples,

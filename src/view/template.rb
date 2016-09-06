@@ -190,7 +190,8 @@ module DaVaz::View
   end
 
   class MultiplesTemplate < CommonTemplate
-    CSS_FILES = %i{navigation_css multiples_css}
+    CSS_FILES   = %i{navigation_css multiples_css pannellum_css}
+    JAVASCRIPTS = ['davaz', 'pannellum/pannellum']
   end
 
   class MoviesTemplate < CommonTemplate

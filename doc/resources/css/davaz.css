@@ -1,9 +1,10 @@
 body {
-  font:      9pt Verdana, Geneva, Arial, Helvetica, sans-serif;
-  color:     black;
-  margin:    0px;
-  padding:   0px;
-  min-width: 360px;
+  font:             9pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color:            black;
+  margin:           0px;
+  padding:          0px;
+  min-width:        360px;
+  background-color: white;
 }
 
 input {

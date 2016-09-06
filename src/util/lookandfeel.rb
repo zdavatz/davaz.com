@@ -307,6 +307,7 @@ module DaVaz::Util
       schnitzenthesen_css:     'css/schnitzenthesen.css',
       tooltip_css:             'css/tooltip.css',
       movies_css:              'css/movies.css',
+      pannellum_css:           'javascript/pannellum/pannellum.css',
       # images
       desk:                 'images/global/desk.gif',
       family_title:         'images/global/family.gif',

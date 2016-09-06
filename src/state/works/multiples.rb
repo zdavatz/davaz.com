@@ -4,15 +4,6 @@ require 'view/works/multiples'
 
 module DaVaz::State
   module Works
-    class AjaxMultiples < SBSM::State
-      VIEW     = DaVaz::View::Works::JavaApplet
-      VOLATILE = true
-
-      def init
-        @model = @session.user_input(:artobject_id)
-      end
-    end
-
     class Multiples < Rack
       VIEW = DaVaz::View::Works::Multiples
 

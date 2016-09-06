@@ -539,6 +539,17 @@ function logout(link) {
 	link.href = href;
 }
 
+// Changes panorama view
+function togglePanorama(url) {
+  require([
+    'dojo/dom'
+  , 'dojo/domReady!'
+  ], function(dom) {
+    var frame = dom.byId('panorama_frame');
+    frame.src = url;
+  });
+}
+
 //
 //
 //
@@ -591,18 +602,6 @@ function removeFromShoppingCart(url, fieldId) {
 			document.body.style.cursor = 'auto';
 		},
 		handleAs: 'text'
-	});
-}
-
-function toggleJavaApplet(url, artobjectId) {
-	dojo.xhrGet({
-		url: url,
-		load: function(data, request) {
-			var container = dojo.byId('java_applet');
-			container.innerHTML = data;
-      dojo.back.addToHistory({changeUrl:artobjectId});
-		},
-		handleAs: "text"
 	});
 }
 

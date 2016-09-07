@@ -64,9 +64,10 @@ div.family-forward-link {
 
 div.oneliner {
   font:           bold 14pt Verdana, Geneva, Arial, Helvetica, sans-serif;
-  padding-top:    10px;
-  padding-bottom: 40px;
+  padding-top:    40px;
+  padding-bottom: 20px;
   text-align:     center;
+  height:         90px;
 }
 
 table#life_time_periods {

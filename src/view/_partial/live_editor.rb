@@ -93,6 +93,35 @@ module DaVaz::View
   end
 
   # @api admin
+  class AdminTooltipLiveEditor < AdminLiveEditor
+    def compose_widget_props
+      props = {
+        'class'            => 'tundra',
+        'labels'           => true,
+        'element_id_name'  => 'link_id',
+        'element_id_value' => @model.link_id,
+        'update_url'       => @lookandfeel.event_url(
+          :admin, :ajax_save_tp_live_edit),
+        'delete_item_url'  => @lookandfeel.event_url(
+           @session.zone, :ajax_delete_tooltip, {:link_id => @model.link_id}),
+        'delete_icon_src'  => @lookandfeel.resource(:icon_cancel),
+        'delete_icon_txt'  => @lookandfeel.lookup(:delete)
+      }
+      values = [
+        'word', @model.word,
+          @lookandfeel.lookup(:word),
+        'linked_artobject_id', @model.artobject_id,
+          @lookandfeel.lookup(:from),
+         # link might have id of invalid (non-existed) artobject
+        'artobject_id', @model.artobjects.first.artobject_id || '1',
+          @lookandfeel.lookup(:to)
+      ]
+      props['values'] = values
+      props
+    end
+  end
+
+  # @api admin
   class AdminOnelinerLiveEditor < AdminLiveEditor
     def compose_widget_props
       props = {

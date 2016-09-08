@@ -5,8 +5,14 @@ require 'htmlgrid/link'
 require 'htmlgrid/image'
 require 'util/image_helper'
 require 'view/_partial/live_editor'
+require 'view/_partial/tooltip'
+
 
 module DaVaz::View
+  # predefine
+  class Tooltip      < HtmlGrid::DivComposite; end
+  class AdminTooltip < Tooltip;                end
+
   module TextBlockLinksMethods
     def add_links(txt, context)
       map = {}
@@ -213,6 +219,23 @@ module DaVaz::View
     end
   end
 
+  class TooltipTextBlock < TextBlock
+    def word_to_html(context)
+      return '' if @model.word.empty?
+      attrs = {
+        'class' => 'block-tooltip-word'
+      }
+      context.div(attrs) {
+        @model.word
+      }
+    end
+
+    def to_html(context)
+      html = word_to_html(context)
+      html
+    end
+  end
+
   # @api admin
   class AdminTextBlock < HtmlGrid::Component
   end
@@ -225,6 +248,97 @@ module DaVaz::View
     }
     CSS_MAP = {
       0 => 'text'
+    }
+  end
+
+  # @api admin
+  class AdminTooltipLinks < HtmlGrid::DivComposite
+    COMPONENTS = {
+      [0, 0] => :from_label,
+      [1, 0] => :from_link,
+      [0, 1] => :to_label,
+      [1, 1] => :to_link,
+      [0, 2] => DaVaz::View::AdminTooltip
+    }
+    CSS_MAP = {
+      0 => 'link',
+      1 => 'link',
+    }
+
+    def from_label(model)
+      span = HtmlGrid::Span.new(model, @session, self)
+      span.set_attribute('class', 'tooltip-label')
+      span.value = 'FROM URL'
+      span
+    end
+
+    def from_link(model)
+      obj = @session.app.load_artobject(model.artobject_id)
+      url = !obj ? '' : @session.lookandfeel.event_url(:gallery, :art_object, [
+        [:artgroup_id,  obj.artgroup_id],
+        [:artobject_id, obj.artobject_id]
+      ])
+      link = HtmlGrid::Link.new(:gallery, model, @session, self)
+      link.set_attribute('id', "tooltip_from_artobject_#{model.link_id}")
+      link.set_attribute('target', '_blank')
+      if url.empty?
+        link.value = 'unknown'
+        link.href  = 'javascript:void(0);'
+      else
+        link.value = url
+        link.href  = url
+      end
+      link
+    end
+
+    def to_label(model)
+      span = HtmlGrid::Span.new(model, @session, self)
+      span.set_attribute('class', 'tooltip-label')
+      span.value = 'TO URL'
+      span
+    end
+
+    def to_link(model)
+      obj = model.artobjects.first
+      url = !obj.artobject_id ? '' : @session.lookandfeel.event_url(:gallery, :art_object, [
+        [:artgroup_id,  obj.artgroup_id],
+        [:artobject_id, obj.artobject_id]
+      ])
+      link = HtmlGrid::Link.new(:gallery, model, @session, self)
+      link.set_attribute('id', "tooltip_to_artobject_#{model.link_id}")
+      link.set_attribute('target', '_blank')
+      if url.empty?
+        link.value = 'unknown'
+        link.href  = 'javascript:void(0);'
+      else
+        link.value = url
+        link.href  = url
+      end
+      link
+    end
+  end
+
+  # @api admin
+  class AdminTooltipTextBlock < HtmlGrid::DivComposite
+    COMPONENTS = {
+      [0, 0] => AdminTooltipLinks,
+      [0, 1] => AdminTooltipLiveEditor
+    }
+    CSS_MAP = {
+      0 => 'tooltip-link',
+      1 => 'tooltip-text'
+    }
+  end
+
+  # @api admin
+  class AdminTooltipTextBlockList < HtmlGrid::DivList
+    COMPONENTS = {
+      [0, 0] => AdminTooltipLinks,
+      [0, 1] => AdminTooltipLiveEditor
+    }
+    CSS_MAP = {
+      0 => 'tooltip-link',
+      1 => 'tooltip-text'
     }
   end
 

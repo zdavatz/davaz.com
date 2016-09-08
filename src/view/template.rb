@@ -237,10 +237,6 @@ module DaVaz::View
     CSS_FILES = %i{navigation_css drawings_css admin_css}
   end
 
-  class AdminGalleryTemplate < AdminTemplate
-    CSS_FILES = %i{navigation_css gallery_css admin_css}
-  end
-
   class AdminMoviesTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css movies_css admin_css}
   end
@@ -273,9 +269,15 @@ module DaVaz::View
     CSS_FILES = %i{navigation_css exhibitions_css admin_css}
   end
 
+  class AdminGalleryTemplate < AdminTemplate
+    CSS_FILES = %i{
+      navigation_css admin_css gallery_css gallery_admin_css
+    }
+  end
+
   class AdminCommunicationTemplate < AdminTemplate
     CSS_FILES = %i{
-      navigation_css communication_css admin_css communication_admin_css
+      navigation_css admin_css communication_css communication_admin_css
     }
   end
 end

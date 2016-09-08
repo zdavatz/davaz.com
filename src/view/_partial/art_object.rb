@@ -557,6 +557,7 @@ module DaVaz::View
   class AdminArtObjectInnerComposite < HtmlGrid::DivComposite
     COMPONENTS = {
       [0, 0] => :artcode,
+      [1, 0] => :artobject_id,
       [0, 1] => AdminImageDiv,
       [0, 2] => AdminAjaxUploadImageForm,
       [0, 3] => :error_message_container,
@@ -568,9 +569,9 @@ module DaVaz::View
       3 => 'artobject_error_message_container',
       4 => 'artobject_admin_details',
     }
-    SYMBOL_MAP = {
-      :artcode => HtmlGrid::Value,
-    }
+    #SYMBOL_MAP = {
+    #  :artcode => HtmlGrid::Value,
+    #}
 
     def init
       css_id_map.store(1, "artobject_image_#{@model.artobject.artobject_id}")
@@ -579,6 +580,13 @@ module DaVaz::View
 
     def artcode(model)
       model.artobject.artcode
+    end
+
+    def artobject_id(model)
+      span = HtmlGrid::Span.new(model, @session, self)
+      span.css_class = 'artobject-id'
+      span.value     = "ID: #{model.artobject.artobject_id}"
+      span
     end
 
     def url(model)

@@ -366,10 +366,10 @@ div.block-image {
 }
 
 .oneliner-title {
-  color:   black;
-  padding: 20px 0;
-  font:    12pt Verdana, Geneva, Arial, Helvetica, sans-serif;
-  color:   red;
+  font-weight: bold !important;
+  padding:     20px 0;
+  font:        12pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color:       red;
 }
 
 .oneliner-text {

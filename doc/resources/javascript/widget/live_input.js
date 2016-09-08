@@ -2,8 +2,9 @@ define([
   'dojo/_base/declare'
 , 'dojo/_base/xhr'
 , 'dojo/_base/lang'
+, 'dojo/dom'
 , 'dojo/on'
-], function(declare, xhr, lang, on) {
+], function(declare, xhr, lang, dom, on) {
   return declare('ywesee.widget.live_input', [], {
     // attributes
     baseClass:    'live-input-widget'
@@ -155,6 +156,39 @@ define([
   , saveSuccess: function(data, request) {
       this.old_value        = data['updated_value'];
       this.leText.innerHTML = this.toHtml(data['updated_value']);
+      // hack for tooltip
+      if (data['link_id'] && data['from_url']) {
+        var link = dom.byId('tooltip_from_artobject_' + data['link_id'])
+        if (data['from_url'] == 'unknown') {
+          link.href      = '';
+          link.innerHTML = 'unknown';
+        } else {
+          link.href      = data['from_url'];
+          link.innerHTML = data['from_url'];
+        }
+      }
+      if (data['link_id'] && data['to_url']) {
+        var link = dom.byId('tooltip_to_artobject_' + data['link_id'])
+        if (data['to_url'] == 'unknown') {
+          link.href      = '';
+          link.innerHTML = 'unknown';
+        } else {
+          link.href      = data['to_url'];
+          link.innerHTML = data['to_url'];
+        }
+        var div = link.parentNode.nextSibling;
+        if (div) {
+          var img = div.getElementsByTagName('img')[0];
+          if (data['tooltip_src']) {
+            if (!img) {
+              img = document.createElement('img');
+              img.setAttribute('class', 'image-tooltip-image');
+              div.firstChild.firstChild.appendChild(img);
+            }
+            img.src = data['tooltip_src'];
+          }
+        }
+      }
       this.cancelInput();
     }
   });

@@ -1,6 +1,7 @@
 require 'state/global'
 require 'state/predefine'
 require 'state/gallery/init'
+require 'state/gallery/tooltips'
 
 module DaVaz::State
   module Gallery
@@ -8,7 +9,8 @@ module DaVaz::State
       HOME_STATE = Init
       ZONE       = :gallery
       EVENT_MAP  = {
-        :gallery => Init
+        :gallery  => Init,
+        :tooltips => Tooltips
       }
     end
   end

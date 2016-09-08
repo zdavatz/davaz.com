@@ -195,13 +195,18 @@ module DaVaz::View
     def init
       @small_links = [
         :gallery, :articles, :lectures, :exhibitions,
-        :oneliners
+        :empty_link,
+        :oneliners, :tooltips
       ]
       super
     end
 
     def oneliners(model)
       navigation_link(model, :communication, :oneliners)
+    end
+
+    def tooltips(model)
+      navigation_link(model, :gallery, :tooltips)
     end
   end
 

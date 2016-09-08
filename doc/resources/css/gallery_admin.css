@@ -1,0 +1,93 @@
+div.edit-buttons {
+	width: 100%;
+	text-align: left;
+}
+
+div.edit-buttons input {
+	margin: 5px;
+}
+
+input {
+	background-color: none;
+}
+
+textarea {
+	background-color: none;
+	font-size: 10pt;
+	border: none;
+	width: 100%;
+}
+
+div.live-edit {
+	text-align: left;
+}
+
+div.live-edit:hover {
+	background-color: #f3fb98;
+}
+
+input.live-edit {
+	border: none;
+	width: 100%;
+}
+
+.active {
+	background-color: #e6e6fa;
+}
+
+div.label {
+	width: 60px;
+	padding-right: 20px;
+	font-weight: bold;
+	text-align: left;
+	float: left;
+}
+
+.tooltip-text {
+  margin: 2px 0 12px 0;
+}
+
+.tooltip-note {
+  border:           1px solid gray;
+  background-color: #dfdfdf;
+  margin:           15px 0;
+  padding:          10px 0 10px 12px;
+}
+
+.tooltip-note h4 {
+  text-align: left;
+  margin:     0;
+}
+
+.tooltip-note ul {
+  padding:    0 0 0 18px;
+  margin:     0;
+  text-align: left;
+}
+
+.tooltip-link {
+  border-top: 1px solid #d3d3d3;
+  margin-top: 13px;
+  padding-top: 9px;
+}
+
+.tooltip-link .link {
+  text-align: left;
+}
+
+.tooltip-label {
+  font-weight: bold;
+  display:     inline-block;
+  margin:      0 9px 0 0;
+  width:       70px;
+}
+
+.tooltip-text .live-editor-button {
+  margin: 6px 0;
+}
+
+
+.tooltip-link .tooltip-container {
+  width:  380px;
+  margin: 4px 0;
+}

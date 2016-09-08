@@ -98,6 +98,7 @@ module DaVaz::Util
         eyesharpener:               'Eyesharpener',
         # f
         family_of_origin: 'His Family of Origin',
+        from:             'From',
         # g
         guestbook:      'Guestbook',
         guestbook_info: 'Please add your comments.<br>I greatly appreciate ' \
@@ -132,15 +133,15 @@ module DaVaz::Util
         # j
         journey: 'Journey',
         # l
-        language:         'Language',
-        links:            'Links',
-        links_from_davaz: 'Links from da vaz',
-        location:         'Location',
-        login:            'Login',
-        login_email:      'Email',
-        login_form:       'Login',
-        login_password:   'Password',
-        logout:           'Logout',
+        language:            'Language',
+        links:               'Links',
+        links_from_davaz:    'Links from da vaz',
+        location:            'Location',
+        login:               'Login',
+        login_email:         'Email',
+        login_form:          'Login',
+        login_password:      'Password',
+        logout:              'Logout',
         # m
         manage_links:            'Manage text links',
         material:                'Material',
@@ -249,8 +250,11 @@ module DaVaz::Util
         title_divider:       ' | ',
         time_of_change:      'Times of Change<br>1965 - 1975',
         times_divider:       '&nbsp;x&nbsp;',
+        to:                  'To',
         tool:                'Tool',
         tool_id:             'Tool',
+        tooltips:            'Tooltips',
+        tooltips_on_davaz:   'Tooltips on Da Vaz',
         total:               'Total',
         # u
         url:                'URL',
@@ -261,6 +265,7 @@ module DaVaz::Util
         # w
         watch_movie:   'Watch the movie',
         webcontent:    'Webcontent',
+        word:          'Word',
         wordpress_url: 'Wordpress',
         # y
         ywesee_url: 'http://www.ywesee.com',
@@ -296,6 +301,7 @@ module DaVaz::Util
       drawings_css:            'css/drawings.css',
       exhibitions_css:         'css/exhibitions.css',
       gallery_css:             'css/gallery.css',
+      gallery_admin_css:       'css/gallery_admin.css',
       images_css:              'css/images.css',
       init_css:                'css/init.css',
       lectures_css:            'css/lectures.css',

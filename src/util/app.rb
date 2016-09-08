@@ -56,6 +56,10 @@ module DaVaz::Util
       @db_manager.insert_oneliner(values_hash)
     end
 
+    def insert_link(values_hash)
+      @db_manager.insert_link(values_hash)
+    end
+
     def delete_artobject(artobject_id)
       DaVaz::Util::ImageHelper.delete_image(artobject_id)
       @db_manager.delete_artobject(artobject_id)
@@ -75,6 +79,10 @@ module DaVaz::Util
 
     def delete_oneliner(oneliner_id)
       @db_manager.delete_oneliner(oneliner_id)
+    end
+
+    def delete_link(link_id)
+      @db_manager.delete_link(link_id)
     end
 
     def remove_element(artobject_id, link_id)
@@ -103,6 +111,10 @@ module DaVaz::Util
 
     def update_oneliner(oneliner_id, update_hash)
       @db_manager.update_oneliner(oneliner_id, update_hash)
+    end
+
+    def update_link(link_id, update_hash)
+      @db_manager.update_link(link_id, update_hash)
     end
 
     # counting
@@ -287,6 +299,14 @@ module DaVaz::Util
 
     def load_tools
       @db_manager.load_tools
+    end
+
+    def load_links
+      @db_manager.load_links
+    end
+
+    def load_link(link_id)
+      @db_manager.load_link(link_id)
     end
 
     # search

@@ -1,11 +1,13 @@
 require 'state/communication/guestbook'
 require 'state/communication/links'
 require 'state/communication/news'
+require 'state/communication/oneliners'
 require 'state/public/articles'
 require 'state/public/lectures'
 require 'state/public/exhibitions'
 require 'state/gallery/init'
 require 'state/gallery/result'
+require 'state/gallery/tooltips'
 require 'state/personal/life'
 require 'state/personal/work'
 require 'state/_partial/art_object'
@@ -32,9 +34,11 @@ module DaVaz::State
       :ajax_delete_guest      => AdminAjaxDeleteGuest,
       :ajax_delete_image      => AdminAjaxDeleteImage,
       :ajax_delete_oneliner   => AdminAjaxDeleteOneliner,
+      :ajax_delete_tooltip    => AdminAjaxDeleteTooltip,
       :ajax_save_live_edit    => AdminAjaxSaveLiveEdit,
       :ajax_save_gb_live_edit => AdminAjaxSaveGbLiveEdit,
       :ajax_save_ol_live_edit => AdminAjaxSaveOlLiveEdit,
+      :ajax_save_tp_live_edit => AdminAjaxSaveTpLiveEdit,
       :ajax_upload_image      => AdminAjaxUploadImage,
       :ajax_upload_image_form => AdminAjaxUploadImageForm,
       :ajax_movie_gallery     => Works::AdminAjaxMovieGallery,
@@ -49,6 +53,7 @@ module DaVaz::State
       :links                  => Communication::AdminLinks,
       :news                   => Communication::AdminNews,
       :oneliners              => Communication::AdminOneliners,
+      :tooltips               => Gallery::AdminTooltips,
       :articles               => Public::AdminArticles,
       :lectures               => Public::AdminLectures,
       :exhibitions            => Public::AdminExhibitions,

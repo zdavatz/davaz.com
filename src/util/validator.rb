@@ -24,6 +24,7 @@ module DaVaz::Util
       ajax_delete_image
       ajax_delete_link
       ajax_delete_oneliner
+      ajax_delete_tooltip
       ajax_desk
       ajax_desk_artobject
       ajax_guestbookentry
@@ -40,6 +41,7 @@ module DaVaz::Util
       ajax_save_live_edit
       ajax_save_gb_live_edit
       ajax_save_ol_live_edit
+      ajax_save_tp_live_edit
       ajax_shop
       ajax_upload_image
       ajax_upload_image_form
@@ -84,6 +86,7 @@ module DaVaz::Util
       shopitem
       the_family
       tooltip
+      tooltips
       update
       upload_image
       movies
@@ -152,9 +155,11 @@ module DaVaz::Util
       tool_id
       url
       wordpress_url
+      word
     }
     NUMERIC = %i{
       artobject_id
+      linked_artobject_id
       count
       size
       link_id

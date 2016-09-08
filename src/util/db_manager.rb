@@ -125,6 +125,24 @@ module DaVaz
         SQL
       end
 
+      def delete_link(link_id)
+        result = 0
+        transaction do |conn|
+          link = load_link(link_id)
+          if link
+            query_affected_rows(<<~SQL.gsub(/\n/, ''))
+              DELETE FROM links WHERE link_id =
+               '#{conn.escape(link.link_id.to_s)}'
+            SQL
+            result = query_affected_rows(<<~SQL.gsub(/\n/, ''))
+              DELETE FROM links_artobjects WHERE link_id =
+               '#{conn.escape(link.link_id.to_s)}'
+            SQL
+          end
+        end
+        result
+      end
+
       def load_artgroups(order_by='artgroup_id')
         result = connection.query(<<~SQL.gsub(/\n/, ''))
           SELECT * FROM artgroups ORDER BY #{order_by} ASC;
@@ -749,6 +767,47 @@ module DaVaz
         }
       end
 
+      def load_link(link_id)
+        load_links.find {|link|
+          link.link_id.to_s  == link_id.to_s
+        }
+      end
+
+      def load_links
+        result = connection.query(<<~SQL.gsub(/\n/, ''))
+          SELECT
+           links.link_id,
+           links.artobject_id AS linked_artobject_id,
+           links.word,
+           artobjects.*
+           FROM links
+           JOIN links_artobjects USING (link_id)
+           LEFT OUTER JOIN artobjects
+           ON links_artobjects.artobject_id = artobjects.artobject_id
+           ORDER BY links.link_id DESC, links.word ASC
+        SQL
+        links = {}
+        result.each { |row|
+          link_id             = row['link_id']
+          linked_artobject_id = row['linked_artobject_id']
+          key = "#{link_id}_#{linked_artobject_id}"
+          if links.has_key?(key)
+            link = links[key]
+          else
+            link = DaVaz::Model::Link.new
+            link.artobject_id = linked_artobject_id
+            links.store(key, link)
+          end
+          artobject = DaVaz::Model::ArtObject.new
+          set_attributes(link, row, ['artobject_id'])
+          set_attributes(artobject, row)
+          link.artobjects.push(artobject)
+        }
+        links.values.select { |tt|
+          tt.artobjects.length == 1
+        }
+      end
+
       def insert_artobject(values_hash)
         data = values_hash.map { |key, value|
           next if !value || key == :tags
@@ -802,6 +861,30 @@ module DaVaz
            VALUES ('', '#{values.join("','")}')
         SQL
         connection.last_id
+      end
+
+      def insert_link(user_values)
+        # linked_artobject_id => artobject_id
+        values = %i{linked_artobject_id word}.map do |key|
+          connection.escape(user_values[key].to_s)
+        end
+        link_id = nil
+        transaction do |conn|
+          conn.query(<<~SQL.gsub(/\n/, ''))
+            INSERT INTO links
+             VALUES ('', '#{values.join("','")}')
+          SQL
+          link_id = conn.last_id
+          if link_id
+            values = [link_id]
+            values << conn.escape(user_values[:artobject_id].to_s)
+            conn.query(<<~SQL.gsub(/\n/, ''))
+              INSERT INTO links_artobjects
+               VALUES ('#{values.join("','")}')
+            SQL
+          end
+        end
+        link_id
       end
 
       def create_model_array(model_class, result)
@@ -944,6 +1027,33 @@ module DaVaz
         SQL
       end
 
+      def update_link(link_id, update_hash)
+        transaction do |conn|
+          # linked_artobject_id => artobject_id
+          values = [:word, :linked_artobject_id].map { |key|
+            value = update_hash[key]
+            next unless value
+            "#{key.to_s.gsub(/\Alinked_/, '')} = " \
+            "'#{conn.escape(value)}'"
+          }.compact
+          query_affected_rows(<<~SQL.gsub(/\n/, ''))
+            UPDATE links
+             SET #{values.join(', ')}
+             WHERE link_id = '#{link_id}'
+          SQL
+          values = [:artobject_id].map { |key|
+            value = update_hash[key]
+            next unless value
+            "#{key} = '#{conn.escape(value)}'"
+          }.compact
+          query_affected_rows(<<~SQL.gsub(/\n/, ''))
+            UPDATE links_artobjects
+             SET #{values.join(', ')}
+             WHERE link_id = '#{link_id}'
+          SQL
+        end
+      end
+
       private
 
       def connect
@@ -985,8 +1095,9 @@ module DaVaz
         end
       end
 
-      def set_attributes(model, row)
+      def set_attributes(model, row, excepts=[])
         row.each do |key, value|
+          next if excepts.include?(key)
           method = key.to_s + '='
           model.send(method, value) if model.respond_to?(method)
         end

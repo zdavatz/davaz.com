@@ -296,3 +296,9 @@ div#artobject_admin_details form td.red {
 #container .dijitContentPane {
   overflow: visible !important;
 }
+
+#artobject_title .artobject-id {
+  float:        right;
+  display:      block;
+  margin-right: 2px;
+}

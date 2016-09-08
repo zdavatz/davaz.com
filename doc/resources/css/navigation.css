@@ -281,6 +281,13 @@ a#articles:hover {
 }
 
 li#oneliners_navi_active,
-a#oneliners:hover {
-  background-image: url(/resources/images/navigation/schnitzenthesen.png);
+a#oneliners:hover,
+li#tooltips_navi_active,
+a#tooltips:hover {
+  background: #d8d8d8;
+}
+
+li#oneliners_navi_active,
+li#tooltips_navi_active {
+  background: #c3c3c3;
 }

@@ -17,4 +17,19 @@ module DaVaz::State
       end
     end
   end
+
+  # @api admin
+  # @api ajax
+  class AdminAjaxDeleteTooltip < SBSM::State
+    VIEW     = DaVaz::View::Ajax
+    VOLATILE = true
+
+    def init
+      @model = Hash.new
+      if @session.app \
+          .delete_tooltip(@session.user_input(:link_id)) > 0
+        @model['deleted'] = true
+      end
+    end
+  end
 end

@@ -27,7 +27,7 @@ module DaVaz::State
     def init
       @model = Hash.new
       if @session.app \
-          .delete_tooltip(@session.user_input(:link_id)) > 0
+          .delete_link(@session.user_input(:link_id)) > 0
         @model['deleted'] = true
       end
     end

@@ -3,11 +3,12 @@ define([
 , 'dojo/_base/xhr'
 , 'dojo/on'
 , 'dojo/fx'
+, 'dojo/dom-construct'
 , 'dojo/io/iframe'
 , 'dijit/_WidgetBase'
 , 'dijit/_TemplatedMixin'
 , 'ywesee/widget/live_input'
-], function(declare, xhr, on, fx, iframe, _wb, _tm, liveInput) {
+], function(declare, xhr, on, fx, cnst, iframe, _wb, _tm, liveInput) {
   return declare('ywesee.widget.live_button', [_wb, _tm], {
     // attributes
     baseClass:    'live-editor-button'
@@ -81,6 +82,16 @@ define([
           url:      this.delete_item_url
         , handleAs: 'json'
         , load:     function(data, request) {
+            var wdgtNode = _this.edit_widget.domNode;
+            if (wdgtNode) {
+              var tooltip = wdgtNode.parentNode.previousSibling;
+              if (tooltip) {
+                var klass = tooltip.getAttribute('class');
+                if (klass === 'tooltip-link') {
+                  cnst.destroy(tooltip);
+                }
+              }
+            }
             if (data.deleted) {
               _this.edit_widget.destroy();
             }

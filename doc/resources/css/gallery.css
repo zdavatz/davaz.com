@@ -138,7 +138,7 @@ div.tooltip-note {
   margin-right: auto;
 }
 
-.tooltip-title {
+.content > .tooltip-title {
   font-weight: bold;
   padding:     20px 0;
   font:        12pt Verdana, Geneva, Arial, Helvetica, sans-serif;

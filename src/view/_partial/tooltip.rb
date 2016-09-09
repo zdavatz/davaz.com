@@ -43,6 +43,39 @@ module DaVaz::View
 
   # @api admin
   class AdminTooltipComposite < TooltipComposite
+    def title(model)
+      tooltip = model.artobjects.first
+      if tooltip
+        span       = HtmlGrid::Span.new(model, @session, self)
+        span.value = tooltip.title
+        span
+      else
+        ''
+      end
+    end
+
+    def text(model)
+      tooltip = model.artobjects.first
+      if tooltip
+        span       = HtmlGrid::Span.new(model, @session, self)
+        span.value = tooltip.text
+        span
+      else
+        ''
+      end
+    end
+
+    def author(model)
+      tooltip = model.artobjects.first
+      if tooltip
+        span       = HtmlGrid::Span.new(model, @session, self)
+        span.value = tooltip.author
+        span
+      else
+        ''
+      end
+    end
+
     def image(model)
       tooltip = model.artobjects.first
       artobject_id = tooltip.artobject_id

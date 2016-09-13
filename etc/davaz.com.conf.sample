@@ -10,8 +10,8 @@
   DocumentRoot /var/www/davaz.com/doc
   DirectoryIndex index.html index.rbx
   SetHandler ruby-object
-  RubyAddPath /var/www/davaz.com/.bundle/gems/ruby/2.3.0/gems/rclconf-1.0.0/lib
-  RubyAddPath /var/www/davaz.com/.bundle/gems/ruby/2.3.0/gems/sbsm-1.3.0/lib
+  RubyAddPath /var/www/davaz.com/vendor/ruby/2.3.0/gems/rclconf-1.0.0/lib
+  RubyAddPath /var/www/davaz.com/vendor/ruby/2.3.0/gems/sbsm-1.3.0/lib
   RubyAddPath /var/www/davaz.com/src
   RubyRequire 'util/trans_handler.davaz'
   RubyTransHandler DaVaz::Util::TransHandler.instance

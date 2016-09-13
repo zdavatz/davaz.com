@@ -1,5 +1,4 @@
 /.bundle
-Gemfile.hack
 
 /etc/*.yml
 !/etc/davaz.yml

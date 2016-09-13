@@ -1,8 +1,6 @@
 # The [davaz.com](http://davaz.com/)
 
-[![Build Status](https://travis-ci.org/ywesee/davaz.com.svg?branch=master)](https://travis-ci.org/ywesee/davaz.com)
-
-![davaz.com](https://raw.githubusercontent.com/ywesee/davaz.com/master/doc/screenshot-davaz-com.png)
+![davaz.com](https://raw.githubusercontent.com/zdavatz/davaz.com/master/doc/screenshot-davaz-com.png)
 
 ## Setup
 
@@ -92,7 +90,7 @@ davaz> exit
 ### Setup
 
 ```zsh
-% git clone https://github.com/ywesee/davaz.com.git
+% git clone https://github.com/zdavatz/davaz.com.git
 % cd davaz.com
 
 : e.g. use nodeenv

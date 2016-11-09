@@ -2,6 +2,9 @@ require 'pathname'
 
 root_dir = Pathname.new(__FILE__).parent.parent.expand_path
 
+config_yml = "#{root_dir.join('etc').to_s}/config.yml"
+FileUtils.cp(config_yml +'.ci', config_yml, :verbose => true) unless File.exist?(config_yml)
+
 src = root_dir.join('src').to_s
 $: << src unless $:.include?(src)
 

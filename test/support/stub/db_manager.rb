@@ -121,7 +121,7 @@ module DaVaz::Stub
     end
   end
 
-  class StubOneLiner < DaVaz::Model::OneLiner
+  class StubOneLiner < DaVaz::Model::Oneliner
     def initialize(id)
       super()
       @oneliner_id = id

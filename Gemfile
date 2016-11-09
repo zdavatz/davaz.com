@@ -27,4 +27,5 @@ end
 
 group :development, :test do
   gem 'rake', '~> 11.2'
+  gem 'pry-byebug'
 end

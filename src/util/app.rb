@@ -1,13 +1,29 @@
 require 'yus/session'
+require 'sbsm/app'
 require 'util/updater'
 require 'util/image_helper'
+require 'util/trans_handler.davaz'
+require 'util/config'
+require 'util/session'
+require 'util/validator'
+require 'util/db_manager'
 
 module DaVaz::Util
-  class App
+  class App < SBSM::App
     attr_accessor :db_manager, :yus_server
+    attr_reader :trans_handler, :validator, :drb_uri
+    SESSION = Session
 
     def initialize
       run_updater if DaVaz.config.run_updater
+      SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
+      SBSM.logger.level = :debug
+      @drb_uri = DaVaz.config.server_uri
+      @yus_server = DRb::DRbObject.new(nil, DaVaz.config.yus_uri)
+      @db_manager = DaVaz::Util::DbManager.new
+      res = super(:app => self, :validator => Validator.new, :trans_handler => DaVaz::Util::TransHandler.instance)
+      SBSM.info "DaVaz::AppWebrick.new  drb #{@drb_uri} validator #{@validator} th #{@trans_handler} with log_pattern #{DaVaz.config.log_pattern} #{SBSM.logger.level}"
+      res
     end
 
     def run_updater
@@ -230,6 +246,7 @@ module DaVaz::Util
     end
 
     def load_movies_ticker
+      SBSM.info "@db_manager is #{@db_manager}"
       @db_manager.load_artobject_ids('MOV')
     end
 
@@ -328,15 +345,22 @@ module DaVaz::Util
     # login/logout
 
     def login(email, password)
-      @yus_server.login(email, password, DaVaz.config.yus_domain)
+      SBSM.info "#{email} pw #{password} domain #{DaVaz.config.yus_domain}"
+      res = @yus_server.login(email, password, DaVaz.config.yus_domain)
+      SBSM.info "res for #{email} is #{res}"
+      res
     end
 
     def login_token(email, token)
-      @yus_server.login_token(email, token, DaVaz.config.yus_domain)
+      SBSM.info "#{email} pw #{password} domain #{DaVaz.config.yus_domain}"
+      res = @yus_server.login_token(email, token, DaVaz.config.yus_domain)
+      SBSM.info "token for #{email} is #{token}  res #{res}"
+      res
     end
 
     def logout(yus_session)
-      @yus_server.logout(yus_session)
+      SBSM.info "@yus_server #{@yus_server.inspect}"
+      @yus_server.logout(yus_session) if @yus_server
     end
   end
 end

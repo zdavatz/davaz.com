@@ -1,21 +1,15 @@
 #!/usr/bin/env ruby
-
 $: << File.expand_path('../src', File.dirname(__FILE__))
-
 $0 = 'DaVaz'
-
 require 'drb/drb'
 require 'davaz'
 require 'util/config'
 require 'util/app'
 require 'util/db_manager'
-require 'util/drbserver'
 
 app = DaVaz::Util::App.new
-app.db_manager = DaVaz::Util::DbManager.new
-app.yus_server = DRb::DRbObject.new(nil, DaVaz.config.yus_uri)
+SBSM.info msg = "Starting #{DaVaz.config.server_uri} yus at: #{DaVaz.config.yus_uri}"
+puts msg
 
-server = DaVaz::Util::DRbServer.new(app)
-
-DRb.start_service(DaVaz.config.server_uri, server)
+DRb.start_service(DaVaz.config.server_uri, app)
 DRb.thread.join

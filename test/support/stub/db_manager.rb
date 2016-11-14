@@ -401,6 +401,10 @@ module DaVaz::Stub
       @oneliner
     end
 
+    def load_oneliner_by_location(location)
+      @oneliner
+    end
+
     def load_serie(serie_id, select_by)
       serie = @series.select { |serie| serie.serie_id == serie_id }.first
       serie.artobjects = @artobjects.select { |aobject|

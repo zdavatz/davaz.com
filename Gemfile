@@ -8,7 +8,7 @@ gem 'rmagick', '~> 2.15.4'
 gem 'rclconf', '1.0.0'
 gem 'ftools', '0.0.0'
 
-gem 'sbsm', '~> 1.3.0'
+gem 'sbsm', '=1.3.0'
 gem 'htmlgrid', '~> 1.1.3'
 gem 'odba', '~> 1.1.0'
 
@@ -21,11 +21,12 @@ gem 'pg', '0.18.4'
 gem 'dbd-pg', '0.3.9'
 
 group :test do
-  gem 'minitest', '~> 5.9'
+  gem 'minitest'
   gem 'watir', '~> 5.0.0'
+  gem 'watir-webdriver'
 end
 
 group :development, :test do
-  gem 'rake', '~> 11.2'
+  gem 'rake'
   gem 'pry-byebug'
 end

@@ -10,6 +10,7 @@ before_install:
 before_script:
   - npm install
   - mv etc/config.yml.ci etc/config.yml
+  - export BROWSER=phantomjs
 
 script: bundle exec rake test
 

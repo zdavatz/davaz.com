@@ -24,15 +24,18 @@ require_r(File.expand_path('../../state', __FILE__), 'state')
 
 module DaVaz::Util
   class Session < SBSM::Session
-    SERVER_NAME            = DaVaz.config.server_name
+    attr_reader :app
+    SERVER_NAME      = DaVaz.config.server_port ? DaVaz.config.server_name + ":#{DaVaz.config.server_port}" : DaVaz.config.server_name
     DEFAULT_STATE          = DaVaz::State::Personal::Init
     DEFAULT_ZONE           = :personal
     DEFAULT_LANGUAGE       = 'en'
     PERSISTENT_COOKIE_NAME = 'davaz.com-preferences'
     LOOKANDFEEL            = Lookandfeel
 
-    def initialize(*args)
-      super
+    def initialize(key, app, validator=Validator.new)
+      SBSM.debug "session key #{key} #{app.class} #{validator.class}"
+      @app = app
+      super(key, app, validator)
       if DaVaz.config.autologin
         # use only for debugging purposes as default
         @state.extend(DaVaz::State::Admin)
@@ -77,6 +80,7 @@ module DaVaz::Util
     end
 
     def login
+      SBSM.debug "login #{user_input(:login_email)} with #{user_input(:login_password)}"
       # @app.login raises Yus::YusError
       @user = @app.login(user_input(:login_email), user_input(:login_password))
       if @user.valid? && user_input(:remember_me)
@@ -92,6 +96,7 @@ module DaVaz::Util
       # @app.login_token raises Yus::YusError
       name  = (persistent_user_input(:name) || get_cookie_input(:name))
       token = (persistent_user_input(:remember) || get_cookie_input(:remember))
+      SBSM.debug "login #{name} with token #{token}"
       if name && token && !token.empty? && \
          (!@user.respond_to?(:valid?) || !@user.valid?)
         @user = @app.login_token(name, token)

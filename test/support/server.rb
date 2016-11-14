@@ -46,6 +46,7 @@ module DaVaz
 
       @server.exit
       Thread.kill(@server)
+      @server.join
       @server = nil
     end
   end

@@ -19,11 +19,15 @@ require 'rclconf'
 require 'davaz'
 require 'util/config'
 
+begin
+  require 'pry'
+rescue LoadError # ignore errors when loading pry
+end
 # debugging
 DEBUG    = (ENV['DEBUG'] == 'true' || false)
 DEBUGGER = ENV['DEBUGGER'] \
   if ENV.has_key?('DEBUGGER') && !ENV['DEBUGGER'].empty?
-TEST_CLIENT_TIMEOUT = 30 # seconds
+TEST_CLIENT_TIMEOUT = 5 # seconds
 
 TEST_SRV_URI = URI.parse(ENV['TEST_SRV_URL'] || 'http://127.0.0.1:11080')
 TEST_APP_URI = URI.parse(ENV['TEST_APP_URL'] || 'druby://127.0.0.1:11081')

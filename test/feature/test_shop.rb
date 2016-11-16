@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+$:.unshift File.expand_path('..', File.dirname(__FILE__))
 require 'test_helper'
 
 # /communication/shop
@@ -9,7 +11,6 @@ class TestShop < Minitest::Test
     link = browser.link(:name, 'shop')
     link.click
   end
-
   def test_shopping_cart_calculation_with_publications
     assert_match('/en/communication/shop', browser.url)
 
@@ -104,46 +105,48 @@ class TestShop < Minitest::Test
     link = browser.link(:text, 'Remove all items')
     link.click
   end
-
-  #def test_checkout
-  #  @browser.type "article[113]", "2"
-  #  @browser.type "article[114]", "2"
-  #  sleep 3
-  #  assert @browser.is_text_present("CHF 226.-")
-  #  @browser.type "article[113]", "4"
-  #  @browser.type "article[114]", "0"
-  #  sleep 3
-  #  assert @browser.is_text_present("CHF 452.-")
-  #  assert @browser.is_text_present("CHF 452.- / $ 360.- / € 268.-")
-  #  @browser.type "name", "TestName"
-  #  @browser.type "surname", "TestSurname"
-  #  @browser.type "street", "TestStreet"
-  #  @browser.type "postal_code", "TestZip"
-  #  @browser.type "city", "TestCity"
-  #  @browser.type "country", "TestCountry"
-  #  @browser.type "email", "TestEmail"
-  #  @browser.click "order_item"
-  #  @browser.wait_for_page_to_load "30000"
-  #  assert @browser.is_text_present("Your Postal Code seems to be invalid.")
-  #  assert @browser.is_text_present("Sorry, but your email-address seems to be invalid. Please try again.")
-  #  @browser.type "postal_code", "8888"
-  #  @browser.type "email", "mhuggler@ywesee.com"
-  #  @browser.click "order_item"
-  #  @browser.wait_for_page_to_load "30000"
-  #  assert @browser.is_text_present("Your order has been succesfully sent.")
-  #end
-
-	#def test_test_shop2
-  #  @browser.open "/en/communication/shop"
-  #  @browser.wait_for_page_to_load "30000"
-  #  @browser.click "link=Title of ArtObject 112"
-  #  @browser.wait_for_page_to_load "30000"
-  #  assert @browser.is_text_present("Text of ArtObject 112")
-  #  @browser.click "paging_next"
-  #  @browser.wait_for_page_to_load "30000"
-  #  assert @browser.is_text_present("Text of ArtObject 113")
-  #  @browser.click "link=Back To Shop"
-  #  @browser.wait_for_page_to_load "30000"
-  #  assert @browser.is_text_present("Title of ArtObject 114")
-  #end
+  def enter_value(id, value)
+    item = browser.text_field(:id, id)
+    item.set(value.to_s)
+    item.send_keys(:tab)
+  end
+  def assert_text_present(text_to_find)
+    assert(browser.text.index(text_to_find), "browser text should match #{text_to_find} but is \n#{browser.text}")
+  end
+  def test_test_shop2
+    browser.visit "/en/communication/shop"
+    112.upto(115).each do |id|
+      link = browser.link(:text => "Title of ArtObject #{id}")
+      link.click
+      assert_text_present("Text of ArtObject #{id}}")
+      browser.back
+    end
+  end
+  def test_checkout
+    enter_value("article[113]", 2)
+    enter_value("article[114]", 2)
+    sleep 3
+    assert_text_present("CHF 226.-")
+    enter_value("article[113]", "4")
+    enter_value("article[114]", "0")
+    sleep 3
+    assert_text_present("CHF 452.-")
+    assert_text_present("CHF 452.- / $ 360.- / € 268.-")
+    enter_value("name", "TestName")
+    enter_value("surname", "TestSurname")
+    enter_value("street", "TestStreet")
+    enter_value("postal_code", "TestZip")
+    enter_value("city", "TestCity")
+    enter_value("country", "TestCountry")
+    enter_value("email", "TestEmail")
+    browser.click "order_item"
+    browser.wait_for_page_to_load "30000"
+    assert_text_present("Your Postal Code seems to be invalid.")
+    assert_text_present("Sorry, but your email-address seems to be invalid. Please try again.")
+    enter_value("postal_code", "8888")
+    enter_value("email", "mhuggler@ywesee.com")
+    browser.click "order_item"
+    browser.wait_for_page_to_load "30000"
+    assert_text_present("Your order has been succesfully sent.")
+  end
 end

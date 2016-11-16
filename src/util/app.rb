@@ -6,7 +6,7 @@ require 'util/trans_handler.davaz'
 require 'util/config'
 require 'util/session'
 require 'util/validator'
-require 'util/db_manager' unless DaVaz.config.db_manager.is_a?(DaVaz::Stub::DbManager)
+require 'util/db_manager' unless defined?(DaVaz::Stub)
 
 module DaVaz::Util
   class App < SBSM::App

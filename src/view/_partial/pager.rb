@@ -12,13 +12,13 @@ module DaVaz::View
 
     def items(model)
       index        = model.artobjects.map(&:artobject_id)
-      active_index = index.index(model.artobject.artobject_id).to_i
+      active_index = model.artobject ? index.index(model.artobject.artobject_id).to_i : 0
       "Item #{active_index + 1} of #{index.length - 1}"
     end
 
     def next(model)
       index        = model.artobjects.map(&:artobject_id)
-      active_index = index.index(model.artobject.artobject_id).to_i
+      active_index = model.artobject ? index.index(model.artobject.artobject_id).to_i : 0
       unless (active_index + 1) == index.size
         link = HtmlGrid::Link.new(:paging_next, model, @session, self)
         args = [
@@ -43,7 +43,7 @@ module DaVaz::View
 
     def last(model)
       index        = model.artobjects.map(&:artobject_id)
-      active_index = index.index(model.artobject.artobject_id).to_i
+      active_index = model.artobject ? index.index(model.artobject.artobject_id).to_i : 0
       unless (active_index - 1) == -1
         link = HtmlGrid::Link.new(:paging_last, model, @session, self)
         args = [
@@ -132,13 +132,13 @@ module DaVaz::View
 
     def items(model)
       index        = model.artobjects.map(&:artobject_id)
-      active_index = index.index(model.artobject.artobject_id).to_i
+      active_index = model.artobject ? index.index(model.artobject.artobject_id).to_i : 0
       "Item #{active_index + 1} of #{index.length - 1}"
     end
 
     def next(model)
       index        = model.artobjects.map(&:artobject_id)
-      active_index = index.index(model.artobject.artobject_id).to_i
+      active_index = model.artobject ? index.index(model.artobject.artobject_id).to_i : 0
       unless (active_index + 1) == index.size
         link = HtmlGrid::Link.new(:paging_next, model, @session, self)
         args = [
@@ -157,7 +157,7 @@ module DaVaz::View
 
     def last(model)
       index        = model.artobjects.map(&:artobject_id)
-      active_index = index.index(model.artobject.artobject_id).to_i
+      active_index = model.artobject ? index.index(model.artobject.artobject_id).to_i : 0
       unless (active_index - 1) == -1
         link = HtmlGrid::Link.new(:paging_last, model, @session, self)
         link.href = @lookandfeel.event_url(:communication, :shop_art_object, [

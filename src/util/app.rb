@@ -21,7 +21,7 @@ module DaVaz::Util
       @drb_uri = DaVaz.config.server_uri
       @yus_server = DRb::DRbObject.new(nil, DaVaz.config.yus_uri)
       @db_manager = DaVaz::Util::DbManager.new
-      res = super(:app => self, :validator => Validator.new, :trans_handler => DaVaz::Util::TransHandler.instance)
+      res = super(:app => self, :validator => Validator.new, :trans_handler => DaVaz::Util::TransHandler.instance, :drb_uri => @drb_uri)
       SBSM.info "DaVaz::AppWebrick.new  drb #{@drb_uri} validator #{@validator} th #{@trans_handler} with log_pattern #{DaVaz.config.log_pattern} #{SBSM.logger.level}"
       res
     end

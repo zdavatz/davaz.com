@@ -1,14 +1,8 @@
 require 'util/app'
-require 'util/drbserver'
 
 module DaVaz
   class Server
     def initialize
-      drb_url = TEST_APP_URI.to_s
-      app = DaVaz::Util::App.new
-      app.db_manager = DaVaz::Stub::DbManager.new
-      app.yus_server = DaVaz::Stub::YusServer.new
-
       at_exit { exit }
       @drb = Thread.new do
         begin
@@ -22,7 +16,7 @@ module DaVaz
           raise
         end
       end
-      @pid = Process.spawn('bundle', 'exec', 'rackup', 'test/config.ru', { :err => ['test_error.log', 'w+']})
+      @pid = Process.spawn('bundle', 'exec', 'rackup', 'test/config.ru', { :err => ['test_rack.log', 'w+'],  :out => ['test_rack.log', 'w+']})
       SBSM.info msg =  "Starting #{DaVaz.config.server_uri} PID #{@pid}"
       @drb.abort_on_exception = true
       trap('INT') { @drb.exit }
@@ -34,6 +28,7 @@ module DaVaz
       if @pid
         Process.kill("QUIT", @pid)
         Process.wait(@pid)
+        @pid = nil
       end
     end
   end

@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# Start davaz for spec tests or debugging purpose
+# Order of include is very important, as patch the configuration information
+# for Mail, URL, etc.
+root_dir = File.expand_path(File.join(__FILE__, '..', '..'))
+$LOAD_PATH << File.join(root_dir, 'test')
+require 'test_helper'
+SBSM.info msg = "Starting #{DaVaz.config.server_uri}"
+DRb.start_service(DaVaz.config.server_uri, DaVaz::Util::App.new)
+DRb.thread.join

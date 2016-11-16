@@ -16,6 +16,7 @@ module DaVaz
     },
     'log_pattern'             => File.join(Dir.pwd, 'log','/%Y/%m/%d/davaz_log'),
     'server_port'             => nil,
+    'db_manager'              => nil,
     'server_name'             => 'localhost',
     'server_uri'              => 'druby://localhost:9998',
     'document_root'           => File.expand_path('doc', project_root),

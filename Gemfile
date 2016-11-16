@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'mimemagic'
 gem 'mysql2', '~> 0.4.4'
 gem 'dbi', '~> 0.4.5'
 
@@ -8,7 +9,7 @@ gem 'rmagick', '~> 2.15.4'
 gem 'rclconf', '1.0.0'
 gem 'ftools', '0.0.0'
 
-gem 'sbsm', '>=1.3.1'
+gem 'sbsm', '>=1.3.2'
 gem 'htmlgrid', '~> 1.1.3'
 gem 'odba', '~> 1.1.0'
 

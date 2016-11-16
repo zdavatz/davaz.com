@@ -13,7 +13,7 @@ module DaVaz
       else
         @browser = setup_chromium
       end
-      puts "For environment BROWSER (#{ ENV['BROWSER']}) we use #{@browser.driver.browser}"
+      puts "For environment BROWSER (#{ ENV['BROWSER']}) we use #{@browser.driver.browser}" if $VERBOSE
       super @browser
     end
 

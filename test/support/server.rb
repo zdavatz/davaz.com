@@ -9,11 +9,11 @@ module DaVaz
       app.db_manager = DaVaz::Stub::DbManager.new
       app.yus_server = DaVaz::Stub::YusServer.new
 
-      server = DaVaz::Util::DRbServer.new(app)
+      at_exit { exit }
       @drb = Thread.new do
         begin
           DRb.stop_service
-          @drb_server = DRb.start_service(drb_url, server)
+          DRb.start_service(TEST_APP_URI.to_s, DaVaz::Util::App.new)
           DRb.thread.join
         rescue Exception => e
           $stdout.puts e.class
@@ -22,32 +22,19 @@ module DaVaz
           raise
         end
       end
+      @pid = Process.spawn('bundle', 'exec', 'rackup', 'test/config.ru', { :err => ['test_error.log', 'w+']})
+      SBSM.info msg =  "Starting #{DaVaz.config.server_uri} PID #{@pid}"
       @drb.abort_on_exception = true
       trap('INT') { @drb.exit }
-
-      @http_server = Stub.http_server(drb_url)
-      @http_server.shutdown
-      trap('INT') { @http_server.shutdown }
-
-      @server = Thread.new { @http_server.start }
-      trap('INT') { @server.exit }
-
-      @server
     end
 
     def exit
-      @http_server.shutdown
-      @http_server = nil
-
-      @drb_server.stop_service
-      @drb_server = nil
-      @drb.exit
-      @drb = nil
-
-      @server.exit
-      Thread.kill(@server)
-      @server.join
-      @server = nil
+      puts "stop_davaz_and_browser ensure killing @pid: #{@pid}" if $VERBOSE
+      DRb.stop_service
+      if @pid
+        Process.kill("QUIT", @pid)
+        Process.wait(@pid)
+      end
     end
   end
 end

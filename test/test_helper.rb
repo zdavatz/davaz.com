@@ -26,6 +26,25 @@ DEBUGGER = ENV['DEBUGGER'] \
   if ENV.has_key?('DEBUGGER') && !ENV['DEBUGGER'].empty?
 TEST_CLIENT_TIMEOUT = 5 # seconds
 
+dojo = File.join(root_dir, 'doc/resources/dojo/dojo/dojo.js')
+if File.exist?(dojo)
+  puts "found #{dojo}"
+else
+  download_url = 'http://download.dojotoolkit.org/release-1.7.10/dojo-release-1.7.10.tar.gz'
+  puts "Installing #{File.basename(download_url, '.tar.gz')}"
+  cache_file = File.join(Dir.pwd, 'dojo', File.basename(download_url))
+  FileUtils.makedirs(File.dirname(cache_file), :verbose => true)
+  unless File.exist?(cache_file)
+    puts "downloading from #{download_url}"
+    saved_dir = Dir.pwd
+    Dir.chdir(File.dirname(cache_file))
+    exit 3 unless system("wget #{download_url}")
+    Dir.chdir(saved_dir)
+  end
+  exit 4 unless system( "tar --directory doc/resources -xf #{cache_file}")
+  FileUtils.mv(Dir.glob('doc/resources/dojo-release*').first, 'doc/resources/dojo', :verbose => true)
+end
+
 # test data
 module DaVaz; module Stub; end; end
 

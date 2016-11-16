@@ -6,7 +6,7 @@ require 'util/trans_handler.davaz'
 require 'util/config'
 require 'util/session'
 require 'util/validator'
-require 'util/db_manager'
+require 'util/db_manager' unless DaVaz.config.db_manager.is_a?(DaVaz::Stub::DbManager)
 
 module DaVaz::Util
   class App < SBSM::App
@@ -20,9 +20,10 @@ module DaVaz::Util
       SBSM.logger.level = :debug
       @drb_uri = DaVaz.config.server_uri
       @yus_server = DRb::DRbObject.new(nil, DaVaz.config.yus_uri)
-      @db_manager = DaVaz::Util::DbManager.new
+      @db_manager =  DaVaz.config.db_manager
+      @db_manager ||= DaVaz::Util::DbManager.new
       res = super(:app => self, :validator => Validator.new, :trans_handler => DaVaz::Util::TransHandler.instance, :drb_uri => @drb_uri)
-      SBSM.info "DaVaz::AppWebrick.new  drb #{@drb_uri} validator #{@validator} th #{@trans_handler} with log_pattern #{DaVaz.config.log_pattern} #{SBSM.logger.level}"
+      SBSM.info "DaVaz::AppWebrick.new  drb #{@drb_uri} validator #{@validator} th #{@trans_handler} with log_pattern #{DaVaz.config.log_pattern} db #{@db_manager.class} #{SBSM.logger.level}"
       res
     end
 

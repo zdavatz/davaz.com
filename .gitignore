@@ -1,5 +1,6 @@
 /.bundle
-
+/dojo
+*.log
 /etc/*.yml
 !/etc/davaz.yml
 !/etc/trans_handler.yml

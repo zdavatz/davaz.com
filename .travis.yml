@@ -2,7 +2,10 @@ language: ruby
 
 bundler_args: --without development
 
-cache: bundler
+cache:
+  bundler:
+  directories:
+    - dojo
 
 before_install:
   - gem --version

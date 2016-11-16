@@ -1,0 +1,27 @@
+# some helper constant for tests
+require 'davaz'
+require 'util/config'
+require 'sbsm/logger'
+require 'mail'
+begin
+  require 'pry'
+rescue LoadError # ignore errors when loading pry
+end
+# 11080 must be in sync with first line in test/config.ru
+TEST_SRV_URI = URI.parse(ENV['TEST_SRV_URL'] || 'http://localhost:11090')
+TEST_APP_URI = URI.parse(ENV['TEST_APP_URL'] || 'druby://localhost:11091')
+TEST_YUS_URI = URI.parse(ENV['TEST_YUS_URL'] || 'drbssl://127.0.0.1:10097')
+
+
+DaVazUrl = TEST_SRV_URI.to_s
+DaVaz.config.server_uri    = TEST_APP_URI.to_s
+DaVaz.config.server_name   = TEST_SRV_URI.hostname
+DaVaz.config.server_port   = TEST_SRV_URI.port
+Mail.defaults { delivery_method :test }
+TEST_CHRONO_LOGGER = File.join(File.dirname(__FILE__), '..','/test_%Y%m%d.log')
+DaVaz.config.log_pattern = TEST_CHRONO_LOGGER
+root_dir = Pathname.new(__FILE__).parent.parent.parent.expand_path
+DaVaz.config.document_root = root_dir.join('doc').to_s
+exit 3 unless File.directory?(DaVaz.config.document_root)
+DaVaz.config.environment   = 'test'
+DaVaz.config.autologin     = false

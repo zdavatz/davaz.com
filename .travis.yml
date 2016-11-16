@@ -6,14 +6,14 @@ cache:
   bundler:
   directories:
     - dojo
+    - downloads
+
+sudo: required
+dist: trusty # or installing google-chrome-stable will fail
 
 before_install:
-  - gem --version
-
-before_script:
-  - npm install
   - mv etc/config.yml.ci etc/config.yml
-  - export BROWSER=phantomjs
+  - test/travis_setup
 
 script: bundle exec rake test
 

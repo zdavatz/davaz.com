@@ -107,8 +107,9 @@ class TestShop < Minitest::Test
   end
   def enter_value(id, value)
     item = browser.text_field(:id, id)
+    item = browser.text_field(:name => id) unless item.exist?
     item.set(value.to_s)
-    item.send_keys(:tab)
+    browser.send_keys(:tab)
   end
   def assert_text_present(text_to_find)
     assert(browser.text.index(text_to_find), "browser text should match #{text_to_find} but is \n#{browser.text}")
@@ -118,33 +119,39 @@ class TestShop < Minitest::Test
     112.upto(115).each do |id|
       link = browser.link(:text => "Title of ArtObject #{id}")
       link.click
-      assert_text_present("Text of ArtObject #{id}}")
+      assert_text_present("Text of ArtObject #{id}")
       browser.back
     end
   end
+  def check_total(amount)
+    total = /.*total.*/i.match(browser.text)
+    assert(total, 'Should find line matching Total')
+    assert(/CHF\s#{amount}\.-/.match(total[0]), "Should show correct total of #{amount} CHF, but is #{total[0]}")
+  end
   def test_checkout
     enter_value("article[113]", 2)
-    enter_value("article[114]", 2)
     sleep 3
-    assert_text_present("CHF 226.-")
+    check_total(226)
+    enter_value("article[114]", 2)
+    total = /.*total.*/i.match(browser.text)
+    check_total(254)
     enter_value("article[113]", "4")
     enter_value("article[114]", "0")
     sleep 3
-    assert_text_present("CHF 452.-")
-    assert_text_present("CHF 452.- / $ 360.- / € 268.-")
+    check_total(452)
     enter_value("name", "TestName")
     enter_value("surname", "TestSurname")
     enter_value("street", "TestStreet")
     enter_value("postal_code", "TestZip")
     enter_value("city", "TestCity")
     enter_value("country", "TestCountry")
-    enter_value("email", "TestEmail")
-    browser.click "order_item"
+    enter_value("email", "TestEmail@test.org")
+    browser.button(:name => 'order_item').click
     browser.wait_for_page_to_load "30000"
     assert_text_present("Your Postal Code seems to be invalid.")
     assert_text_present("Sorry, but your email-address seems to be invalid. Please try again.")
-    enter_value("postal_code", "8888")
-    enter_value("email", "mhuggler@ywesee.com")
+    set_input_value("postal_code", "8888")
+    set_input_value("email", "mhuggler@ywesee.com")
     browser.click "order_item"
     browser.wait_for_page_to_load "30000"
     assert_text_present("Your order has been succesfully sent.")

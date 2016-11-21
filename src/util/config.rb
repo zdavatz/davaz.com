@@ -35,6 +35,7 @@ module DaVaz
     'ticker_component_height' => '180',
     # yus
     'yus_domain' => 'com.davaz',
+    'yus_server' => nil,
     'yus_uri'    => 'drbssl://localhost:9997',
     :colors => {
       :articles         => '#6d6dff',

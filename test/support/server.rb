@@ -6,6 +6,7 @@ module DaVaz
       at_exit { exit }
       @drb = Thread.new do
         begin
+          SBSM.info "starting  DaVaz::Util::App on #{TEST_APP_URI.to_s}"
           DRb.stop_service
           DRb.start_service(TEST_APP_URI.to_s, DaVaz::Util::App.new)
           DRb.thread.join
@@ -16,6 +17,7 @@ module DaVaz
           raise
         end
       end
+      SBSM.info "spawn test/config.ru #{File.exist?('test/config.ru')}"
       @pid = Process.spawn('bundle', 'exec', 'rackup', 'test/config.ru', { :err => ['test_rack.log', 'w+'],  :out => ['test_rack.log', 'w+']})
       SBSM.info msg =  "Starting #{DaVaz.config.server_uri} PID #{@pid}"
       @drb.abort_on_exception = true

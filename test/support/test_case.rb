@@ -3,6 +3,13 @@ module DaVaz
     attr_reader :browser
 
     def before_setup
+      SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
+      @ci  = File.expand_path(File.join(__FILE__, '../../../etc/config.yml.ci'))
+      @bak = File.expand_path(File.join(__FILE__, '../../../etc/config.yml.bak'))
+      @cfg = File.expand_path(File.join(__FILE__, '../../../etc/config.yml'))
+      FileUtils.cp(@cfg, @bak, verbose: true) if File.exist?(@cfg) && ! File.exist?(@bak)
+      FileUtils.cp(@ci, @cfg, verbose: true)
+      SBSM.info "@cfg #{@cfg} with #{File.read(@cfg)}"
       super
       startup_server
       boot_browser
@@ -11,6 +18,7 @@ module DaVaz
     def after_teardown
       close_browser
       shutdown_server
+      FileUtils.cp(@bak, @cfg, verbose: true) if File.exist?(@cfg) && File.exist?(@bak)
       super
     end
 

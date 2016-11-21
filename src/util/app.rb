@@ -19,7 +19,7 @@ module DaVaz::Util
       SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
       SBSM.logger.level = :debug
       @drb_uri = DaVaz.config.server_uri
-      @yus_server = DRb::DRbObject.new(nil, DaVaz.config.yus_uri)
+      @yus_server = DaVaz.config.yus_server ?  DaVaz.config.yus_server : DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri)
       @db_manager =  DaVaz.config.db_manager
       @db_manager ||= DaVaz::Util::DbManager.new
       res = super(:app => self, :validator => Validator.new, :trans_handler => DaVaz::Util::TransHandler.instance, :drb_uri => @drb_uri)

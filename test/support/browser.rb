@@ -24,7 +24,7 @@ module DaVaz
     # returns a Watir-Browser for Chromium
     # with same changes to the default profile
     def setup_chromium
-    prefs = {
+      prefs = {
         :download => {:prompt_for_download => false, }
       }
       caps = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" =>

@@ -1,4 +1,4 @@
-require 'net/smtp'
+require 'mail'
 require 'securerandom'
 require 'state/predefine'
 require 'view/communication/shop'
@@ -54,6 +54,18 @@ module DaVaz::State
 
     class Shop < Global
       VIEW = DaVaz::View::Communication::Shop
+      options = {
+          :address => DaVaz.config.mailer['server'],
+          :port => DaVaz.config.mailer['port'],
+          :domain => DaVaz.config.mailer['domain'],
+          :user_name => DaVaz.config.mailer['user'],
+          :password => DaVaz.config.mailer['pass'],
+          :authentication => DaVaz.config.mailer['auth'],
+          :enable_starttls_auto => true,
+        }
+      Mail.defaults do
+        delivery_method :smtp, options
+      end
 
       def init
         @session[:cart_items] ||= []
@@ -104,39 +116,25 @@ module DaVaz::State
           EOS
         }
         orders.push("TOTAL: #{total}.\-")
-        message = [
-          "Subject: Bestellung von davaz.com",
-          "From: #{config['from']}",
-          "To: #{hash[:email]}",
-          "Date: #{Time.now}",
-          "\n",
-          @session.lookandfeel.lookup(:shop_mail_salut),
-          '',
-          address.join("\n"),
-          '',
-          orders.join("\n"),
-          '',
-          @session.lookandfeel.lookup(:shop_mail_bye),
-          '',
-          "Ref ##{SecureRandom.urlsafe_base64(8, true)}"
-        ].join("\n")
-
-        unless DaVaz.config.environment == 'test'
-          options = [
-            config['domain'],
-            config['user'],
-            config['pass'],
-            config['auth'].to_sym
-          ]
-          smtp = Net::SMTP.new(config['server'], config['port'].to_i)
-          smtp.enable_starttls
-          smtp.start(*options) { |smtp|
-            config['from'] =~ /<(.*)>/
-            from = $1 ? $1 : config['from']
-            to   = config['to'].dup.push(hash[:email])
-            smtp.send_message(message, from, to)
-          }
+        Mail.deliver do
+          to hash[:email]
+          from DaVaz.config.mailer['from']
+          subject 'Bestellung von davaz.com.'
+          html_part do
+          content_type 'text/html; charset=UTF-8'
+            [ @session.lookandfeel.lookup(:shop_mail_salut),
+              '',
+              address.join("\n"),
+              '',
+              orders.join("\n"),
+              '',
+              @session.lookandfeel.lookup(:shop_mail_bye),
+              '',
+              "Ref ##{SecureRandom.urlsafe_base64(8, true)}"
+            ].join("\n")
+          end
         end
+        SBSM.info "SentMail  #{body.size}"
         @session.infos.push(:i_order_sent)
       end
     end

@@ -12,12 +12,18 @@ module DaVaz::State
 
       def init
         artobject_id = @session.user_input(:artobject_id)
+        if @session[:cart_items]
+          SBSM.info "shop cart_items #{@session[:cart_items].inspect }"
+        else
+          SBSM.info "shop no cart_items found"
+        end
         count = @session.user_input(:count).to_i
         if count == 0
           @session[:cart_items].delete_if { |old_item|
             old_item.artobject_id == artobject_id
           }
         else
+          @session[:cart_items] ||= []
           items = @session[:cart_items].select { |item|
             item.artobject_id == artobject_id
           }
@@ -69,6 +75,7 @@ module DaVaz::State
 
       def init
         @session[:cart_items] ||= []
+        SBSM.debug "@session[:cart_items] are #{ @session[:cart_items]}"
         @model = OpenStruct.new
         @model.items = @session.app.load_shop_items
         @model.artgroups = @session.app.load_shop_artgroups
@@ -85,6 +92,7 @@ module DaVaz::State
         keys = mandatory.dup.push(:article)
         hash = user_input(keys, mandatory)
         unless error?
+          SBSM.info "deliver articles #{hash}"
           hash[:article].each { |artobject_id, count|
             unless count == ""
               item = @session.load_shop_item(artobject_id)
@@ -99,10 +107,9 @@ module DaVaz::State
         end
       end
 
-      # @todo
-      #   Add support for testing
       def send_mail(mandatory, hash)
         config = DaVaz.config.mailer
+        SBSM.info "config.mailer is  #{config.mailer}"
         address = mandatory.collect { |key|
           "#{@session.lookandfeel.lookup(key)}: #{hash[key].to_s}"
         }

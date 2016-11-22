@@ -68,7 +68,7 @@ module DaVaz
       Selenium::WebDriver::Firefox::Binary.path= bin_path if File.executable?(bin_path)
       caps = Selenium::WebDriver::Remote::Capabilities.firefox(marionette: true)
       @driver = Selenium::WebDriver.for :firefox
-      Watir::Browser.new @driver, desired_capabilities: caps
+      Watir::Browser.new @driver, profile: profile, desired_capabilities: caps
     end
   end
 end

@@ -33,8 +33,8 @@ module DaVaz::Util
     LOOKANDFEEL            = Lookandfeel
 
     def initialize(key, app, validator=Validator.new)
-      SBSM.debug "session key #{key} #{app.class} #{validator.class}"
-      @app = app
+      SBSM.debug "session key #{key} #{app.class} #{validator.class} @app #{@app.class} app #{app.class} @session #{@session.object_id}"
+      @app = app # unless @app
       super(key, app, validator)
       if DaVaz.config.autologin
         # use only for debugging purposes as default
@@ -96,11 +96,11 @@ module DaVaz::Util
       # @app.login_token raises Yus::YusError
       name  = (persistent_user_input(:name) || get_cookie_input(:name))
       token = (persistent_user_input(:remember) || get_cookie_input(:remember))
-      SBSM.debug "login #{name} with token #{token}"
       if name && token && !token.empty? && \
          (!@user.respond_to?(:valid?) || !@user.valid?)
         @user = @app.login_token(name, token)
         if @user.valid?
+          SBSM.debug "set_cookie_input remember #{@user.generate_token}"
           set_cookie_input :remember, @user.generate_token
           @user
         else
@@ -109,10 +109,13 @@ module DaVaz::Util
       else
         nil
       end
-    rescue Yus::YusError
+    rescue Yus::YusError => e
+      puts "login #{name} with token #{token.inspect}"
+      require 'pry'; binding.pry
     end
 
     def logout
+      SBSM.debug "logout #{@user} with token(remember)  #{ persistent_user_input(:remember).inspect}"
       @app.logout(@user)
       super
     end

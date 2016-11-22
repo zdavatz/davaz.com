@@ -13,9 +13,9 @@ module DaVaz::State
       def init
         artobject_id = @session.user_input(:artobject_id)
         if @session[:cart_items]
-          SBSM.info "shop cart_items #{@session[:cart_items].inspect }"
+          SBSM.info "AjaxShop cart_items #{@session[:cart_items].inspect}  @session #{@session.object_id}"
         else
-          SBSM.info "shop no cart_items found"
+          SBSM.info "AjaxShop no cart_items found @session #{@session.object_id}"
         end
         count = @session.user_input(:count).to_i
         if count == 0
@@ -75,9 +75,10 @@ module DaVaz::State
 
       def init
         @session[:cart_items] ||= []
-        SBSM.debug "@session[:cart_items] are #{ @session[:cart_items]}"
+        SBSM.debug "Shop: cart_items There are #{@session[:cart_items] ? @session[:cart_items].size : 'nil'} @session[:cart_items] @session #{@session.object_id}"
         @model = OpenStruct.new
         @model.items = @session.app.load_shop_items
+        SBSM.debug "Shop: cart_items There are #{@model.items  ? @model.items .size : 'nil' } @model.items  @session #{@session.object_id}"
         @model.artgroups = @session.app.load_shop_artgroups
       end
 

@@ -42,7 +42,7 @@ module DaVaz
       return unless @browser
 
       begin
-        @browser.close
+        @browser.quit
       rescue Errno::ECONNREFUSED
       end
       @browser = nil

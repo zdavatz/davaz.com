@@ -5,12 +5,17 @@ require 'test_helper'
 # /communication/shop
 class TestShop < Minitest::Test
   include DaVaz::TestCase
+  SLEEP_SECONDS = 0.5
 
   def setup
     browser.visit('/en/personal/work')
+    sleep SLEEP_SECONDS
     link = browser.link(:name, 'shop')
     link.click
+    sleep SLEEP_SECONDS
+    SBSM.info "There should be no cart_items @session session_id is #{get_session_id}"
   end
+
   def test_shopping_cart_calculation_with_publications
     assert_match('/en/communication/shop', browser.url)
 
@@ -105,55 +110,81 @@ class TestShop < Minitest::Test
     link = browser.link(:text, 'Remove all items')
     link.click
   end
+  def test_test_shop2
+    browser.visit "/en/communication/shop"
+    112.upto(115).each do |id|
+      link = browser.link(:text => "Title of ArtObject # {id}")
+      link.click
+      assert_text_present("Text of ArtObject # {id}")
+      browser.back
+    end
+  end
+
   def enter_value(id, value)
     item = browser.text_field(:id, id)
     item = browser.text_field(:name => id) unless item.exist?
     item.set(value.to_s)
-    browser.send_keys(:tab)
+    item.send_keys(:tab)
   end
   def assert_text_present(text_to_find)
     assert(browser.text.index(text_to_find), "browser text should match #{text_to_find} but is \n#{browser.text}")
-  end
-  def test_test_shop2
-    browser.visit "/en/communication/shop"
-    112.upto(115).each do |id|
-      link = browser.link(:text => "Title of ArtObject #{id}")
-      link.click
-      assert_text_present("Text of ArtObject #{id}")
-      browser.back
-    end
   end
   def check_total(amount)
     total = /.*total.*/i.match(browser.text)
     assert(total, 'Should find line matching Total')
     assert(/CHF\s#{amount}\.-/.match(total[0]), "Should show correct total of #{amount} CHF, but is #{total[0]}")
   end
-  def test_checkout
+  def get_session_id
+    browser.cookies.to_a.find {|x| /persistent/i.match(x[:name]) }[:value]
+  end
+  def test_checkout_with_error
+    session_id = get_session_id
     enter_value("article[113]", 2)
-    sleep 3
-    check_total(226)
+    check_total(2*113)
     enter_value("article[114]", 2)
     total = /.*total.*/i.match(browser.text)
-    check_total(254)
+    check_total(2*113 + 2*114)
     enter_value("article[113]", "4")
     enter_value("article[114]", "0")
-    sleep 3
+    sleep SLEEP_SECONDS
     check_total(452)
     enter_value("name", "TestName")
     enter_value("surname", "TestSurname")
     enter_value("street", "TestStreet")
-    enter_value("postal_code", "TestZip")
+    enter_value("postal_code", "postal_code_must_be_integer")
     enter_value("city", "TestCity")
     enter_value("country", "TestCountry")
     enter_value("email", "TestEmail@test.org")
     browser.button(:name => 'order_item').click
-    browser.wait_for_page_to_load "30000"
     assert_text_present("Your Postal Code seems to be invalid.")
     assert_text_present("Sorry, but your email-address seems to be invalid. Please try again.")
-    set_input_value("postal_code", "8888")
-    set_input_value("email", "mhuggler@ywesee.com")
+    enter_value("postal_code", "8888")
+    enter_value("email", "ngiger@ywesee.com")
     browser.click "order_item"
-    browser.wait_for_page_to_load "30000"
+    assert_text_present("Your order has been succesfully sent.")
+  end
+
+  def test_checkout
+    session_id = get_session_id
+    SBSM.info "There should be no cart_items @session session_id is #{get_session_id}"
+    enter_value("article[113]", 2)
+    sleep SLEEP_SECONDS
+    session_id2 = get_session_id
+    SBSM.info "The GET should have resulted one cart_item @session session_id is  #{session_id} #{session_id2}"
+    assert_equal(session_id, session_id2, 'Session-IDs should match')
+    check_total(2*113)
+    enter_value("article[114]", 2)
+    total = /.*total.*/i.match(browser.text)
+    sleep SLEEP_SECONDS
+    SBSM.info "The GET should have resulted in two cart_items session_id is  #{get_session_id}"
+    enter_value("name", "TestName")
+    enter_value("surname", "TestSurname")
+    enter_value("street", "TestStreet")
+    enter_value("postal_code", "8888")
+    enter_value("city", "TestCity")
+    enter_value("country", "TestCountry")
+    enter_value("email", "TestEmail@test.org")
+    browser.button(:name => 'order_item').click
     assert_text_present("Your order has been succesfully sent.")
   end
 end

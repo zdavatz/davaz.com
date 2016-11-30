@@ -14,6 +14,7 @@ class TestNewArtObject < Minitest::Test
     assert_match('/en/gallery/gallery', browser.url)
     login_as(email: 'right@user.ch', password: 'abcd')
 
+    binding.pry
     link = wait_until { browser.link(name: 'new_art_object') }
     link.click
 
@@ -50,9 +51,9 @@ class TestNewArtObject < Minitest::Test
     editor.send_keys(:tab)
     assert_equal('NEW ART OBJECT', editor.text)
 
-    #button = browser.element(name: 'save')
-    #button.click
+    button = browser.element(name: 'save')
+    button.click
 
-    #refute(browser.td(:class, 'processingerror').exists?)
-  end
+    refute(browser.td(:class, 'processingerror').exists?)
+  end if false
 end

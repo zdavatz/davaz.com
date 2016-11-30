@@ -22,7 +22,8 @@ module DaVaz::Util
       @yus_server = DaVaz.config.yus_server ?  DaVaz.config.yus_server : DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri)
       @db_manager =  DaVaz.config.db_manager
       @db_manager ||= DaVaz::Util::DbManager.new
-      res = super(:app => self, :validator => Validator.new, :trans_handler => DaVaz::Util::TransHandler.instance, :drb_uri => @drb_uri)
+      res = super(:app => self, :validator => Validator.new, :trans_handler => DaVaz::Util::TransHandler.instance,
+                  :drb_uri => @drb_uri, :cookie_name => Session::PERSISTENT_COOKIE_NAME)
       SBSM.info "DaVaz::AppWebrick.new  drb #{@drb_uri} validator #{@validator} th #{@trans_handler} with log_pattern #{DaVaz.config.log_pattern} db #{@db_manager.class} #{SBSM.logger.level}"
       res
     end
@@ -360,7 +361,9 @@ module DaVaz::Util
     end
 
     def logout(yus_session)
-      SBSM.info "@yus_server #{@yus_server.inspect}"
+      SBSM.info "@yus_server #{@yus_server.inspect} #{yus_session.class} #{yus_session.object_id} " +
+          + "#{session.class} #{session.object_id} state #{(session && session.respond_to?(:state)) ? session.state.object_id : 'nil'}"
+      # require 'pry'; binding.pry
       @yus_server.logout(yus_session) if @yus_server
     end
   end

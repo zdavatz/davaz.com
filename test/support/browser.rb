@@ -1,4 +1,3 @@
-require 'selenium-webdriver'
 require 'watir'
 
 module DaVaz
@@ -67,8 +66,12 @@ module DaVaz
       bin_path = '/usr/bin/firefox-bin'
       Selenium::WebDriver::Firefox::Binary.path= bin_path if File.executable?(bin_path)
       caps = Selenium::WebDriver::Remote::Capabilities.firefox(marionette: true)
+      puts "bin_path #{bin_path} #{File.executable?(bin_path)}"
       @driver = Selenium::WebDriver.for :firefox
-      Watir::Browser.new @driver, profile: profile, desired_capabilities: caps
+      puts "browser #{bin_path} driver #{@driver}"
+      browser = Watir::Browser.new @driver, profile: profile, desired_capabilities: caps
+      puts "browser #{bin_path} browser #{browser} #{@driver}"
+      browser
     end
   end
 end

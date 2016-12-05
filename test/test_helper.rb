@@ -24,7 +24,11 @@ require 'support/override_config.rb'
 DEBUG    = (ENV['DEBUG'] == 'true' || false)
 DEBUGGER = ENV['DEBUGGER'] \
   if ENV.has_key?('DEBUGGER') && !ENV['DEBUGGER'].empty?
-TEST_CLIENT_TIMEOUT = 3 # seconds
+TEST_CLIENT_TIMEOUT = 5 # seconds
+
+def wait_until( &block )
+  (yield block).wait_until(&:present?)
+end
 
 dojo = File.join(root_dir, 'doc/resources/dojo/dojo/dojo.js')
 if File.exist?(dojo)
@@ -50,10 +54,4 @@ module DaVaz; module Stub; end; end
 
 Dir[root_dir.join('test/support/**/*.rb')].each { |f| require f }
 
-module DaVaz::TestCase
-  include WaitUntil
-end
-
-Watir.driver = :webdriver
-Watir.load_driver
 Watir.default_timeout = TEST_CLIENT_TIMEOUT

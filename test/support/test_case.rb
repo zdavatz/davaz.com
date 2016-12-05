@@ -9,7 +9,6 @@ module DaVaz
       @cfg = File.expand_path(File.join(__FILE__, '../../../etc/config.yml'))
       FileUtils.cp(@cfg, @bak, verbose: true) if File.exist?(@cfg) && ! File.exist?(@bak)
       FileUtils.cp(@ci, @cfg, verbose: true)
-      SBSM.info "@cfg #{@cfg} with #{File.read(@cfg)}"
       super
       startup_server
       boot_browser

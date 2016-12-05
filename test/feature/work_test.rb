@@ -13,7 +13,8 @@ class TestWork < Minitest::Test
   def test_gallery
     assert_match('/en/personal/work', browser.url)
 
-    span = wait_until { browser.span(class: 'tooltip') }
+    span =browser.span(class: 'tooltip')
+    span.wait_until(&:present?).text
     assert_equal('tooltip_4_1', span.attribute_value(:id))
 
     span.focus
@@ -22,10 +23,11 @@ class TestWork < Minitest::Test
     span.fire_event('onmouseover')
     sleep(1)
 
-    dialog = wait_until { browser.div(id: 'tooltip_tooltip_4_1_dialog') }
+    dialog = browser.div(id: 'tooltip_tooltip_4_1_dialog')
+    dialog.wait_until(&:present?)
     assert(dialog.exists?)
 
-    tooltip = wait_until { browser.div(id: 'tooltip_4_1_dropdown') }
+    tooltip =browser.div(id: 'tooltip_4_1_dropdown').wait_until(&:present?)
     assert(tooltip.exists?)
   end
 end

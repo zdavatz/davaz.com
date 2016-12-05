@@ -24,7 +24,7 @@ class TestDrawings < Minitest::Test
   def test_admin_drawings_canceling_of_add_new_serie
     assert_match('/en/works/drawings', browser.url)
 
-    login_as(email: 'right@user.ch', password: 'abcd')
+    login_as(email: TEST_USER, password: TEST_PASSWORD)
 
     title = 'Title of ArtObject 112'
     visit_desk(title)
@@ -60,7 +60,7 @@ class TestDrawings < Minitest::Test
   def test_admin_drawings_removing_serie_failure
     assert_match('/en/works/drawings', browser.url)
 
-    login_as(email: 'right@user.ch', password: 'abcd')
+    login_as(email: TEST_USER, password: TEST_PASSWORD)
 
     title = 'Title of ArtObject 112'
     visit_desk(title)
@@ -86,7 +86,7 @@ class TestDrawings < Minitest::Test
   def test_admin_drawings_removing_serie_success
     assert_match('/en/works/drawings', browser.url)
 
-    login_as(email: 'right@user.ch', password: 'abcd')
+    login_as(email: TEST_USER, password: TEST_PASSWORD)
 
     title = 'Title of ArtObject 112'
     visit_desk(title)

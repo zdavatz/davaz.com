@@ -13,7 +13,6 @@ class TestShop < Minitest::Test
     link = browser.link(:name, 'shop')
     link.click
     sleep SLEEP_SECONDS
-    SBSM.info "There should be no cart_items @session session_id is #{get_session_id}"
   end
 
   def test_shopping_cart_calculation_with_publications

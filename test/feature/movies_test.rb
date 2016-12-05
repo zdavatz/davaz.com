@@ -83,7 +83,7 @@ class TestMovies < Minitest::Test
     link = browser.a(name: '111-more')
     link.click
 
-    login_as(email: 'right@user.ch', password: 'abcd')
+    login_as(email: TEST_USER, password: TEST_PASSWORD)
 
     frame = wait_until { browser.iframe(index: 0) }
     editor = frame.div(id: 'dijitEditorBody')

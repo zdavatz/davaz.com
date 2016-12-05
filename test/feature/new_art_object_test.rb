@@ -12,9 +12,8 @@ class TestNewArtObject < Minitest::Test
 
   def test_new_artobject_creation_with_validation_error
     assert_match('/en/gallery/gallery', browser.url)
-    login_as(email: 'right@user.ch', password: 'abcd')
+    login_as(email: TEST_USER, password:TEST_PASSWORD)
 
-    binding.pry
     link = wait_until { browser.link(name: 'new_art_object') }
     link.click
 
@@ -28,7 +27,7 @@ class TestNewArtObject < Minitest::Test
 
   def test_new_artobject_creation
     assert_match('/en/gallery/gallery', browser.url)
-    login_as(email: 'right@user.ch', password: 'abcd')
+    login_as(email: TEST_USER, password:TEST_PASSWORD)
 
     link = wait_until { browser.link(name: 'new_art_object') }
     link.click
@@ -55,5 +54,6 @@ class TestNewArtObject < Minitest::Test
     button.click
 
     refute(browser.td(:class, 'processingerror').exists?)
-  end if false
+    binding.pry
+  end
 end

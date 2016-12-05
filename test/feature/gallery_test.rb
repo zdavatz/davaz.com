@@ -28,6 +28,7 @@ class TestGallery < Minitest::Test
     link.click
 
     container = show_container.yield
+    binding.pry
     widget = wait_until { container.div(id: 'ywesee_widget_rack_0') }
     assert(widget.exists?)
 

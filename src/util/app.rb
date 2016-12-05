@@ -19,12 +19,13 @@ module DaVaz::Util
       SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
       SBSM.logger.level = :debug
       @drb_uri = DaVaz.config.server_uri
-      @yus_server = DaVaz.config.yus_server ?  DaVaz.config.yus_server : DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri)
+      @yus_server = DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri)
       @db_manager =  DaVaz.config.db_manager
       @db_manager ||= DaVaz::Util::DbManager.new
       res = super(:app => self, :validator => Validator.new, :trans_handler => DaVaz::Util::TransHandler.instance,
                   :drb_uri => @drb_uri, :cookie_name => Session::PERSISTENT_COOKIE_NAME)
-      SBSM.info "DaVaz::AppWebrick.new  drb #{@drb_uri} validator #{@validator} th #{@trans_handler} with log_pattern #{DaVaz.config.log_pattern} db #{@db_manager.class} #{SBSM.logger.level}"
+      SBSM.info "DaVaz::AppWebrick.new  drb #{@drb_uri} validator #{@validator} th #{@trans_handler}"
+        " with log_pattern #{DaVaz.config.log_pattern}  db #{@db_manager.class} #{SBSM.logger.level} yus #{DaVaz.config.yus_uri}"
       res
     end
 

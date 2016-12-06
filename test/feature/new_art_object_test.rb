@@ -54,6 +54,5 @@ class TestNewArtObject < Minitest::Test
     button.click
 
     refute(browser.td(:class, 'processingerror').exists?)
-    binding.pry
   end
 end

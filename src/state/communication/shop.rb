@@ -110,39 +110,41 @@ module DaVaz::State
 
       def send_mail(mandatory, hash)
         config = DaVaz.config.mailer
-        SBSM.info "config.mailer is  #{config.mailer}"
-        address = mandatory.collect { |key|
+        SBSM.info "config.mailer is  #{config}"
+        address = mandatory.collect do |key|
           "#{@session.lookandfeel.lookup(key)}: #{hash[key].to_s}"
-        }
+        end
         total = 0
-        orders = @session[:cart_items].map { |item|
+        orders = @session[:cart_items].map do |item|
           subtotal = (item.count * item.price.to_i)
           total += subtotal
           <<~EOS.gsub(/\n/, '')
             #{item.count.to_s} x #{item.title.ljust(15)}
              (#{item.artgroup_id}): CHF #{subtotal}.\-
           EOS
-        }
+             end
         orders.push("TOTAL: #{total}.\-")
+        confirmation = [ @session.lookandfeel.lookup(:shop_mail_salut),
+                         '',
+                         address.join("\n"),
+                         '',
+                         orders.join("\n"),
+                         '',
+                         @session.lookandfeel.lookup(:shop_mail_bye),
+                         '',
+                         "Ref ##{SecureRandom.urlsafe_base64(8, true)}"
+                       ].join("\n")
+        Mail.defaults { delivery_method :test } if config['delivery_test']
         Mail.deliver do
           to hash[:email]
           from DaVaz.config.mailer['from']
           subject 'Bestellung von davaz.com.'
           html_part do
-          content_type 'text/html; charset=UTF-8'
-            [ @session.lookandfeel.lookup(:shop_mail_salut),
-              '',
-              address.join("\n"),
-              '',
-              orders.join("\n"),
-              '',
-              @session.lookandfeel.lookup(:shop_mail_bye),
-              '',
-              "Ref ##{SecureRandom.urlsafe_base64(8, true)}"
-            ].join("\n")
+            content_type 'text/html; charset=UTF-8'
+            confirmation
           end
         end
-        SBSM.info "SentMail  #{body.size}"
+        SBSM.info "SentMail  #{hash[:email]} #{confirmation.size} bytes"
         @session.infos.push(:i_order_sent)
       end
     end

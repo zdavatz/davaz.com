@@ -105,6 +105,7 @@ module DaVaz::Util
       works
     }
     STRINGS = %i{
+      article
       address
       artgroup_id
       author

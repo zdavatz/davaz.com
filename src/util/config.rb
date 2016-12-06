@@ -55,6 +55,7 @@ module DaVaz
     },
     # smtp
     :mailer => {
+      :test   => false,
       :from   => '"Shop" <shop@example.org>',
       :to     => %w[],
       :server => '',

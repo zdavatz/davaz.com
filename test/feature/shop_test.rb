@@ -195,7 +195,11 @@ class TestShop < Minitest::Test
     enter_value("city", "TestCity")
     enter_value("country", "TestCountry")
     enter_value("email", "TestEmail@test.org")
+    Mail::TestMailer.deliveries.clear
+    assert_equal(0, Mail::TestMailer.deliveries.length, 'No mails delivered yet')
     browser.button(:name => 'order_item').click
     assert_text_present("Your order has been succesfully sent.")
-  end if RUN_ALL_TESTS
+    # cannot test here, as it is sent in a different process!
+    # assert_equal(1, Mail::TestMailer.deliveries.length, 'Must have deliverd an e-mail')
+  end
 end

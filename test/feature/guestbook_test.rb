@@ -85,7 +85,7 @@ class TestGuestbook < Minitest::Test
     button.click
 
     assert_match('/en/communication/guestbook', browser.url)
-    message = wait_until { browser.div(class: 'error') }
-    assert_empty(message.text)
+    browser.div(class: 'error').wait_until(&:exist?)
+    assert_empty(browser.div(class: 'error').text)
   end
 end

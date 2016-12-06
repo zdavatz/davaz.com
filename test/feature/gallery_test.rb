@@ -28,8 +28,7 @@ class TestGallery < Minitest::Test
     link.click
 
     container = show_container.yield
-    binding.pry
-    widget = wait_until { container.div(id: 'ywesee_widget_rack_0') }
+    widget = wait_until { container.div(id: 'ywesee_widget_rack_1') }
     assert(widget.exists?)
 
     # serie ABD
@@ -37,7 +36,7 @@ class TestGallery < Minitest::Test
     link.click
 
     container = show_container.yield
-    widget = wait_until { container.div(id: 'ywesee_widget_rack_1') }
+    widget = wait_until { container.div(id: 'ywesee_widget_rack_2') }
     assert(widget.exists?)
   end
 end

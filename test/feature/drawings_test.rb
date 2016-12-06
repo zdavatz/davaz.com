@@ -11,6 +11,9 @@ class TestDrawings < Minitest::Test
     link = browser.link(:id, 'drawings')
     link.click
   end
+  def teardown
+    logout
+  end
 
   def test_drawings_view
     assert_match('/en/works/drawings', browser.url)

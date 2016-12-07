@@ -12,13 +12,13 @@ class TestMovies < Minitest::Test
   end
 
   def test_login_then_logout
-    assert_match('/en/works/movies', browser.url)
-
-    link = browser.a(name: '111-more')
-    link.click
-
     login_as(email: TEST_USER, password: TEST_PASSWORD)
 
     logout
+    login_link = browser.link(text: 'Login')
+    login_link.wait_until(&:exist?)
+
+    logout_link = browser.link(name: 'logout')
+    assert_equal(false, logout_link.exists? && logout_link.visible?, 'Could not log in. Logout-link must no longer be present!')
   end
 end

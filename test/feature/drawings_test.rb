@@ -7,12 +7,16 @@ class TestDrawings < Minitest::Test
   include DaVaz::TestCase
 
   def setup
+    startup_server
     browser.visit('/en/personal/work')
     link = browser.link(:id, 'drawings')
     link.click
   end
+
+  OTHER_ART_OBJECTS = /There are other artobjects assigned to this element.+Please assign them to another element first./
   def teardown
     logout
+    shutdown_server
   end
 
   def test_drawings_view
@@ -76,10 +80,8 @@ class TestDrawings < Minitest::Test
     remove_link = form_table.a(name: 'remove_serie')
     remove_link.click
     container = wait_until { form_table.td(id: 'serie_id_container') }
-    assert_match(<<~MES.gsub(/\n/, ''), container.text)
-      There are other artobjects assigned to this element.
-       Please assign them to another element first.
-    MES
+    sleep(1) unless OTHER_ART_OBJECTS.match(container.text)
+    assert_match(OTHER_ART_OBJECTS, container.text)
 
     # it has still same value
     selected = form_table.select_list(name: 'serie_id')
@@ -108,15 +110,14 @@ class TestDrawings < Minitest::Test
     submit_link.click
 
     selected = wait_until { form_table.select_list(name: 'serie_id') }
+    sleep 1 unless 'ABF'.eql?(selected.value)
     assert_equal('ABF', selected.value)
 
     remove_link = form_table.a(name: 'remove_serie')
     remove_link.click
     container = wait_until { form_table.td(id: 'serie_id_container') }
-    refute_match(<<~MES.gsub(/\n/, ''), container.text)
-      There are other artobjects assigned to this element.
-       Please assign them to another element first.
-    MES
+    sleep(1) if OTHER_ART_OBJECTS.match(container.text)
+    refute_match(OTHER_ART_OBJECTS, container.text)
     remove_link = form_table.a(name: 'remove_serie')
     assert_equal('color: grey;', remove_link.style)
 

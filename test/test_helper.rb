@@ -1,15 +1,15 @@
 require 'pathname'
-
 root_dir = Pathname.new(__FILE__).parent.parent.expand_path
+
+test = root_dir.join('test').to_s
+$: << test unless $:.include?(test)
+require 'simplecov_setup'
 
 config_yml = "#{root_dir.join('etc').to_s}/config.yml"
 FileUtils.cp(config_yml +'.ci', config_yml) unless File.exist?(config_yml)
 
 src = root_dir.join('src').to_s
 $: << src unless $:.include?(src)
-
-test = root_dir.join('test').to_s
-$: << test unless $:.include?(test)
 
 require 'minitest'
 require 'minitest/autorun'
@@ -26,8 +26,14 @@ DEBUGGER = ENV['DEBUGGER'] \
   if ENV.has_key?('DEBUGGER') && !ENV['DEBUGGER'].empty?
 TEST_CLIENT_TIMEOUT = 5 # seconds
 
+# Simple helper to wait for an element
 def wait_until( &block )
   (yield block).wait_until(&:present?)
+end
+
+# Simple helper to check for text in the open window
+def assert_text_present(text_to_find)
+  assert(browser.text.index(text_to_find), "browser text should match #{text_to_find} but is \n#{browser.text}")
 end
 
 dojo = File.join(root_dir, 'doc/resources/dojo/dojo/dojo.js')

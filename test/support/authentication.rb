@@ -12,6 +12,8 @@ module DaVaz
       login_link.click
 
       form = browser.form(name: 'loginform')
+      form.wait_until(& :present?)
+      form.text_field(name: 'login_email').wait_until(&:visible?)
       form.text_field(name: 'login_email').set(opts[:email])
       form.text_field(name: 'login_password').set(opts[:password])
       form.checkbox(name: 'remember_me').set
@@ -28,10 +30,7 @@ module DaVaz
 
     def logout
       logout_link = browser.link(name: 'logout')
-      unless logout_link.exist?
-        puts "Skip logout as not logout_link present"
-        return
-      end
+      return unless logout_link.exist?
       logout_link.click
       assert_nil /fragment/.match(browser.url)
       email_field = browser.text_field(name: "login_email")

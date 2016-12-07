@@ -266,7 +266,7 @@ module DaVaz
 
       def load_artobject_ids(artgroup_id)
         unless connection
-          raise "Could not open DbConnection. Is the db server started?"
+          raise "Could not open DbConnection. Is the db server (MySQL) started?"
         end
         result = connection.query(<<~SQL.gsub(/\n/, ''))
           SELECT artobject_id, artgroup_id, url

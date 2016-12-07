@@ -5,7 +5,10 @@ module DaVaz
 
     def login_as(opts={})
       foot_container = wait_until { browser.div(id: 'foot_container') }
-      login_link = foot_container.a(name: 'login')
+      logout_link = browser.link(name: 'logout')
+      logout_link.click if logout_link.exist?
+      login_link = browser.link(text: 'Login')
+      login_link.wait_until(&:exist?)
       login_link.click
 
       form = browser.form(name: 'loginform')
@@ -15,25 +18,27 @@ module DaVaz
       form.button(name: 'login', type: 'submit').click
       sleep 0.5
 
-      email_field = browser.text_field(:name => "login_email")
+      email_field = browser.text_field(name: "login_email")
       if email_field.exist? && email_field.visible?
         assert false, 'Could not log in. Login-Field must no longer be present!'
       end
-      login_link = browser.link(:text => 'Login')
+      login_link = browser.link(text: 'Login')
       assert_equal(false, login_link.exists? && login_link.visible?, 'Could not log in. Login-link must no longer be present!')
     end
 
     def logout
-      foot_container = wait_until { browser.div(id: 'foot_container') }
-      logout_link = foot_container.a(name: 'logout')
-      logout_link = browser.link(:name => 'logout')
+      logout_link = browser.link(name: 'logout')
+      unless logout_link.exist?
+        puts "Skip logout as not logout_link present"
+        return
+      end
       logout_link.click
-      sleep 0.5
-      assert_equal(nil, /fragment/.match(browser.url))
-      email_field = browser.text_field(:name => "login_email")
-      assert_equal(true,  browser.text_field(:name => "login_email").visible?, 'Login must be present!')
-      login_link = browser.link(:text => 'Login')
-      assert_equal(false, login_link.exists? && login_link.visible?, 'Could not log in. Login-link must no longer be present!')
+      assert_nil /fragment/.match(browser.url)
+      email_field = browser.text_field(name: "login_email")
+      assert_equal(false,  browser.text_field(name: "login_email").exist?, 'login_email must no longer be present!')
+      login_link = browser.link(text: 'Login')
+      login_link.wait_until(&:exist?)
+      assert_equal(false, logout_link.exists? && logout_link.visible?, 'Could not log in. Logout-link must no longer be present!')
     end
   end
 end

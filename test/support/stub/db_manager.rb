@@ -21,6 +21,8 @@ module DaVaz::Stub
   end
 
   class StubArtObject < DaVaz::Model::ArtObject
+    attr_accessor :text, :title, :url
+
     def initialize(id)
       super()
       @artobject_id = id
@@ -57,6 +59,11 @@ module DaVaz::Stub
     def set_tags(tags_arr)
       @tags = tags_arr
     end
+
+    def update_artobject(artobject_id, update_hash)
+      binding.pry
+    end
+
   end
 
   class EmptyStubArtObject < DaVaz::Model::ArtObject

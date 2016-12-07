@@ -1,4 +1,10 @@
 module DaVaz
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter "/test/"
+    # add_filter "/gems/"
+  end
+
   module TestCase
     attr_reader :browser
 
@@ -8,7 +14,7 @@ module DaVaz
       @bak = File.expand_path(File.join(__FILE__, '../../../etc/config.yml.bak'))
       @cfg = File.expand_path(File.join(__FILE__, '../../../etc/config.yml'))
       FileUtils.cp(@cfg, @bak, verbose: true) if File.exist?(@cfg) && ! File.exist?(@bak)
-      FileUtils.cp(@ci, @cfg, verbose: true)
+      FileUtils.cp(@ci, @cfg)
       super
       startup_server
       boot_browser
@@ -17,7 +23,7 @@ module DaVaz
     def after_teardown
       close_browser
       shutdown_server
-      FileUtils.cp(@bak, @cfg, verbose: true) if File.exist?(@cfg) && File.exist?(@bak)
+      FileUtils.cp(@bak, @cfg) if File.exist?(@cfg) && File.exist?(@bak)
       super
     end
 

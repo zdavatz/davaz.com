@@ -117,6 +117,8 @@ davaz> exit
 bundle exec foreman run ruby -I.:test test/feature/lectures_test.rb
 Run options: --seed 33427
 
+`bundle exec test/feature/lectures_test.rb --name test_lectures_toggle_hidden_dev_links`
+
 # Running:
 
 **
@@ -125,6 +127,14 @@ Fabulous run in 3.490279s, 0.5730 runs/s, 3.7246 assertions/s.
 
 2 runs, 13 assertions, 0 failures, 0 errors, 0 skips
 ```
+
+# TODO:
+
+* Fix 4 skipped unit tests
+** Stub of db_manager does not allow update of art_objects
+** shop does not show some help messages when validations failures
+** movies: thumbnail of movie picture is not show while running tests
+* improve/add coverage for partial views
 
 ## License
 

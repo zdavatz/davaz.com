@@ -22,9 +22,9 @@ gem 'pg', '0.18.4'
 gem 'dbd-pg', '0.3.9'
 
 group :test do
+  gem 'simplecov'
   gem 'minitest'
-  gem 'watir', '~> 5.0.0'
-  gem 'watir-webdriver'
+  gem 'watir', '~> 6.0.0'
 end
 
 group :development, :test do

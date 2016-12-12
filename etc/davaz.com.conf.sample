@@ -1,20 +1,33 @@
-<Directory /var/www/davaz.com/doc>
-  Options ExecCGI
-  AllowOverride None
-  Order allow,deny
-  Allow from all
+<Directory /var/www/new.davaz.com/doc>
+Options ExecCGI
+AllowOverride None
+Order allow,deny
+Allow from all
 </Directory>
 
 <VirtualHost *:80>
-  ServerName 127.0.0.1
-  DocumentRoot /var/www/davaz.com/doc
-  DirectoryIndex index.html index.rbx
-  SetHandler ruby-object
-  RubyAddPath /var/www/davaz.com/vendor/ruby/2.3.0/gems/rclconf-1.0.0/lib
-  RubyAddPath /var/www/davaz.com/vendor/ruby/2.3.0/gems/sbsm-1.3.0/lib
-  RubyAddPath /var/www/davaz.com/src
-  RubyRequire 'util/trans_handler.davaz'
-  RubyTransHandler DaVaz::Util::TransHandler.instance
-  ErrorLog  "|/usr/sbin/cronolog -l /var/www/davaz.com/log/error_log  /var/www/davaz.com/log/%Y/%m/%d/error_log"
-  CustomLog "|/usr/sbin/cronolog -l /var/www/davaz.com/log/access_log /var/www/davaz.com/log/%Y/%m/%d/access_log" combined
+LogLevel debug
+ServerName www.davaz.com
+ServerAlias davaz.com da-vaz.com www.da-vaz.com
+DocumentRoot         /var/www/new.davaz.com/doc
+SetEnv DOCUMENT_ROOT /var/www/new.davaz.com/doc
+DirectoryIndex index.html index.rbx
+RewriteEngine on
+RewriteRule ^/(.*)$ http://localhost:8007/$1 [P]
+
+ErrorLog  "|/usr/sbin/cronolog -l /var/www/new.davaz.com/log/error_log /var/www/new.davaz.com/log/%Y/%m/%d/error_log"
+CustomLog "|/usr/sbin/cronolog -l /var/www/new.davaz.com/log/access_log /var/www/new.davaz.com/log/%Y/%m/%d/access_log" combined
+</VirtualHost>
+
+<Directory "/var/www/new.davaz.com/webalizer">
+Options None
+AllowOverride None
+Order allow,deny
+Allow from all
+</Directory>
+
+<VirtualHost *:80>
+DocumentRoot /var/www/new.davaz.com/webalizer
+ServerName webalizer.davaz.com
+DirectoryIndex index.html
 </VirtualHost>

@@ -18,7 +18,7 @@ GEM
     hpricot (0.8.6)
     htmlgrid (1.1.3)
       sbsm (>= 1.2.7)
-    json (1.8.3)
+    json (2.0.2)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     method_source (0.8.2)
@@ -37,15 +37,15 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-byebug (3.4.1)
+    pry-byebug (3.4.2)
       byebug (~> 9.0)
       pry (~> 0.10)
     rack (2.0.1)
-    rake (11.3.0)
+    rake (12.0.0)
     rclconf (1.0.0)
     rmagick (2.15.4)
     rubyzip (1.2.0)
-    sbsm (1.3.2)
+    sbsm (1.3.3)
       chrono_logger
       hpricot
       mail
@@ -90,7 +90,7 @@ DEPENDENCIES
   rake
   rclconf (= 1.0.0)
   rmagick (~> 2.15.4)
-  sbsm (>= 1.3.2)
+  sbsm (>= 1.3.3)
   simplecov
   watir (~> 6.0.0)
   yus (= 1.0.1)

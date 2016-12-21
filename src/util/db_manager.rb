@@ -34,7 +34,7 @@ module DaVaz
       end
 
       def connection
-        Mysql2::Client.new(
+        mysql_connection = Mysql2::Client.new(
           host:      @@db_data['host'],
           username:  @@db_data['user'],
           password:  @@db_data['password'],
@@ -42,6 +42,7 @@ module DaVaz
           encoding:  @@db_data['encoding']  || 'utf8',
           reconnect: @@db_data['reconnect'] || true
         )
+        @connection =  Thread.current.thread_variable_set(:connection, mysql_connection)
       end
 
       # @todo Remove retry, Improve delegation
@@ -1062,7 +1063,7 @@ module DaVaz
       private
 
       def connect
-        connection = DbConnection.new
+        connection =  Thread.current.thread_variable_set(:connection, DbConnection.new)
         connection.reconnect
         connection.connection
       end

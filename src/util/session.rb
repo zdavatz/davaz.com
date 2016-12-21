@@ -32,14 +32,22 @@ module DaVaz::Util
     PERSISTENT_COOKIE_NAME = 'davaz.com-preferences'
     LOOKANDFEEL            = Lookandfeel
 
-    def initialize(key, app, validator=Validator.new)
-      SBSM.debug "session key #{key} #{app.class} #{validator.class} @app #{@app.class} app #{app.class} @session #{@session.object_id} validator #{validator.class}"
-      @app = app # unless @app
-      super(key, app, validator)
+    def initialize(app:,
+                   trans_handler: nil,
+                   validator: nil,
+                   unknown_user: nil,
+                   cookie_name: nil)
+      @app = app
+      super(app: app,
+            trans_handler: trans_handler,
+            validator: validator,
+            unknown_user: unknown_user,
+            cookie_name: cookie_name)
       if DaVaz.config.autologin
         # use only for debugging purposes as default
         @state.extend(DaVaz::State::Admin)
       end
+      SBSM.debug "session #{validator.class} @app #{@app.class} app #{app.class} @session #{@session.object_id} validator #{validator.class}"
     end
 
     def flavor
@@ -112,7 +120,6 @@ module DaVaz::Util
       end
     rescue Yus::YusError => e
       puts "login #{name} with token #{token.inspect}"
-      require 'pry'; binding.pry
     end
 
     def logout

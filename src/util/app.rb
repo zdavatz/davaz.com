@@ -9,24 +9,35 @@ require 'util/validator'
 require 'util/db_manager' unless defined?(DaVaz::Stub)
 
 module DaVaz::Util
-  class App < SBSM::App
-    attr_accessor :db_manager, :yus_server
-    attr_reader :trans_handler, :validator, :drb_uri
+  class RackInterface < SBSM::RackInterface
+    SESSION = Session
+
+    def initialize(validator: Validator.new,
+                   trans_handler: TransHandler.instance,
+                   cookie_name: nil,
+                   session_class: SESSION)
+      SBSM.info "RackInterface.new SESSION #{SESSION}"
+      super(app: App.new,
+            validator: validator,
+            trans_handler: trans_handler,
+            cookie_name: cookie_name,
+            session_class: session_class)
+    end
+  end
+
+  class App
+    attr_accessor :db_manager, :yus_server, :session
     SESSION = Session
 
     def initialize
       run_updater if DaVaz.config.run_updater
       SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
       SBSM.logger.level = :debug
-      @drb_uri = DaVaz.config.server_uri
       @yus_server = DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri)
-      @db_manager =  DaVaz.config.db_manager
-      @db_manager ||= DaVaz::Util::DbManager.new
-      res = super(:app => self, :validator => Validator.new, :trans_handler => DaVaz::Util::TransHandler.instance,
-                  :drb_uri => @drb_uri, :cookie_name => Session::PERSISTENT_COOKIE_NAME)
-      SBSM.info "DaVaz::AppWebrick.new  drb #{@drb_uri} validator #{@validator} th #{@trans_handler}"
-        " with log_pattern #{DaVaz.config.log_pattern}  db #{@db_manager.class} #{SBSM.logger.level} yus #{DaVaz.config.yus_uri}"
-      res
+      my_manager =  DaVaz.config.db_manager
+      my_manager ||= DaVaz::Util::DbManager.new
+      # @db_manager =  Thread.current.thread_variable_set(:connection, my_manager)
+      @db_manager =  my_manager
     end
 
     def run_updater
@@ -355,16 +366,14 @@ module DaVaz::Util
     end
 
     def login_token(email, token)
-      SBSM.info "#{email} pw #{password} domain #{DaVaz.config.yus_domain}"
+      SBSM.info "#{email} token #{token} domain #{DaVaz.config.yus_domain}"
       res = @yus_server.login_token(email, token, DaVaz.config.yus_domain)
       SBSM.info "token for #{email} is #{token}  res #{res}"
       res
     end
 
-    def logout(yus_session)
-      SBSM.info "@yus_server #{@yus_server.inspect} #{yus_session.class} #{yus_session.object_id} " +
-          + "#{session.class} #{session.object_id} state #{(session && session.respond_to?(:state)) ? session.state.object_id : 'nil'}"
-      # require 'pry'; binding.pry
+    def logout(yus_session=nil)
+      SBSM.info "@yus_server #{@yus_server.inspect} #{yus_session.class} #{yus_session.object_id} "
       @yus_server.logout(yus_session) if @yus_server
     end
   end

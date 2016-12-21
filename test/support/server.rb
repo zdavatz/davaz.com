@@ -18,7 +18,7 @@ module DaVaz
         end
       end
       SBSM.info "spawn test/config.ru #{File.exist?('test/config.ru')}"
-      @pid = Process.spawn('bundle', 'exec', 'rackup', 'test/config.ru', { :err => ['test_rack.log', 'w+'],  :out => ['test_rack.log', 'w+']})
+      @pid = Process.spawn('bundle', 'exec', 'rackup', 'test/config.ru', { :err => [TEST_LOG_FILE, 'w+'],  :out => [TEST_LOG_FILE, 'w+']})
       SBSM.info msg =  "Starting #{DaVaz.config.server_uri} PID #{@pid}"
       @drb.abort_on_exception = true
       trap('INT') { @drb.exit }

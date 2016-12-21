@@ -83,8 +83,8 @@ module DaVaz::View
       CSS_CLASS = 'content'
       COMPONENTS = {
         [0, 0] => GuestbookTitle,
-        [1, 0] => GuestbookInfo,
-        [2, 0] => :guestbook_widget,
+        # [1, 0] => GuestbookInfo, TODO:: removed to prevent spam
+        # [2, 0] => :guestbook_widget,
         [3, 0] => GuestList,
       }
 

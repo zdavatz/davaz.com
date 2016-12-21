@@ -32,6 +32,7 @@ module DaVaz::Util
       run_updater if DaVaz.config.run_updater
       SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
       SBSM.logger.level = :debug
+      @yus_server = DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri)
       @db_manager = DaVaz::Util::DbManager.new
     end
 

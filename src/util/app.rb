@@ -26,18 +26,13 @@ module DaVaz::Util
   end
 
   class App
-    attr_accessor :db_manager, :yus_server, :session
-    SESSION = Session
+    attr_accessor :db_manager, :yus_server
 
     def initialize
       run_updater if DaVaz.config.run_updater
       SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
       SBSM.logger.level = :debug
-      @yus_server = DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri)
-      my_manager =  DaVaz.config.db_manager
-      my_manager ||= DaVaz::Util::DbManager.new
-      # @db_manager =  Thread.current.thread_variable_set(:connection, my_manager)
-      @db_manager =  my_manager
+      @db_manager = DaVaz::Util::DbManager.new
     end
 
     def run_updater
@@ -109,10 +104,6 @@ module DaVaz::Util
 
     def delete_oneliner(oneliner_id)
       @db_manager.delete_oneliner(oneliner_id)
-    end
-
-    def delete_link(link_id)
-      @db_manager.delete_link(link_id)
     end
 
     def remove_element(artobject_id, link_id)
@@ -231,10 +222,6 @@ module DaVaz::Util
       @db_manager.load_image_tags
     end
 
-    def load_links
-      @db_manager.load_serie_artobjects('Site Links', 'series.name')
-    end
-
     def load_lectures
       @db_manager.load_serie_artobjects('Site Lectures', 'series.name')
     end
@@ -333,7 +320,8 @@ module DaVaz::Util
     end
 
     def load_links
-      @db_manager.load_links
+      # TODO: Where should we use the old definition of @db_manager.load_links?
+      @db_manager.load_serie_artobjects('Site Links', 'series.name')
     end
 
     def load_link(link_id)
@@ -374,6 +362,8 @@ module DaVaz::Util
 
     def logout(yus_session=nil)
       SBSM.info "@yus_server #{@yus_server.inspect} #{yus_session.class} #{yus_session.object_id} "
+      # + "#{session.class} #{session.object_id} state #{(session && session.respond_to?(:state)) ? session.state.object_id : 'nil'}"
+      # require 'pry'; binding.pry
       @yus_server.logout(yus_session) if @yus_server
     end
   end

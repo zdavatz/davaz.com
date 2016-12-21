@@ -7,5 +7,5 @@ use Rack::CommonLogger, ChronoLogger.new(TEST_CHRONO_LOGGER)
 use Rack::Reloader, 0
 use Rack::ContentLength
 use(Rack::Static, urls: ["/doc/"])
-app = Rack::ShowExceptions.new(Rack::Lint.new(DaVaz::Util::App.new()))
+app = Rack::ShowExceptions.new(Rack::Lint.new(DaVaz::Util::RackInterface.new()))
 run app

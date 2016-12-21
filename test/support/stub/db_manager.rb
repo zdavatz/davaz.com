@@ -61,7 +61,6 @@ module DaVaz::Stub
     end
 
     def update_artobject(artobject_id, update_hash)
-      binding.pry
     end
 
   end

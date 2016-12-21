@@ -34,7 +34,11 @@ module DaVaz
                                                                 '--no-default-browser-check',
                                                                 '--no-first-run',
                                                                 '--disable-default-apps',
-                                                                ]})
+                                                                ]},
+                                                              "binary" => "/usr/bin/google-chrome-beta"
+                                                             )
+      caps = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" => {"args" => [ "--disable-web-security" ]})
+
       Watir::Browser.new :chrome, :prefs => prefs, desired_capabilities: caps
     end
     # returns a Watir-Browser for PhantomJS

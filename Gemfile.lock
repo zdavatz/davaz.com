@@ -45,7 +45,7 @@ GEM
     rclconf (1.0.0)
     rmagick (2.15.4)
     rubyzip (1.2.0)
-    sbsm (1.3.3)
+    sbsm (1.3.5)
       chrono_logger
       hpricot
       mail
@@ -90,7 +90,7 @@ DEPENDENCIES
   rake
   rclconf (= 1.0.0)
   rmagick (~> 2.15.4)
-  sbsm (>= 1.3.3)
+  sbsm (>= 1.3.5)
   simplecov
   watir (~> 6.0.0)
   yus (= 1.0.1)

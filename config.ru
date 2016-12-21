@@ -17,5 +17,5 @@ use Rack::CommonLogger, SBSM.logger
 use(Rack::Static, urls: ["/doc/"])
 use Rack::ContentLength
 SBSM.info "Starting Rack::Server DaVaz::DaVaz::Util.new with log_pattern #{DaVaz.config.log_pattern}"
-app = Rack::ShowExceptions.new(Rack::Lint.new(DaVaz::Util::App.new()))
+app = Rack::ShowExceptions.new(Rack::Lint.new(DaVaz::Util::RackInterface.new()))
 run app

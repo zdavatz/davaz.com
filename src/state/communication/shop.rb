@@ -13,10 +13,11 @@ module DaVaz::State
       def init
         artobject_id = @session.user_input(:artobject_id)
         if @session[:cart_items]
-          SBSM.info "AjaxShop cart_items #{@session[:cart_items].inspect}  @session #{@session.object_id}"
+          msg = "AjaxShop cart_items #{@session[:cart_items].inspect}  @session #{@session.object_id}"
         else
-          SBSM.info "AjaxShop no cart_items found @session #{@session.object_id}"
+          msg = "AjaxShop no cart_items found @session #{@session.object_id}"
         end
+        msg + " @session.object_id #{@session.object_id}"
         count = @session.user_input(:count).to_i
         if count == 0
           @session[:cart_items].delete_if { |old_item|
@@ -34,6 +35,10 @@ module DaVaz::State
           else
             items.first.count = @session.user_input(:count)
           end
+          msg = "AjaxShop has now #{@session[:cart_items].size} cart_items. Added #{@session.user_input(:count)} art #{artobject_id}"
+          msg += " @session.object_id #{@session.object_id}"
+          puts msg
+          SBSM.info msg
         end
       end
     end

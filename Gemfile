@@ -9,10 +9,8 @@ gem 'rmagick', '~> 2.15.4'
 gem 'rclconf', '1.0.0'
 gem 'ftools', '0.0.0'
 
-gem 'sbsm', '>=1.3.5'
-#gem 'sbsm', :path => '/home/niklaus/git/sbsm'
-#gem 'sbsm', :git => 'https://github.com/ngiger/sbsm.git'
-# gem 'sbsm', :git => '/home/niklaus/git/sbsm', :branch => 'reverted_to_drb'
+gem 'sbsm', :git => 'https://github.com/ngiger/sbsm.git', :ref => 'd6b93ac24acda35f8731a6cade0758c2d893b38c'
+
 gem 'htmlgrid', '~> 1.1.3'
 gem 'odba', '~> 1.1.0'
 

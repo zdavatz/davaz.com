@@ -11,13 +11,15 @@ require 'util/db_manager' unless defined?(DaVaz::Stub)
 module DaVaz::Util
   class RackInterface < SBSM::RackInterface
     SESSION = Session
+    attr_accessor :session_store, :app
 
     def initialize(validator: Validator.new,
                    trans_handler: TransHandler.instance,
                    cookie_name: nil,
                    session_class: SESSION)
+      @app = App.new
       SBSM.info "RackInterface.new SESSION #{SESSION}"
-      super(app: App.new,
+      super(app: @app,
             validator: validator,
             trans_handler: trans_handler,
             cookie_name: cookie_name,

@@ -1,13 +1,22 @@
 #!/usr/bin/env ruby
 
+# A utility to test directly some function of the davaz.com app_interface
+# E.g. davaz> @app.load_artgroups.size
+
 $: << File.expand_path('../src', File.dirname(__FILE__))
 
-require 'drb'
-require 'readline'
-require 'sbsm/drb'
-require 'util/davaz'
 require 'util/config'
-
+require 'drb'
+require 'util/session'
+require 'sbsm/session_store'
+require 'util/app'
+require 'readline'
+require 'davaz'
+module SBSM
+  class SessionStore
+    ENABLE_ADMIN = true
+  end
+end
 include Readline
 
 Kernel.trap('INT') {
@@ -22,7 +31,7 @@ Kernel.trap('INT') {
 
 prompt = 'davaz> '
 DRb.start_service('druby://localhost:0')
-davaz = DRbObject.new(nil, DaVaz.config.server_uri)
+@app_interface = DaVaz::Util::RackInterface.new()
 last_error = nil
 priority = -1
 
@@ -33,7 +42,7 @@ while line = readline(prompt, true)
   $stdout.print '-> '
 
   if match = /puts\s+(.*)/.match(line)
-    line = "DaVaz.logger.debug('admin') { #{match[1]} }"
+    line = "SBSM.logger.debug('admin') { #{match[1]} }; $stdout.puts #{match[1]}"
   end
 
   case line.downcase
@@ -58,7 +67,7 @@ while line = readline(prompt, true)
   else
     begin
       bgflag = line.slice!(/\s*\&\s*$/)
-      $current = davaz._admin(line, result, priority)
+      $current = @app_interface.session_store._admin(line, result, priority)
       unless bgflag
         $current.join
       end

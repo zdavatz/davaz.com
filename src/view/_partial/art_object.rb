@@ -433,7 +433,7 @@ module DaVaz::View
       begin
         date = model.artobject.date
         date = Date.parse(date) unless date.is_a?(Date)
-        input.value = date.strftime('%d.%m.%y')
+        input.value = date.strftime('%d.%m.%Y')
       rescue ArgumentError
         input.value = '01.01.1970'
       rescue NoMethodError

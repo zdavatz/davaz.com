@@ -157,6 +157,7 @@ module DaVaz::Util
         # n
         name:                'Name',
         nbsp:                '&nbsp',
+        needed_date_format:  "&nbsp;format must be 'dd.mm.yyyy'",
         new_art_object:      'New art object',
         new_element:         'Add new element',
         new_entry:           'New entry',

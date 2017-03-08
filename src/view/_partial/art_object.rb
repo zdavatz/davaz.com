@@ -339,6 +339,7 @@ module DaVaz::View
       [1, 10]    => :material,
       [0, 11]    => :size,
       [0, 12]    => :date,
+      [1, 12]    => 'needed_date_format',
       [0, 13]    => :location,
       [0, 14]    => component(DynSelect, :select_country, 'country_id'),
       [0, 15]    => :form_language,

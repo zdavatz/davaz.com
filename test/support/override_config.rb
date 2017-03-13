@@ -8,6 +8,7 @@ require 'util/config'
 require 'sbsm/logger'
 require 'mail'
 require 'support/stub/db_manager'
+require 'simplecov_setup'
 
 # 11090 must be in sync with first line in test/config.ru
 TEST_SRV_URI = URI.parse(ENV['TEST_SRV_URL'] || 'http://localhost:11090')
@@ -31,4 +32,3 @@ DaVaz.config.db_manager    = DaVaz::Stub::DbManager.new
 TEST_USER = DaVaz.config.test_user ||  'right@user.ch'
 TEST_PASSWORD = DaVaz.config.test_password || 'abcd'
 puts "TEST_USER #{TEST_USER} #{TEST_PASSWORD}"
-binding.pry if /abcd/.match(TEST_PASSWORD)

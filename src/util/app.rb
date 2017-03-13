@@ -35,7 +35,7 @@ module DaVaz::Util
       SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
       SBSM.logger.level = :debug
       @yus_server = DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri)
-      @db_manager = DaVaz::Util::DbManager.new
+      @db_manager = defined?(DaVaz::Stub) ? DaVaz::Stub::DbManager.new : DaVaz::Util::DbManager.new
     end
 
     def run_updater
@@ -366,7 +366,6 @@ module DaVaz::Util
     def logout(yus_session=nil)
       SBSM.info "@yus_server #{@yus_server.inspect} #{yus_session.class} #{yus_session.object_id} "
       # + "#{session.class} #{session.object_id} state #{(session && session.respond_to?(:state)) ? session.state.object_id : 'nil'}"
-      # require 'pry'; binding.pry
       @yus_server.logout(yus_session) if @yus_server
     end
   end

@@ -2,7 +2,7 @@ module DaVaz
   require 'simplecov'
   SimpleCov.start do
     add_filter "/test/"
-    # add_filter "/gems/"
+    add_filter "/gems/"
   end
 
   module TestCase

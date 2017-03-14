@@ -14,7 +14,11 @@ require 'simplecov_setup'
 TEST_SRV_URI = URI.parse(ENV['TEST_SRV_URL'] || 'http://localhost:11090')
 TEST_APP_URI = URI.parse(ENV['TEST_APP_URL'] || 'druby://localhost:11091')
 TEST_LOG_FILE = 'testing.log'
-
+TEST_CONFIG_YML = File.expand_path(File.join(__FILE__, '../../../etc/config.yml.ci'))
+DaVaz.config.test_user = 'right@user.ch'
+DaVaz.config.test_password = 'abcd'
+TEST_USER     = DaVaz.config.test_user
+TEST_PASSWORD = DaVaz.config.test_password
 DaVazUrl = TEST_SRV_URI.to_s
 DaVaz.config.server_uri    = TEST_APP_URI.to_s
 DaVaz.config.server_name   = TEST_SRV_URI.hostname
@@ -29,6 +33,4 @@ exit 3 unless File.directory?(DaVaz.config.document_root)
 DaVaz.config.environment   = 'test'
 DaVaz.config.autologin     = false
 DaVaz.config.db_manager    = DaVaz::Stub::DbManager.new
-TEST_USER = DaVaz.config.test_user ||  'right@user.ch'
-TEST_PASSWORD = DaVaz.config.test_password || 'abcd'
-puts "TEST_USER #{TEST_USER} #{TEST_PASSWORD}"
+puts "DaVaz.config.test_user #{DaVaz.config.test_user} #{DaVaz.config.test_password }"

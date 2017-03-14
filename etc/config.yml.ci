@@ -1,7 +1,0 @@
----
-environment: development
-server_name: davaz.com
-mailer:
-  from: '"CI (davaz.com)" <admin@ywesee.com>'
-  to:
-    - admin@ywesee.com

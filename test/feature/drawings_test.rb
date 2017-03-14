@@ -5,7 +5,7 @@ require 'test_helper'
 # /works/drawings
 class TestDrawings < Minitest::Test
   include DaVaz::TestCase
-
+  RUN_ALL_TESTS = false
   def setup
     startup_server
     browser.visit('/en/personal/work')
@@ -26,7 +26,7 @@ class TestDrawings < Minitest::Test
     visit_desk(title)
     artobject_title = wait_until { browser.div(:id, 'artobject_title') }
     assert_equal(title, artobject_title.text)
-  end
+  end if RUN_ALL_TESTS
 
   def test_admin_drawings_canceling_of_add_new_serie
     assert_match('/en/works/drawings', browser.url)
@@ -86,7 +86,7 @@ class TestDrawings < Minitest::Test
     # it has still same value
     selected = form_table.select_list(name: 'serie_id')
     assert_equal('ABC', selected.value)
-  end
+  end if RUN_ALL_TESTS
 
   def test_admin_drawings_removing_serie_success
     assert_match('/en/works/drawings', browser.url)
@@ -124,7 +124,7 @@ class TestDrawings < Minitest::Test
     # back to previous value
     selected = form_table.select_list(name: 'serie_id')
     assert_equal('ABC', selected.value)
-  end
+  end if RUN_ALL_TESTS
 
   private
 

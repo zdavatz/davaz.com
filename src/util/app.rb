@@ -6,7 +6,7 @@ require 'util/trans_handler.davaz'
 require 'util/config'
 require 'util/session'
 require 'util/validator'
-require 'util/db_manager' unless defined?(DaVaz::Stub)
+require 'util/db_manager'
 
 module DaVaz::Util
   class RackInterface < SBSM::RackInterface
@@ -16,8 +16,10 @@ module DaVaz::Util
     def initialize(validator: Validator.new,
                    trans_handler: TransHandler.instance,
                    cookie_name: nil,
-                   session_class: SESSION)
-      @app = App.new
+                   session_class: SESSION,
+                   yus_server:  DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri),
+                   db_manager: DaVaz::Util::DbManager.new)
+      @app = App.new(yus_server: yus_server, db_manager: db_manager)
       SBSM.info "RackInterface.new SESSION #{SESSION}"
       super(app: @app,
             validator: validator,
@@ -30,12 +32,12 @@ module DaVaz::Util
   class App
     attr_accessor :db_manager, :yus_server
 
-    def initialize
+    def initialize(yus_server:, db_manager:)
       run_updater if DaVaz.config.run_updater
       SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
       SBSM.logger.level = :debug
-      @yus_server = DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri)
-      @db_manager = defined?(DaVaz::Stub) ? DaVaz::Stub::DbManager.new : DaVaz::Util::DbManager.new
+      @yus_server = yus_server
+      @db_manager = db_manager
     end
 
     def run_updater

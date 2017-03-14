@@ -65,17 +65,19 @@ module DaVaz::State
 
     class Shop < Global
       VIEW = DaVaz::View::Communication::Shop
-      options = {
-          :address => DaVaz.config.mailer['server'],
-          :port => DaVaz.config.mailer['port'],
-          :domain => DaVaz.config.mailer['domain'],
-          :user_name => DaVaz.config.mailer['user'],
-          :password => DaVaz.config.mailer['pass'],
-          :authentication => DaVaz.config.mailer['auth'],
-          :enable_starttls_auto => true,
-        }
-      Mail.defaults do
-        delivery_method :smtp, options
+      if defined?(DaVaz.config.mailer) # else we are probably running a unit test
+        options = {
+            :address => DaVaz.config.mailer['server'],
+            :port => DaVaz.config.mailer['port'],
+            :domain => DaVaz.config.mailer['domain'],
+            :user_name => DaVaz.config.mailer['user'],
+            :password => DaVaz.config.mailer['pass'],
+            :authentication => DaVaz.config.mailer['auth'],
+            :enable_starttls_auto => true,
+          }
+        Mail.defaults do
+          delivery_method :smtp, options
+        end
       end
 
       def init

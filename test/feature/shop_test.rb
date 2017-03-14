@@ -6,6 +6,7 @@ require 'test_helper'
 class TestShop < Minitest::Test
   include DaVaz::TestCase
   SLEEP_SECONDS = 0.5
+  RUN_ALL_TESTS = true
 
   def setup
     startup_server
@@ -99,7 +100,7 @@ class TestShop < Minitest::Test
     link = browser.link(:text, 'Remove all items')
     link.click
     assert_nil(/ArtObject/.match cart.text)
-  end if false
+  end if RUN_ALL_TESTS
   def test_checkout_fails_without_user_info
     assert_match('/en/communication/shop', browser.url)
     remove_all_items
@@ -122,7 +123,7 @@ class TestShop < Minitest::Test
     link.click
   end
 
-if true
+if RUN_ALL_TESTS
   def test_checkout_fails_with_validation_error
     assert_match('/en/communication/shop', browser.url)
     remove_all_items

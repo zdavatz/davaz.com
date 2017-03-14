@@ -6,28 +6,31 @@ cache:
   bundler:
   directories:
     - dojo
-    - downloads
 
 sudo: required
-dist: trusty # or installing google-chrome-stable will fail
+# dist: trusty # or installing google-chrome-stable will fail
+
+# _install_firefox
+before:
 
 before_install:
-  - cp etc/config.yml.ci etc/config.yml
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.15.0/geckodriver-v0.15.0-linux64.tar.gz
+  - tar -zxvf geckodriver-v0.15.0-linux64.tar.gz
+  - sudo cp geckodriver
+  - ls -l /usr/local/bin
+  - export BROWSER=firefox
   - gem install bundler
   - sudo apt-get -qq update
-  - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:1.5
   - Xvfb :1 -screen 5 1280x1024x24 -nolisten tcp &
-  - sudo apt-get install -y libappindicator1 fonts-liberation
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - sudo dpkg -i google-chrome-stable_current_amd64.deb
   - bundle install --path vendor
-  - wget https://chromedriver.storage.googleapis.com/2.25/chromedriver_linux64.zip
-  - ls -l /home/travis/virtualenv
-  - sudo unzip chromedriver_linux64.zip -d /usr/bin
-  - export CHROME_BIN=chromium-browser
 
-script: bundle exec rake test
+#  - sudo apt-get install -y libappindicator1 fonts-liberation
+#  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#  - sudo dpkg -i google-chrome-stable_current_amd64.deb
+#  - wget https://chromedriver.storage.googleapis.com/2.25/chromedriver_linux64.zip
+#  - ls -l /home/travis/virtualenv
+#  - sudo unzip chromedriver_linux64.zip -d /usr/bin
 
 rvm:
   - 2.3.1
@@ -43,4 +46,3 @@ notifications:
     on_failure: always
     recipients:
       - ngiger@ywesee.com
-      - yasaka@ywesee.com

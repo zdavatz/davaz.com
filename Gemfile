@@ -10,7 +10,7 @@ gem 'rclconf', '1.0.0'
 gem 'ftools', '0.0.0'
 
 gem 'sbsm', :git => 'https://github.com/ngiger/sbsm.git', :ref => 'd6b93ac24acda35f8731a6cade0758c2d893b38c'
-
+gem 'flexmock'
 gem 'htmlgrid', '~> 1.1.3'
 gem 'odba', '~> 1.1.0'
 
@@ -25,7 +25,7 @@ gem 'dbd-pg', '0.3.9'
 group :test do
   gem 'simplecov'
   gem 'minitest'
-  gem 'watir', '~> 6.0.0'
+  gem 'watir' # , '~> 6.0.0'
 end
 
 group :development, :test do

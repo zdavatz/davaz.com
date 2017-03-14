@@ -1,3 +1,4 @@
+require 'test_helper'
 module DaVaz
   require 'simplecov'
   SimpleCov.start do
@@ -10,11 +11,6 @@ module DaVaz
 
     def before_setup
       SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
-      @ci  = File.expand_path(File.join(__FILE__, '../../../etc/config.yml.ci'))
-      @bak = File.expand_path(File.join(__FILE__, '../../../etc/config.yml.bak'))
-      @cfg = File.expand_path(File.join(__FILE__, '../../../etc/config.yml'))
-      FileUtils.cp(@cfg, @bak, verbose: true) if File.exist?(@cfg) && ! File.exist?(@bak)
-      FileUtils.cp(@ci, @cfg)
       super
       startup_server
       boot_browser
@@ -23,17 +19,17 @@ module DaVaz
     def after_teardown
       close_browser
       shutdown_server
-      FileUtils.cp(@bak, @cfg) if File.exist?(@cfg) && File.exist?(@bak)
       super
     end
 
     private
 
     def startup_server
+      puts "startup_server @server is #{@server.class}"
       return if @server
       at_exit { shutdown_server }
 
-      @server = DaVaz::Server.new
+      @server = DaVaz::TestServer.new
     end
 
     def boot_browser

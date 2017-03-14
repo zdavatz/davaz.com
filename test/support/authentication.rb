@@ -1,3 +1,4 @@
+require 'test_helper'
 require 'sbsm/logger'
 SBSM.debug "start #{__FILE__}"
 module DaVaz

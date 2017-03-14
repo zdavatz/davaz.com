@@ -14,7 +14,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     byebug (9.0.6)
-    childprocess (0.5.9)
+    childprocess (0.6.2)
       ffi (~> 1.0, >= 1.0.11)
     chrono_logger (1.1.1)
     coderay (1.1.1)
@@ -25,7 +25,8 @@ GEM
       deprecated (= 2.0.1)
     deprecated (2.0.1)
     docile (1.1.5)
-    ffi (1.9.14)
+    ffi (1.9.18)
+    flexmock (2.3.5)
     ftools (0.0.0)
     hpricot (0.8.6)
     htmlgrid (1.1.3)
@@ -56,8 +57,8 @@ GEM
     rake (12.0.0)
     rclconf (1.0.0)
     rmagick (2.15.4)
-    rubyzip (1.2.0)
-    selenium-webdriver (3.0.3)
+    rubyzip (1.2.1)
+    selenium-webdriver (3.3.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
@@ -67,9 +68,9 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
     slop (3.6.0)
-    watir (6.0.2)
+    watir (6.2.0)
       selenium-webdriver (~> 3.0)
-    websocket (1.2.3)
+    websocket (1.2.4)
     ydbd-pg (0.5.3)
       pg
       ydbi (>= 0.5.0)
@@ -84,6 +85,7 @@ DEPENDENCIES
   dbd-pg (= 0.3.9)
   dbi (~> 0.4.5)
   deprecated (= 2.0.1)
+  flexmock
   ftools (= 0.0.0)
   htmlgrid (~> 1.1.3)
   mimemagic
@@ -98,8 +100,8 @@ DEPENDENCIES
   rmagick (~> 2.15.4)
   sbsm!
   simplecov
-  watir (~> 6.0.0)
+  watir
   yus (= 1.0.1)
 
 BUNDLED WITH
-   1.13.7
+   1.14.6

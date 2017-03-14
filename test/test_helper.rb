@@ -5,9 +5,6 @@ test = root_dir.join('test').to_s
 $: << test unless $:.include?(test)
 require 'simplecov_setup'
 
-config_yml = "#{root_dir.join('etc').to_s}/config.yml"
-FileUtils.cp(config_yml +'.ci', config_yml) unless File.exist?(config_yml)
-
 src = root_dir.join('src').to_s
 $: << src unless $:.include?(src)
 

@@ -14,9 +14,9 @@ module DaVaz
     end
 
     def exit
-      puts "stop_davaz_and_browser ensure killing @pid: #{@pid}" # if $VERBOSE
       DRb.stop_service
       if @pid
+        puts "stop_davaz_and_browser ensure killing @pid: #{@pid}" # if $VERBOSE
         Process.kill("QUIT", @pid)
         Process.wait(@pid)
         @pid = nil

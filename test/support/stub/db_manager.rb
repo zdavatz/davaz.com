@@ -217,15 +217,15 @@ module DaVaz::Stub
       artobject2.set_tags([ StubTag.new('hislife_show') ])
 
       artobject3 = StubArtObject.new('113')
-      artobject3.set_artgroup_id('234')
+      artobject3.set_artgroup_id('235')
       artobject3.set_serie_id('ABD')
 
       artobject4 = StubArtObject.new('114')
-      artobject4.set_artgroup_id('235')
+      artobject4.set_artgroup_id('236')
       artobject4.set_serie_id('ABD')
 
       artobject5 = StubArtObject.new('115')
-      artobject5.set_artgroup_id('235')
+      artobject5.set_artgroup_id('237')
       artobject5.set_serie_id('ABE')
       artobject5.set_tags([StubTag.new('hisfamily_show')])
 

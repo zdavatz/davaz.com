@@ -13,7 +13,7 @@ module DaVaz
       else
         @browser = setup_chromium
       end
-      puts "For environment BROWSER (#{ENV['BROWSER']}) we use #{@browser.driver.browser}" # if $VERBOSE
+      puts "For environment BROWSER (#{ENV['BROWSER']}) we use #{@browser.driver.browser}" if $VERBOSE
       super @browser
     end
 
@@ -71,16 +71,20 @@ module DaVaz
     # returns a Watir-Browser for firefox
     # with same changes to the default profile (e.g. folderlist, save to disk automatically)
     def setup_firefox
-      puts "Setting up default profile for firefox"
-
+      puts "Setting up default profile for firefox" if $VERBOSE
       profile = Selenium::WebDriver::Firefox::Profile.new
       profile['browser.download.folderList'] = 2
       profile['browser.helperApps.alwaysAsk.force'] = false
       profile['browser.helperApps.neverAsk.saveToDisk'] = "application/zip;application/octet-stream;application/x-zip;application/x-zip-compressed;text/csv;test/semicolon-separated-values"
       profile["network.http.prompt-temp-redirect"] = false
-
-      bin_path = '/usr/bin/firefox-bin'
-      puts "bin_path #{bin_path} #{File.executable?(bin_path)}"
+      bin_path = nil
+      ['/usr/local/bin/firefox-bin',
+       '/usr/bin/firefox-bin'].each do |path|
+        if File.exist?(path)
+          bin_path = path
+          break
+        end
+      end
       Selenium::WebDriver::Firefox::Binary.path= bin_path if File.executable?(bin_path)
       caps = Selenium::WebDriver::Remote::Capabilities.firefox(marionette: true)
       @driver = Selenium::WebDriver.for :firefox

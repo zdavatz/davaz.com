@@ -70,6 +70,6 @@ module DaVaz
   # NOTE
   # RCLConf returns a hash which holds keys as String
   config = RCLConf::RCLConf.new(ARGV, defaults)
-  config.load(config.config)
+  config.load(config.config) if File.exist?(config.config)
   @config = config
 end

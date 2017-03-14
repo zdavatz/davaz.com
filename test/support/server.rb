@@ -9,7 +9,6 @@ module DaVaz
       SBSM.info "spawn test/config.ru #{File.exist?('test/config.ru')}"
       @pid = Process.spawn('bundle', 'exec', 'rackup', 'test/config.ru', { :err => [log_file, 'w+'],  :out => [log_file, 'w+']})
       SBSM.info msg =  "Started #{DaVaz.config.server_uri} PID #{@pid}"
-      puts msg
       @pid
     end
 

@@ -22,8 +22,12 @@ module DaVaz
         '../../etc/db_connection_data.yml', File.dirname(__FILE__))
 
       puts "Loading #{DB_CONNECTION_DATA}"
-      raise "#{DB_CONNECTION_DATA} is missing" unless File.exist?(DB_CONNECTION_DATA)
-      @@db_data = YAML.load(File.read(DB_CONNECTION_DATA))
+      if defined?(MiniTest)
+        @@db_data = {}
+      else
+        raise "#{DB_CONNECTION_DATA} is missing" unless File.exist?(DB_CONNECTION_DATA)
+        @@db_data = YAML.load(File.read(DB_CONNECTION_DATA))
+      end
 
       def initialize
         reconnect

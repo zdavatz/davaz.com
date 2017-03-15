@@ -1,4 +1,6 @@
 require 'test_helper'
+require 'support/server'
+
 module DaVaz
   require 'simplecov'
   SimpleCov.start do

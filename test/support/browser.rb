@@ -2,19 +2,22 @@ require 'watir'
 
 module DaVaz
   class Browser < SimpleDelegator
-
-    def initialize(which_one = ENV['BROWSER'])
+    attr_reader :id
+    def initialize(which_one = ENV['BROWSER'], id: 1)
       which_one ||= 'firefox' if /debian|ubuntu/i.match(`lsb_release --id`.chomp.split("\t")[-1])
+      @id = id
       case which_one
       when /^firefox/i
-        @browser = setup_firefox
+        browser = setup_firefox
       when /^phantomjs/i
-        @browser = setup_phantomjs
+        browser = setup_phantomjs
       else
-        @browser = setup_chromium
+        browser = setup_chromium
       end
-      puts "For environment BROWSER (#{ENV['BROWSER']}) we use #{@browser.driver.browser}" if $VERBOSE
-      super @browser
+      puts "For environment BROWSER (#{ENV['BROWSER']}) we use #{browser.driver.browser} id #{id}" # if $VERBOSE
+      @browser = browser
+      at_exit { @browser.close }
+      super browser
     end
 
     def visit(path)

@@ -1,15 +1,3 @@
-GIT
-  remote: https://github.com/ngiger/sbsm.git
-  revision: d6b93ac24acda35f8731a6cade0758c2d893b38c
-  ref: d6b93ac24acda35f8731a6cade0758c2d893b38c
-  specs:
-    sbsm (1.3.6.pre.rc2)
-      chrono_logger
-      hpricot
-      mail
-      mimemagic
-      rack
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -58,6 +46,12 @@ GEM
     rclconf (1.0.0)
     rmagick (2.15.4)
     rubyzip (1.2.1)
+    sbsm (1.3.6)
+      chrono_logger
+      hpricot
+      mail
+      mimemagic
+      rack
     selenium-webdriver (3.3.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
@@ -98,7 +92,7 @@ DEPENDENCIES
   rake
   rclconf (= 1.0.0)
   rmagick (~> 2.15.4)
-  sbsm!
+  sbsm (>= 1.3.6)
   simplecov
   watir
   yus (= 1.0.1)

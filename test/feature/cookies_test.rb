@@ -10,7 +10,6 @@ class TestMovies < Minitest::Test
     first_title = 'Da Vaz - Creating a Drawing.'
     artist_title = /Da Vaz - Abstract Artist from Switzerland/i
     SBSM.info "Starting to test #{url}"
-    puts "Testing #{url}"
     browser.visit(url)
     saved_size = browser.cookies.to_a.size
     sleep 0.5
@@ -35,8 +34,8 @@ class TestMovies < Minitest::Test
       assert(link.exist? && link.visible?, "Link #{link_name} must exist")
       link.click
       new_session_id = browser.cookies['_session_id'][:value]
+      # puts "new_session_id #{new_session_id} == #{new_session_id} #{new_session_id.eql?(session_id)}"
       assert_equal(new_session_id, session_id, "Must preserve session_id when visting #{link_name}")
-      puts "new_session_id #{new_session_id} == #{new_session_id} #{new_session_id.eql?(session_id)}"
     end
   end
 

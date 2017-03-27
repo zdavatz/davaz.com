@@ -131,7 +131,7 @@ if RUN_ALL_TESTS
     browser.text_field(:name, 'email').set('wrong_email_addr')
     link = browser.button(:text, 'Order item(s)')
     link.click
-
+    wait_until { browser.div(:text => /Please fill out the fields that are mark/) }
     assert_text_present( 'Please fill out the fields that are marked with red.')
     skip('TODO: The postal code is marked as red, but the error message is not shown')
     assert_text_present('Your Postal Code seems to be invalid.')

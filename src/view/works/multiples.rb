@@ -22,6 +22,7 @@ module DaVaz::View
     module PanoramaMethods
       def panorama_src(artobject_id)
         # pannellum
+	require 'pry'; binding.pry
         url = '/resources/javascript/pannellum/pannellum.htm?panorama='
         url += DaVaz::Util::ImageHelper.image_url(artobject_id, 'slide')
         url += '&autoLoad=true'

@@ -13,12 +13,16 @@ sudo: required
 # _install_firefox
 before:
 
+addons:
+  firefox: "51.0"
+
 before_install:
   - wget https://github.com/mozilla/geckodriver/releases/download/v0.15.0/geckodriver-v0.15.0-linux64.tar.gz
   - tar -zxvf geckodriver-v0.15.0-linux64.tar.gz
   - sudo cp geckodriver /usr/local/bin
   - ls -l /usr/local/bin
   - export BROWSER=firefox
+  - firefox --version
   - gem install bundler
   - sudo apt-get -qq update
   - export DISPLAY=:1.5

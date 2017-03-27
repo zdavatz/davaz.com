@@ -26,11 +26,7 @@ module DaVaz
         assert false, 'Could not log in. login_email-Field must no longer be present!'
       end
       login_link = a_browser.link(text: 'Login')
-      # require 'pry'; binding.pry if login_link.exists? && login_link.visible?
-      # after calling a_browser.goto(a_browser.links.find{|x| x.text.eql?('Guestbook')}.href)
-      # the login_link removes
-      puts 'Did not check absence of login link'
-      # assert_equal(false, login_link.exists? && login_link.visible?, 'Could not log in. Login-link must no longer be present!')
+      assert_equal(false, login_link.exists? && login_link.visible?, 'Could not log in. Login-link must no longer be present!')
     end
 
     def logout(a_browser = browser)

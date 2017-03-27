@@ -109,17 +109,15 @@ class TestMovies < Minitest::Test
     button = browser.element(name: 'update')
     button.click
     sleep(1)
+    update_button = wait_until { browser.element(name: 'update') }
+    assert_equal(true, update_button.exist?)
+    logout
     assert_equal(false, browser.element(name: 'update').exist?)
 
-
     browser.div(:id, 'movies_gallery_view').wait_until(&:exist?)
-    view = browser.div(:id, 'movies_gallery_view')
-    assert_match('/en/gallery', browser.url)
+    assert_match('/en/works/movies/#111', browser.url)
 
     assert_text_present('Text of ArtObject 111')
-    skip('TODO: Our database stub does not update the object!!')
     assert_text_present(expected)
-
-    logout
   end
 end

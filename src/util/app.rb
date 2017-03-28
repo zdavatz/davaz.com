@@ -107,8 +107,8 @@ module DaVaz::Util
       @db_manager.delete_link(link_id)
     end
 
-    def delete_tooltip_link(link_id)
-      @db_manager.delete_tooltip_link(link_id)
+    def delete_link(link_id)
+      @db_manager.delete_link(link_id)
     end
 
     def delete_oneliner(oneliner_id)
@@ -235,7 +235,7 @@ module DaVaz::Util
       @db_manager.load_serie_artobjects('Site Lectures', 'series.name')
     end
 
-    def load_links
+    def load_site_links
       @db_manager.load_serie_artobjects('Site Links', 'series.name')
     end
 
@@ -332,12 +332,12 @@ module DaVaz::Util
       @db_manager.load_tools
     end
 
-    def load_tooltip_links
-      @db_manager.load_tooltip_links
+    def load_links
+      @db_manager.load_links
     end
 
-    def load_tooltip_link(link_id)
-      @db_manager.load_tooltip_link(link_id)
+    def load_link(link_id)
+      @db_manager.load_link(link_id)
     end
 
     # search

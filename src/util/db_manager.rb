@@ -136,7 +136,7 @@ module DaVaz
       def delete_link(link_id)
         result = 0
         transaction do |conn|
-          link = load_tooltip_link(link_id)
+          link = load_link(link_id)
           if link
             query_affected_rows(<<~SQL.gsub(/\n/, ''))
               DELETE FROM links WHERE link_id =
@@ -778,13 +778,13 @@ module DaVaz
         }
       end
 
-      def load_tooltip_link(link_id)
-        load_tooltip_links.find {|link|
+      def load_link(link_id)
+        load_links.find {|link|
           link.link_id.to_s  == link_id.to_s
         }
       end
 
-      def load_tooltip_links
+      def load_links
         result = connection.query(<<~SQL.gsub(/\n/, ''))
           SELECT
            links.link_id,
@@ -816,6 +816,12 @@ module DaVaz
         }
         links.values.select { |tt|
           tt.artobjects.length == 1
+        }
+      end
+
+      def load_link(link_id)
+        load_links.find {|link|
+          link.link_id.to_s  == link_id.to_s
         }
       end
 

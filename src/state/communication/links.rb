@@ -9,7 +9,7 @@ module DaVaz::State
       VIEW = DaVaz::View::Communication::Links
 
       def init
-        @model = @session.app.load_links
+        @model = @session.app.load_site_links
       end
     end
 
@@ -33,7 +33,7 @@ module DaVaz::State
 
       def init
         @model = OpenStruct.new
-        @model.links = @session.app.load_links
+        @model.links = @session.app.load_site_links
         @model.serie_id = @session.app.load_serie_id('Site Links')
       end
 

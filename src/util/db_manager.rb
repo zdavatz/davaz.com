@@ -132,10 +132,11 @@ module DaVaz
         SQL
       end
 
+      # Deletes a tooltip link
       def delete_link(link_id)
         result = 0
         transaction do |conn|
-          link = load_link(link_id)
+          link = load_tooltip_link(link_id)
           if link
             query_affected_rows(<<~SQL.gsub(/\n/, ''))
               DELETE FROM links WHERE link_id =
@@ -777,13 +778,13 @@ module DaVaz
         }
       end
 
-      def load_link(link_id)
-        load_links.find {|link|
+      def load_tooltip_link(link_id)
+        load_tooltip_links.find {|link|
           link.link_id.to_s  == link_id.to_s
         }
       end
 
-      def load_links
+      def load_tooltip_links
         result = connection.query(<<~SQL.gsub(/\n/, ''))
           SELECT
            links.link_id,
@@ -873,6 +874,7 @@ module DaVaz
         connection.last_id
       end
 
+      # inserts a tooltip link
       def insert_link(user_values)
         # linked_artobject_id => artobject_id
         values = %i{linked_artobject_id word}.map do |key|
@@ -1037,6 +1039,7 @@ module DaVaz
         SQL
       end
 
+      # updates a tooltip link
       def update_link(link_id, update_hash)
         transaction do |conn|
           # linked_artobject_id => artobject_id

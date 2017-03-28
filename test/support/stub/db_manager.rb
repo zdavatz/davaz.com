@@ -254,6 +254,7 @@ module DaVaz::Stub
         StubArtgroup.new('234', 'movies'),
         StubArtgroup.new('235', 'drawings'),
       ]
+      @links_artgroups = [link1, link2, link3, link4]
     end
 
     def add_material(material_name)
@@ -355,6 +356,10 @@ module DaVaz::Stub
 
     def load_artgroups(order_by=nil)
       @artgroups
+    end
+
+    def load_links
+      @links_artgroups
     end
 
     def load_artobject(artobject_id, select_by=nil)

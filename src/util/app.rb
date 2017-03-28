@@ -107,6 +107,10 @@ module DaVaz::Util
       @db_manager.delete_link(link_id)
     end
 
+    def delete_tooltip_link(link_id)
+      @db_manager.delete_tooltip_link(link_id)
+    end
+
     def delete_oneliner(oneliner_id)
       @db_manager.delete_oneliner(oneliner_id)
     end
@@ -231,6 +235,10 @@ module DaVaz::Util
       @db_manager.load_serie_artobjects('Site Lectures', 'series.name')
     end
 
+    def load_links
+      @db_manager.load_serie_artobjects('Site Links', 'series.name')
+    end
+
     def load_material(id)
       @db_manager.load_material(id)
     end
@@ -324,13 +332,12 @@ module DaVaz::Util
       @db_manager.load_tools
     end
 
-    def load_links
-      # TODO: Where should we use the old definition of @db_manager.load_links?
-      @db_manager.load_serie_artobjects('Site Links', 'series.name')
+    def load_tooltip_links
+      @db_manager.load_tooltip_links
     end
 
-    def load_link(link_id)
-      @db_manager.load_link(link_id)
+    def load_tooltip_link(link_id)
+      @db_manager.load_tooltip_link(link_id)
     end
 
     # search

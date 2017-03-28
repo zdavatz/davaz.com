@@ -10,7 +10,7 @@ module DaVaz::State
       VIEW = DaVaz::View::Gallery::Tooltips
 
       def init
-        @model = @session.app.load_links
+        @model = @session.app.load_tooltip_links
       end
     end
 
@@ -28,7 +28,7 @@ module DaVaz::State
           :linked_artobject_id => '1'
         }
         insert_id = @session.app.insert_link(values)
-        @model = @session.app.load_link(insert_id)
+        @model = @session.app.load_tooltip_link(insert_id)
       end
     end
 

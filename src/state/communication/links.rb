@@ -14,7 +14,7 @@ module DaVaz::State
     end
 
     # @api admin
-    class AdminAjaxAddNewLinkElement < AdminAjaxAddNewElement
+    class AdminAddNewLinkElement < AdminAddNewElement
       def init
         values = {
           :serie_id => @model.serie_id,
@@ -32,13 +32,14 @@ module DaVaz::State
       VIEW = DaVaz::View::Communication::AdminLinks
 
       def init
+        # when arriving here the @model is the list of existing links
         @model = OpenStruct.new
         @model.links = @session.app.load_site_links
         @model.serie_id = @session.app.load_serie_id('Site Links')
       end
 
       def ajax_add_new_element
-        AdminAjaxAddNewLinkElement.new(@session, @model)
+        AdminAddNewLinkElement.new(@session, @model)
       end
     end
   end

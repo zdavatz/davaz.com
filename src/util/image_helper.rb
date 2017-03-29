@@ -89,7 +89,13 @@ module DaVaz::Util
 
       def store_upload_image(string_io, artobject_id)
         delete_image(artobject_id) if has_image?(artobject_id)
-        image = Magick::Image.from_blob(string_io.read).first
+        if string_io[:tempfile] && File.exist?(string_io[:tempfile])
+          image = Magick::Image.from_blob(IO.read( string_io[:tempfile])).first
+        elsif defined?(string_io.read)
+          image = Magick::Image.from_blob(string_io.read).first
+        else
+          raise "Unable to store_upload_image #{string_io}"
+        end
         extension = image.format.downcase
         path = File.join(
           image_dir,

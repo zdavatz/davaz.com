@@ -42,23 +42,12 @@ module DaVaz::State
 
     def init
       string_io = @session.user_input(:image_file)
-      obj = @model.artobject ? @model.artobject : @model
-      if string_io
-        artobject_id = obj.artobject_id
-        if artobject_id
-          DaVaz::Util::ImageHelper.store_upload_image(
-            string_io, artobject_id)
-          model = OpenStruct.new
-          model.artobject = @session.app.load_artobject(artobject_id)
-        else
-          image = Image.from_blob(string_io.read).first
-          path = File.join(
-            DaVaz::Util::ImageHelper.tmp_image_dir,
-            Time.now.to_i.to_s + "." + image.format.downcase
-          )
-          image.write(path)
-          obj.tmp_image_path = path
-        end
+      artobject_id = @session.user_input(:artobject_id)
+      if string_io && artobject_id
+        DaVaz::Util::ImageHelper.store_upload_image(
+          string_io, artobject_id)
+        @model.artobject = @session.app.load_artobject(artobject_id)
+      # no 'else' => src/state/_partial/art_object handles new artobjects
       end
     end
   end

@@ -5,6 +5,6 @@ module DaVaz
   module Util;  end
 
   class << self
-    attr_accessor :config, :yus_server
+    attr_accessor :config
   end
 end

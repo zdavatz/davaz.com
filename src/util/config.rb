@@ -33,9 +33,6 @@ module DaVaz
     # ticker
     'ticker_component_width'  => '180',
     'ticker_component_height' => '180',
-    # yus
-    'yus_domain'        => 'com.davaz',
-    'yus_server'        => nil,
     'test_user'         => nil,
     'test_password'     => nil,
     'yus_uri'           => 'drbssl://localhost:9997',

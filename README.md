@@ -104,6 +104,8 @@ davaz> exit
 
 ### How to run
 
+bundle exec rake test TEST_OPTS="--name=TestLectures#test_lectures_toggle_hidden_dev_links" 2>&1 | tee rack_test-2.log
+
 #### Test suite
 
 ```zsh
@@ -117,7 +119,7 @@ davaz> exit
 bundle exec foreman run ruby -I.:test test/feature/lectures_test.rb
 Run options: --seed 33427
 
-`bundle exec test/feature/lectures_test.rb --name test_lectures_toggle_hidden_dev_links`
+`bundle exec rake test TEST_OPTS="--name=TestLectures#test_lectures_toggle_hidden_dev_links"`
 
 # Running:
 

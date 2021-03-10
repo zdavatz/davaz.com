@@ -1,4 +1,3 @@
-require 'yus/session'
 require 'sbsm/app'
 require 'util/updater'
 require 'util/image_helper'
@@ -7,6 +6,7 @@ require 'util/config'
 require 'util/session'
 require 'util/validator'
 require 'util/db_manager'
+require 'util/pw_server'
 
 module DaVaz::Util
   class RackInterface < SBSM::RackInterface
@@ -17,9 +17,8 @@ module DaVaz::Util
                    trans_handler: TransHandler.instance,
                    cookie_name: nil,
                    session_class: SESSION,
-                   yus_server:  DRb::DRbObject.new(DaVaz.config.yus_server, DaVaz.config.yus_uri),
                    db_manager: DaVaz::Util::DbManager.new)
-      @app = App.new(yus_server: yus_server, db_manager: db_manager)
+      @app = App.new(db_manager: db_manager)
       SBSM.info "RackInterface.new SESSION #{SESSION}"
       super(app: @app,
             validator: validator,
@@ -30,13 +29,13 @@ module DaVaz::Util
   end
 
   class App
-    attr_accessor :db_manager, :yus_server
+    attr_accessor :db_manager, :pw_server
 
-    def initialize(yus_server:, db_manager:)
+    def initialize(db_manager:, pw_file: nil)
       run_updater if DaVaz.config.run_updater
       SBSM.logger= ChronoLogger.new(DaVaz.config.log_pattern)
       SBSM.logger.level = :debug
-      @yus_server = yus_server
+      @pw_server = PwServer.new
       @db_manager = db_manager
     end
 
@@ -360,22 +359,22 @@ module DaVaz::Util
 
     def login(email, password)
       SBSM.info "#{email} pw #{password} domain #{DaVaz.config.yus_domain}"
-      res = @yus_server.login(email, password, DaVaz.config.yus_domain)
+      res = @pw_server.login(email, password, DaVaz.config.yus_domain)
       SBSM.info "res for #{email} is #{res}"
       res
     end
 
     def login_token(email, token)
       SBSM.info "#{email} token #{token} domain #{DaVaz.config.yus_domain}"
-      res = @yus_server.login_token(email, token, DaVaz.config.yus_domain)
+      res = @pw_server.login_token(email, token, DaVaz.config.yus_domain)
       SBSM.info "token for #{email} is #{token}  res #{res}"
       res
     end
 
     def logout(yus_session=nil)
-      SBSM.info "@yus_server #{@yus_server.inspect} #{yus_session.class} #{yus_session.object_id} "
+      SBSM.info "@pw_server #{@pw_server.inspect} #{yus_session.class} #{yus_session.object_id} "
       # + "#{session.class} #{session.object_id} state #{(session && session.respond_to?(:state)) ? session.state.object_id : 'nil'}"
-      @yus_server.logout(yus_session) if @yus_server
+      @pw_server.logout(yus_session) if @pw_server
     end
   end
 end

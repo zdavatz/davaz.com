@@ -358,23 +358,22 @@ module DaVaz::Util
     # login/logout
 
     def login(email, password)
-      SBSM.info "#{email} pw #{password} domain #{DaVaz.config.yus_domain}"
-      res = @pw_server.login(email, password, DaVaz.config.yus_domain)
+      SBSM.info "#{email} pw #{password} }"
+      res = @pw_server.login(email, password)
       SBSM.info "res for #{email} is #{res}"
       res
     end
 
     def login_token(email, token)
-      SBSM.info "#{email} token #{token} domain #{DaVaz.config.yus_domain}"
-      res = @pw_server.login_token(email, token, DaVaz.config.yus_domain)
+      SBSM.info "#{email} token #{token}"
+      res = @pw_server.login_token(email, token)
       SBSM.info "token for #{email} is #{token}  res #{res}"
       res
     end
 
-    def logout(yus_session=nil)
-      SBSM.info "@pw_server #{@pw_server.inspect} #{yus_session.class} #{yus_session.object_id} "
-      # + "#{session.class} #{session.object_id} state #{(session && session.respond_to?(:state)) ? session.state.object_id : 'nil'}"
-      @pw_server.logout(yus_session) if @pw_server
+    def logout
+      SBSM.info "@pw_server #{@pw_server.inspect}"
+      @pw_server.logout if @pw_server
     end
   end
 end

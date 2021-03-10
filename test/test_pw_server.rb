@@ -26,9 +26,11 @@ class TestPwServer < Minitest::Test
 
   def test_login_okay
     result = @pw_server.login("good_user1", "good_password1") 
-    assert(result==3276163622155287083, "login must succed for good_user1 but was #{result}")
+    assert(result.is_a?(PwServer::PwEntry), "login must succed for good_user1 but was #{result}")
+    assert(result.valid?()==true, "result must be valid")
+    assert(result.allowed?(3,4)==true, "result must be allowed")
     result = @pw_server.login("good_user2", "good_password2") 
-    assert(result==729312564101876492, "login must succed for good_user2 but was #{result}")
+    assert(result.is_a?(PwServer::PwEntry), "login must succed for good_user2 but was #{result}")
   end
   def test_login_fail
     result = @pw_server.login("good_user1", "bad_password1") 
@@ -43,9 +45,9 @@ class TestPwServer < Minitest::Test
 
   def test_token_okay
     result = @pw_server.login_token("good_user1", "3276163622155287083") 
-    assert(result==true, "token must succed for good_user1 but was #{result}")
+    assert(result.is_a?(PwServer::PwEntry), "token must succed for good_user1 but was #{result}")
     result = @pw_server.login_token("good_user1", 3276163622155287083) 
-    assert(result==true, "token must succed for good_user1 but was #{result}")
+    assert(result.is_a?(PwServer::PwEntry), "token must succed for good_user1 but was #{result}")
   end
   def test_token_fail
     result = @pw_server.login_token("good_user1", "22222222") 
@@ -55,10 +57,8 @@ class TestPwServer < Minitest::Test
   end
 
   def test_logout
-    result = @pw_server.logout(3276163622155287083) 
-    assert(result==true, "logout must succed for good token")
-    result = @pw_server.logout(333) 
-    assert(result==true, "logout must succed for bad token??")
+    result = @pw_server.logout
+    assert(result==false, "logout must succed for good token")
   end
 
 end

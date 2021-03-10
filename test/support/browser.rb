@@ -35,8 +35,10 @@ module DaVaz
         `which google-chrome-beta`.chomp,
         `which google-chrome`.chomp,
       ].each do |path|
-        puts "Checking #{path} #{File.exist?(path)}"
-        bin_path = path if File.exist?(path)
+        if File.exist?(path)
+          bin_path = path
+          break
+        end
       end
       exit(3) unless bin_path
       puts "Using #{bin_path} for watir tests"

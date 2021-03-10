@@ -89,9 +89,8 @@ module DaVaz::Util
 
     def login
       SBSM.debug "login #{user_input(:login_email)} with #{user_input(:login_password)}"
-      # @app.login raises Yus::YusError
       @user = @app.login(user_input(:login_email), user_input(:login_password))
-      if @user.valid? && user_input(:remember_me)
+      if @user && @user.valid? && user_input(:remember_me)
         set_cookie_input :remember, @user.generate_token
         set_cookie_input :name,     @user.name || user_input(:login_email)
       else
@@ -101,14 +100,13 @@ module DaVaz::Util
     end
 
     def login_token
-      # @app.login_token raises Yus::YusError
       name  = (persistent_user_input(:name) || get_cookie_input(:name))
       token = (persistent_user_input(:remember) || get_cookie_input(:remember))
       SBSM.debug "login_token name #{name.inspect} token #{token}"
       if name && token && !token.empty? && \
          (!@user.respond_to?(:valid?) || !@user.valid?)
         @user = @app.login_token(name, token)
-        if @user.valid?
+        if @user && @user.valid?
           SBSM.debug "set_cookie_input remember #{@user.generate_token}"
           set_cookie_input :remember, @user.generate_token
           @user
@@ -118,13 +116,13 @@ module DaVaz::Util
       else
         nil
       end
-    rescue Yus::YusError => e
+    rescue Exception => e
       puts "login #{name} with token #{token.inspect}"
     end
 
     def logout
       SBSM.debug "logout #{@user} with persistent_user_input(remember) #{persistent_user_input(:remember).inspect}"
-      @app.logout(@user)
+      @app.logout
       super
     end
   end

@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'mimemagic'
 gem 'mysql2', '0.4.4'
 gem 'dbi', '~> 0.4.5'
+gem 'webrick'
 
 gem 'rmagick', '~> 2.15.4'
 

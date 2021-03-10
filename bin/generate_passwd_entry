@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+$: << File.expand_path('../src', File.dirname(__FILE__))
+
+require 'util/pw_server'
+
+unless ARGV.size==2
+  puts "#{__FILE__} must be called with: email password"
+  exit(1)
+end
+puts YAML.dump([PwServer.generate_pw_entry(ARGV[0], ARGV[1])])

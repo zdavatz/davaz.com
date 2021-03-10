@@ -31,12 +31,15 @@ module DaVaz
         :download => {:prompt_for_download => false, }
       }
       bin_path = nil
-      ['/usr/bin/google-chrome-stable',
-       '/usr/bin/google-chrome-beta'].each do |path|
+      [ `which google-chrome-stable`.chomp,
+        `which google-chrome-beta`.chomp,
+        `which google-chrome`.chomp,
+      ].each do |path|
         puts "Checking #{path} #{File.exist?(path)}"
         bin_path = path if File.exist?(path)
       end
       exit(3) unless bin_path
+      puts "Using #{bin_path} for watir tests"
 
       caps = Selenium::WebDriver::Remote::Capabilities.chrome("chromeOptions" =>
                                                               {"args" =>

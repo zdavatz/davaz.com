@@ -15,14 +15,6 @@ gem 'flexmock'
 gem 'htmlgrid', '~> 1.1.3'
 gem 'odba', '~> 1.1.0'
 
-gem 'yus', '1.0.1'
-
-# FIXME: following gems are needed as dependencies for yus
-gem 'deprecated', '2.0.1'
-gem 'needle', '1.3.0'
-gem 'pg', '0.18.4'
-gem 'dbd-pg', '0.3.9'
-
 group :test do
   gem 'simplecov'
   gem 'minitest'
@@ -31,5 +23,5 @@ end
 
 group :development, :test do
   gem 'rake'
-  gem 'pry-byebug'
+#  gem 'pry-byebug'
 end

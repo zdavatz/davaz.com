@@ -5,32 +5,48 @@ class PwServer
     def show
       YAML.dump(self)     # 
     end
+    def valid?
+      true
+    end
+    def allowed?(capability, domain)
+      puts "allowed? called with #{capability} and #{domain}" if $VERBOSE
+      true
+    end
   end
   def initialize
     PwServer.read_etc_files
     @entries = YAML.load(File.read(@@password_file))
   end
 
+  def valid?
+    true
+  end
+
   def login(email, password)
     crypted = password.crypt(@@mySalt)
     @entries.each do | entry|
-      return entry.token if entry.mail.eql?(email) && entry.password.eql?(crypted)
+      if entry.mail.eql?(email) && entry.password.eql?(crypted)
+        puts "Got #{entry.token} to login via  #{email} #{password}" if $VERBOSE
+        return entry
+      end
     end
-    puts "Unable to login via  #{mail} #{password}"
+    puts "Unable to login via  #{email} #{password}" if $VERBOSE
     return false
   end
   
   def login_token(email, token)
     @entries.each do | entry|
-      return true if entry.mail.eql?(email) && entry.token.to_i==token.to_i
+      if entry.mail.eql?(email) && entry.token.to_i==token.to_i
+        puts "Got #{entry.token} to login_token via  #{email} #{token}"  if $VERBOSE
+        return entry
+      end
     end
-    puts "Unable to login_token via  #{mail} #{token}"
+    puts "Unable to login_token via  #{email} #{token}" if $VERBOSE
     return false
   end
   
-  def logout(token)
-    # What is to be done here?
-    true
+  def logout
+    false
   end
   
 private 

@@ -10,6 +10,6 @@ use Rack::Reloader, 0
 use Rack::ContentLength
 use(Rack::Static, urls: ["/doc/"])
 app = Rack::ShowExceptions.new(Rack::Lint.new(
-  DaVaz::Util::RackInterface.new(db_manager: DaVaz::Stub::DbManager.new, DaVaz.GetMockYusServer)
+  DaVaz::Util::RackInterface.new(db_manager: DaVaz::Stub::DbManager.new)
   ) )
 run app

@@ -11,9 +11,9 @@
 * MySQL, `>= 5.6`
 * ImageMagick
 * Apache2
-* [mod_ruby](https://github.com/shugo/mod_ruby) (It works with Ruby `1.8.6`)
 * cronolog (optional)
 * daemontools (for davazd, yusd)
+* `libnsl` for `sudo gem-300 install mysql2 -v '0.4.4' --source 'https://rubygems.org/'`
 
 ### Install
 
@@ -25,9 +25,8 @@ ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-linux]
 
 % echo 'gem: --no-ri --no-rdoc' > ~/.gemrc
 
-% cd /path/to/davaz.com
-% bundle config set --local path vendor/bundle
-% bundle install
+% cd /var/www/new.davaz.com
+% sudo -u bbmb bundle-300
 
 : JavaScript libraries
 % cd doc/resources

@@ -34,7 +34,7 @@ ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-linux]
 % mv dojo-release-1.7.10 dojo
 ```
 
-### Configureation
+### Configuration
 
 Use sample files in `etc` directory.
 
@@ -46,7 +46,7 @@ Use sample files in `etc` directory.
 % cp etc/davaz.com.conf.sample /etc/apache2/vhosts.d/davaz.com.conf
 
 : Password for login
-% cd /path/to/davaz.com
+% cd /var/www/new.davaz.com
 % touch etc/pw_server.passwords
 % echo "Salting" > etc/pw_server.salt # But use a different word!!
 # To generate a user test_user with test_password call

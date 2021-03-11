@@ -51,7 +51,7 @@ Use sample files in `etc` directory.
 % touch etc/pw_server.passwords
 % echo "Salting" > etc/pw_server.salt # But use a different word!!
 # To generate a user test_user with test_password call
-% bundle exec bin/generate_passwd_entry test_user test_password >> etc/pw_server.passwords
+% root: bundle-300 exec bin/generate_passwd_entry test_user test_password >> etc/pw_server.passwords
 
 ```
 

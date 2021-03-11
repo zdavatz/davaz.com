@@ -26,7 +26,8 @@ ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-linux]
 % echo 'gem: --no-ri --no-rdoc' > ~/.gemrc
 
 % cd /path/to/davaz.com
-% bundle install --path vendor
+% bundle config set --local path vendor/bundle
+% bundle install
 
 : JavaScript libraries
 % cd doc/resources
@@ -45,6 +46,14 @@ Use sample files in `etc` directory.
 
 : Apache2 conf
 % cp etc/davaz.com.conf.sample /etc/apache2/vhosts.d/davaz.com.conf
+
+: Password for login
+% cd /path/to/davaz.com
+% touch etc/pw_server.passwords
+% echo "Salting" > etc/pw_server.salt # But use a different word!!
+# To generate a user test_user with test_password call
+% bundle exec bin/generate_passwd_entry test_user test_password >> etc/pw_server.passwords
+
 ```
 
 ### Database scheme

@@ -25,8 +25,8 @@ ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-linux]
 
 % echo 'gem: --no-ri --no-rdoc' > ~/.gemrc
 
-% cd /path/to/davaz.com
-% bundle install --path vendor
+% cd /var/www/new.davaz.com
+% sudo -u bbmb bundle-300
 
 : JavaScript libraries
 % cd doc/resources

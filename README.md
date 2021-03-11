@@ -6,7 +6,7 @@
 
 ### Requirements
 
-* Ruby, `>= 2.3.1`
+* [Ruby](https://github.com/zdavatz/davaz.com/files/6121658/gen_ruby_300.txt), `>= 2.3.1`
 * PostgreSQL, `>= 9.0` (for [yus](https://github.com/zdavatz/yus))
 * MySQL, `>= 5.6`
 * ImageMagick

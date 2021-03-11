@@ -12,8 +12,8 @@ gem 'ftools', '0.0.0'
 
 gem 'sbsm', '>= 1.3.6' # :git => 'https://github.com/ngiger/sbsm.git', :ref => 'd6b93ac24acda35f8731a6cade0758c2d893b38c'
 gem 'flexmock'
-gem 'htmlgrid', '~> 1.1.3'
-gem 'odba', '~> 1.1.0'
+gem 'htmlgrid'
+gem 'odba'
 
 group :test do
   gem 'simplecov'

@@ -11,7 +11,7 @@
 * ImageMagick
 * Apache2
 * cronolog (optional)
-* daemontools (for davazd, yusd)
+* daemontools
 * `libnsl` for `sudo gem-300 install mysql2 -v '0.4.4' --source 'https://rubygems.org/'`
 
 ### Install

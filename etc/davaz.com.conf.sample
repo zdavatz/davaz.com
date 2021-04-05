@@ -9,6 +9,11 @@ Require all granted
   Redirect permanent / https://davaz.com/
 </VirtualHost>
 
+<VirtualHost *:80>
+  ServerName www.davaz.com
+  Redirect permanent / https://davaz.com/
+</VirtualHost>
+
 <VirtualHost *:443>
 # LogLevel debug
 ServerName www.davaz.com

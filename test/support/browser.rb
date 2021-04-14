@@ -87,7 +87,8 @@ module DaVaz
       profile["network.http.prompt-temp-redirect"] = false
       bin_path = nil
       ['/usr/local/bin/firefox-bin',
-       '/usr/bin/firefox-bin'].each do |path|
+       '/usr/bin/firefox-bin',
+       '/usr/bin/firefox'].each do |path|
         if File.exist?(path)
           bin_path = path
           break

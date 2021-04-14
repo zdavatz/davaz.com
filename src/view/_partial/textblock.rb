@@ -168,7 +168,7 @@ module DaVaz::View
 
     def url_to_html(context)
       parsed = URI.parse(@model.url)
-      parsed = URI.parse('http://' + @model.url) unless parsed.scheme
+      parsed = URI.parse('https://' + @model.url) unless parsed.scheme
       context.div('class' => 'block-url') {
         context.a(
           'href'   => parsed,

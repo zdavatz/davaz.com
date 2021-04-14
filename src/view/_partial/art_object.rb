@@ -575,6 +575,7 @@ module DaVaz::View
     #}
 
     def init
+      return ""  unless @model && @model.artobject
       css_id_map.store(1, "artobject_image_#{@model.artobject.artobject_id}")
       super
     end

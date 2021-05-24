@@ -59,7 +59,7 @@ Use sample files in `etc` directory.
 
 ### Boot
 
-Setup [daemontools](http://cr.yp.to/daemontools.html) supervises the service.
+[daemontools](http://cr.yp.to/daemontools.html) supervises the service.
 
 * `cat /service/davaz.com/run`
 ```zsh

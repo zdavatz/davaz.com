@@ -59,16 +59,14 @@ Use sample files in `etc` directory.
 
 ### Boot
 
-Setup [daemontools](http://cr.yp.to/daemontools.html) then let supervise these
-servers.
+Setup [daemontools](http://cr.yp.to/daemontools.html) supervises the service.
 
+* `cat /service/davaz.com/run`
 ```zsh
-: Boot application server (setup daemontools as supervisor)
-% bundle exec ./bin/davazd
-
-: Boot yus server (for user authencitation, setup this also before use)
-: See https://github.com/zdavatz/yus/blob/master/Guide.txt
-% bundle exec yusd config=/var/www/davaz.com/etc/yus.yml
+#!/bin/sh
+exec 2>&1
+cd /var/www/new.davaz.com
+exec sudo -u bbmb /usr/local/bin/bundle-300 exec rackup config.ru
 ```
 
 How to boot developer console.

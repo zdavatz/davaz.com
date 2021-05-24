@@ -54,9 +54,8 @@ Use sample files in `etc` directory.
 
 ```
 
-### Database scheme
-
-__TODO__
+### Database
+* [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)
 
 ### Boot
 

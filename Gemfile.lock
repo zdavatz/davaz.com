@@ -10,7 +10,7 @@ GEM
     flexmock (2.3.6)
     ftools (0.0.0)
     hpricot (0.8.6)
-    htmlgrid (1.2.1)
+    htmlgrid (1.2.2)
       sbsm (>= 1.2.7)
     mail (2.7.1)
       mini_mime (>= 0.1.1)

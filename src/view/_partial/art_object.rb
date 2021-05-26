@@ -450,9 +450,11 @@ module DaVaz::View
       return '' unless obj
       args = [
         ['artobject_id', obj.artobject_id],
-        ['fragment',     model.fragment],
-        ['state_id',     @session.state.object_id.to_s]
       ]
+      if !model.fragment.nil? && !model.fragment.empty?
+        args.push('fragment', model.fragment)
+      end
+      args.push(['state_id', @session.state.object_id.to_s])
       if search_query = @session.user_input(:search_query)
         args.push([:search_query, search_query])
       else

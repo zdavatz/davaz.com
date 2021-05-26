@@ -45,7 +45,7 @@ define([
   , submitForm: function() {
       _this = this;
       xhr.get({
-        url:      this.loginForm.action
+        url:      this.loginForm.action.replace('http://', '//')
       , handleAs: 'json'
       , form:     this.loginForm
       , load:     function(data, event) {

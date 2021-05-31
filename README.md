@@ -66,7 +66,7 @@ Use sample files in `etc` directory.
 #!/bin/sh
 exec 2>&1
 cd /var/www/new.davaz.com
-exec sudo -u bbmb /usr/local/bin/bundle-300 exec rackup config.ru
+exec setuidgid bbmb /usr/local/bin/bundle-300 exec rackup config.ru
 ```
 
 How to boot developer console.

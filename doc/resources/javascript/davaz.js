@@ -210,9 +210,9 @@ function showMovieGallery(divId, replaceDivId, url) {
     if (node.style.display == 'none') {
 	    var artobjectId = url.split('/').pop();
       xhr.get({
-        url:      url
+        url: url.replace('http://', '//').replace(':80/', '/')
       , handleAs: 'text'
-      , load:      function(data, request) {
+      , load: function(data, request) {
           var pane = dijit.byId(divId);
           if (pane == null) {
             pane = new cpane({

@@ -355,7 +355,7 @@ module DaVaz::Util
     def base_url(zone=@session.zone)
       [
         @session.http_protocol + ':/',
-        @session.server_name + (@session.server_port == 80 ? '' : (':' + @session.server_port)),
+        @session.server_name + (@session.server_port.to_s == '80' ? '' : (':' + @session.server_port)),
         @language,
         zone
       ].compact.join('/')

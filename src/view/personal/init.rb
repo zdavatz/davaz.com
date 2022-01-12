@@ -114,7 +114,8 @@ module DaVaz::View
         [0, 3] => :email,
         [0, 4] => :gallery,
         [0, 5] => :movies,
-        [0, 6] => :guestbook
+        [0, 6] => :guestbook,
+        [0, 7] => :shorts
       }
       CSS_MAP = {
         [0, 0, 1, 7] => 'communication-links',
@@ -165,6 +166,13 @@ module DaVaz::View
       def guestbook(model)
         link = HtmlGrid::Link.new(:guestbook, model, @session, self)
         link.href      = @lookandfeel.event_url(:communication, :guestbook)
+        link.css_class = 'communication-link'
+        link
+      end
+
+      def shorts(model)
+        link = HtmlGrid::Link.new(:shorts, model, @session, self)
+        link.href      = 'https://www.youtube.com/watch?v=8AW2b8VvDtk&list=PLxh_CmzTpMjE7gr_CIbFzuSDBHGwTzp9y'
         link.css_class = 'communication-link'
         link
       end

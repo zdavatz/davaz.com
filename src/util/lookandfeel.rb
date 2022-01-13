@@ -226,6 +226,7 @@ module DaVaz::Util
         shop_thanks:       'Your order has been succesfully sent.' \
                            '<br>Thank you very much.',
         shopping_cart:     'Shopping cart',
+        shorts:            'Shorts',
         show_tags:         'Show all tags',
         signature:         'Signature',
         size:              'Size',

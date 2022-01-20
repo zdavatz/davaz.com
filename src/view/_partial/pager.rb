@@ -123,6 +123,33 @@ module DaVaz::View
     end
   end
 
+  class ShortsPager < Pager
+    %i{next last}.map do |method|
+      define_method(method) do |model|
+        link = super(model)
+        return nil unless link
+        pager_link(link)
+      end
+    end
+
+    private
+
+    def pager_link(link)
+      artobject_id = link.attributes['href'].split('/').last
+      link.href = 'javascript:void(0);'
+      link.set_attribute('onclick', <<~EOS.gsub(/(^\s*)|\n/, ''))
+        return toggleInnerHTML(
+          'shorts_gallery_view'
+        , '#{@lookandfeel.event_url(:gallery, :ajax_short_gallery, [
+              [:artobject_id, artobject_id]
+          ])}'
+        , '#{artobject_id}'
+        );
+      EOS
+      link
+    end
+  end
+
   class ShopPager < Pager
     COMPONENTS = {
       [0, 0] => :last,

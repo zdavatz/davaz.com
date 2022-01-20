@@ -42,6 +42,7 @@ module DaVaz::State
       :ajax_upload_image      => AdminAjaxUploadImage,
       :ajax_upload_image_form => AdminAjaxUploadImageForm,
       :ajax_movie_gallery     => Works::AdminAjaxMovieGallery,
+      :ajax_short_gallery     => Works::AdminAjaxShortGallery,
       :design                 => Works::AdminDesign,
       :drawings               => Works::AdminDrawings,
       :movies                 => Works::AdminMovies,

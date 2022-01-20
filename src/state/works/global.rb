@@ -8,6 +8,7 @@ require 'state/works/paintings'
 require 'state/works/photos'
 require 'state/works/schnitzenthesen'
 require 'state/works/movies'
+require 'state/works/shorts'
 
 module DaVaz::State
   module Works
@@ -22,6 +23,7 @@ module DaVaz::State
         :photos          => Photos,
         :schnitzenthesen => Schnitzenthesen,
         :movies          => Movies,
+        :shorts          => Shorts,
       }
     end
   end

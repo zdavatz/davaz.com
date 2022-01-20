@@ -234,6 +234,44 @@ function showMovieGallery(divId, replaceDivId, url) {
   });
 }
 
+// Shows movie detail view using replaceDiv
+function showShortGallery(divId, replaceDivId, url) {
+  require([
+    'dojo/_base/xhr'
+  , 'dojo/dom'
+  , 'dojo/dom-attr'
+  , 'dojo/back'
+  , 'dijit/dijit'
+  , 'dijit/layout/ContentPane'
+  ], function(xhr, dom, attr, back, dijit, cpane) {
+    var node = dom.byId(divId);
+    if (node.style.display == 'none') {
+      var artobjectId = url.split('/').pop();
+      xhr.get({
+        url: url.replace('http://', '//').replace(':80/', '/')
+      , handleAs: 'text'
+      , load: function(data, request) {
+          var pane = dijit.byId(divId);
+          if (pane == null) {
+            pane = new cpane({
+              id:             divId
+            , executeScripts: true
+            }, node);
+          }
+          pane.setContent(data);
+          replaceDiv(replaceDivId, divId);
+          back.addToHistory({
+            changeUrl: artobjectId
+          });
+        },
+      });
+    } else {
+      replaceDiv(divId, replaceDivId);
+      node.innerHTML = '';
+    }
+  });
+}
+
 // Replaces with wipe animation
 function replaceDiv(id, replaceId) {
   require([

@@ -204,7 +204,8 @@ function showMovieGallery(divId, replaceDivId, url) {
   , 'dojo/dom-attr'
   , 'dojo/back'
   , 'dijit/dijit'
-  , 'dijit/layout/ContentPane'
+  , 'dijit/layout/ContentPane',
+  , 'dijit/Editor'
   ], function(xhr, dom, attr, back, dijit, cpane) {
 	  var node = dom.byId(divId);
     if (node.style.display == 'none') {
@@ -234,7 +235,7 @@ function showMovieGallery(divId, replaceDivId, url) {
   });
 }
 
-// Shows movie detail view using replaceDiv
+// Shows short detail view using replaceDiv
 function showShortGallery(divId, replaceDivId, url) {
   require([
     'dojo/_base/xhr'
@@ -243,6 +244,7 @@ function showShortGallery(divId, replaceDivId, url) {
   , 'dojo/back'
   , 'dijit/dijit'
   , 'dijit/layout/ContentPane'
+  , 'dijit/Editor'
   ], function(xhr, dom, attr, back, dijit, cpane) {
     var node = dom.byId(divId);
     if (node.style.display == 'none') {

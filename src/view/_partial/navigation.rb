@@ -102,8 +102,8 @@ module DaVaz::View
     def init
       @evt = @session.event
       links = [
-        :drawings, :paintings, :multiples, :movies, :photos,
-        :design, :schnitzenthesen, :empty_link
+        :drawings, :paintings, :multiples, :movies, :shorts,
+        :photos, :design, :schnitzenthesen, :empty_link
       ]
       @small_links ||= [
         :gallery, :articles, :lectures, :exhibitions
@@ -140,6 +140,10 @@ module DaVaz::View
 
     def movies(model)
       navigation_link(model, :works, :movies)
+    end
+
+    def shorts(model)
+      navigation_link(model, :works, :shorts)
     end
 
     def photos(model)

@@ -58,7 +58,7 @@ module DaVaz::State
       artobject_id = @session.user_input(:artobject_id) ||
         @model.artobject.artobject_id
       mandatory = %i{
-        title artgroup_id serie_id tool_id material_id date country_id
+        title artgroup_id serie_id tool_id material_id date country_id author
       }
       keys = %i{
         tags_to_s location form_language price serie_position size text url

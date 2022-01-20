@@ -18,6 +18,7 @@ require 'view/_partial/pager'
 #   * Paitings
 #   * Multiples
 #   * Movies
+#   * Shorts
 #   * Photos
 #   * Designs
 #   * Schnitzenthesen
@@ -112,6 +113,26 @@ module DaVaz::View
     end
   end
 
+  class ShortsArtObjectOuterComposite < HtmlGrid::DivComposite
+    COMPONENTS = {
+      [0, 0] => ShortsPager,
+      [0, 1] => :back_to_overview
+    }
+    CSS_ID_MAP = {
+      0 => 'artobject_pager',
+      1 => 'artobject_back_link'
+    }
+
+    def back_to_overview(model)
+      link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
+      link.href = 'javascript:void(0);'
+      link.set_attribute('onclick', <<~EOS)
+        return showShortGallery('shorts_gallery_view', 'shorts_list', '');
+      EOS
+      link
+    end
+  end
+
   class ArtObjectOuterComposite < HtmlGrid::DivComposite
     COMPONENTS = {
       [0, 0] => :pager,
@@ -142,6 +163,20 @@ module DaVaz::View
   class MoviesArtObjectComposite < HtmlGrid::DivComposite
     COMPONENTS = {
       [0, 0] => MoviesArtObjectOuterComposite,
+      [0, 1] => component(ArtObjectInnerComposite, :artobject)
+    }
+    CSS_ID_MAP = {
+      0 => 'artobject_outer_composite',
+      1 => 'artobject_inner_composite'
+    }
+    HTTP_HEADERS = {
+      'Content-Type' => 'text/html;charset=UTF-8'
+    }
+  end
+
+  class ShortsArtObjectComposite < HtmlGrid::DivComposite
+    COMPONENTS = {
+      [0, 0] => ShortsArtObjectOuterComposite,
       [0, 1] => component(ArtObjectInnerComposite, :artobject)
     }
     CSS_ID_MAP = {
@@ -346,6 +381,7 @@ module DaVaz::View
       [0, 16]    => :url,
       [0, 17]    => :price,
       [0, 18]    => :wordpress_url,
+      [0, 19]    => :author,
       [0, 20]    => :text_label,
       [1, 20]    => :text,
       [1, 21, 1] => :update,
@@ -542,6 +578,10 @@ module DaVaz::View
       input_text(:wordpress_url, '300', '80')
     end
 
+    def author(model)
+      input_text(:author, '150')
+    end
+
     private
 
     # Creates id for html editor (dijit.Editor) using model artobject_id.
@@ -622,6 +662,20 @@ module DaVaz::View
   class AdminMoviesArtObjectComposite < HtmlGrid::DivComposite
     COMPONENTS = {
       [0, 0] => MoviesArtObjectOuterComposite,
+      [0, 1] => AdminArtObjectInnerComposite
+    }
+    CSS_ID_MAP = {
+      0 => 'artobject_outer_composite',
+      1 => 'artobject_inner_composite'
+    }
+    HTTP_HEADERS = {
+      'Content-Type' => 'text/html;charset=UTF-8'
+    }
+  end
+
+  class AdminShortsArtObjectComposite < HtmlGrid::DivComposite
+    COMPONENTS = {
+      [0, 0] => ShortsArtObjectOuterComposite,
       [0, 1] => AdminArtObjectInnerComposite
     }
     CSS_ID_MAP = {

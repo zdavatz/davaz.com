@@ -35,6 +35,7 @@ module DaVaz::Util
       ajax_reload_tag_images
       ajax_live_edit_form
       ajax_movie_gallery
+      ajax_short_gallery
       ajax_multiples
       ajax_rack
       ajax_remove_element
@@ -90,6 +91,7 @@ module DaVaz::Util
       update
       upload_image
       movies
+      shorts
       work
     }
     FILES = %i{image_file}

@@ -1,0 +1,139 @@
+div#content {
+  background-image:    url("/resources/images/global/background.jpg");
+  background-position: top center;
+  background-repeat:   no-repeat;
+}
+
+div#top_navigation {
+  background:   #738494;
+  padding-left: 200px;
+}
+
+a.top-navigation:visited,
+a.top-navigation:link {
+  background: #738494;
+}
+
+a.top-navigation:hover {
+  background: #738494;
+}
+
+div#foot_navigation {
+  background: #738494;
+}
+
+a.foot-navigation:visited,
+a.foot-navigation:link {
+  background: #738494;
+}
+
+a.foot-navigation:hover {
+  background: #738494;
+}
+
+div#copyright {
+  background: #738494;
+}
+
+div#zone_image {
+  background-image:  url("/resources/images/global/topleft_movies.gif");
+  background-repeat: no-repeat;
+}
+
+span.shorts-details {
+  color:       black;
+  font-weight: bold;
+  float:       left;
+  clear:       both;
+}
+
+span.shorts-title {
+  color:       red;
+  font-weight: bold;
+}
+
+div.shorts-details {
+  float:       left;
+  height:      200px;
+  width:       300px;
+  padding-top: 20px;
+  text-align:  left;
+}
+
+div.shorts-image {
+  float:       left;
+  text-align:  right;
+  height:      200px;
+  width:       290px;
+  padding-top: 20px;
+}
+
+div.shorts-comment {
+  width:          600px;
+  padding-bottom: 10px;
+  text-align:     left;
+  color:          black;
+}
+
+div.shorts-details-link {
+  clear:          both;
+  width:          600px;
+  padding-bottom: 20px;
+  text-align:     left;
+  border-bottom:  solid #738494 2px;
+}
+
+div.more-link {
+  clear: both;
+  text-align: left;
+  float: left;
+}
+
+div.up-link {
+  float: right;
+  text-align: right;
+}
+
+div.shorts-google-link {
+  width:         600px;
+  text-align:    right;
+  margin-bottom: 5px;
+}
+
+a.inner-top-navigation:visited,
+a.inner-top-navigation:link {
+  color: #DAA520;
+}
+
+div.shorts-list-item {
+  clear:        both;
+  width:        600px;
+  margin-left:  auto;
+  margin-right: auto;
+}
+
+div.short-comment-link {
+  clear:          both;
+  padding-bottom: 10px;
+}
+
+div.short-comment-div {
+  color:          black;
+  clear:          both;
+  padding-top:    10px;
+  padding-bottom: 10px;
+}
+
+div#artobject_title {
+  background-color: #738494;
+}
+
+div#artobject_subtitle_left,
+div#artobject_subtitle_right {
+  background-color: #B2C4D4;
+}
+
+div.short-comment-close {
+  padding-top:    10px;
+  padding-bottom: 10px;
+}

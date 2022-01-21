@@ -107,7 +107,7 @@ module DaVaz::View
         link.value = @lookandfeel.lookup(:more)
         link.set_attribute('name', "#{model.artobject_id}-more")
         link.set_attribute('onclick', <<~EOS)
-          showMovieGallery('movies_gallery_view', 'movies_list', '#{url}');
+          showMovieAndShortGallery('movies_gallery_view', 'movies_list', '#{url}');
         EOS
         link
       end

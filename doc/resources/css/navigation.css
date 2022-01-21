@@ -244,6 +244,12 @@ a#movies:hover {
   background-image: url(/resources/images/navigation/movies.png);
 }
 
+li#shorts_navi_active,
+a#shorts:hover {
+  /*background-color: #7a8a99;*/
+  background-image: url(/resources/images/navigation/shorts.png);
+}
+
 li#photos_navi_active,
 a#photos:hover {
   /*background-color: #39cece;*/

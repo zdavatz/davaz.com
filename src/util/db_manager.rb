@@ -557,6 +557,47 @@ module DaVaz
         artobjects
       end
 
+      def load_shorts
+        result = connection.query(<<~SQL.gsub(/\n/, ''))
+          SELECT artobjects.*,
+           artgroups.name AS artgroup,
+           materials.name AS material,
+           series.name AS serie,
+           tools.name AS tool,
+           countries.name AS country
+           FROM artobjects
+           LEFT OUTER JOIN artgroups
+           ON artobjects.artgroup_id = artgroups.artgroup_id
+           LEFT OUTER JOIN materials
+           ON artobjects.material_id = materials.material_id
+           LEFT OUTER JOIN series
+           ON artobjects.serie_id = series.serie_id
+           LEFT OUTER JOIN tools
+           ON artobjects.tool_id = tools.tool_id
+           LEFT OUTER JOIN countries
+           ON artobjects.country_id = countries.country_id
+           WHERE artobjects.artgroup_id = 'SHO'
+           ORDER BY artobjects.title DESC
+        SQL
+        artobjects = []
+        table = {}
+        result.each { |key, value|
+          model = DaVaz::Model::ArtObject.new
+          key.each { |column_name, column_value|
+            model.send(column_name.to_s + '=', column_value)
+          }
+          table.store model.artobject_id, model
+          artobjects.push(model)
+        }
+        load_artobjects_links(table.keys).each do |id, links|
+          table[id].links.concat links
+        end
+        load_artobjects_tags(table.keys).each do |id, tags|
+          table[id].tags.concat tags
+        end
+        artobjects
+      end
+
       def load_oneliners
         result = connection.query(<<~SQL.gsub(/\n/, ''))
           SELECT * FROM oneliner

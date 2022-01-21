@@ -172,7 +172,7 @@ module DaVaz::View
 
       def shorts(model)
         link = HtmlGrid::Link.new(:shorts, model, @session, self)
-        link.href      = 'https://www.youtube.com/watch?v=8AW2b8VvDtk&list=PLxh_CmzTpMjE7gr_CIbFzuSDBHGwTzp9y'
+        link.href      = @lookandfeel.event_url(:works, :shorts)
         link.css_class = 'communication-link'
         link
       end

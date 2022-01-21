@@ -197,14 +197,14 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
 }
 
 // Shows movie detail view using replaceDiv
-function showMovieGallery(divId, replaceDivId, url) {
+function showMovieAndShortGallery(divId, replaceDivId, url) {
   require([
     'dojo/_base/xhr'
   , 'dojo/dom'
   , 'dojo/dom-attr'
   , 'dojo/back'
   , 'dijit/dijit'
-  , 'dijit/layout/ContentPane'
+  , 'dijit/layout/ContentPane',
   ], function(xhr, dom, attr, back, dijit, cpane) {
 	  var node = dom.byId(divId);
     if (node.style.display == 'none') {

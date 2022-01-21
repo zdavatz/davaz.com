@@ -59,7 +59,25 @@ module DaVaz::View
           if (artobjectId && artobjectId != '#top') {
             artobjectId = artobjectId.substring(1, artobjectId.length);
             var url = '#{url}' + artobjectId;
-            showMovieGallery('movies_gallery_view', 'movies_list', url);
+            showMovieAndShortGallery('movies_gallery_view', 'movies_list', url);
+          }
+        })
+      EOS
+    end
+  end
+
+  class OnloadShorts < HtmlGrid::JavaScript
+    def init
+      url = @lookandfeel.event_url(:gallery, :ajax_short_gallery, [
+        :artobject_id, ''
+      ])
+      @value = <<-EOS
+        dojo.addOnLoad(function() {
+          var artobjectId = location.hash;
+          if (artobjectId && artobjectId != '#top') {
+            artobjectId = artobjectId.substring(1, artobjectId.length);
+            var url = '#{url}' + artobjectId;
+            showMovieAndShortGallery('shorts_gallery_view', 'shorts_list', url);
           }
         })
       EOS

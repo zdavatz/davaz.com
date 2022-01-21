@@ -24,7 +24,8 @@ module DaVaz::State
       :shop_art_object    => Communication::ShopArtObject,
       :ajax_rack          => Gallery::AjaxRack,
       :home               => Personal::Init,
-      :ajax_movie_gallery => Works::AjaxMovieGallery
+      :ajax_movie_gallery => Works::AjaxMovieGallery,
+      :ajax_short_gallery => Works::AjaxShortGallery
     }
     HOME_STATE = Personal::Init
     VIEW = DaVaz::View::Personal::Init

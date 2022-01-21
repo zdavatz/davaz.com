@@ -37,6 +37,7 @@ module DaVaz::State
     class Design          < DaVaz::State::Works::Rack; end
     class Drawings        < DaVaz::State::Works::Rack; end
     class Movies          < DaVaz::State::Works::Global; end
+    class Shorts          < DaVaz::State::Works::Global; end
     class Multiples       < DaVaz::State::Works::Rack; end
     class Paintings       < DaVaz::State::Works::Rack; end
     class Photos          < DaVaz::State::Works::Rack; end

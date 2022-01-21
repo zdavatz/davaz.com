@@ -198,6 +198,10 @@ module DaVaz::View
     CSS_FILES = %i{navigation_css movies_css}
   end
 
+  class ShortsTemplate < CommonTemplate
+    CSS_FILES = %i{navigation_css shorts_css}
+  end
+
   class PersonalTemplate < CommonTemplate
     CSS_FILES = %i{navigation_css personal_css}
   end
@@ -239,6 +243,10 @@ module DaVaz::View
 
   class AdminMoviesTemplate < AdminTemplate
     CSS_FILES = %i{navigation_css movies_css admin_css}
+  end
+
+  class AdminShortsTemplate < AdminTemplate
+    CSS_FILES = %i{navigation_css shorts_css admin_css}
   end
 
   class AdminPaintingsTemplate < AdminTemplate

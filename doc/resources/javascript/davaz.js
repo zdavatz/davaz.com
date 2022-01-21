@@ -197,7 +197,7 @@ function toggleInnerHTML(divId, url, changeUrl, callback) {
 }
 
 // Shows movie detail view using replaceDiv
-function showMovieGallery(divId, replaceDivId, url) {
+function showMovieAndShortGallery(divId, replaceDivId, url) {
   require([
     'dojo/_base/xhr'
   , 'dojo/dom'
@@ -205,50 +205,10 @@ function showMovieGallery(divId, replaceDivId, url) {
   , 'dojo/back'
   , 'dijit/dijit'
   , 'dijit/layout/ContentPane',
-  , 'dijit/Editor'
   ], function(xhr, dom, attr, back, dijit, cpane) {
 	  var node = dom.byId(divId);
     if (node.style.display == 'none') {
 	    var artobjectId = url.split('/').pop();
-      xhr.get({
-        url: url.replace('http://', '//').replace(':80/', '/')
-      , handleAs: 'text'
-      , load: function(data, request) {
-          var pane = dijit.byId(divId);
-          if (pane == null) {
-            pane = new cpane({
-              id:             divId
-            , executeScripts: true
-            }, node);
-          }
-          pane.setContent(data);
-          replaceDiv(replaceDivId, divId);
-          back.addToHistory({
-            changeUrl: artobjectId
-          });
-        },
-      });
-    } else {
-      replaceDiv(divId, replaceDivId);
-      node.innerHTML = '';
-    }
-  });
-}
-
-// Shows short detail view using replaceDiv
-function showShortGallery(divId, replaceDivId, url) {
-  require([
-    'dojo/_base/xhr'
-  , 'dojo/dom'
-  , 'dojo/dom-attr'
-  , 'dojo/back'
-  , 'dijit/dijit'
-  , 'dijit/layout/ContentPane'
-  , 'dijit/Editor'
-  ], function(xhr, dom, attr, back, dijit, cpane) {
-    var node = dom.byId(divId);
-    if (node.style.display == 'none') {
-      var artobjectId = url.split('/').pop();
       xhr.get({
         url: url.replace('http://', '//').replace(':80/', '/')
       , handleAs: 'text'

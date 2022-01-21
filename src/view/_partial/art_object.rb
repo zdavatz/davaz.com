@@ -107,7 +107,7 @@ module DaVaz::View
       link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
       link.href = 'javascript:void(0);'
       link.set_attribute('onclick', <<~EOS)
-        return showMovieGallery('movies_gallery_view', 'movies_list', '');
+        return showMovieAndShortGallery('movies_gallery_view', 'movies_list', '');
       EOS
       link
     end
@@ -127,7 +127,7 @@ module DaVaz::View
       link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
       link.href = 'javascript:void(0);'
       link.set_attribute('onclick', <<~EOS)
-        return showShortGallery('shorts_gallery_view', 'shorts_list', '');
+        return showMovieAndShortGallery('shorts_gallery_view', 'shorts_list', '');
       EOS
       link
     end

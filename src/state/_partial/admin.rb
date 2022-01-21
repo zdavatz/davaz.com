@@ -46,6 +46,7 @@ module DaVaz::State
       :design                 => Works::AdminDesign,
       :drawings               => Works::AdminDrawings,
       :movies                 => Works::AdminMovies,
+      :shorts                 => Works::AdminShorts,
       :paintings              => Works::AdminPaintings,
       :photos                 => Works::AdminPhotos,
       :schnitzenthesen        => Works::AdminSchnitzenthesen,

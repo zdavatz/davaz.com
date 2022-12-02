@@ -8,6 +8,7 @@
 
 * [Ruby](https://github.com/zdavatz/davaz.com/files/6121658/gen_ruby_300.txt), `>= 2.3.1`
 * MySQL, `>= 5.6`
+* `sudo apt-get install default-libmysqlclient-dev`
 * ImageMagick
 * Apache2
 * cronolog (optional)

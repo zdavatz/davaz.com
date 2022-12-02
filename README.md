@@ -57,8 +57,12 @@ Use sample files in `etc` directory.
 
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)
-* Dump the Database: `mysqldump -u davaz -ppassword davaz2 > migration_dump_2.12.2022.sql`
-* Restore the Database: `mysql -u davaz -p -D davaz2 < migration_dump_2.12.2022.sql`
+* Dump DB: `mysqldump -u davaz -ppassword davaz2 > migration_dump_2.12.2022.sql`
+* `# mysql -u root -h localhost -p`
+* Create DB: `create database davaz2;`
+* Grant DB rights: `grant all privileges on davaz2.* to davaz@localhost identified by 'password';
+* Flus: `flush privileges;`
+* Restore DB: `mysql -u davaz -p -D davaz2 < migration_dump_2.12.2022.sql`
 
 ### Boot
 

@@ -57,6 +57,7 @@ Use sample files in `etc` directory.
 
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)
+* Dump the Database: `mysqldump -u davaz -ppassword davaz2 > migration_dump_2.12.2022.sql`
 
 ### Boot
 

@@ -13,6 +13,7 @@
 * Apache2
 * cronolog (optional)
 * daemontools
+* `sudo apt-get install daemontools-run`
 * `libnsl` for `sudo gem-300 install mysql2 -v '0.4.4' --source 'https://rubygems.org/'`
 
 ### Install

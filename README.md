@@ -69,13 +69,15 @@ Use sample files in `etc` directory.
 
 [daemontools](http://cr.yp.to/daemontools.html) supervises the service.
 
-* `cat /service/davaz.com/run`
+* `cat /var/www/davaz.com/svc/run`
 ```zsh
 #!/bin/sh
 exec 2>&1
-cd /var/www/new.davaz.com
-exec setuidgid bbmb /usr/local/bin/bundle-300 exec rackup config.ru
+cd /var/www/davaz.com
+exec setuidgid zdavatz /home/zdavatz/.rbenv/versions/3.0.0/bin/bundle exec rackup config.ru
 ```
+* `cd /etc/service 
+* `ln -s /var/www/davaz.com/svc/ davaz`
 
 How to boot developer console.
 

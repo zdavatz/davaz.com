@@ -1,5 +1,3 @@
-#\ -w -p 8007
-# 8006 is the port used to serve
 lib_dir = File.expand_path(File.join(File.dirname(__FILE__), 'src').untaint)
 $LOAD_PATH << lib_dir
 require 'util/config' # load config from etc/config.yml

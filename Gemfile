@@ -14,6 +14,7 @@ gem 'sbsm', '>= 1.3.6' # :git => 'https://github.com/ngiger/sbsm.git', :ref => '
 gem 'flexmock'
 gem 'htmlgrid'
 gem 'odba'
+gem 'rackup'
 
 group :test do
   gem 'simplecov'

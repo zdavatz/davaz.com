@@ -13,6 +13,7 @@
 * Apache2
 * cronolog (optional)
 * daemontools
+* `sudo apt-get install daemontools-run`
 * `libnsl` for `sudo gem-300 install mysql2 -v '0.4.4' --source 'https://rubygems.org/'`
 
 ### Install
@@ -57,19 +58,26 @@ Use sample files in `etc` directory.
 
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)
-* Dump the Database: `mysqldump -u davaz -ppassword davaz2 > migration_dump_2.12.2022.sql`
+* Dump DB: `mysqldump -u davaz -ppassword davaz2 > migration_dump_2.12.2022.sql`
+* `# mysql -u root -h localhost -p`
+* Create DB: `create database davaz2;`
+* Grant DB rights: `grant all privileges on davaz2.* to davaz@localhost identified by 'password';`
+* Flush: `flush privileges;`
+* Restore DB: `mysql -u davaz -p -D davaz2 < migration_dump_2.12.2022.sql`
 
 ### Boot
 
 [daemontools](http://cr.yp.to/daemontools.html) supervises the service.
 
-* `cat /service/davaz.com/run`
+* `cat /var/www/davaz.com/svc/run`
 ```zsh
 #!/bin/sh
 exec 2>&1
-cd /var/www/new.davaz.com
-exec setuidgid bbmb /usr/local/bin/bundle-300 exec rackup config.ru
+cd /var/www/davaz.com
+exec setuidgid zdavatz /home/zdavatz/.rbenv/versions/3.0.0/bin/bundle exec rackup config.ru
 ```
+* `cd /etc/service`
+* `ln -s /var/www/davaz.com/svc/ davaz`
 
 How to boot developer console.
 

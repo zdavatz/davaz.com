@@ -76,7 +76,7 @@ exec 2>&1
 cd /var/www/davaz.com
 exec setuidgid zdavatz /home/zdavatz/.rbenv/versions/3.0.0/bin/bundle exec rackup config.ru
 ```
-* `cd /etc/service 
+* `cd /etc/service`
 * `ln -s /var/www/davaz.com/svc/ davaz`
 
 How to boot developer console.

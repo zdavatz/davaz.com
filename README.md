@@ -10,7 +10,7 @@
 * MySQL, `>= 5.6`
 * `sudo apt-get install default-libmysqlclient-dev`
 * ImageMagick
-* Apache2
+* Apache2 `a2enmod proxy_html`
 * cronolog (optional)
 * daemontools
 * `sudo apt-get install daemontools-run`

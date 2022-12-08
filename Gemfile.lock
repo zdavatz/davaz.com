@@ -29,6 +29,9 @@ GEM
     odba (1.1.8)
     racc (1.6.0)
     rack (3.0.0)
+    rackup (0.2.3)
+      rack (>= 3.0.0.beta1)
+      webrick
     rake (13.0.3)
     rclconf (1.0.0)
     regexp_parser (2.1.1)
@@ -67,6 +70,7 @@ DEPENDENCIES
   minitest
   mysql2 (= 0.4.10)
   odba
+  rackup
   rake
   rclconf (= 1.0.0)
   rmagick (~> 2.15.4)

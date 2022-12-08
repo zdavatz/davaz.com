@@ -21,14 +21,17 @@ GEM
     mini_portile2 (2.8.0)
     minitest (5.14.4)
     mysql2 (0.4.10)
-    nokogiri (1.13.9)
+    nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    nokogiri (1.13.9-x86_64-linux)
+    nokogiri (1.13.10-x86_64-linux)
       racc (~> 1.4)
     odba (1.1.8)
-    racc (1.6.0)
+    racc (1.6.1)
     rack (3.0.0)
+    rackup (0.2.3)
+      rack (>= 3.0.0.beta1)
+      webrick
     rake (13.0.3)
     rclconf (1.0.0)
     regexp_parser (2.1.1)
@@ -67,6 +70,7 @@ DEPENDENCIES
   minitest
   mysql2 (= 0.4.10)
   odba
+  rackup
   rake
   rclconf (= 1.0.0)
   rmagick (~> 2.15.4)

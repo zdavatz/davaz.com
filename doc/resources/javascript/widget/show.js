@@ -35,6 +35,7 @@ define([
     }
   , fetch: function(url, callback) {
       var _this = this;
+      url = url.replace('http://', '//');
       xhr.get({
         url:      url
       , handleAs: _this.dataType

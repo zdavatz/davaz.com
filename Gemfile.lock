@@ -41,7 +41,7 @@ GEM
       racc (~> 1.4)
     odba (1.1.8)
     racc (1.6.1)
-    rack (3.0.4.2)
+    rack (3.0.6.1)
     rackup (0.2.3)
       rack (>= 3.0.0.beta1)
       webrick

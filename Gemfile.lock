@@ -22,7 +22,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.1.2)
-    mini_portile2 (2.8.0)
+    mini_portile2 (2.8.1)
     minitest (5.14.4)
     mysql2 (0.4.10)
     net-imap (0.3.2)
@@ -34,13 +34,13 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nokogiri (1.13.10)
+    nokogiri (1.14.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    nokogiri (1.13.10-x86_64-linux)
+    nokogiri (1.14.3-x86_64-linux)
       racc (~> 1.4)
     odba (1.1.8)
-    racc (1.6.1)
+    racc (1.6.2)
     rack (3.0.6.1)
     rackup (0.2.3)
       rack (>= 3.0.0.beta1)

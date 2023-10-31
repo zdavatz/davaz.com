@@ -5,7 +5,7 @@ gem 'mysql2', '0.4.10'
 gem 'dbi', '~> 0.4.5'
 gem 'webrick'
 
-gem 'rmagick', '~> 2.15.4'
+gem 'rmagick', '~> 5.3.0'
 
 gem 'rclconf', '1.0.0'
 gem 'ftools', '0.0.0'

@@ -71,7 +71,7 @@ GEM
     watir (6.18.0)
       regexp_parser (>= 1.2, < 3)
       selenium-webdriver (>= 3.8)
-    webrick (1.7.0)
+    webrick (1.8.2)
 
 PLATFORMS
   ruby

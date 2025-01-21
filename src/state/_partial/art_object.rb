@@ -129,7 +129,7 @@ module DaVaz::State
           hash.store(
             :date, "#{value.year}-#{value.month}-#{value.day}")
         else
-          hash.store(key, value)
+          hash.store(key, value || '')
         end
       }
       hash

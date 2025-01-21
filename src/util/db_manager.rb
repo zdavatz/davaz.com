@@ -869,7 +869,11 @@ module DaVaz
       def insert_artobject(values_hash)
         data = values_hash.map { |key, value|
           next if !value || key == :tags
-          [key.to_s, "'#{connection.escape(value)}'"]
+          if key == :price && value == ''
+            ['price', 'NULL']
+          else
+            [key.to_s, "'#{connection.escape(value)}'"]
+          end
         }.compact.to_h
         artobject_id = nil
         transaction do |conn|

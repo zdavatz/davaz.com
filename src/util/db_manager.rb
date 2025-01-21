@@ -81,13 +81,13 @@ module DaVaz
 
       def add_tool(tool_name)
         query_affected_rows(<<~SQL.gsub(/\n/, ''))
-          INSERT INTO tools VALUES ('', '#{tool_name}')
+          INSERT INTO tools VALUES (NULL, '#{tool_name}')
         SQL
       end
 
       def add_material(material_name)
         query_affected_rows(<<~SQL.gsub(/\n/, ''))
-          INSERT INTO materials VALUES ('', '#{material_name}')
+          INSERT INTO materials VALUES (NULL, '#{material_name}')
         SQL
       end
 

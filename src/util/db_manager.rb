@@ -875,6 +875,13 @@ module DaVaz
             [key.to_s, "'#{connection.escape(value)}'"]
           end
         }.compact.to_h
+        # These columns are not nullable in DB and has no default value,
+        # and yet it's sometimes missed from the codebase
+        %w{size location language title text url author}.each do |key|
+          if data[key].nil?
+            data[key] = "''"
+          end
+        end
         artobject_id = nil
         transaction do |conn|
           result = conn.query(<<~SQL.gsub(/\n/, ''))

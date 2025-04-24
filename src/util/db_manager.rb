@@ -1042,7 +1042,9 @@ module DaVaz
           end
           updated_attrs = update_hash.map { |key, val|
             next if key == :tags
-            if key == :date_ch
+            if key == :price and val.empty?
+              next "#{conn.escape(key.to_s)} = NULL"
+            elsif key == :date_ch
               date = val.split('.')
               val = "#{date[2]}-#{date[1]}-#{date[0]}"
             elsif !val

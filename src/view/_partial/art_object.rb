@@ -406,6 +406,10 @@ module DaVaz::View
     LOOKANDFEEL_MAP = {
       :form_language => :language,
     }
+    DOJO_REQUIRE = %w{
+      dijit/Editor
+      dijit/_editor/plugins/LinkDialog
+    }
 
     # edit links
     %i{serie tool material}.map do |method|
@@ -555,7 +559,7 @@ module DaVaz::View
     # @note The id attribute needs unique value for dojo widget
     def text(model)
       dojo_tag('dijit.Editor', {
-        'data-dojo-props': "id: '#{html_editor_id(model)}', class: 'tundra'"
+        'data-dojo-props': "id: '#{html_editor_id(model)}', extraPlugins: [\'createLink\', \'unlink\'], class: 'tundra'"
       }, model.artobject.text)
     end
 

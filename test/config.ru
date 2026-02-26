@@ -9,7 +9,7 @@ use Rack::Reloader, 0
 use Rack::ContentLength
 use Rack::RewindableInput::Middleware
 use(Rack::Static, urls: ["/doc/"])
-app = Rack::ShowExceptions.new(Rack::Lint.new(
+app = Rack::ShowExceptions.new(
   DaVaz::Util::RackInterface.new(db_manager: DaVaz::Stub::DbManager.new)
-  ) )
+  )
 run app

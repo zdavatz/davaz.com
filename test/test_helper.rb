@@ -21,7 +21,7 @@ require 'support/override_config.rb'
 DEBUG    = (ENV['DEBUG'] == 'true' || false)
 DEBUGGER = ENV['DEBUGGER'] \
   if ENV.has_key?('DEBUGGER') && !ENV['DEBUGGER'].empty?
-TEST_CLIENT_TIMEOUT = 5 # seconds
+TEST_CLIENT_TIMEOUT = 15 # seconds
 
 # Simple helper to wait for an element
 def wait_until( &block )

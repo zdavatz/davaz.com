@@ -35,7 +35,7 @@ module DaVaz
     'ticker_component_height' => '180',
     'test_user'         => nil,
     'test_password'     => nil,
-    :colors => {
+    'colors' => {
       :articles         => '#6d6dff',
       :carpets          => '#ff6c0d',
       :design           => '#FF6600',
@@ -50,16 +50,16 @@ module DaVaz
       :schnitzenthesen  => '#9eff0c',
     },
     # smtp
-    :mailer => {
-      :test   => false,
-      :from   => '"Shop" <shop@example.org>',
-      :to     => %w[],
-      :server => '',
-      :domain => 'example.org',
-      :port   => 587,
-      :auth   => 'plain',
-      :user   => '',
-      :pass   => '',
+    'mailer' => {
+      'test'   => false,
+      'from'   => '"Shop" <shop@example.org>',
+      'to'     => [],
+      'server' => '',
+      'domain' => 'example.org',
+      'port'   => 587,
+      'auth'   => 'plain',
+      'user'   => '',
+      'pass'   => '',
     }
   }
 

@@ -32,6 +32,7 @@ class TestGallery < Minitest::Test
     assert(widget.exists?)
 
     # serie ABD
+    sleep(2) # allow Dojo widget to fully initialize before next navigation
     link = wait_until { browser.link(id: 'ABD') }
     link.click
 

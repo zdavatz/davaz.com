@@ -6,6 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 davaz.com is a Ruby web application for an artist portfolio site with gallery, shop, guestbook, and content management. It uses a non-Rails stack: **Rack + SBSM (State-Based Session Management) + HtmlGrid (component-based views) + MySQL**.
 
+### Runtime
+- Ruby 3.4.5 (`.ruby-version`), Bundler 4.0.7
+- Key Ruby 3.4 notes: `require 'ostruct'` is explicit (gem in Gemfile), `String#crypt` rejects newline in salt, `YAML.safe_load` uses keyword args only, `.untaint` removed
+- Git LFS tracks `db/*.sql` (see `.gitattributes`)
+
 ## Commands
 
 ### Run the server
@@ -67,7 +72,12 @@ HTTP → Rack (config.ru) → RackInterface (util/app.rb) → SBSM State Machine
 
 ### Testing
 
-Tests use **Minitest** with **Watir/Selenium** for browser-based feature tests. Feature tests are in `test/feature/`. Mocking uses **Flexmock**. Coverage tracked via **SimpleCov**.
+Tests use **Minitest** with **Watir 7 / Selenium WebDriver 4** for headless browser feature tests (Chrome or Firefox). Feature tests are in `test/feature/`. Mocking uses **Flexmock**. Coverage tracked via **SimpleCov**.
+
+- Watir 7 uses keyword args for element locators: `div(id: 'foo')` not `div(:id, 'foo')`
+- Test server starts on port 11090 (see `test/config.ru` and `test/support/server.rb`)
+- Test stubs: `test/support/stub/db_manager.rb` replaces real DB; `test/pw_server.passwords` has test credentials
+- Dojo toolkit is auto-downloaded on first test run
 
 ## Configuration
 

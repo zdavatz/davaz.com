@@ -6,15 +6,15 @@
 
 ### Requirements
 
-* Ruby, `>= 3.4`
+* Ruby, `>= 3.4` (tested with 3.4.5)
 * MySQL, `>= 5.6`
 * `sudo apt-get install default-libmysqlclient-dev`
 * ImageMagick
+* [Git LFS](https://git-lfs.github.com/) (for database dumps in `db/`)
 * Apache2 `a2enmod proxy_html`
 * cronolog (optional)
 * daemontools
 * `sudo apt-get install daemontools-run`
-* `libnsl` for `sudo gem-300 install mysql2 -v '0.4.4' --source 'https://rubygems.org/'`
 
 ### Install
 
@@ -27,7 +27,7 @@ ruby 3.4.5 (2025-07-16 revision 20cda200d3) [x86_64-linux]
 % echo 'gem: --no-ri --no-rdoc' > ~/.gemrc
 
 % cd /var/www/new.davaz.com
-% sudo -u bbmb bundle-300
+% bundle install
 
 : JavaScript libraries
 % cd doc/resources
@@ -52,7 +52,7 @@ Use sample files in `etc` directory.
 % touch etc/pw_server.passwords
 % echo "Salting" > etc/pw_server.salt # But use a different word!!
 # To generate a user test_user with test_password call
-% root: bundle-300 exec bin/generate_passwd_entry test_user test_password >> etc/pw_server.passwords
+% bundle exec bin/generate_passwd_entry test_user test_password >> etc/pw_server.passwords
 
 ```
 
@@ -94,31 +94,22 @@ davaz> exit
 
 ### Dependencies
 
-* Ruby
-* Node.js
-
+* Ruby `>= 3.4`
+* Google Chrome or Firefox (for headless browser tests)
 * [minitest](https://github.com/seattlerb/minitest)
-* [Selenium](http://docs.seleniumhq.org/) (via [watir](https://github.com/watir/watir))
-* [PhantomJS](https://github.com/ariya/phantomjs)
+* [Selenium WebDriver 4](https://www.selenium.dev/) (via [watir 7](https://github.com/watir/watir))
 
 ### Setup
 
 ```zsh
 % git clone https://github.com/zdavatz/davaz.com.git
 % cd davaz.com
-
-: e.g. use nodeenv
-% pip install nodeenv
-% nodeenv --node=0.12.15 env
-% source env/bin/activate
-
-(env) % npm install
-(env) % bundle install
+% bundle install
 ```
 
-### How to run
+Dojo toolkit is downloaded automatically on first test run.
 
-bundle exec rake test TEST_OPTS="--name=TestLectures#test_lectures_toggle_hidden_dev_links" 2>&1 | tee rack_test-2.log
+### How to run
 
 #### Test suite
 
@@ -126,22 +117,10 @@ bundle exec rake test TEST_OPTS="--name=TestLectures#test_lectures_toggle_hidden
 % bundle exec rake test
 ```
 
-#### Single feature test
+#### Single test method
 
 ```zsh
-: `DEBUG=true` is useful for debug (but it might be not interested)
-bundle exec foreman run ruby -I.:test test/feature/lectures_test.rb
-Run options: --seed 33427
-
-`bundle exec rake test TEST_OPTS="--name=TestLectures#test_lectures_toggle_hidden_dev_links"`
-
-# Running:
-
-**
-
-Fabulous run in 3.490279s, 0.5730 runs/s, 3.7246 assertions/s.
-
-2 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+% bundle exec rake test TEST_OPTS="--name=TestLectures#test_lectures_toggle_hidden_dev_links"
 ```
 
 # TODO:

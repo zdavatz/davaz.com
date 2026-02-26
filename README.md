@@ -6,7 +6,7 @@
 
 ### Requirements
 
-* [Ruby](https://github.com/zdavatz/davaz.com/files/6121658/gen_ruby_300.txt), `>= 2.3.1`
+* Ruby, `>= 3.4`
 * MySQL, `>= 5.6`
 * `sudo apt-get install default-libmysqlclient-dev`
 * ImageMagick
@@ -22,7 +22,7 @@
 : Ruby and Rubygems
 : check your ruby version
 % ruby --version
-ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-linux]
+ruby 3.4.5 (2025-07-16 revision 20cda200d3) [x86_64-linux]
 
 % echo 'gem: --no-ri --no-rdoc' > ~/.gemrc
 
@@ -74,7 +74,7 @@ Use sample files in `etc` directory.
 #!/bin/sh
 exec 2>&1
 cd /var/www/davaz.com
-exec setuidgid zdavatz /home/zdavatz/.rbenv/versions/3.0.0/bin/bundle exec rackup config.ru
+exec setuidgid zdavatz /home/zdavatz/.rbenv/versions/3.4.5/bin/bundle exec rackup config.ru
 ```
 * `cd /etc/service`
 * `ln -s /var/www/davaz.com/svc/ davaz`

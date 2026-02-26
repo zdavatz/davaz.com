@@ -78,6 +78,15 @@ Tests use **Minitest** with **Watir 7 / Selenium WebDriver 4** for headless brow
 - Test server starts on port 11090 (see `test/config.ru` and `test/support/server.rb`)
 - Test stubs: `test/support/stub/db_manager.rb` replaces real DB; `test/pw_server.passwords` has test credentials
 - Dojo toolkit is auto-downloaded on first test run
+- `Rack::Lint` is NOT used in test config — sbsm's `body.rewind` call is incompatible with Rack 3.x Lint wrapper
+- Default Watir timeout is 15 seconds (`TEST_CLIENT_TIMEOUT` in `test/test_helper.rb`)
+
+### Current test status
+27 runs, 165 assertions, 0 failures, 0 errors, 5 skips. The 5 skips are known limitations:
+- Stub db_manager does not support creating/updating art objects
+- Shop validation error messages not displayed in test environment
+- Movie thumbnail image not found during tests
+- Postal code validation message not shown
 
 ## Configuration
 

@@ -30,7 +30,7 @@ class TestMovies < Minitest::Test
     last_link = nil
     [ 'Gallery', 'Guestbook', 'Shop'].each do |link_name|
       last_link = link_name
-      link =  browser.link(:text => link_name)
+      link =  browser.link(text: link_name)
       assert(link.exist? && link.visible?, "Link #{link_name} must exist")
       link.click
       new_session_id = browser.cookies['_session_id'][:value]

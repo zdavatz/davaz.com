@@ -9,7 +9,7 @@ class TestDrawings < Minitest::Test
   def setup
     startup_server
     browser.visit('/en/personal/work')
-    link = browser.link(:id, 'drawings')
+    link = browser.link(id: 'drawings')
     link.click
   end
 
@@ -24,7 +24,7 @@ class TestDrawings < Minitest::Test
 
     title = 'Title of ArtObject 111'
     visit_desk(title)
-    artobject_title = wait_until { browser.div(:id, 'artobject_title') }
+    artobject_title = wait_until { browser.div(id: 'artobject_title') }
     assert_equal(title, artobject_title.text)
   end if RUN_ALL_TESTS
 

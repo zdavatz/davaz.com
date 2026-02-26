@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 
 gem 'mimemagic'
-gem 'mysql2', '0.5.6'
+gem 'mysql2'
 gem 'dbi', '~> 0.4.5'
 gem 'webrick'
 
-gem 'rmagick', '~> 5.3.0'
+gem 'rmagick', '~> 5.5'
 
+gem 'ostruct'
 gem 'rclconf', '1.0.0'
 gem 'ftools', '0.0.0'
 

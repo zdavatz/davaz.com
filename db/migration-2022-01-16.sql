@@ -1,3 +1,3 @@
-LOCK TABLES `artgroups` WRITE;
-INSERT INTO `artgroups` VALUES ('SHO','Shorts',12);
-UNLOCK TABLES;
+version https://git-lfs.github.com/spec/v1
+oid sha256:553d855443034b7e67623fd12749d029796cd86512b195628ea2900c2d5d2d9a
+size 98

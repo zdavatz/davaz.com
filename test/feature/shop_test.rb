@@ -12,7 +12,7 @@ class TestShop < Minitest::Test
     startup_server
     browser.visit('/en/personal/work')
     sleep SLEEP_SECONDS
-    link = browser.link(:name, 'shop')
+    link = browser.link(name: 'shop')
     link.click
     sleep SLEEP_SECONDS
   end
@@ -23,7 +23,7 @@ class TestShop < Minitest::Test
   end
 
   def remove_all_items
-    browser.link(:text => /Remove all items/i).click if browser.link(:text => /Remove all items/i).exist?
+    browser.link(text: /Remove all items/i).click if browser.link(text: /Remove all items/i).exist?
     browser.text_fields.each{|t| t.clear}
   end
 
@@ -33,8 +33,8 @@ class TestShop < Minitest::Test
   end
 
   def enter_value(id, value)
-    item = browser.text_field(:id, id)
-    item = browser.text_field(:name => id) unless item.exist?
+    item = browser.text_field(id: id)
+    item = browser.text_field(name: id) unless item.exist?
     item.set(value.to_s)
     item.send_keys(:tab)
   end
@@ -51,13 +51,13 @@ class TestShop < Minitest::Test
   end
 
   def wait_and_check_cart(expected, row, column)
-    cart =  wait_until { browser.table(:id, 'shopping_cart') }[0][0]
-    wait_until { cart.table(:class, 'shopping-cart-list') }
+    cart =  wait_until { browser.table(id: 'shopping_cart') }[0][0]
+    wait_until { cart.table(class: 'shopping-cart-list') }
     0.upto(10).each do |x|
-      break if expected.eql?(cart.table(:class, 'shopping-cart-list')[row][column].text)
+      break if expected.eql?(cart.table(class: 'shopping-cart-list')[row][column].text)
       sleep 0.1
     end
-    assert_equal( expected, cart.table(:class, 'shopping-cart-list')[row][column].text)
+    assert_equal( expected, cart.table(class: 'shopping-cart-list')[row][column].text)
   end
 
   def test_shopping_cart_calculation_with_publications
@@ -65,16 +65,16 @@ class TestShop < Minitest::Test
     remove_all_items
 
     shopping_cart = Proc.new {
-      wait_until { browser.table(:id, 'shopping_cart') }[0][0]
+      wait_until { browser.table(id: 'shopping_cart') }[0][0]
     }
 
-    item = browser.text_field(:id, 'article[111]')
+    item = browser.text_field(id: 'article[111]')
     item.set('2')
     item.send_keys(:tab)
     sleep 0.5
     cart = shopping_cart.yield
     wait_and_check_cart('Title of ArtObject 111', 1,2)
-    rows = wait_until { cart.table(:class, 'shopping-cart-list') }
+    rows = wait_until { cart.table(class: 'shopping-cart-list') }
     assert_equal('Title of ArtObject 111', rows[1][2].text)
     cart = shopping_cart.yield
     skip "Our mock for the shopping card only returns one element, not several as the real"
@@ -82,14 +82,14 @@ class TestShop < Minitest::Test
     wait_and_check_cart('CHF 111.-', 1,4)
     assert(cart.text.include?('CHF 222.- / $ 176.- / € 132.'))
 
-    item = browser.text_field(:id, 'article[112]')
+    item = browser.text_field(id: 'article[112]')
     item.set('2')
     item.send_keys(:tab)
     cart = shopping_cart.yield
     wait_and_check_cart('Title of ArtObject 112', 1,2)
     wait_and_check_cart('CHF 112.-', 1,4)
 
-    item = browser.text_field(:id, 'article[113]')
+    item = browser.text_field(id: 'article[113]')
     item.set('2')
     item.send_keys(:tab)
     cart = shopping_cart.yield
@@ -97,7 +97,7 @@ class TestShop < Minitest::Test
     wait_and_check_cart('CHF 113.-', 1,4)
     wait_and_check_cart('Title of ArtObject 112', 2,2)
     wait_and_check_cart('Title of ArtObject 111', 3,2)
-    link = browser.link(:text, 'Remove all items')
+    link = browser.link(text: 'Remove all items')
     link.click
     assert_nil(/ArtObject/.match cart.text)
   end if RUN_ALL_TESTS
@@ -105,21 +105,21 @@ class TestShop < Minitest::Test
     assert_match('/en/communication/shop', browser.url)
     remove_all_items
 
-    item = browser.text_field(:id, 'article[113]')
+    item = browser.text_field(id: 'article[113]')
     item.set('2')
     item.send_keys(:tab)
 
-    item = browser.text_field(:id, 'article[114]')
+    item = browser.text_field(id: 'article[114]')
     item.set('1')
     item.send_keys(:tab)
 
     SBSM.info "Will click Order items"
-    link = browser.button(:text, 'Order item(s)')
+    link = browser.button(text: 'Order item(s)')
     link.click
 
     assert_text_present( 'Please fill out the fields that are marked with red.')
 
-    link = browser.link(:text, 'Remove all items')
+    link = browser.link(text: 'Remove all items')
     link.click
   end
 
@@ -127,17 +127,17 @@ if RUN_ALL_TESTS
   def test_checkout_fails_with_validation_error
     assert_match('/en/communication/shop', browser.url)
     remove_all_items
-    browser.text_field(:name, 'postal_code').set('A')
-    browser.text_field(:name, 'email').set('wrong_email_addr')
-    link = browser.button(:text, 'Order item(s)')
+    browser.text_field(name: 'postal_code').set('A')
+    browser.text_field(name: 'email').set('wrong_email_addr')
+    link = browser.button(text: 'Order item(s)')
     link.click
-    wait_until { browser.div(:text => /Please fill out the fields that are mark/) }
+    wait_until { browser.div(text: /Please fill out the fields that are mark/) }
     assert_text_present( 'Please fill out the fields that are marked with red.')
     skip('TODO: The postal code is marked as red, but the error message is not shown')
     assert_text_present('Your Postal Code seems to be invalid.')
     assert_text_present('Sorry, but your email-address seems to be invalid. Please try again.')
 
-    link = browser.link(:text, 'Remove all items')
+    link = browser.link(text: 'Remove all items')
     link.click
   end
 
@@ -145,7 +145,7 @@ if RUN_ALL_TESTS
     browser.visit "/en/communication/shop"
     remove_all_items
     112.upto(115).each do |id|
-      link = browser.link(:text => "Title of ArtObject #{id}")
+      link = browser.link(text: "Title of ArtObject #{id}")
       link.click
       assert_text_present("Text of ArtObject #{id}")
       browser.back
@@ -169,7 +169,7 @@ if RUN_ALL_TESTS
     enter_value("city", "TestCity")
     enter_value("country", "TestCountry")
     enter_value("email", "TestEmail@test.org")
-    browser.button(:name => 'order_item').click
+    browser.button(name: 'order_item').click
     skip('TODO: The postal code is marked as red, but the error message is not shown')
     assert_text_present( 'Please fill out the fields that are marked with red.')
     assert_text_present("Your Postal Code seems to be invalid.")
@@ -203,7 +203,7 @@ if RUN_ALL_TESTS
     enter_value("email", "TestEmail@test.org")
     Mail::TestMailer.deliveries.clear
     assert_equal(0, Mail::TestMailer.deliveries.length, 'No mails delivered yet')
-    browser.button(:name => 'order_item').click
+    browser.button(name: 'order_item').click
     assert_text_present("Your order has been succesfully sent.")
     # cannot test here, as it is sent in a different process!
     # assert_equal(1, Mail::TestMailer.deliveries.length, 'Must have deliverd an e-mail')

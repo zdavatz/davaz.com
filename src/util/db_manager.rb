@@ -22,7 +22,7 @@ module DaVaz
         '../../etc/db_connection_data.yml', File.dirname(__FILE__))
 
       puts "Loading #{DB_CONNECTION_DATA}"
-      if defined?(MiniTest)
+      if defined?(MiniTest) || defined?(Minitest)
         @@db_data = {}
       else
         raise "#{DB_CONNECTION_DATA} is missing" unless File.exist?(DB_CONNECTION_DATA)

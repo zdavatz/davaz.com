@@ -8,7 +8,7 @@ class TestDrawings < Minitest::Test
   def setup
     startup_server
     browser.visit('/en/personal/work')
-    link = browser.link(:id, 'drawings')
+    link = browser.link(id: 'drawings')
     link.click
   end
 
@@ -32,7 +32,7 @@ class TestDrawings < Minitest::Test
       ].each do |expected|
       assert(content.index(expected))
     end
-    browser.link(:text => 'Links').click
+    browser.link(text: 'Links').click
     content = browser.text.clone
     [ 'Title of ArtObject 113',
       'Url of ArtObject 113',

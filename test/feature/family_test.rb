@@ -13,7 +13,7 @@ class TestFamily < Minitest::Test
   def test_family_slide_show_widget
     assert_match('/en/personal/family', browser.url)
 
-    widget = wait_until { browser.div(:id, 'ywesee_widget_slide_0') }
+    widget = wait_until { browser.div(id: 'ywesee_widget_slide_0') }
     assert_equal('ywesee_widget_slide_0', widget.attribute_value('widgetid'))
 
     control = widget.img(class: 'slide-control-image')

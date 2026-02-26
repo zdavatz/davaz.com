@@ -31,9 +31,9 @@ ruby 3.4.5 (2025-07-16 revision 20cda200d3) [x86_64-linux]
 
 : JavaScript libraries
 % cd doc/resources
-% curl -sLO http://download.dojotoolkit.org/release-1.7.10/dojo-release-1.7.10.tar.gz
-% tar zxvf dojo-release-1.7.10
-% mv dojo-release-1.7.10 dojo
+% curl -sLO https://download.dojotoolkit.org/release-1.7.12/dojo-release-1.7.12.tar.gz
+% tar zxvf dojo-release-1.7.12.tar.gz
+% mv dojo-release-1.7.12 dojo
 ```
 
 ### Configuration

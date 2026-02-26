@@ -1,4 +1,4 @@
-lib_dir = File.expand_path(File.join(File.dirname(__FILE__), 'src').untaint)
+lib_dir = File.expand_path(File.join(File.dirname(__FILE__), 'src'))
 $LOAD_PATH << lib_dir
 require 'util/config' # load config from etc/config.yml
 require 'davaz'

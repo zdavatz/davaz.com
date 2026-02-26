@@ -23,7 +23,7 @@ class PwServer
     end
   end
   def initialize
-    @entries = YAML.safe_load(File.read(@@password_file), [Symbol, PwEntry])
+    @entries = YAML.safe_load(File.read(@@password_file), permitted_classes: [Symbol, PwEntry])
   end
 
   def valid?
@@ -59,8 +59,8 @@ class PwServer
 
   private_class_method
   def self.readEtcFiles
-    password_file = File.join(Dir.pwd, defined?(MiniTest) ? "test" : "etc", "pw_server.passwords")
-    salt_file = File.join(Dir.pwd, defined?(MiniTest) ? "test" : "etc", "pw_server.salt")
+    password_file = File.join(Dir.pwd, (defined?(MiniTest) || defined?(Minitest)) ? "test" : "etc", "pw_server.passwords")
+    salt_file = File.join(Dir.pwd, (defined?(MiniTest) || defined?(Minitest)) ? "test" : "etc", "pw_server.salt")
     unless File.exist?(password_file)
       puts "Missing password file  #{password_file}"
       exit(3)
@@ -69,7 +69,7 @@ class PwServer
       puts "Missing salt file  #{salt_file}"
       exit(3)
     end
-    @@mySalt = File.readlines(salt_file).first
+    @@mySalt = File.readlines(salt_file).first.chomp
     @@password_file = password_file
   end
   PwServer.readEtcFiles

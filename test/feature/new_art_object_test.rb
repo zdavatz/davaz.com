@@ -20,7 +20,7 @@ class TestNewArtObject < Minitest::Test
     button = wait_until { browser.element(name: 'save') }
     button.click
 
-    message = wait_until { browser.td(:class, 'processingerror') }
+    message = wait_until { browser.td(class: 'processingerror') }
     assert_equal(
       'Please fill out the fields that are marked with red.', message.text)
   end
@@ -42,8 +42,8 @@ class TestNewArtObject < Minitest::Test
     form.text_field(name: 'date').set('01.01.2016')
     form.select_list(name: 'country_id').select('Name of Country CH')
 
-    frame = wait_until { browser.iframe(:index, 0) }
-    editor = frame.div(:id, 'dijitEditorBody')
+    frame = wait_until { browser.iframe(index: 0) }
+    editor = frame.div(id: 'dijitEditorBody')
     editor.focus
     editor.send_keys(:delete) # there is a strange blank space
     editor.send_keys('NEW ART OBJECT')
@@ -53,6 +53,6 @@ class TestNewArtObject < Minitest::Test
     button = browser.element(name: 'save')
     button.click
 
-    refute(browser.td(:class, 'processingerror').exists?)
+    refute(browser.td(class: 'processingerror').exists?)
   end
 end

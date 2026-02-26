@@ -64,9 +64,9 @@ class TestMovies < Minitest::Test
     link = browser.a(name: '111-more')
     link.click
 
-    view = wait_until { browser.div(:id, 'movies_gallery_view') }
+    view = wait_until { browser.div(id: 'movies_gallery_view') }
     assert_match('/en/works/movies/#111', browser.url)
-    pager = view.div(:id, 'artobject_pager')
+    pager = view.div(id: 'artobject_pager')
     sleep(1)
     assert_match("Item 1 of #{NR_ITEMS}", pager.text)
 
@@ -114,7 +114,7 @@ class TestMovies < Minitest::Test
     logout
     assert_equal(false, browser.element(name: 'update').exist?)
 
-    browser.div(:id, 'movies_gallery_view').wait_until(&:exist?)
+    browser.div(id: 'movies_gallery_view').wait_until(&:exist?)
     assert_match('/en/works/movies/#111', browser.url)
 
     assert_text_present('Text of ArtObject 111')

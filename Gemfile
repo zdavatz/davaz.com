@@ -7,6 +7,7 @@ gem 'webrick'
 
 gem 'rmagick', '~> 5.5'
 
+gem 'ostruct'
 gem 'rclconf', '1.0.0'
 gem 'ftools', '0.0.0'
 

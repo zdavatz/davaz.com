@@ -6,7 +6,7 @@ require 'util/validator'
 class TestValidator < Minitest::Test
 
   def setup
-    puts  PwServer::generate_pw_entry
+    puts  PwServer::generate_pw_entry('test@test.com', 'test_password')
   end
 
   def test_validate_article

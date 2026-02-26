@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module DaVaz
   module Model; end
   module State; end

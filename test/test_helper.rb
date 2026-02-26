@@ -37,7 +37,7 @@ dojo = File.join(root_dir, 'doc/resources/dojo/dojo/dojo.js')
 if File.exist?(dojo)
   puts "found #{dojo}"
 else
-  download_url = 'http://download.dojotoolkit.org/release-1.7.10/dojo-release-1.7.10.tar.gz'
+  download_url = 'https://download.dojotoolkit.org/release-1.7.12/dojo-release-1.7.12.tar.gz'
   puts "Installing #{File.basename(download_url, '.tar.gz')}"
   cache_file = File.join(Dir.pwd, 'dojo', File.basename(download_url))
   FileUtils.makedirs(File.dirname(cache_file), :verbose => true)

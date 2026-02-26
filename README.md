@@ -123,13 +123,18 @@ Dojo toolkit is downloaded automatically on first test run.
 % bundle exec rake test TEST_OPTS="--name=TestLectures#test_lectures_toggle_hidden_dev_links"
 ```
 
+### Current status
+
+27 runs, 165 assertions, 0 failures, 0 errors, 5 skips (Ruby 3.4.5, headless Chrome).
+
 # TODO:
 
-* Fix 4 skipped unit tests
-** Stub of db_manager does not allow update of art_objects
-** shop does not show some help messages when validations failures
-** movies: thumbnail of movie picture is not show while running tests
-* improve/add coverage for partial views
+* Fix 5 skipped tests:
+  * Stub of db_manager does not allow creation/update of art_objects
+  * Shop does not show some help messages on validation failures
+  * Movies: thumbnail of movie picture is not shown while running tests
+  * Postal code validation message not shown
+* Improve/add coverage for partial views
 
 ## License
 

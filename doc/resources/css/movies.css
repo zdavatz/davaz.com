@@ -122,6 +122,13 @@ div.movies-embed-wrapper iframe {
   height: 100%;
 }
 
+div.movies-view-count {
+  color:       #555;
+  font-size:   0.9em;
+  padding-top: 4px;
+  text-align:  right;
+}
+
 a.inner-top-navigation:visited,
 a.inner-top-navigation:link {
   color: #DAA520;

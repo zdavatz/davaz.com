@@ -5,6 +5,7 @@
 !/etc/davaz.yml
 !/etc/trans_handler.yml
 .env
+.yt-keys
 
 /log
 /doc/resources/dojo*

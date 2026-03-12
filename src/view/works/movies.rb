@@ -8,6 +8,7 @@ require 'view/template'
 require 'view/_partial/onload'
 require 'view/_partial/list'
 require 'util/image_helper'
+require 'util/youtube_helper'
 
 module DaVaz::View
   module Works
@@ -91,18 +92,15 @@ module DaVaz::View
     class MovieEmbed < HtmlGrid::Div
       def init
         super
-        video_id = youtube_video_id(@model.url)
+        video_id = DaVaz::Util::YoutubeHelper.extract_video_id(@model.url)
         return unless video_id
-        @value = %(<div class="movies-embed-wrapper"><iframe src="https://www.youtube.com/embed/#{video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>)
-      end
-
-      private
-
-      def youtube_video_id(url)
-        return nil if url.nil? || url.empty?
-        if url =~ %r{(?:youtube\.com/watch\?.*v=|youtu\.be/|youtube\.com/embed/)([A-Za-z0-9_-]{11})}
-          $1
+        view_count = DaVaz::Util::YoutubeHelper.fetch_view_count(video_id)
+        views_html = if view_count
+          %(<div class="movies-view-count">#{DaVaz::Util::YoutubeHelper.format_view_count(view_count)}</div>)
+        else
+          ''
         end
+        @value = %(<div class="movies-embed-wrapper"><iframe src="https://www.youtube.com/embed/#{video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>#{views_html})
       end
     end
 

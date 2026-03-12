@@ -11,6 +11,7 @@ require 'view/_partial/select'
 require 'view/_partial/image'
 require 'view/_partial/tag'
 require 'view/_partial/pager'
+require 'util/youtube_helper'
 
 # ArtObjects
 #
@@ -77,12 +78,15 @@ module DaVaz::View
 
     def youtube_embed(model=@model)
       return '' if !model || !model.url || model.url.empty?
-      if model.url =~ %r{(?:youtube\.com/watch\?.*v=|youtu\.be/|youtube\.com/embed/)([A-Za-z0-9_-]{11})}
-        video_id = $1
-        %(<div class="movies-embed-wrapper"><iframe src="https://www.youtube.com/embed/#{video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>)
+      video_id = DaVaz::Util::YoutubeHelper.extract_video_id(model.url)
+      return '' unless video_id
+      view_count = DaVaz::Util::YoutubeHelper.fetch_view_count(video_id)
+      views_html = if view_count
+        %(<div class="movies-view-count">#{DaVaz::Util::YoutubeHelper.format_view_count(view_count)}</div>)
       else
         ''
       end
+      %(<div class="movies-embed-wrapper"><iframe src="https://www.youtube.com/embed/#{video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>#{views_html})
     end
 
     def url(model=@model)

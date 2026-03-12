@@ -95,3 +95,4 @@ Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_descriptio
 - `etc/db_connection_data.yml` — MySQL credentials (copy from `.sample`)
 - `etc/pw_server.passwords` — Authentication credentials
 - `etc/pw_server.salt` — Password salt
+- `.yt-keys` — YouTube Data API v3 keys (one per line, `#` for comments). Used to display view counts on movie embeds. Supports multiple keys for different YouTube accounts. Keys are read from project root first, then `~/.yt-keys`. Falls back to `YOUTUBE_API_KEY` / `YOUTUBE_API_KEY_2` env vars. App works without keys (view counts simply not shown).

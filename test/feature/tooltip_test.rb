@@ -35,7 +35,7 @@ class TestDrawings < Minitest::Test
     browser.link(text: 'Links').click
     content = browser.text.clone
     [ 'Title of ArtObject 113',
-      'Url of ArtObject 113',
+      'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
       '01.01.2113',
       ].each do |expected|
       assert(content.index(expected))

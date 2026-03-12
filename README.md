@@ -125,7 +125,8 @@ Dojo toolkit is downloaded automatically on first test run.
 
 ### Current status
 
-27 runs, 165 assertions, 0 failures, 0 errors, 5 skips (Ruby 3.4.5, headless Chrome).
+27 runs, 159 assertions, 0 failures, 0 errors, 5 skips (Ruby 3.4.5, headless Chrome).
+Note: The admin movies WYSIWYG editor test has a known flaky cursor position issue in headless Chrome.
 
 # TODO:
 

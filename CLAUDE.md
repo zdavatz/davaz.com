@@ -82,11 +82,13 @@ Tests use **Minitest** with **Watir 7 / Selenium WebDriver 4** for headless brow
 - Default Watir timeout is 15 seconds (`TEST_CLIENT_TIMEOUT` in `test/test_helper.rb`)
 
 ### Current test status
-27 runs, 165 assertions, 0 failures, 0 errors, 5 skips. The 5 skips are known limitations:
+27 runs, 159 assertions, 0 failures, 0 errors, 5 skips. The 5 skips are known limitations:
 - Stub db_manager does not support creating/updating art objects
 - Shop validation error messages not displayed in test environment
 - Movie thumbnail image not found during tests
 - Postal code validation message not shown
+
+Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_description_text_by_wysiwyg_editor`) has a known flaky cursor position issue in headless Chrome — the Dojo editor sometimes appends text instead of prepending.
 
 ## Configuration
 

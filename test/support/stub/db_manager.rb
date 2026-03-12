@@ -41,7 +41,7 @@ module DaVaz::Stub
       @title = "Title of ArtObject #{id}"
       @tool = "Tool of ArtObject #{id}"
       @tool_id = "1"
-      @url = "Url of ArtObject #{id}"
+      @url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     end
 
     def set_artgroup_id(artgroup_id)

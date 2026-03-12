@@ -88,6 +88,24 @@ module DaVaz::View
       end
     end
 
+    class MovieEmbed < HtmlGrid::Div
+      def init
+        super
+        video_id = youtube_video_id(@model.url)
+        return unless video_id
+        @value = %(<div class="movies-embed-wrapper"><iframe src="https://www.youtube.com/embed/#{video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>)
+      end
+
+      private
+
+      def youtube_video_id(url)
+        return nil if url.nil? || url.empty?
+        if url =~ %r{(?:youtube\.com/watch\?.*v=|youtu\.be/|youtube\.com/embed/)([A-Za-z0-9_-]{11})}
+          $1
+        end
+      end
+    end
+
     class MoreLink < HtmlGrid::DivComposite
       COMPONENTS = {
         [0, 0] => :more_link,
@@ -125,15 +143,17 @@ module DaVaz::View
         [0, 0] => MovieDetails,
         [0, 1] => MovieImage,
         [0, 2] => GoogleVideoLink,
-        [0, 3] => MovieComment,
-        [0, 4] => MoreLink,
+        [0, 3] => MovieEmbed,
+        [0, 4] => MovieComment,
+        [0, 5] => MoreLink,
       }
       CSS_MAP = {
         0 => 'movies-details',
         1 => 'movies-image',
         2 => 'movies-google-link',
-        3 => 'movies-comment',
-        4 => 'movies-details-link',
+        3 => 'movies-embed',
+        4 => 'movies-comment',
+        5 => 'movies-details-link',
       }
 
       def movie_details_div(model)
@@ -141,8 +161,8 @@ module DaVaz::View
       end
 
       def init
-        css_id_map.store(4, "movie_details_link_#{@model.artobject_id}")
-        css_id_map.store(5, "movie_details_div_#{@model.artobject_id}")
+        css_id_map.store(5, "movie_details_link_#{@model.artobject_id}")
+        css_id_map.store(6, "movie_details_div_#{@model.artobject_id}")
         super
       end
     end

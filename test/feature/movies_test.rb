@@ -52,7 +52,7 @@ class TestMovies < Minitest::Test
 
     image = view.img(id: 'artobject_image_111')
     link = browser.link(text: /Watch the/)
-    assert_match(/works\/movies\/Url/, link.href)
+    assert_match(/youtube\.com/, link.href)
 
     skip('TODO: Somehow in the test the 111.jpg thumbnail is not show. Because it does not exist?')
     assert_match('/resources/uploads/images/1/111.jpeg', image.attribute_value('src'))
@@ -95,7 +95,17 @@ class TestMovies < Minitest::Test
 
     login_as(email: TEST_USER, password: TEST_PASSWORD)
 
-    frame = wait_until { browser.iframe(index: 0) }
+    # Find the Dojo editor iframe (not a YouTube embed)
+    Watir::Wait.until(timeout: TEST_CLIENT_TIMEOUT) {
+      browser.iframes.any? { |f|
+        src = f.attribute_value('src') rescue ''
+        (src.nil? || src.empty? || !src.include?('youtube'))
+      }
+    }
+    frame = browser.iframes.find { |f|
+      src = f.attribute_value('src') rescue ''
+      src.nil? || src.empty? || !src.include?('youtube')
+    }
     editor = frame.div(id: 'dijitEditorBody')
     editor.focus
     sleep(1)

@@ -45,8 +45,9 @@ module DaVaz::View
       [0, 3] => :image,
       [0, 4] => ArtobjectDetails,
       [0, 5] => :url,
-      [0, 6] => :text,
-      [0, 7] => :wordpress_url
+      [0, 6] => :youtube_embed,
+      [0, 7] => :text,
+      [0, 8] => :wordpress_url
     }
     CSS_ID_MAP = {
       0 => 'artobject_title',
@@ -55,8 +56,9 @@ module DaVaz::View
       3 => 'artobject_image',
       4 => 'artobject_details',
       5 => 'artobject_google_video_url',
-      6 => 'artobject_text',
-      7 => 'artobject_wordpress_url',
+      6 => 'artobject_youtube_embed',
+      7 => 'artobject_text',
+      8 => 'artobject_wordpress_url',
     }
 
     def image(model=@model)
@@ -71,6 +73,16 @@ module DaVaz::View
       link.value = img
       link.set_attribute('target', '_blank')
       link
+    end
+
+    def youtube_embed(model=@model)
+      return '' if !model || !model.url || model.url.empty?
+      if model.url =~ %r{(?:youtube\.com/watch\?.*v=|youtu\.be/|youtube\.com/embed/)([A-Za-z0-9_-]{11})}
+        video_id = $1
+        %(<div class="movies-embed-wrapper"><iframe src="https://www.youtube.com/embed/#{video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>)
+      else
+        ''
+      end
     end
 
     def url(model=@model)

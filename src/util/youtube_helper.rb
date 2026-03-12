@@ -17,9 +17,30 @@ module DaVaz
         end
       end
 
+      def self.api_keys
+        keys = []
+        # Read keys from .yt-keys file (one key per line)
+        # Check project root first, then home directory
+        [File.join(DaVaz.config.project_root, '.yt-keys'),
+         File.expand_path('~/.yt-keys')].each do |yt_keys_file|
+          next unless File.exist?(yt_keys_file)
+          File.readlines(yt_keys_file).each do |line|
+            key = line.strip
+            keys << key unless key.empty? || key.start_with?('#')
+          end
+        end
+        # Also check environment variables as fallback
+        keys << ENV['YOUTUBE_API_KEY'] if ENV['YOUTUBE_API_KEY'] && !ENV['YOUTUBE_API_KEY'].empty?
+        (2..10).each do |i|
+          key = ENV["YOUTUBE_API_KEY_#{i}"]
+          keys << key if key && !key.empty?
+        end
+        keys.uniq
+      end
+
       def self.fetch_view_counts(video_ids)
-        api_key = ENV['YOUTUBE_API_KEY']
-        return {} if api_key.nil? || api_key.empty? || video_ids.empty?
+        keys = api_keys
+        return {} if keys.empty? || video_ids.empty?
 
         now = Time.now
         uncached = video_ids.reject { |id|
@@ -27,24 +48,30 @@ module DaVaz
         }
 
         if uncached.any?
-          begin
-            # API supports up to 50 IDs per request
-            uncached.each_slice(50) do |batch|
-              ids_param = batch.join(',')
-              uri = URI("https://www.googleapis.com/youtube/v3/videos?part=statistics&id=#{ids_param}&key=#{api_key}")
-              response = Net::HTTP.get(uri)
-              data = JSON.parse(response)
-              if data['items']
-                data['items'].each do |item|
-                  id = item['id']
-                  views = item.dig('statistics', 'viewCount')
-                  @cache[id] = views ? views.to_i : nil
-                  @cache_timestamps[id] = now
+          # Query each API key — different keys may have different videos
+          keys.each do |api_key|
+            # Only query IDs we haven't found yet
+            missing = uncached.reject { |id| @cache[id] && @cache_timestamps[id] == now }
+            break if missing.empty?
+
+            begin
+              missing.each_slice(50) do |batch|
+                ids_param = batch.join(',')
+                uri = URI("https://www.googleapis.com/youtube/v3/videos?part=statistics&id=#{ids_param}&key=#{api_key}")
+                response = Net::HTTP.get(uri)
+                data = JSON.parse(response)
+                if data['items']
+                  data['items'].each do |item|
+                    id = item['id']
+                    views = item.dig('statistics', 'viewCount')
+                    @cache[id] = views ? views.to_i : nil
+                    @cache_timestamps[id] = now
+                  end
                 end
               end
+            rescue StandardError => e
+              warn "YoutubeHelper (key ...#{api_key[-4..]}): #{e.message}"
             end
-          rescue StandardError => e
-            warn "YoutubeHelper: #{e.message}"
           end
         end
 

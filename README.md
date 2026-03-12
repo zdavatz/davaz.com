@@ -54,6 +54,12 @@ Use sample files in `etc` directory.
 # To generate a user test_user with test_password call
 % bundle exec bin/generate_passwd_entry test_user test_password >> etc/pw_server.passwords
 
+: YouTube API keys for movie view counts (optional, one key per line)
+% cat > .yt-keys <<EOF
+# YouTube Data API v3 keys
+YOUR_API_KEY_1
+YOUR_API_KEY_2
+EOF
 ```
 
 ### Database

@@ -62,6 +62,7 @@ HTTP → Rack (config.ru) → RackInterface (util/app.rb) → SBSM State Machine
   - `lookandfeel.rb` — Theme/styling configuration
   - `validator.rb` — Form input validation
   - `trans_handler.davaz.rb` — URL translation/routing
+  - `youtube_helper.rb` — YouTube Data API v3 integration (view counts for movie embeds, batched prefetch with 1h cache, 5s HTTP timeouts)
 
 ### Key Patterns
 

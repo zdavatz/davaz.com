@@ -80,7 +80,7 @@ module DaVaz::View
       return '' if !model || !model.url || model.url.empty?
       video_id = DaVaz::Util::YoutubeHelper.extract_video_id(model.url)
       return '' unless video_id
-      view_count = DaVaz::Util::YoutubeHelper.fetch_view_count(video_id)
+      view_count = DaVaz::Util::YoutubeHelper.cached_view_count(video_id)
       views_html = if view_count
         %(<div class="movies-view-count">#{DaVaz::Util::YoutubeHelper.format_view_count(view_count)}</div>)
       else

@@ -203,6 +203,13 @@ module DaVaz::View
         3 => 'display:none;',
       }
 
+      def init
+        # Prefetch all YouTube view counts in one batched API call
+        movies = @model.respond_to?(:each) ? @model : []
+        DaVaz::Util::YoutubeHelper.prefetch_view_counts(movies)
+        super
+      end
+
       def movie_top_link(model)
         link = HtmlGrid::Link.new(:nbsp, model, @session, self)
         link.set_attribute('name', 'top')

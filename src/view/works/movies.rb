@@ -100,7 +100,7 @@ module DaVaz::View
         else
           ''
         end
-        @value = %(<div class="movies-embed-wrapper"><iframe src="https://www.youtube.com/embed/#{video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>#{views_html})
+        @value = %(<div class="movies-embed-wrapper" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/hqdefault.jpg" alt="#{video_id}" class="movies-embed-thumbnail"><div class="movies-embed-play"></div></div>#{views_html})
       end
     end
 

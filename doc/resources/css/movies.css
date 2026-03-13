@@ -112,6 +112,7 @@ div.movies-embed-wrapper {
   padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
+  cursor: pointer;
 }
 
 div.movies-embed-wrapper iframe {
@@ -120,6 +121,41 @@ div.movies-embed-wrapper iframe {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+img.movies-embed-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+div.movies-embed-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 48px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+}
+
+div.movies-embed-play:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 10px 0 10px 20px;
+  border-color: transparent transparent transparent white;
+}
+
+div.movies-embed-wrapper:hover div.movies-embed-play {
+  background-color: rgba(204, 0, 0, 0.9);
 }
 
 div.movies-view-count {

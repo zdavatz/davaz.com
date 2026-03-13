@@ -38,6 +38,13 @@ module DaVaz
         keys.uniq
       end
 
+      def self.prefetch_view_counts(art_objects)
+        video_ids = art_objects.map { |ao|
+          extract_video_id(ao.url)
+        }.compact.uniq
+        fetch_view_counts(video_ids) if video_ids.any?
+      end
+
       def self.fetch_view_counts(video_ids)
         keys = api_keys
         return {} if keys.empty? || video_ids.empty?
@@ -58,8 +65,12 @@ module DaVaz
               missing.each_slice(50) do |batch|
                 ids_param = batch.join(',')
                 uri = URI("https://www.googleapis.com/youtube/v3/videos?part=statistics&id=#{ids_param}&key=#{api_key}")
-                response = Net::HTTP.get(uri)
-                data = JSON.parse(response)
+                http = Net::HTTP.new(uri.host, uri.port)
+                http.use_ssl = true
+                http.open_timeout = 5
+                http.read_timeout = 5
+                response = http.get(uri.request_uri)
+                data = JSON.parse(response.body)
                 if data['items']
                   data['items'].each do |item|
                     id = item['id']

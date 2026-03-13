@@ -95,6 +95,11 @@ module DaVaz
         result[video_id]
       end
 
+      def self.cached_view_count(video_id)
+        return nil unless video_id
+        @cache[video_id]
+      end
+
       def self.format_view_count(count)
         return nil unless count
         if count >= 1_000_000

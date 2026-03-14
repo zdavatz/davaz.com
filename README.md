@@ -49,10 +49,9 @@ Use sample files in `etc` directory.
 
 : Password for login
 % cd /var/www/new.davaz.com
-% touch etc/pw_server.passwords
 % echo "Salting" > etc/pw_server.salt # But use a different word!!
-# To generate a user test_user with test_password call
-% bundle exec bin/generate_passwd_entry test_user test_password >> etc/pw_server.passwords
+# To generate a user with a password (uses crypt() with the salt)
+% bundle exec bin/generate_passwd_entry user@example.com mypassword >> etc/pw_server.passwords
 
 : YouTube API keys for movie view counts (optional, one key per line)
 % cat > .yt-keys <<EOF

@@ -30,6 +30,7 @@ module DaVaz::View
 
     def init
       super
+      @form_properties['ACTION'] = @lookandfeel.event_url(:admin, :login)
       error_message
       self.onsubmit = 'return false;'
     end

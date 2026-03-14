@@ -70,6 +70,7 @@ HTTP → Rack (config.ru) → RackInterface (util/app.rb) → SBSM State Machine
 - **Component-based views**: Views are Ruby classes inheriting from HtmlGrid components. UI is composed by mapping named slots to component classes.
 - **No ORM**: `DbManager` uses raw SQL queries directly. All DB access goes through the singleton `DaVaz.config.db_manager` or `app.db_manager`.
 - **Client-side JS**: Uses Dojo toolkit (1.7.x) in `doc/resources/` for AJAX interactions.
+- **Login**: AJAX login via `view/_partial/login.rb` and `state/_partial/login.rb`. The `LoginForm` must explicitly set its form ACTION to `event_url(:admin, :login)` — HtmlGrid defaults to `base_url` which omits the event, breaking SBSM event routing. Passwords are stored as `crypt()`-hashed entries in `etc/pw_server.passwords` using the salt from `etc/pw_server.salt`. Use `bin/generate_passwd_entry` to create entries.
 
 ### Testing
 

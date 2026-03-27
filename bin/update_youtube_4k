@@ -86,15 +86,30 @@ def search_enhanced_4k(title, api_keys)
 end
 
 updated = 0
+url_fixed = 0
 skipped = 0
 not_found = 0
 errors = 0
 
 movies.each do |movie|
   video_id = DaVaz::Util::YoutubeHelper.extract_video_id(movie.url)
+
+  # If url field is empty, try to extract YouTube URL from the text field
   unless video_id
-    skipped += 1
-    next
+    text_match = movie.text.match(%r{youtube\.com/watch\?v=([A-Za-z0-9_-]{11})})
+    if text_match
+      video_id = text_match[1]
+      extracted_url = "https://www.youtube.com/watch?v=#{video_id}"
+      puts "#{movie.artobject_id}: #{movie.title} ... URL MISSING in url field, found in text: #{extracted_url}"
+      unless DRY_RUN
+        db.update_artobject(movie.artobject_id, { url: extracted_url })
+        puts "       URL field FIXED!"
+      end
+      url_fixed += 1
+    else
+      skipped += 1
+      next
+    end
   end
 
   print "#{movie.artobject_id}: #{movie.title} ... "
@@ -142,6 +157,7 @@ end
 
 puts "\n=== Summary ==="
 puts "Total movies:  #{movies.length}"
+puts "URL fixed:     #{url_fixed} (extracted from text field)"
 puts "Would update:  #{updated}" if DRY_RUN
 puts "Updated:       #{updated}" unless DRY_RUN
 puts "Not found:     #{not_found}"

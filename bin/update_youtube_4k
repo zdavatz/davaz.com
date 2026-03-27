@@ -33,7 +33,7 @@ if api_keys.empty?
   exit 1
 end
 
-db = DaVaz.config.db_manager
+db = DaVaz::Util::DbManager.new
 
 # Load all movies
 movies = db.load_movies

@@ -1,17 +1,21 @@
 #!/usr/bin/env ruby
 
 # Script to replace YouTube URLs in the database with their
-# "Enhanced 4K" versions. For each movie artobject with a YouTube URL:
-# 1. Get the video title from the YouTube API
-# 2. Search for a video with the same title + "(Enhanced 4K)"
-# 3. If found, update the URL in the database
+# "Enhanced 4K" versions using the pre-generated CSV mapping.
+#
+# Two modes:
+#   1. CSV-based (default): reads csv/davaz_youtube_4k_migration.csv
+#   2. API-based (--api): queries YouTube API live
 #
 # Usage:
-#   bundle exec ruby bin/update_youtube_4k          # dry run (no changes)
-#   bundle exec ruby bin/update_youtube_4k --apply  # apply changes
+#   bundle exec ruby bin/update_youtube_4k          # dry run from CSV
+#   bundle exec ruby bin/update_youtube_4k --apply  # apply changes from CSV
+#   bundle exec ruby bin/update_youtube_4k --api    # dry run via API
+#   bundle exec ruby bin/update_youtube_4k --api --apply  # apply via API
 
 $: << File.expand_path('../src', File.dirname(__FILE__))
 
+require 'csv'
 require 'net/http'
 require 'json'
 require 'uri'
@@ -20,17 +24,12 @@ require 'util/db_manager'
 require 'util/youtube_helper'
 
 DRY_RUN = !ARGV.include?('--apply')
+USE_API = ARGV.include?('--api')
 
 if DRY_RUN
   puts "=== DRY RUN (pass --apply to make changes) ===\n\n"
 else
   puts "=== APPLYING CHANGES ===\n\n"
-end
-
-api_keys = DaVaz::Util::YoutubeHelper.api_keys
-if api_keys.empty?
-  puts "ERROR: No YouTube API keys found. Set up .yt-keys or YOUTUBE_API_KEY env var."
-  exit 1
 end
 
 db = DaVaz::Util::DbManager.new
@@ -39,128 +38,195 @@ db = DaVaz::Util::DbManager.new
 movies = db.load_movies
 puts "Found #{movies.length} movies in database\n\n"
 
-def youtube_api_get(path, api_key)
-  uri = URI("https://www.googleapis.com/youtube/v3/#{path}&key=#{api_key}")
-  http = Net::HTTP.new(uri.host, uri.port)
-  http.use_ssl = true
-  http.open_timeout = 10
-  http.read_timeout = 10
-  response = http.get(uri.request_uri)
-  JSON.parse(response.body)
-end
+# --- Step 1: Fix movies with YouTube URL in text but not in url field ---
 
-def get_video_title(video_id, api_keys)
-  api_keys.each do |key|
-    data = youtube_api_get("videos?part=snippet&id=#{video_id}", key)
-    if data['items'] && !data['items'].empty?
-      return data['items'][0]['snippet']['title']
-    end
+url_fixed = 0
+movies.each do |movie|
+  video_id = DaVaz::Util::YoutubeHelper.extract_video_id(movie.url)
+  next if video_id
+
+  text_match = movie.text.match(%r{youtube\.com/watch\?v=([A-Za-z0-9_-]{11})})
+  next unless text_match
+
+  video_id = text_match[1]
+  extracted_url = "https://www.youtube.com/watch?v=#{video_id}"
+  puts "FIX URL: #{movie.artobject_id}: #{movie.title}"
+  puts "         Found in text field: #{extracted_url}"
+  unless DRY_RUN
+    db.update_artobject(movie.artobject_id, { url: extracted_url })
+    movie.url = extracted_url
+    puts "         FIXED!"
   end
-  nil
+  url_fixed += 1
 end
 
-def search_enhanced_4k(title, api_keys)
-  search_query = URI.encode_www_form_component("#{title} (Enhanced 4K)")
-  api_keys.each do |key|
-    data = youtube_api_get("search?part=snippet&q=#{search_query}&type=video&maxResults=5", key)
-    next unless data['items']
-    data['items'].each do |item|
-      item_title = item['snippet']['title']
-      # Check if this is the Enhanced 4K version of the same video
-      if item_title.include?('Enhanced 4K') || item_title.include?('enhanced 4k')
-        # Verify title matches (without the 4K suffix)
-        base_title = item_title
-          .gsub(/\s*[\(\[]\s*Enhanced\s+4K\s*[\)\]]\s*/i, '')
-          .gsub(/\s*-?\s*Enhanced\s+4K\s*/i, '')
-          .strip
-        if base_title.downcase == title.downcase || title.downcase.include?(base_title.downcase) || base_title.downcase.include?(title.downcase)
-          return {
-            video_id: item['id']['videoId'],
-            title: item_title
-          }
+puts "\n" if url_fixed > 0
+
+# --- Step 2: Update to Enhanced 4K versions ---
+
+if USE_API
+  # API mode - query YouTube live
+  api_keys = DaVaz::Util::YoutubeHelper.api_keys
+  if api_keys.empty?
+    puts "ERROR: No YouTube API keys found."
+    exit 1
+  end
+
+  def youtube_api_get(path, api_key)
+    uri = URI("https://www.googleapis.com/youtube/v3/#{path}&key=#{api_key}")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.open_timeout = 10
+    http.read_timeout = 10
+    response = http.get(uri.request_uri)
+    JSON.parse(response.body)
+  end
+
+  def get_video_title(video_id, api_keys)
+    api_keys.each do |key|
+      data = youtube_api_get("videos?part=snippet&id=#{video_id}", key)
+      if data['items'] && !data['items'].empty?
+        return data['items'][0]['snippet']['title']
+      end
+    end
+    nil
+  end
+
+  def search_enhanced_4k(title, api_keys)
+    search_query = URI.encode_www_form_component("#{title} (Enhanced 4K)")
+    api_keys.each do |key|
+      data = youtube_api_get("search?part=snippet&q=#{search_query}&type=video&maxResults=5", key)
+      next unless data['items']
+      data['items'].each do |item|
+        item_title = item['snippet']['title']
+        if item_title =~ /enhanced 4k/i
+          base_title = item_title
+            .gsub(/\s*[\(\[]\s*Enhanced\s+4K[^)\]]*[\)\]]\s*/i, '')
+            .gsub(/\s*-?\s*Enhanced\s+4K\s*/i, '')
+            .strip
+          if base_title.downcase == title.downcase || title.downcase.include?(base_title.downcase) || base_title.downcase.include?(title.downcase)
+            return { video_id: item['id']['videoId'], title: item_title }
+          end
         end
       end
     end
+    nil
   end
-  nil
-end
 
-updated = 0
-url_fixed = 0
-skipped = 0
-not_found = 0
-errors = 0
+  updated = 0
+  skipped = 0
+  not_found = 0
+  errors = 0
 
-movies.each do |movie|
-  video_id = DaVaz::Util::YoutubeHelper.extract_video_id(movie.url)
+  movies.each do |movie|
+    video_id = DaVaz::Util::YoutubeHelper.extract_video_id(movie.url)
+    unless video_id
+      skipped += 1
+      next
+    end
 
-  # If url field is empty, try to extract YouTube URL from the text field
-  unless video_id
-    text_match = movie.text.match(%r{youtube\.com/watch\?v=([A-Za-z0-9_-]{11})})
-    if text_match
-      video_id = text_match[1]
-      extracted_url = "https://www.youtube.com/watch?v=#{video_id}"
-      puts "#{movie.artobject_id}: #{movie.title} ... URL MISSING in url field, found in text: #{extracted_url}"
-      unless DRY_RUN
-        db.update_artobject(movie.artobject_id, { url: extracted_url })
-        puts "       URL field FIXED!"
+    print "#{movie.artobject_id}: #{movie.title} ... "
+
+    begin
+      title = get_video_title(video_id, api_keys)
+      unless title
+        puts "SKIP (could not fetch title)"
+        skipped += 1
+        next
       end
-      url_fixed += 1
-    else
-      skipped += 1
-      next
+
+      if title =~ /enhanced 4k/i
+        puts "SKIP (already 4K)"
+        skipped += 1
+        next
+      end
+
+      print "\"#{title}\" -> "
+
+      result = search_enhanced_4k(title, api_keys)
+      if result
+        new_url = "https://www.youtube.com/watch?v=#{result[:video_id]}"
+        puts "FOUND: #{result[:title]}"
+        puts "       Old: #{movie.url}"
+        puts "       New: #{new_url}"
+        unless DRY_RUN
+          db.update_artobject(movie.artobject_id, { url: new_url })
+          puts "       UPDATED!"
+        end
+        updated += 1
+      else
+        puts "NOT FOUND"
+        not_found += 1
+      end
+    rescue StandardError => e
+      puts "ERROR: #{e.message}"
+      errors += 1
     end
   end
 
-  print "#{movie.artobject_id}: #{movie.title} ... "
+else
+  # CSV mode - use pre-generated mapping
+  csv_path = File.join(DaVaz.config.project_root, 'csv', 'davaz_youtube_4k_migration.csv')
+  unless File.exist?(csv_path)
+    puts "ERROR: CSV not found at #{csv_path}"
+    puts "Generate it first or use --api mode."
+    exit 1
+  end
 
-  begin
-    # Get current video title
-    title = get_video_title(video_id, api_keys)
-    unless title
-      puts "SKIP (could not fetch title)"
+  # Build lookup: old_video_id -> { new_url, new_title }
+  mapping = {}
+  CSV.foreach(csv_path, headers: true) do |row|
+    next unless row['action'] == 'REPLACE' && row['new_video_id'] && !row['new_video_id'].empty?
+    mapping[row['old_video_id']] = {
+      new_url: row['new_url'],
+      new_title: row['new_title']
+    }
+  end
+
+  puts "Loaded #{mapping.size} replacements from CSV\n\n"
+
+  updated = 0
+  skipped = 0
+  not_found = 0
+  errors = 0
+
+  movies.each do |movie|
+    video_id = DaVaz::Util::YoutubeHelper.extract_video_id(movie.url)
+    unless video_id
       skipped += 1
       next
     end
 
-    # Already an Enhanced 4K version?
-    if title.include?('Enhanced 4K') || title.include?('enhanced 4k')
-      puts "SKIP (already 4K: #{title})"
-      skipped += 1
-      next
-    end
-
-    print "\"#{title}\" -> "
-
-    # Search for Enhanced 4K version
-    result = search_enhanced_4k(title, api_keys)
-    if result
-      new_url = "https://www.youtube.com/watch?v=#{result[:video_id]}"
-      puts "FOUND: #{result[:title]}"
+    if mapping.key?(video_id)
+      new_url = mapping[video_id][:new_url]
+      new_title = mapping[video_id][:new_title]
+      puts "#{movie.artobject_id}: #{movie.title}"
       puts "       Old: #{movie.url}"
-      puts "       New: #{new_url}"
-
+      puts "       New: #{new_url} (#{new_title})"
       unless DRY_RUN
         db.update_artobject(movie.artobject_id, { url: new_url })
         puts "       UPDATED!"
       end
       updated += 1
     else
-      puts "NOT FOUND"
-      not_found += 1
+      # Check if already a 4K URL (video_id matches a new_video_id in the CSV)
+      already_4k = mapping.values.any? { |v| v[:new_url].include?(video_id) }
+      if already_4k
+        skipped += 1
+      else
+        puts "#{movie.artobject_id}: #{movie.title} ... NO 4K in CSV"
+        not_found += 1
+      end
     end
-  rescue StandardError => e
-    puts "ERROR: #{e.message}"
-    errors += 1
   end
 end
 
 puts "\n=== Summary ==="
 puts "Total movies:  #{movies.length}"
-puts "URL fixed:     #{url_fixed} (extracted from text field)"
+puts "URL fixed:     #{url_fixed} (extracted from text field)" if url_fixed > 0
 puts "Would update:  #{updated}" if DRY_RUN
 puts "Updated:       #{updated}" unless DRY_RUN
 puts "Not found:     #{not_found}"
 puts "Skipped:       #{skipped}"
-puts "Errors:        #{errors}"
+puts "Errors:        #{errors}" if defined?(errors) && errors > 0
 puts "\nRun with --apply to make changes." if DRY_RUN

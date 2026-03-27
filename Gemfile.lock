@@ -4,6 +4,7 @@ GEM
     base64 (0.3.0)
     bigdecimal (4.0.1)
     chrono_logger (1.1.2)
+    csv (3.3.5)
     date (3.5.1)
     dbi (0.4.5)
       deprecated (= 2.0.1)
@@ -88,6 +89,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  csv
   dbi (~> 0.4.5)
   flexmock
   ftools (= 0.0.0)

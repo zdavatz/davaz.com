@@ -62,7 +62,7 @@ HTTP → Rack (config.ru) → RackInterface (util/app.rb) → SBSM State Machine
   - `lookandfeel.rb` — Theme/styling configuration
   - `validator.rb` — Form input validation
   - `trans_handler.davaz.rb` — URL translation/routing
-  - `youtube_helper.rb` — YouTube Data API v3 integration (view counts for movie embeds, batched prefetch with 1h cache, 5s HTTP timeouts)
+  - `youtube_helper.rb` — YouTube Data API v3 integration (view counts for movie and short embeds, batched prefetch with 1h cache, 5s HTTP timeouts)
 
 ### Key Patterns
 
@@ -97,4 +97,10 @@ Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_descriptio
 - `etc/db_connection_data.yml` — MySQL credentials (copy from `.sample`)
 - `etc/pw_server.passwords` — Authentication credentials
 - `etc/pw_server.salt` — Password salt
-- `.yt-keys` — YouTube Data API v3 keys (one per line, `#` for comments). Used to display view counts on movie embeds. Supports multiple keys for different YouTube accounts. Keys are read from project root first, then `~/.yt-keys`. Falls back to `YOUTUBE_API_KEY` / `YOUTUBE_API_KEY_2` env vars. App works without keys (view counts simply not shown).
+- `.yt-keys` — YouTube Data API v3 keys (one per line, `#` for comments). Used to display view counts on movie and short embeds. Supports multiple keys for different YouTube accounts. Keys are read from project root first, then `~/.yt-keys`. Falls back to `YOUTUBE_API_KEY` / `YOUTUBE_API_KEY_2` env vars. App works without keys (view counts simply not shown).
+
+### YouTube 4K Migration Scripts (`bin/`)
+
+- `update_youtube_4k` — Updates movie URLs to Enhanced 4K versions (CSV or API mode)
+- `update_4K_shorts_movies_yt.rb` — Scans @jdavatz and @gozipa YouTube channels via yt-dlp. Updates existing shorts/movies to 4K URLs from @gozipa. Creates missing DB entries classified by duration: <=60s → Shorts (artgroup `SHO`), >60s → Movies (artgroup `MOV`). Title and description pulled from YouTube.
+- `send_email_gmail.py` — Sends email via Gmail API (OAuth2), uses same credentials as [old2new](https://github.com/zdavatz/old2new)

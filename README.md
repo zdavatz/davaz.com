@@ -53,13 +53,30 @@ Use sample files in `etc` directory.
 # To generate a user with a password (uses crypt() with the salt)
 % bundle exec bin/generate_passwd_entry user@example.com mypassword >> etc/pw_server.passwords
 
-: YouTube API keys for movie view counts (optional, one key per line)
+: YouTube API keys for movie/short view counts (optional, one key per line)
 % cat > .yt-keys <<EOF
 # YouTube Data API v3 keys
 YOUR_API_KEY_1
 YOUR_API_KEY_2
 EOF
 ```
+
+### YouTube 4K Migration
+
+Update existing shorts/movies to Enhanced 4K URLs and create missing entries from YouTube:
+
+```zsh
+: Requires yt-dlp
+% pip3 install yt-dlp
+
+: Dry run (shows what would change)
+% bundle exec ruby bin/update_4K_shorts_movies_yt.rb --scan
+
+: Apply changes
+% bundle exec ruby bin/update_4K_shorts_movies_yt.rb --scan --apply
+```
+
+Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos <=60s are classified as Shorts, >60s as Movies.
 
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)

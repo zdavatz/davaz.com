@@ -266,6 +266,7 @@ module DaVaz::Util
         upload_image_title: 'Upload an image for this element',
         # w
         watch_movie:   'Watch the movie',
+        watch_short:   'Watch the short',
         webcontent:    'Webcontent',
         word:          'Word',
         wordpress_url: 'Wordpress',

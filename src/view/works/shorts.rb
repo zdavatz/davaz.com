@@ -8,6 +8,7 @@ require 'view/template'
 require 'view/_partial/onload'
 require 'view/_partial/list'
 require 'util/image_helper'
+require 'util/youtube_helper'
 
 module DaVaz::View
   module Works
@@ -88,6 +89,21 @@ module DaVaz::View
       end
     end
 
+    class ShortEmbed < HtmlGrid::Div
+      def init
+        super
+        video_id = DaVaz::Util::YoutubeHelper.extract_video_id(@model.url)
+        return unless video_id
+        view_count = DaVaz::Util::YoutubeHelper.cached_view_count(video_id)
+        views_html = if view_count
+          %(<div class="shorts-view-count">#{DaVaz::Util::YoutubeHelper.format_view_count(view_count)}</div>)
+        else
+          ''
+        end
+        @value = %(<div class="shorts-embed-wrapper" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/hqdefault.jpg" alt="#{video_id}" class="shorts-embed-thumbnail"><div class="shorts-embed-play"></div></div>#{views_html})
+      end
+    end
+
     class ShortMoreLink < HtmlGrid::DivComposite
       COMPONENTS = {
         [0, 0] => :more_link,
@@ -125,15 +141,17 @@ module DaVaz::View
         [0, 0] => ShortDetails,
         [0, 1] => ShortImage,
         [0, 2] => GoogleVideoLink,
-        [0, 3] => ShortComment,
-        [0, 4] => ShortMoreLink,
+        [0, 3] => ShortEmbed,
+        [0, 4] => ShortComment,
+        [0, 5] => ShortMoreLink,
       }
       CSS_MAP = {
         0 => 'shorts-details',
         1 => 'shorts-image',
         2 => 'shorts-google-link',
-        3 => 'shorts-comment',
-        4 => 'shorts-details-link',
+        3 => 'shorts-embed',
+        4 => 'shorts-comment',
+        5 => 'shorts-details-link',
       }
 
       def short_details_div(model)
@@ -141,8 +159,8 @@ module DaVaz::View
       end
 
       def init
-        css_id_map.store(4, "short_details_link_#{@model.artobject_id}")
-        css_id_map.store(5, "short_details_div_#{@model.artobject_id}")
+        css_id_map.store(5, "short_details_link_#{@model.artobject_id}")
+        css_id_map.store(6, "short_details_div_#{@model.artobject_id}")
         super
       end
     end
@@ -184,6 +202,13 @@ module DaVaz::View
       CSS_STYLE_MAP = {
         3 => 'display:none;',
       }
+
+      def init
+        # Prefetch all YouTube view counts in one batched API call
+        shorts = @model.respond_to?(:each) ? @model : []
+        DaVaz::Util::YoutubeHelper.prefetch_view_counts(shorts)
+        super
+      end
 
       def short_top_link(model)
         link = HtmlGrid::Link.new(:nbsp, model, @session, self)

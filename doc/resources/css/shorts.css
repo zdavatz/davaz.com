@@ -66,6 +66,7 @@ div.shorts-image {
   height:      200px;
   width:       290px;
   padding-top: 20px;
+  overflow:    hidden;
 }
 
 div.shorts-comment {
@@ -95,6 +96,7 @@ div.up-link {
 }
 
 div.shorts-google-link {
+  clear:         both;
   width:         600px;
   text-align:    right;
   margin-bottom: 5px;

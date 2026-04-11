@@ -262,6 +262,10 @@ module DaVaz::Util
       @db_manager.load_shorts
     end
 
+    def load_youtube_video_ids
+      @db_manager.load_youtube_video_ids
+    end
+
     def load_movies_ticker
       SBSM.info "@db_manager is #{@db_manager}"
       @db_manager.load_artobject_ids('MOV')

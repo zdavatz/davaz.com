@@ -1,3 +1,4 @@
+require 'json'
 require 'htmlgrid/divcomposite'
 require 'htmlgrid/image'
 require 'htmlgrid/link'
@@ -8,6 +9,7 @@ require 'view/_partial/oneliner'
 require 'view/_partial/ticker'
 require 'view/_partial/maillink'
 require 'view/template'
+require 'util/youtube_helper'
 
 module DaVaz::View
   module Personal
@@ -276,6 +278,77 @@ module DaVaz::View
       }
     end
 
+    class VideoThumbnailGrid < HtmlGrid::Div
+      CSS_ID = 'video_thumbnail_section'
+
+      def init
+        super
+        videos = @model.respond_to?(:each) ? @model.to_a : []
+        video_data = videos.filter_map { |v|
+          video_id = DaVaz::Util::YoutubeHelper.extract_video_id(v.url)
+          next unless video_id
+          { id: video_id, url: v.url, title: (v.title || '').gsub('"', '&quot;').gsub("'", '&#39;') }
+        }
+
+        initial = video_data.first(10)
+        remaining = video_data.drop(10)
+
+        html = '<div id="video_thumbs" class="video-thumb-grid">'
+        initial.each do |v|
+          html << thumb_html(v)
+        end
+        html << '</div>'
+
+        json_remaining = remaining.map { |v| [v[:id], v[:url], v[:title]] }
+        html << <<~SCRIPT
+          <script type="text/javascript">
+          var _videoQueue = #{json_remaining.to_json};
+          var _videoLoading = false;
+          function _loadMoreVideos() {
+            if (_videoLoading || _videoQueue.length === 0) return;
+            _videoLoading = true;
+            var grid = document.getElementById('video_thumbs');
+            var batch = _videoQueue.splice(0, 10);
+            for (var i = 0; i < batch.length; i++) {
+              var v = batch[i];
+              var a = document.createElement('a');
+              a.href = v[1]; a.target = '_blank';
+              a.className = 'video-thumb-link';
+              a.title = v[2];
+              var img = document.createElement('img');
+              img.src = 'https://img.youtube.com/vi/' + v[0] + '/hqdefault.jpg';
+              img.alt = v[2]; img.className = 'video-thumb-img';
+              a.appendChild(img); grid.appendChild(a);
+            }
+            _videoLoading = false;
+            if (_videoQueue.length === 0) {
+              var msg = document.getElementById('video_thumb_status');
+              if (msg) msg.style.display = 'none';
+            }
+          }
+          window.addEventListener('scroll', function() {
+            var grid = document.getElementById('video_thumbs');
+            if (!grid) return;
+            if (grid.getBoundingClientRect().bottom < window.innerHeight + 300) {
+              _loadMoreVideos();
+            }
+          });
+          </script>
+        SCRIPT
+        remaining_count = remaining.size
+        if remaining_count > 0
+          html << %(<div id="video_thumb_status" class="video-thumb-status">Scroll for more videos (#{remaining_count} remaining)</div>)
+        end
+        @value = html
+      end
+
+      private
+
+      def thumb_html(v)
+        %(<a href="#{v[:url]}" target="_blank" class="video-thumb-link" title="#{v[:title]}"><img src="https://img.youtube.com/vi/#{v[:id]}/hqdefault.jpg" alt="#{v[:title]}" class="video-thumb-img"></a>)
+      end
+    end
+
     class InitComposite < HtmlGrid::DivComposite
       CSS_CLASS = 'init-container'
       COMPONENTS = {
@@ -289,7 +362,6 @@ module DaVaz::View
         [ 7, 0] => CommunicationLinks,
         [ 9, 0] => component(Oneliner, :oneliner),
         [10, 0] => MovieLinks,
-        [11, 0] => PayPalDiv,
       }
 
       def init
@@ -311,6 +383,8 @@ module DaVaz::View
         [0, 0] => TopNavigation,
         [0, 1] => component(Ticker, :movies),
         [0, 2] => InitComposite,
+        [0, 3] => component(VideoThumbnailGrid, :video_thumbnails),
+        [0, 4] => PayPalDiv,
       }
       CSS_ID_MAP = {
         0 => 'top_navigation',

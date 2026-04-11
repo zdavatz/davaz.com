@@ -598,6 +598,27 @@ module DaVaz
         artobjects
       end
 
+      def load_youtube_video_ids
+        unless connection
+          raise "Could not open DbConnection. Is the db server (MySQL) started?"
+        end
+        result = connection.query(<<~SQL.gsub(/\n/, ''))
+          SELECT artobject_id, artgroup_id, url, title
+           FROM artobjects
+           WHERE artgroup_id IN ('MOV', 'SHO')
+           AND url LIKE '%youtube%'
+           ORDER BY artobject_id
+        SQL
+        result.map { |row|
+          model = DaVaz::Model::ArtObject.new
+          model.artobject_id = row['artobject_id']
+          model.artgroup_id  = row['artgroup_id']
+          model.url          = row['url']
+          model.title        = row['title']
+          model
+        }
+      end
+
       def load_oneliners
         result = connection.query(<<~SQL.gsub(/\n/, ''))
           SELECT * FROM oneliner

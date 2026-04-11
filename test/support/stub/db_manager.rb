@@ -377,6 +377,10 @@ module DaVaz::Stub
       []
     end
 
+    def load_youtube_video_ids
+      []
+    end
+
     def load_artobjects_by_artgroup(artgroup_id)
       @artobjects
     end

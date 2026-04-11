@@ -10,6 +10,7 @@ module DaVaz::State
         @model = OpenStruct.new
         @model.movies   = @session.app.load_movies_ticker
         @model.oneliner = @session.app.load_oneliner_by_location('index')
+        @model.video_thumbnails = @session.app.load_youtube_video_ids.shuffle
       end
     end
   end

@@ -78,6 +78,10 @@ Update existing shorts/movies to Enhanced 4K URLs and create missing entries fro
 
 Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos <=60s are classified as Shorts, >60s as Movies.
 
+### Homepage Video Grid
+
+The homepage displays a randomized grid of clickable YouTube video thumbnails (movies and shorts mixed). Thumbnails load from YouTube's static CDN — no API quota is used. The grid shows 10 initially and loads 10 more on scroll (infinite scroll). Videos open in a new tab. The order is reshuffled on every page reload.
+
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)
 * Dump DB: `mysqldump -u davaz -p -h localhost --databases davaz2 > davaz2_backup.sql`

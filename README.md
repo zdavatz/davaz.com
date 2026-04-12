@@ -78,6 +78,22 @@ Update existing shorts/movies to Enhanced 4K URLs and create missing entries fro
 
 Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos <=60s are classified as Shorts, >60s as Movies. YouTube Clips created by Jürg are stored as artgroup `CLI`.
 
+### Adding YouTube Clips
+
+YouTube Clips don't have a channel tab or API endpoint — they can only be listed from an authenticated browser session. To export clips, log in to YouTube on your local machine and run:
+
+```zsh
+: Export clips JSON (requires browser cookies for authentication)
+% yt-dlp --cookies-from-browser chrome --flat-playlist --dump-json 'https://www.youtube.com/feed/clips' > clips.json
+```
+
+Each line in `clips.json` contains a video ID, title, and duration. Insert new clips into the database with artgroup `CLI`:
+
+```sql
+INSERT INTO artobjects (artgroup_id, title, url, movie_type, size, location, language, text, author)
+VALUES ('CLI', 'Clip Title', 'https://www.youtube.com/watch?v=VIDEO_ID', 'original', '', '', '', '', '');
+```
+
 ### Homepage Video Grid
 
 The homepage displays a randomized grid of clickable YouTube video thumbnails (movies, shorts, and clips mixed). Thumbnails load from YouTube's static CDN — no API quota is used. The grid shows 10 initially and loads 10 more on scroll (infinite scroll). Videos open in a new tab. The order is reshuffled on every page reload. Private, blocked, or deleted videos are automatically hidden (detected client-side via thumbnail image dimensions).

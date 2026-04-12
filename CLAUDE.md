@@ -105,3 +105,7 @@ Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_descriptio
 - `update_youtube_4k` — Updates movie URLs to Enhanced 4K versions (CSV or API mode)
 - `update_4K_shorts_movies_yt.rb` — Scans @jdavatz and @gozipa YouTube channels via yt-dlp. Updates existing shorts/movies to 4K URLs from @gozipa. Creates missing DB entries classified by duration: <=60s → Shorts (artgroup `SHO`), >60s → Movies (artgroup `MOV`). Title and description pulled from YouTube.
 - `send_email_gmail.py` — Sends email via Gmail API (OAuth2), uses same credentials as [old2new](https://github.com/zdavatz/old2new)
+
+### YouTube Clips
+
+YouTube Clips (artgroup `CLI`) are short segments clipped from existing videos. They have no channel tab or API — the only way to list them is via the authenticated feed `https://www.youtube.com/feed/clips`. Export with `yt-dlp --cookies-from-browser chrome --flat-playlist --dump-json` on the user's local machine, then insert into the DB with artgroup `CLI`.

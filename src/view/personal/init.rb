@@ -302,6 +302,11 @@ module DaVaz::View
         json_remaining = remaining.map { |v| [v[:id], v[:url], v[:title]] }
         html << <<~SCRIPT
           <script type="text/javascript">
+          function _checkThumb(img) {
+            if (img.naturalWidth <= 120 && img.naturalHeight <= 90) {
+              img.parentNode.remove();
+            }
+          }
           var _videoQueue = #{json_remaining.to_json};
           var _videoLoading = false;
           function _loadMoreVideos() {
@@ -318,6 +323,8 @@ module DaVaz::View
               var img = document.createElement('img');
               img.src = 'https://img.youtube.com/vi/' + v[0] + '/hqdefault.jpg';
               img.alt = v[2]; img.className = 'video-thumb-img';
+              img.onload = function() { _checkThumb(this); };
+              img.onerror = function() { this.parentNode.remove(); };
               a.appendChild(img); grid.appendChild(a);
             }
             _videoLoading = false;
@@ -345,7 +352,7 @@ module DaVaz::View
       private
 
       def thumb_html(v)
-        %(<a href="#{v[:url]}" target="_blank" class="video-thumb-link" title="#{v[:title]}"><img src="https://img.youtube.com/vi/#{v[:id]}/hqdefault.jpg" alt="#{v[:title]}" class="video-thumb-img"></a>)
+        %(<a href="#{v[:url]}" target="_blank" class="video-thumb-link" title="#{v[:title]}"><img src="https://img.youtube.com/vi/#{v[:id]}/hqdefault.jpg" alt="#{v[:title]}" class="video-thumb-img" onload="_checkThumb(this)" onerror="this.parentNode.remove()"></a>)
       end
     end
 

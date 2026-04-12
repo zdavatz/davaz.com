@@ -80,7 +80,7 @@ Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos <=60s are clas
 
 ### Homepage Video Grid
 
-The homepage displays a randomized grid of clickable YouTube video thumbnails (movies and shorts mixed). Thumbnails load from YouTube's static CDN — no API quota is used. The grid shows 10 initially and loads 10 more on scroll (infinite scroll). Videos open in a new tab. The order is reshuffled on every page reload.
+The homepage displays a randomized grid of clickable YouTube video thumbnails (movies and shorts mixed). Thumbnails load from YouTube's static CDN — no API quota is used. The grid shows 10 initially and loads 10 more on scroll (infinite scroll). Videos open in a new tab. The order is reshuffled on every page reload. Private, blocked, or deleted videos are automatically hidden (detected client-side via thumbnail image dimensions).
 
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)

@@ -605,7 +605,7 @@ module DaVaz
         result = connection.query(<<~SQL.gsub(/\n/, ''))
           SELECT artobject_id, artgroup_id, url, title
            FROM artobjects
-           WHERE artgroup_id IN ('MOV', 'SHO')
+           WHERE artgroup_id IN ('MOV', 'SHO', 'CLI')
            AND url LIKE '%youtube%'
            ORDER BY artobject_id
         SQL

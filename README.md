@@ -76,11 +76,11 @@ Update existing shorts/movies to Enhanced 4K URLs and create missing entries fro
 % bundle exec ruby bin/update_4K_shorts_movies_yt.rb --scan --apply
 ```
 
-Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos <=60s are classified as Shorts, >60s as Movies.
+Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos <=60s are classified as Shorts, >60s as Movies. YouTube Clips created by Jürg are stored as artgroup `CLI`.
 
 ### Homepage Video Grid
 
-The homepage displays a randomized grid of clickable YouTube video thumbnails (movies and shorts mixed). Thumbnails load from YouTube's static CDN — no API quota is used. The grid shows 10 initially and loads 10 more on scroll (infinite scroll). Videos open in a new tab. The order is reshuffled on every page reload. Private, blocked, or deleted videos are automatically hidden (detected client-side via thumbnail image dimensions).
+The homepage displays a randomized grid of clickable YouTube video thumbnails (movies, shorts, and clips mixed). Thumbnails load from YouTube's static CDN — no API quota is used. The grid shows 10 initially and loads 10 more on scroll (infinite scroll). Videos open in a new tab. The order is reshuffled on every page reload. Private, blocked, or deleted videos are automatically hidden (detected client-side via thumbnail image dimensions).
 
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)

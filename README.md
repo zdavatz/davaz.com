@@ -63,12 +63,28 @@ EOF
 
 ### YouTube 4K Migration
 
-Update existing shorts/movies to Enhanced 4K URLs and create missing entries from YouTube:
+All Movies (artgroup `MOV`) and Shorts (artgroup `SHO`) on davaz.com are sourced exclusively from the `@gozipa` YouTube channel (Enhanced 4K versions). The `@jdavatz` channel contains the original non-4K uploads.
+
+#### Rebuild from @gozipa (full rebuild)
+
+Deletes all MOV/SHO entries and recreates them from @gozipa's Videos and Shorts tabs, using YouTube titles and descriptions. Deduplicates by normalized title, preferring Enhanced 4K versions. Emojis are stripped (MySQL `utf8` limitation).
 
 ```zsh
 : Requires yt-dlp
 % pip3 install yt-dlp
 
+: Dry run (shows what would change)
+% bundle exec ruby bin/rebuild_movies_shorts_from_gozipa.rb
+
+: Apply changes
+% bundle exec ruby bin/rebuild_movies_shorts_from_gozipa.rb --apply
+```
+
+#### Incremental update (legacy)
+
+Updates existing entries to 4K URLs and scans for missing videos:
+
+```zsh
 : Dry run (shows what would change)
 % bundle exec ruby bin/update_4K_shorts_movies_yt.rb --scan
 
@@ -76,7 +92,7 @@ Update existing shorts/movies to Enhanced 4K URLs and create missing entries fro
 % bundle exec ruby bin/update_4K_shorts_movies_yt.rb --scan --apply
 ```
 
-Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos <=60s are classified as Shorts, >60s as Movies. YouTube Clips created by Jürg are stored as artgroup `CLI`.
+Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos from the Shorts tab or <=60s are classified as Shorts, >60s as Movies. YouTube Clips created by Jürg are stored as artgroup `CLI`.
 
 ### Adding YouTube Clips
 

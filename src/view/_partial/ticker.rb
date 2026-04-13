@@ -1,6 +1,7 @@
 require 'htmlgrid/dojotoolkit'
 require 'htmlgrid/component'
 require 'util/image_helper'
+require 'util/youtube_helper'
 require 'ext/htmlgrid/component'
 
 module DaVaz
@@ -24,21 +25,24 @@ module DaVaz
           'stopped'         => 'true',
         }
         (model || []).each { |item|
-          if item.artobject_id
-            if Util::ImageHelper.has_image?(item.artobject_id)
-              path = Util::ImageHelper.image_url(item.artobject_id, 'medium')
-              props['images'].push(path)
-              unless item.url.nil? || item.url.empty?
-                event_url = item.url
-              else
-                event_url = @lookandfeel.event_url(:gallery, :art_object, [
-                  ['artgroup_id' , item.artgroup_id],
-                  ['artobject_id', item.artobject_id]
-                ])
-              end
-              props['eventUrls'].push(event_url)
-            end
+          next unless item.artobject_id
+          path = Util::ImageHelper.image_url(item.artobject_id, 'medium')
+          unless path
+            # Fall back to YouTube thumbnail
+            video_id = Util::YoutubeHelper.extract_video_id(item.url)
+            path = "https://img.youtube.com/vi/#{video_id}/mqdefault.jpg" if video_id
           end
+          next unless path
+          props['images'].push(path)
+          unless item.url.nil? || item.url.empty?
+            event_url = item.url
+          else
+            event_url = @lookandfeel.event_url(:gallery, :art_object, [
+              ['artgroup_id' , item.artgroup_id],
+              ['artobject_id', item.artobject_id]
+            ])
+          end
+          props['eventUrls'].push(event_url)
         }
         dojo_tag('ywesee.widget.ticker', {
           'data-dojo-props' => dojo_props(props)

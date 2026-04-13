@@ -560,5 +560,8 @@ div.ticker-window div {
 
 div.ticker-window div img {
   padding: 2px;
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
 }
 

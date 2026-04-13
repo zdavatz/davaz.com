@@ -249,7 +249,55 @@ all_entries.each do |video, artgroup|
   print "." if (created_mov + created_sho) % 50 == 0
 end
 
-puts "\n\n=== Done! ==="
+puts "\n\n"
+
+# --- Step 6: Fetch upload dates from YouTube API ---
+
+puts "=== Step 6: Fetching upload dates from YouTube API ===\n"
+
+api_keys = DaVaz::Util::YoutubeHelper.api_keys rescue []
+if api_keys.empty?
+  puts "  No API keys found (.yt-keys), skipping date fetch."
+else
+  conn = db.send(:connection)
+  rows = conn.query(
+    "SELECT artobject_id, url FROM artobjects " \
+    "WHERE artgroup_id IN ('MOV', 'SHO') AND date = '1901-01-01'"
+  )
+  entries = rows.map { |r|
+    vid = r['url'][/(?:youtube\.com\/watch\?.*v=|youtu\.be\/)([A-Za-z0-9_-]{11})/, 1]
+    { id: r['artobject_id'], vid: vid } if vid
+  }.compact
+
+  api_key = api_keys.first
+  updated_dates = 0
+  entries.each_slice(50) do |batch|
+    ids = batch.map { |e| e[:vid] }.join(',')
+    uri = URI("https://www.googleapis.com/youtube/v3/videos?part=snippet&id=#{ids}&key=#{api_key}")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.open_timeout = 5
+    http.read_timeout = 5
+    response = http.get(uri.request_uri)
+    data = JSON.parse(response.body)
+    dates = {}
+    (data['items'] || []).each do |item|
+      pub = item.dig('snippet', 'publishedAt')
+      dates[item['id']] = pub[0..9] if pub
+    end
+    batch.each do |e|
+      date = dates[e[:vid]]
+      next unless date
+      conn.query("UPDATE artobjects SET date = '#{date}' WHERE artobject_id = #{e[:id]}")
+      updated_dates += 1
+    end
+  rescue StandardError => e
+    puts "  API error: #{e.message}"
+  end
+  puts "  Updated #{updated_dates} entries with upload dates.\n"
+end
+
+puts "=== Done! ==="
 puts "  Created #{created_mov} MOV entries"
 puts "  Created #{created_sho} SHO entries"
 puts "  Total: #{created_mov + created_sho}"

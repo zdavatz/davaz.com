@@ -293,7 +293,9 @@ module DaVaz::View
         video_data = videos.filter_map { |v|
           video_id = DaVaz::Util::YoutubeHelper.extract_video_id(v.url)
           next unless video_id
-          { id: video_id, url: v.url, title: (v.title || '').gsub('"', '&quot;').gsub("'", '&#39;') }
+          thumb = DaVaz::Util::YoutubeHelper.clip_thumbnail_url(v.url)
+          thumb ||= "https://img.youtube.com/vi/#{video_id}/hqdefault.jpg"
+          { id: video_id, url: v.url, title: (v.title || '').gsub('"', '&quot;').gsub("'", '&#39;'), thumb: thumb }
         }
         return if video_data.empty?
 
@@ -314,7 +316,7 @@ module DaVaz::View
         end
         html << '</div>'
 
-        json_remaining = remaining.map { |v| [v[:id], v[:url], v[:title]] }
+        json_remaining = remaining.map { |v| [v[:id], v[:url], v[:title], v[:thumb]] }
         html << <<~SCRIPT
           <script type="text/javascript">
           var #{queue_var} = #{json_remaining.to_json};
@@ -331,7 +333,7 @@ module DaVaz::View
               a.className = 'video-thumb-link';
               a.title = v[2];
               var img = document.createElement('img');
-              img.src = 'https://img.youtube.com/vi/' + v[0] + '/hqdefault.jpg';
+              img.src = v[3] || ('https://img.youtube.com/vi/' + v[0] + '/hqdefault.jpg');
               img.alt = v[2]; img.className = 'video-thumb-img';
               img.onload = function() { _checkThumb(this); };
               img.onerror = function() { this.parentNode.remove(); };
@@ -362,7 +364,7 @@ module DaVaz::View
       private
 
       def thumb_html(v)
-        %(<a href="#{v[:url]}" target="_blank" class="video-thumb-link" title="#{v[:title]}"><img src="https://img.youtube.com/vi/#{v[:id]}/hqdefault.jpg" alt="#{v[:title]}" class="video-thumb-img" onload="_checkThumb(this)" onerror="this.parentNode.remove()"></a>)
+        %(<a href="#{v[:url]}" target="_blank" class="video-thumb-link" title="#{v[:title]}"><img src="#{v[:thumb]}" alt="#{v[:title]}" class="video-thumb-img" onload="_checkThumb(this)" onerror="this.parentNode.remove()"></a>)
       end
     end
 

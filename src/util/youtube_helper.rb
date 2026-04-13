@@ -50,6 +50,28 @@ module DaVaz
         url =~ %r{youtube\.com/clip/}
       end
 
+      # Returns a thumbnail index (1, 2, 3) for clips that share a source video,
+      # so they don't all show the same image. First clip gets default (0),
+      # subsequent clips get 1, 2, 3.
+      def self.clip_thumb_index(clip_id)
+        source_vid = clip_source_videos[clip_id]
+        return 0 unless source_vid
+        # Find all clip IDs with the same source video
+        siblings = clip_source_videos.select { |_, v| v == source_vid }.keys.sort
+        idx = siblings.index(clip_id) || 0
+        idx % 4  # cycle through 0, 1, 2, 3
+      end
+
+      def self.clip_thumbnail_url(url)
+        return nil unless clip_url?(url)
+        clip_id = url[%r{youtube\.com/clip/([A-Za-z0-9_-]+)}, 1]
+        return nil unless clip_id
+        source_vid = clip_source_videos[clip_id]
+        return nil unless source_vid
+        idx = clip_thumb_index(clip_id)
+        "https://img.youtube.com/vi/#{source_vid}/#{idx}.jpg"
+      end
+
       def self.api_keys
         keys = []
         # Read keys from .yt-keys file (one key per line)

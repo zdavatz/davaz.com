@@ -44,6 +44,10 @@ module DaVaz
           end
           props['eventUrls'].push(event_url)
         }
+        # Shuffle on every page load
+        pairs = props['images'].zip(props['eventUrls']).shuffle
+        props['images']    = pairs.map(&:first)
+        props['eventUrls'] = pairs.map(&:last)
         dojo_tag('ywesee.widget.ticker', {
           'data-dojo-props' => dojo_props(props)
         }).to_html(context)

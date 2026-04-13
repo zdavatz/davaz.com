@@ -87,6 +87,7 @@ define([
       img.src              = this.images[this.imagePosition];
       img.style.marginLeft = '0px';
       link.href = this.eventUrls[this.imagePosition];
+      link.target = '_blank';
     }
   , assembleImageDiv: function(div) {
       var link = document.createElement('a')
@@ -98,6 +99,7 @@ define([
       img.style.height = this.imageHeight;
       img.style.border = 'none';
       link.href = this.eventUrls[this.imagePosition];
+      link.target = '_blank';
       link.appendChild(img);
       div.appendChild(link);
     }

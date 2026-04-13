@@ -10,15 +10,19 @@ module DaVaz
       @cache = {}
       @cache_timestamps = {}
 
-      # Mapping of clip IDs to their source video IDs (for thumbnails)
-      CLIP_SOURCE_VIDEOS = {
-        'UgkxfSrkkeGc-RzeXJGv1e1ZX5A8IJLVImPJ' => 'd6ph7n4k35Y',
-        'UgkxcNvckNZorFP1VzHWwJk1rCDzd1ao3SBm' => '3eZfUbfl-MA',
-        'UgkxNfgVYLaohSr54cwKIhOeKND0m_ZDfvvw' => 'FRUaXmqxjJk',
-        'Ugkxq-g82PK6fH-sLT7x-mzD6d1m1MGmNTfF' => 'FRUaXmqxjJk',
-        'Ugkx7NDo1rLPlMZNJIN-NW1sBbEVfJg3o5zX' => 'TyEc6Q0eOt4',
-        'UgkxJXS445a12K7FVD3I4chFA7EUDpIGxzEY' => 'sQdMKkCuXkc',
-      }
+      # Mapping of clip IDs to their source video IDs (for thumbnails).
+      # Loaded from csv/clips.json at startup.
+      def self.load_clip_source_videos
+        clips_json = File.join(File.expand_path('../../..', __FILE__), 'csv', 'clips.json')
+        return {} unless File.exist?(clips_json)
+        JSON.parse(File.read(clips_json)).each_with_object({}) do |clip, h|
+          h[clip['clip_id']] = clip['source_video_id'] if clip['clip_id'] && clip['source_video_id']
+        end
+      rescue StandardError
+        {}
+      end
+
+      CLIP_SOURCE_VIDEOS = load_clip_source_videos
 
       def self.extract_video_id(url)
         return nil if url.nil? || url.empty?

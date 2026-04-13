@@ -2,20 +2,26 @@
 
 # Import YouTube Clips into the database.
 #
-# Step 1: Export clip URLs from YouTube (requires login in Chrome):
-#   Open https://www.youtube.com/feed/clips in Chrome, then in DevTools console run:
-#     document.querySelectorAll('a[href*="/clip/"]').forEach(a => console.log(a.href))
-#   Save the unique URLs to a file (one per line).
+# Step 1: Export clip data from YouTube (requires login in Chrome).
+#   The input file has one clip per line, tab-separated: CLIP_URL\tCLIP_TITLE
+#   (If no title is provided, yt-dlp fetches the source video title as fallback.)
+#
+#   To extract from the browser, run in DevTools console on
+#   https://www.youtube.com/feed/clips:
+#
+#     document.querySelectorAll('ytd-grid-video-renderer').forEach(item => {
+#       const a = item.querySelector('a[href*="/clip/"]');
+#       const t = item.querySelector('#video-title');
+#       if (a) console.log(a.href + '\t' + (t ? t.textContent.trim() : ''));
+#     })
 #
 # Step 2: Fetch clip metadata via yt-dlp:
-#   bin/import_clips --fetch clip_urls.txt
+#   bin/import_clips --fetch csv/clip_urls.txt
 #   This creates json/clips.json with metadata for each clip.
 #
 # Step 3: Import into database:
 #   bin/import_clips                # dry run from json/clips.json
 #   bin/import_clips --apply        # apply changes
-#
-# The script also updates CLIP_SOURCE_VIDEOS in youtube_helper.rb.
 
 $: << File.expand_path('../src', File.dirname(__FILE__))
 
@@ -26,15 +32,19 @@ if ARGV.include?('--fetch')
   urls_file = ARGV[ARGV.index('--fetch') + 1]
   unless urls_file && File.exist?(urls_file)
     puts "Usage: bin/import_clips --fetch <clip_urls.txt>"
-    puts "File should contain one YouTube clip URL per line."
+    puts "File should contain one clip per line: CLIP_URL or CLIP_URL\\tCLIP_TITLE"
     exit 1
   end
 
-  urls = File.readlines(urls_file).map(&:strip).reject(&:empty?).uniq
-  puts "Fetching metadata for #{urls.length} clips...\n\n"
+  entries = File.readlines(urls_file).map(&:strip).reject(&:empty?).map { |line|
+    url, title = line.split("\t", 2)
+    { url: url.strip, title: title&.strip }
+  }.uniq { |e| e[:url] }
+  puts "Fetching metadata for #{entries.length} clips...\n\n"
 
   clips = []
-  urls.each do |url|
+  entries.each do |entry|
+    url = entry[:url]
     next unless url =~ %r{youtube\.com/clip/}
     print "#{url} ... "
     json_str = `yt-dlp --dump-json --skip-download '#{url}' 2>/dev/null`
@@ -45,9 +55,11 @@ if ARGV.include?('--fetch')
     data = JSON.parse(json_str)
     thumb = data['thumbnail'] || ''
     source_video_id = thumb[%r{/vi/([A-Za-z0-9_-]{11})/}, 1] || ''
+    # Use browser clip title if provided, otherwise fall back to yt-dlp title
+    title = entry[:title] && !entry[:title].empty? ? entry[:title] : data['title']
     clip = {
       clip_id: data['id'],
-      title: data['title'],
+      title: title,
       clip_url: data['webpage_url'],
       source_video_id: source_video_id,
       duration: data['duration'],
@@ -156,12 +168,6 @@ clips.each do |clip|
     end
     inserted += 1
   end
-end
-
-# Print CLIP_SOURCE_VIDEOS mapping for youtube_helper.rb
-puts "\n=== CLIP_SOURCE_VIDEOS mapping (for src/util/youtube_helper.rb) ==="
-clips.each do |clip|
-  puts "  '#{clip[:clip_id]}' => '#{clip[:source_video_id]}',"
 end
 
 puts "\n=== Summary ==="

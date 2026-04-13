@@ -250,6 +250,11 @@ a#shorts:hover {
   background-image: url(/resources/images/navigation/shorts.png);
 }
 
+li#clips_navi_active,
+a#clips:hover {
+  background-color: #DAA520;
+}
+
 li#photos_navi_active,
 a#photos:hover {
   /*background-color: #39cece;*/

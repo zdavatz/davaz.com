@@ -80,19 +80,25 @@ Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos <=60s are clas
 
 ### Adding YouTube Clips
 
-YouTube Clips don't have a channel tab or API endpoint — they can only be listed from an authenticated browser session. To export clips, log in to YouTube on your local machine and run:
+YouTube Clips don't have a channel tab or API endpoint — they can only be listed from an authenticated browser session. To add new clips:
+
+1. Open `https://www.youtube.com/feed/clips` in Chrome (log in to each YouTube account)
+2. Extract clip URLs (from DevTools console or browser automation)
+3. Save URLs to `csv/clip_urls.txt` (one per line)
+4. Fetch metadata and import:
 
 ```zsh
-: Export clips JSON (requires browser cookies for authentication)
-% yt-dlp --cookies-from-browser chrome --flat-playlist --dump-json 'https://www.youtube.com/feed/clips' > clips.json
+: Fetch clip metadata via yt-dlp (creates json/clips.json)
+% bundle exec ruby bin/import_clips --fetch csv/clip_urls.txt
+
+: Dry run (shows what would change)
+% bundle exec ruby bin/import_clips
+
+: Apply changes
+% bundle exec ruby bin/import_clips --apply
 ```
 
-Each line in `clips.json` contains a video ID, title, and duration. Insert new clips into the database with artgroup `CLI`:
-
-```sql
-INSERT INTO artobjects (artgroup_id, title, url, movie_type, size, location, language, text, author)
-VALUES ('CLI', 'Clip Title', 'https://www.youtube.com/watch?v=VIDEO_ID', 'original', '', '', '', '', '');
-```
+Clip metadata (including source video IDs for thumbnails) is stored in `json/clips.json`. The `CLIP_SOURCE_VIDEOS` mapping in `youtube_helper.rb` reads from this file at startup — no hardcoded mappings.
 
 ### Homepage Video Grid
 

@@ -105,8 +105,9 @@ Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_descriptio
 
 - `update_youtube_4k` — Updates movie URLs to Enhanced 4K versions (CSV or API mode)
 - `update_4K_shorts_movies_yt.rb` — Scans @jdavatz and @gozipa YouTube channels via yt-dlp. Updates existing shorts/movies to 4K URLs from @gozipa. Creates missing DB entries classified by duration: <=60s → Shorts (artgroup `SHO`), >60s → Movies (artgroup `MOV`). Title and description pulled from YouTube.
+- `import_clips` — Fetches clip metadata via yt-dlp from `csv/clip_urls.txt`, saves to `json/clips.json`, and inserts/updates DB entries with proper `youtube.com/clip/` URLs. Supports `--fetch` (download metadata) and `--apply` (write to DB) modes.
 - `send_email_gmail.py` — Sends email via Gmail API (OAuth2), uses same credentials as [old2new](https://github.com/zdavatz/old2new)
 
 ### YouTube Clips
 
-YouTube Clips (artgroup `CLI`) are short segments clipped from existing videos. They have no channel tab or API — the only way to list them is via the authenticated feed `https://www.youtube.com/feed/clips`. Export with `yt-dlp --cookies-from-browser chrome --flat-playlist --dump-json` on the user's local machine, then insert into the DB with artgroup `CLI`.
+YouTube Clips (artgroup `CLI`) are short segments clipped from existing videos. They use `youtube.com/clip/CLIP_ID` URLs (not regular watch URLs) so they play the clip segment, not the full video. Clips can't be iframe-embedded — they link directly to YouTube. Clip metadata is stored in `json/clips.json`, which provides the `CLIP_SOURCE_VIDEOS` mapping (clip ID → source video ID) used for thumbnail images. The clips feed (`https://www.youtube.com/feed/clips`) requires authentication — clip URLs must be extracted from the browser, then metadata fetched via `bin/import_clips --fetch`.

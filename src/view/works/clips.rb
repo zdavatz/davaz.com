@@ -48,7 +48,7 @@ module DaVaz::View
           url = DaVaz::Util::YoutubeHelper.clip_thumbnail_url(@model.url)
           unless url
             video_id = DaVaz::Util::YoutubeHelper.extract_video_id(@model.url)
-            url = "https://img.youtube.com/vi/#{video_id}/hqdefault.jpg" if video_id
+            url = "https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" if video_id
           end
         end
         img.attributes['src']   = url
@@ -111,7 +111,7 @@ module DaVaz::View
           ''
         end
         thumb = DaVaz::Util::YoutubeHelper.clip_thumbnail_url(@model.url)
-        thumb ||= "https://img.youtube.com/vi/#{video_id}/hqdefault.jpg"
+        thumb ||= "https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg"
         @value = %(<a href="#{url}" target="_blank" class="clips-embed-wrapper-link"><div class="clips-embed-wrapper"><img src="#{thumb}" alt="#{video_id}" class="clips-embed-thumbnail"><div class="clips-embed-play"></div></div></a>#{views_html})
       end
     end

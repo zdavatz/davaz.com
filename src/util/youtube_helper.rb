@@ -53,7 +53,7 @@ module DaVaz
       # Returns a thumbnail variant for clips that share a source video,
       # so they don't all show the same image. First clip gets hqdefault,
       # subsequent clips get hq1, hq2, hq3 (different frames, full size).
-      CLIP_THUMB_VARIANTS = %w[hqdefault hq1 hq2 hq3].freeze
+      CLIP_THUMB_VARIANTS = %w[maxresdefault hq1 hq2 hq3].freeze
 
       def self.clip_thumb_index(clip_id)
         source_vid = clip_source_videos[clip_id]

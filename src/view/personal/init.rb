@@ -294,7 +294,7 @@ module DaVaz::View
           video_id = DaVaz::Util::YoutubeHelper.extract_video_id(v.url)
           next unless video_id
           thumb = DaVaz::Util::YoutubeHelper.clip_thumbnail_url(v.url)
-          thumb ||= "https://img.youtube.com/vi/#{video_id}/hqdefault.jpg"
+          thumb ||= "https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg"
           { id: video_id, url: v.url, title: (v.title || '').gsub('"', '&quot;').gsub("'", '&#39;'), thumb: thumb }
         }
         return if video_data.empty?
@@ -333,7 +333,7 @@ module DaVaz::View
               a.className = 'video-thumb-link';
               a.title = v[2];
               var img = document.createElement('img');
-              img.src = v[3] || ('https://img.youtube.com/vi/' + v[0] + '/hqdefault.jpg');
+              img.src = v[3] || ('https://img.youtube.com/vi/' + v[0] + '/maxresdefault.jpg');
               img.alt = v[2]; img.className = 'video-thumb-img';
               img.onload = function() { _checkThumb(this); };
               img.onerror = function() { this.parentNode.remove(); };
@@ -415,7 +415,14 @@ module DaVaz::View
           <script type="text/javascript">
           function _checkThumb(img) {
             if (img.naturalWidth <= 120 && img.naturalHeight <= 90) {
-              img.parentNode.remove();
+              var src = img.src;
+              if (src.indexOf('maxresdefault') !== -1) {
+                img.src = src.replace('maxresdefault', 'hqdefault');
+              } else if (src.indexOf('sddefault') !== -1) {
+                img.src = src.replace('sddefault', 'hqdefault');
+              } else {
+                img.parentNode.remove();
+              }
             }
           }
           </script>

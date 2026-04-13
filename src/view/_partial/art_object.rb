@@ -88,9 +88,9 @@ module DaVaz::View
       end
       if DaVaz::Util::YoutubeHelper.clip_url?(model.url)
         # Clips can't be iframe-embedded; link to YouTube directly
-        %(<a href="#{model.url}" target="_blank" class="movies-embed-wrapper" style="display:block;text-decoration:none"><img src="https://img.youtube.com/vi/#{video_id}/hqdefault.jpg" alt="#{video_id}" class="movies-embed-thumbnail"><div class="movies-embed-play"></div></a>#{views_html})
+        %(<a href="#{model.url}" target="_blank" class="movies-embed-wrapper" style="display:block;text-decoration:none"><img src="https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" alt="#{video_id}" class="movies-embed-thumbnail"><div class="movies-embed-play"></div></a>#{views_html})
       else
-        %(<div class="movies-embed-wrapper" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/hqdefault.jpg" alt="#{video_id}" class="movies-embed-thumbnail"><div class="movies-embed-play"></div></div>#{views_html})
+        %(<div class="movies-embed-wrapper" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" alt="#{video_id}" class="movies-embed-thumbnail"><div class="movies-embed-play"></div></div>#{views_html})
       end
     end
 

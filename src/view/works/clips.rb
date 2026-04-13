@@ -43,6 +43,11 @@ module DaVaz::View
         super
         img = HtmlGrid::Image.new(:clip_image, @model, @session, self)
         url = DaVaz::Util::ImageHelper.image_url(@model.artobject_id, 'large')
+        unless url
+          # Fall back to YouTube thumbnail from source video
+          video_id = DaVaz::Util::YoutubeHelper.extract_video_id(@model.url)
+          url = "https://img.youtube.com/vi/#{video_id}/hqdefault.jpg" if video_id
+        end
         img.attributes['src']   = url
         img.attributes['width'] = DaVaz.config.medium_image_width
         link = HtmlGrid::HttpLink.new(:url, @model, @session, self)

@@ -111,3 +111,5 @@ Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_descriptio
 ### YouTube Clips
 
 YouTube Clips (artgroup `CLI`) are short segments clipped from existing videos. They use `youtube.com/clip/CLIP_ID` URLs (not regular watch URLs) so they play the clip segment, not the full video. Clips can't be iframe-embedded — they link directly to YouTube. Clip metadata is stored in `json/clips.json`, which provides the `CLIP_SOURCE_VIDEOS` mapping (clip ID → source video ID) used for thumbnail images. The clips feed (`https://www.youtube.com/feed/clips`) requires authentication — clip URLs must be extracted from the browser, then metadata fetched via `bin/import_clips --fetch`.
+
+**Important**: `clips.json` must be read with `encoding: 'utf-8'` because the daemontools service runs without a UTF-8 locale (Ruby defaults to US-ASCII). The `ClipImage` view falls back to YouTube thumbnails (via source video ID) when no local image file exists.

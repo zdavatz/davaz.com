@@ -13,27 +13,26 @@ module DaVaz
       # Mapping of clip IDs to their source video IDs (for thumbnails).
       # Loaded lazily from json/clips.json.
       def self.clip_source_videos
-        @clip_source_videos ||= begin
-          candidates = []
-          # Use DaVaz.config.project_root if available (most reliable)
-          if defined?(DaVaz) && DaVaz.respond_to?(:config) && DaVaz.config.respond_to?(:project_root)
-            candidates << File.join(DaVaz.config.project_root, 'json', 'clips.json')
+        return @clip_source_videos if @clip_source_videos && !@clip_source_videos.empty?
+        candidates = []
+        if defined?(DaVaz) && DaVaz.respond_to?(:config) && DaVaz.config.respond_to?(:project_root)
+          candidates << File.join(DaVaz.config.project_root, 'json', 'clips.json')
+        end
+        candidates << File.join(File.expand_path('../../..', __FILE__), 'json', 'clips.json')
+        candidates << File.join(Dir.pwd, 'json', 'clips.json')
+        clips_json = candidates.find { |f| File.exist?(f) }
+        @clip_source_videos = if clips_json
+          data = JSON.parse(File.read(clips_json, encoding: 'utf-8'))
+          data.each_with_object({}) do |clip, h|
+            h[clip['clip_id']] = clip['source_video_id'] if clip['clip_id'] && clip['source_video_id']
           end
-          candidates << File.join(File.expand_path('../../..', __FILE__), 'json', 'clips.json')
-          candidates << File.join(Dir.pwd, 'json', 'clips.json')
-          clips_json = candidates.find { |f| File.exist?(f) }
-          if clips_json
-            JSON.parse(File.read(clips_json)).each_with_object({}) do |clip, h|
-              h[clip['clip_id']] = clip['source_video_id'] if clip['clip_id'] && clip['source_video_id']
-            end
-          else
-            warn "YoutubeHelper: clips.json not found in #{candidates.inspect}"
-            {}
-          end
-        rescue StandardError => e
-          warn "YoutubeHelper: failed to load clips.json: #{e.message}"
+        else
+          warn "YoutubeHelper: clips.json not found in #{candidates.inspect}"
           {}
         end
+      rescue StandardError => e
+        warn "YoutubeHelper: failed to load clips.json: #{e.message}"
+        @clip_source_videos = {}
       end
 
       def self.extract_video_id(url)

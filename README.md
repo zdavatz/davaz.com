@@ -98,7 +98,7 @@ YouTube Clips don't have a channel tab or API endpoint — they can only be list
 % bundle exec ruby bin/import_clips --apply
 ```
 
-Clip metadata (including source video IDs for thumbnails) is stored in `json/clips.json`. The `CLIP_SOURCE_VIDEOS` mapping in `youtube_helper.rb` reads from this file at startup — no hardcoded mappings.
+Clip metadata (including source video IDs for thumbnails) is stored in `json/clips.json`. The `CLIP_SOURCE_VIDEOS` mapping in `youtube_helper.rb` reads from this file at runtime — no hardcoded mappings. Note: `clips.json` is read with explicit UTF-8 encoding since the daemontools service runs without a locale.
 
 ### Homepage Video Grid
 
@@ -106,7 +106,7 @@ The homepage displays three separate sections of randomized YouTube video thumbn
 
 ### Clips Page
 
-Clips have a dedicated listing page at `/en/works/clips/` (analogous to Movies and Shorts). Each clip shows a click-to-play YouTube embed, title, details, and a "More" link for the full art object detail view. Clips are stored with artgroup `CLI` in the database.
+Clips have a dedicated listing page at `/en/works/clips/` (analogous to Movies and Shorts). Each clip shows a click-to-play YouTube embed, title, details, and a "More" link for the full art object detail view. Clips are stored with artgroup `CLI` in the database. Preview images fall back to YouTube thumbnails (via source video ID) when no local image is uploaded.
 
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)

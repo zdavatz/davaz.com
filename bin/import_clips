@@ -57,7 +57,7 @@ if ARGV.include?('--fetch')
     puts "OK (#{clip[:title]})"
   end
 
-  out_path = File.join(File.expand_path('..', File.dirname(__FILE__)), 'csv', 'clips.json')
+  out_path = File.join(File.expand_path('..', File.dirname(__FILE__)), 'json', 'clips.json')
   File.write(out_path, JSON.pretty_generate(clips))
   puts "\nSaved #{clips.length} clips to #{out_path}"
   exit 0
@@ -69,7 +69,7 @@ require 'util/db_manager'
 
 DRY_RUN = !ARGV.include?('--apply')
 
-json_path = File.join(DaVaz.config.project_root, 'csv', 'clips.json')
+json_path = File.join(DaVaz.config.project_root, 'json', 'clips.json')
 unless File.exist?(json_path)
   puts "ERROR: #{json_path} not found."
   puts "Run 'bin/import_clips --fetch <clip_urls.txt>' first."

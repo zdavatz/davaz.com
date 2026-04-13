@@ -10,11 +10,26 @@ module DaVaz
       @cache = {}
       @cache_timestamps = {}
 
+      # Mapping of clip IDs to their source video IDs (for thumbnails)
+      CLIP_SOURCE_VIDEOS = {
+        'UgkxfSrkkeGc-RzeXJGv1e1ZX5A8IJLVImPJ' => 'd6ph7n4k35Y',
+        'UgkxcNvckNZorFP1VzHWwJk1rCDzd1ao3SBm' => '3eZfUbfl-MA',
+        'UgkxNfgVYLaohSr54cwKIhOeKND0m_ZDfvvw' => 'FRUaXmqxjJk',
+      }
+
       def self.extract_video_id(url)
         return nil if url.nil? || url.empty?
         if url =~ %r{(?:youtube\.com/watch\?.*v=|youtu\.be/|youtube\.com/embed/)([A-Za-z0-9_-]{11})}
           $1
+        elsif url =~ %r{youtube\.com/clip/([A-Za-z0-9_-]+)}
+          # For clip URLs, return the source video ID for thumbnail use
+          CLIP_SOURCE_VIDEOS[$1]
         end
+      end
+
+      def self.clip_url?(url)
+        return false if url.nil? || url.empty?
+        url =~ %r{youtube\.com/clip/}
       end
 
       def self.api_keys

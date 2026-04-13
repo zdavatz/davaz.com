@@ -83,4 +83,22 @@ module DaVaz::View
       EOS
     end
   end
+
+  class OnloadClips < HtmlGrid::JavaScript
+    def init
+      url = @lookandfeel.event_url(:gallery, :ajax_clip_gallery, [
+        :artobject_id, ''
+      ])
+      @value = <<-EOS
+        dojo.addOnLoad(function() {
+          var artobjectId = location.hash;
+          if (artobjectId && artobjectId != '#top') {
+            artobjectId = artobjectId.substring(1, artobjectId.length);
+            var url = '#{url}' + artobjectId;
+            showMovieAndShortGallery('clips_gallery_view', 'clips_list', url);
+          }
+        })
+      EOS
+    end
+  end
 end

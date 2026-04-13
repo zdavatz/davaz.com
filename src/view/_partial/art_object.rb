@@ -204,6 +204,40 @@ module DaVaz::View
     }
   end
 
+  class ClipsArtObjectOuterComposite < HtmlGrid::DivComposite
+    COMPONENTS = {
+      [0, 0] => ClipsPager,
+      [0, 1] => :back_to_overview
+    }
+    CSS_ID_MAP = {
+      0 => 'artobject_pager',
+      1 => 'artobject_back_link'
+    }
+
+    def back_to_overview(model)
+      link = HtmlGrid::Link.new(:back_to_overview, model, @session, self)
+      link.href = 'javascript:void(0);'
+      link.set_attribute('onclick', <<~EOS)
+        return showMovieAndShortGallery('clips_gallery_view', 'clips_list', '');
+      EOS
+      link
+    end
+  end
+
+  class ClipsArtObjectComposite < HtmlGrid::DivComposite
+    COMPONENTS = {
+      [0, 0] => ClipsArtObjectOuterComposite,
+      [0, 1] => component(ArtObjectInnerComposite, :artobject)
+    }
+    CSS_ID_MAP = {
+      0 => 'artobject_outer_composite',
+      1 => 'artobject_inner_composite'
+    }
+    HTTP_HEADERS = {
+      'Content-Type' => 'text/html;charset=UTF-8'
+    }
+  end
+
   class ArtObjectComposite < HtmlGrid::DivComposite
     COMPONENTS = {
       [0, 0] => ArtObjectOuterComposite,

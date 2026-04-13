@@ -117,10 +117,11 @@ module DaVaz::View
         [0, 4] => :gallery,
         [0, 5] => :movies,
         [0, 6] => :guestbook,
-        [0, 7] => :shorts
+        [0, 7] => :shorts,
+        [0, 8] => :clips
       }
       CSS_MAP = {
-        [0, 0, 1, 7] => 'communication-links',
+        [0, 0, 1, 9] => 'communication-links',
       }
 
       def blog(model)
@@ -175,6 +176,13 @@ module DaVaz::View
       def shorts(model)
         link = HtmlGrid::Link.new(:shorts, model, @session, self)
         link.href      = @lookandfeel.event_url(:works, :shorts)
+        link.css_class = 'communication-link'
+        link
+      end
+
+      def clips(model)
+        link = HtmlGrid::Link.new(:clips, model, @session, self)
+        link.href      = @lookandfeel.event_url(:works, :clips)
         link.css_class = 'communication-link'
         link
       end
@@ -279,8 +287,6 @@ module DaVaz::View
     end
 
     class VideoThumbnailGrid < HtmlGrid::Div
-      CSS_ID = 'video_thumbnail_section'
-
       def init
         super
         videos = @model.respond_to?(:each) ? @model.to_a : []
@@ -289,11 +295,20 @@ module DaVaz::View
           next unless video_id
           { id: video_id, url: v.url, title: (v.title || '').gsub('"', '&quot;').gsub("'", '&#39;') }
         }
+        return if video_data.empty?
+
+        section = self.class.const_get(:SECTION)
+        grid_id = "video_thumbs_#{section}"
+        queue_var = "_videoQueue_#{section}"
+        loading_var = "_videoLoading_#{section}"
+        status_id = "video_thumb_status_#{section}"
+        label = @lookandfeel.lookup(section.to_sym) || section.capitalize
 
         initial = video_data.first(10)
         remaining = video_data.drop(10)
 
-        html = '<div id="video_thumbs" class="video-thumb-grid">'
+        html = %(<h3 class="video-section-title">#{label}</h3>)
+        html << %(<div id="#{grid_id}" class="video-thumb-grid">)
         initial.each do |v|
           html << thumb_html(v)
         end
@@ -302,18 +317,13 @@ module DaVaz::View
         json_remaining = remaining.map { |v| [v[:id], v[:url], v[:title]] }
         html << <<~SCRIPT
           <script type="text/javascript">
-          function _checkThumb(img) {
-            if (img.naturalWidth <= 120 && img.naturalHeight <= 90) {
-              img.parentNode.remove();
-            }
-          }
-          var _videoQueue = #{json_remaining.to_json};
-          var _videoLoading = false;
-          function _loadMoreVideos() {
-            if (_videoLoading || _videoQueue.length === 0) return;
-            _videoLoading = true;
-            var grid = document.getElementById('video_thumbs');
-            var batch = _videoQueue.splice(0, 10);
+          var #{queue_var} = #{json_remaining.to_json};
+          var #{loading_var} = false;
+          function _loadMore_#{section}() {
+            if (#{loading_var} || #{queue_var}.length === 0) return;
+            #{loading_var} = true;
+            var grid = document.getElementById('#{grid_id}');
+            var batch = #{queue_var}.splice(0, 10);
             for (var i = 0; i < batch.length; i++) {
               var v = batch[i];
               var a = document.createElement('a');
@@ -327,24 +337,24 @@ module DaVaz::View
               img.onerror = function() { this.parentNode.remove(); };
               a.appendChild(img); grid.appendChild(a);
             }
-            _videoLoading = false;
-            if (_videoQueue.length === 0) {
-              var msg = document.getElementById('video_thumb_status');
+            #{loading_var} = false;
+            if (#{queue_var}.length === 0) {
+              var msg = document.getElementById('#{status_id}');
               if (msg) msg.style.display = 'none';
             }
           }
           window.addEventListener('scroll', function() {
-            var grid = document.getElementById('video_thumbs');
+            var grid = document.getElementById('#{grid_id}');
             if (!grid) return;
             if (grid.getBoundingClientRect().bottom < window.innerHeight + 300) {
-              _loadMoreVideos();
+              _loadMore_#{section}();
             }
           });
           </script>
         SCRIPT
         remaining_count = remaining.size
         if remaining_count > 0
-          html << %(<div id="video_thumb_status" class="video-thumb-status">Scroll for more videos (#{remaining_count} remaining)</div>)
+          html << %(<div id="#{status_id}" class="video-thumb-status">Scroll for more (#{remaining_count} remaining)</div>)
         end
         @value = html
       end
@@ -354,6 +364,18 @@ module DaVaz::View
       def thumb_html(v)
         %(<a href="#{v[:url]}" target="_blank" class="video-thumb-link" title="#{v[:title]}"><img src="https://img.youtube.com/vi/#{v[:id]}/hqdefault.jpg" alt="#{v[:title]}" class="video-thumb-img" onload="_checkThumb(this)" onerror="this.parentNode.remove()"></a>)
       end
+    end
+
+    class VideoMoviesGrid < VideoThumbnailGrid
+      SECTION = 'movies'
+    end
+
+    class VideoShortsGrid < VideoThumbnailGrid
+      SECTION = 'shorts'
+    end
+
+    class VideoClipsGrid < VideoThumbnailGrid
+      SECTION = 'clips'
     end
 
     class InitComposite < HtmlGrid::DivComposite
@@ -384,14 +406,32 @@ module DaVaz::View
       end
     end
 
+    class CheckThumbScript < HtmlGrid::Div
+      def init
+        super
+        @value = <<~SCRIPT
+          <script type="text/javascript">
+          function _checkThumb(img) {
+            if (img.naturalWidth <= 120 && img.naturalHeight <= 90) {
+              img.parentNode.remove();
+            }
+          }
+          </script>
+        SCRIPT
+      end
+    end
+
     class Init < Template
       CSS_FILES = [ :navigation_css, :init_css ]
       COMPONENTS = {
         [0, 0] => TopNavigation,
         [0, 1] => component(Ticker, :movies),
         [0, 2] => InitComposite,
-        [0, 3] => component(VideoThumbnailGrid, :video_thumbnails),
-        [0, 4] => PayPalDiv,
+        [0, 3] => CheckThumbScript,
+        [0, 4] => component(VideoMoviesGrid, :video_movies),
+        [0, 5] => component(VideoShortsGrid, :video_shorts),
+        [0, 6] => component(VideoClipsGrid, :video_clips),
+        [0, 7] => PayPalDiv,
       }
       CSS_ID_MAP = {
         0 => 'top_navigation',

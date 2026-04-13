@@ -412,6 +412,10 @@ module DaVaz::Stub
       @artobjects
     end
 
+    def load_clips
+      @artobjects
+    end
+
     def load_oneliner(location)
       @oneliner
     end

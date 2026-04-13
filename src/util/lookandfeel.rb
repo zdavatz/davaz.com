@@ -227,6 +227,7 @@ module DaVaz::Util
                            '<br>Thank you very much.',
         shopping_cart:     'Shopping cart',
         shorts:            'Shorts',
+        clips:             'Clips',
         show_tags:         'Show all tags',
         signature:         'Signature',
         size:              'Size',
@@ -265,6 +266,7 @@ module DaVaz::Util
         upload_image:       'Upload image',
         upload_image_title: 'Upload an image for this element',
         # w
+        watch_clip:    'Watch the clip',
         watch_movie:   'Watch the movie',
         watch_short:   'Watch the short',
         webcontent:    'Webcontent',
@@ -317,6 +319,7 @@ module DaVaz::Util
       tooltip_css:             'css/tooltip.css',
       movies_css:              'css/movies.css',
       shorts_css:              'css/shorts.css',
+      clips_css:               'css/clips.css',
       pannellum_css:           'javascript/pannellum/pannellum.css',
       # images
       desk:                 'images/global/desk.gif',

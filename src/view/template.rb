@@ -202,6 +202,10 @@ module DaVaz::View
     CSS_FILES = %i{navigation_css shorts_css}
   end
 
+  class ClipsTemplate < CommonTemplate
+    CSS_FILES = %i{navigation_css clips_css}
+  end
+
   class PersonalTemplate < CommonTemplate
     CSS_FILES = %i{navigation_css personal_css}
   end

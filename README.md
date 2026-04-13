@@ -96,7 +96,11 @@ VALUES ('CLI', 'Clip Title', 'https://www.youtube.com/watch?v=VIDEO_ID', 'origin
 
 ### Homepage Video Grid
 
-The homepage displays a randomized grid of clickable YouTube video thumbnails (movies, shorts, and clips mixed). Thumbnails load from YouTube's static CDN — no API quota is used. The grid shows 10 initially and loads 10 more on scroll (infinite scroll). Videos open in a new tab. The order is reshuffled on every page reload. Private, blocked, or deleted videos are automatically hidden (detected client-side via thumbnail image dimensions).
+The homepage displays three separate sections of randomized YouTube video thumbnail grids: **Movies**, **Shorts**, and **Clips**. Each section has its own header and infinite scroll (10 initially, 10 more on scroll). Thumbnails load from YouTube's static CDN — no API quota is used. Videos open in a new tab. The order is reshuffled on every page reload. Private, blocked, or deleted videos are automatically hidden (detected client-side via thumbnail image dimensions).
+
+### Clips Page
+
+Clips have a dedicated listing page at `/en/works/clips/` (analogous to Movies and Shorts). Each clip shows a click-to-play YouTube embed, title, details, and a "More" link for the full art object detail view. Clips are stored with artgroup `CLI` in the database.
 
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)

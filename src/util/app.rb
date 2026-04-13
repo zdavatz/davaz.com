@@ -262,6 +262,10 @@ module DaVaz::Util
       @db_manager.load_shorts
     end
 
+    def load_clips
+      @db_manager.load_clips
+    end
+
     def load_youtube_video_ids
       @db_manager.load_youtube_video_ids
     end

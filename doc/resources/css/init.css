@@ -218,16 +218,21 @@ div#paypal_button {
   height:      21px;
 }
 
-div#video_thumbnail_section {
-  width:      780px;
-  margin:     10px auto 0;
-  text-align: center;
+h3.video-section-title {
+  width:       780px;
+  margin:      20px auto 6px;
+  text-align:  left;
+  font-size:   11pt;
+  font-weight: bold;
+  color:       #333;
 }
 
 div.video-thumb-grid {
   display:               grid;
   grid-template-columns: repeat(5, 1fr);
   gap:                   8px;
+  width:                 780px;
+  margin:                0 auto;
 }
 
 a.video-thumb-link {

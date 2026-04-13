@@ -11,18 +11,26 @@ module DaVaz
       @cache_timestamps = {}
 
       # Mapping of clip IDs to their source video IDs (for thumbnails).
-      # Loaded from json/clips.json at startup.
-      def self.load_clip_source_videos
-        clips_json = File.join(File.expand_path('../../..', __FILE__), 'json', 'clips.json')
-        return {} unless File.exist?(clips_json)
-        JSON.parse(File.read(clips_json)).each_with_object({}) do |clip, h|
-          h[clip['clip_id']] = clip['source_video_id'] if clip['clip_id'] && clip['source_video_id']
+      # Loaded lazily from json/clips.json.
+      def self.clip_source_videos
+        @clip_source_videos ||= begin
+          # Try multiple paths to find clips.json
+          candidates = [
+            File.join(File.expand_path('../../..', __FILE__), 'json', 'clips.json'),
+            File.join(Dir.pwd, 'json', 'clips.json'),
+          ]
+          clips_json = candidates.find { |f| File.exist?(f) }
+          if clips_json
+            JSON.parse(File.read(clips_json)).each_with_object({}) do |clip, h|
+              h[clip['clip_id']] = clip['source_video_id'] if clip['clip_id'] && clip['source_video_id']
+            end
+          else
+            {}
+          end
+        rescue StandardError
+          {}
         end
-      rescue StandardError
-        {}
       end
-
-      CLIP_SOURCE_VIDEOS = load_clip_source_videos
 
       def self.extract_video_id(url)
         return nil if url.nil? || url.empty?
@@ -30,7 +38,7 @@ module DaVaz
           $1
         elsif url =~ %r{youtube\.com/clip/([A-Za-z0-9_-]+)}
           # For clip URLs, return the source video ID for thumbnail use
-          CLIP_SOURCE_VIDEOS[$1]
+          clip_source_videos[$1]
         end
       end
 

@@ -11,7 +11,7 @@ module DaVaz
       @cache_timestamps = {}
 
       # Mapping of clip IDs to their source video IDs (for thumbnails).
-      # Loaded from csv/clips.json at startup.
+      # Loaded from json/clips.json at startup.
       def self.load_clip_source_videos
         clips_json = File.join(File.expand_path('../../..', __FILE__), 'csv', 'clips.json')
         return {} unless File.exist?(clips_json)

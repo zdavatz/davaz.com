@@ -9,10 +9,10 @@
 #
 # Step 2: Fetch clip metadata via yt-dlp:
 #   bin/import_clips --fetch clip_urls.txt
-#   This creates csv/clips.json with metadata for each clip.
+#   This creates json/clips.json with metadata for each clip.
 #
 # Step 3: Import into database:
-#   bin/import_clips                # dry run from csv/clips.json
+#   bin/import_clips                # dry run from json/clips.json
 #   bin/import_clips --apply        # apply changes
 #
 # The script also updates CLIP_SOURCE_VIDEOS in youtube_helper.rb.
@@ -63,7 +63,7 @@ if ARGV.include?('--fetch')
   exit 0
 end
 
-# --- Import mode: read csv/clips.json and insert into DB ---
+# --- Import mode: read json/clips.json and insert into DB ---
 require 'util/config'
 require 'util/db_manager'
 

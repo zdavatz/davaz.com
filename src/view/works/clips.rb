@@ -53,6 +53,8 @@ module DaVaz::View
         end
         img.attributes['src']   = url
         img.attributes['width'] = DaVaz.config.medium_image_width
+        img.attributes['onerror'] = "if(this.src.indexOf('maxresdefault')!==-1){this.src=this.src.replace('maxresdefault','hqdefault')}"
+        img.attributes['onload'] = "if(this.naturalWidth<=120&&this.naturalHeight<=90&&this.src.indexOf('maxresdefault')!==-1){this.src=this.src.replace('maxresdefault','hqdefault')}"
         link = HtmlGrid::HttpLink.new(:url, @model, @session, self)
         link.href  = @model.url
         link.value = img
@@ -112,7 +114,7 @@ module DaVaz::View
         end
         thumb = DaVaz::Util::YoutubeHelper.clip_thumbnail_url(@model.url)
         thumb ||= "https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg"
-        @value = %(<a href="#{url}" target="_blank" class="clips-embed-wrapper-link"><div class="clips-embed-wrapper"><img src="#{thumb}" alt="#{video_id}" class="clips-embed-thumbnail"><div class="clips-embed-play"></div></div></a>#{views_html})
+        @value = %(<a href="#{url}" target="_blank" class="clips-embed-wrapper-link"><div class="clips-embed-wrapper"><img src="#{thumb}" alt="#{video_id}" class="clips-embed-thumbnail" onerror="if(this.src.indexOf('maxresdefault')!==-1){this.src=this.src.replace('maxresdefault','hqdefault')}" onload="if(this.naturalWidth<=120&&this.naturalHeight<=90&&this.src.indexOf('maxresdefault')!==-1){this.src=this.src.replace('maxresdefault','hqdefault')}"><div class="clips-embed-play"></div></div></a>#{views_html})
       end
     end
 

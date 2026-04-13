@@ -100,7 +100,7 @@ module DaVaz::View
         else
           ''
         end
-        @value = %(<div class="shorts-embed-wrapper" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" alt="#{video_id}" class="shorts-embed-thumbnail"><div class="shorts-embed-play"></div></div>#{views_html})
+        @value = %(<div class="shorts-embed-wrapper" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" alt="#{video_id}" class="shorts-embed-thumbnail" onerror="if(this.src.indexOf('maxresdefault')!==-1){this.src=this.src.replace('maxresdefault','hqdefault')}" onload="if(this.naturalWidth<=120&&this.naturalHeight<=90&&this.src.indexOf('maxresdefault')!==-1){this.src=this.src.replace('maxresdefault','hqdefault')}"><div class="shorts-embed-play"></div></div>#{views_html})
       end
     end
 

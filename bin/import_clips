@@ -107,8 +107,21 @@ clips.each do |clip|
   video_id = clip[:source_video_id]
 
   if existing_clip_ids.include?(clip_id)
-    puts "#{clip[:title]} ... SKIP (clip URL already in DB)"
-    skipped += 1
+    # Update title if it changed
+    entry = existing.find { |e| e.url.include?(clip_id) }
+    if entry && entry.title != clip[:title]
+      puts "#{clip[:title]} ... UPDATE TITLE (#{entry.artobject_id})"
+      puts "       Old title: #{entry.title}"
+      puts "       New title: #{clip[:title]}"
+      unless DRY_RUN
+        db.update_artobject(entry.artobject_id, { title: clip[:title] })
+        puts "       UPDATED!"
+      end
+      updated += 1
+    else
+      puts "#{clip[:title]} ... SKIP (already up to date)"
+      skipped += 1
+    end
   elsif existing_video_ids.include?(video_id)
     # Update existing entry from watch URL to clip URL
     entry = existing.find { |e| e.url.include?(video_id) }
@@ -116,8 +129,9 @@ clips.each do |clip|
       puts "#{clip[:title]} ... UPDATE (#{entry.artobject_id}: watch URL -> clip URL)"
       puts "       Old: #{entry.url}"
       puts "       New: #{clip[:clip_url]}"
+      puts "       Title: #{clip[:title]}"
       unless DRY_RUN
-        db.update_artobject(entry.artobject_id, { url: clip[:clip_url] })
+        db.update_artobject(entry.artobject_id, { url: clip[:clip_url], title: clip[:title] })
         puts "       UPDATED!"
       end
       updated += 1

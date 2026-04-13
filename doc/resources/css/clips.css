@@ -109,6 +109,11 @@ div.clips-embed {
   margin-bottom:  10px;
 }
 
+a.clips-embed-wrapper-link {
+  display: block;
+  text-decoration: none;
+}
+
 div.clips-embed-wrapper {
   position: relative;
   padding-bottom: 56.25%;

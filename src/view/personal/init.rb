@@ -428,9 +428,9 @@ module DaVaz::View
         [0, 1] => component(Ticker, :movies),
         [0, 2] => InitComposite,
         [0, 3] => CheckThumbScript,
-        [0, 4] => component(VideoMoviesGrid, :video_movies),
+        [0, 4] => component(VideoClipsGrid, :video_clips),
         [0, 5] => component(VideoShortsGrid, :video_shorts),
-        [0, 6] => component(VideoClipsGrid, :video_clips),
+        [0, 6] => component(VideoMoviesGrid, :video_movies),
         [0, 7] => PayPalDiv,
       }
       CSS_ID_MAP = {

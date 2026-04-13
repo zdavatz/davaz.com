@@ -219,7 +219,7 @@ div#paypal_button {
 }
 
 h3.video-section-title {
-  width:       780px;
+  max-width:   780px;
   margin:      20px auto 6px;
   text-align:  left;
   font-size:   11pt;
@@ -231,7 +231,7 @@ div.video-thumb-grid {
   display:               grid;
   grid-template-columns: repeat(5, 1fr);
   gap:                   8px;
-  width:                 780px;
+  max-width:             780px;
   margin:                0 auto;
 }
 
@@ -254,6 +254,8 @@ img.video-thumb-img {
 }
 
 div.video-thumb-status {
+  max-width:   780px;
+  margin:      0 auto;
   color:       #888;
   font-size:   9pt;
   padding-top: 8px;

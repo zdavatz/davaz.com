@@ -94,13 +94,15 @@ module DaVaz::View
         super
         video_id = DaVaz::Util::YoutubeHelper.extract_video_id(@model.url)
         return unless video_id
+        url = @model.url
+        escaped_url = url.gsub("'", "\\\\'")
         view_count = DaVaz::Util::YoutubeHelper.cached_view_count(video_id)
         views_html = if view_count
           %(<div class="clips-view-count">#{DaVaz::Util::YoutubeHelper.format_view_count(view_count)}</div>)
         else
           ''
         end
-        @value = %(<div class="clips-embed-wrapper" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/hqdefault.jpg" alt="#{video_id}" class="clips-embed-thumbnail"><div class="clips-embed-play"></div></div>#{views_html})
+        @value = %(<a href="#{url}" target="_blank" class="clips-embed-wrapper-link"><div class="clips-embed-wrapper"><img src="https://img.youtube.com/vi/#{video_id}/hqdefault.jpg" alt="#{video_id}" class="clips-embed-thumbnail"><div class="clips-embed-play"></div></div></a>#{views_html})
       end
     end
 

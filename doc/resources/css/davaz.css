@@ -545,6 +545,7 @@ div#ticker_container {
   overflow:     hidden;
   display:      none;
   height:       183px;
+  max-width:    100%;
 }
 
 div.ticker-window {

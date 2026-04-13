@@ -36,6 +36,7 @@ module DaVaz::Util
       ajax_live_edit_form
       ajax_movie_gallery
       ajax_short_gallery
+      ajax_clip_gallery
       ajax_multiples
       ajax_rack
       ajax_remove_element
@@ -92,6 +93,7 @@ module DaVaz::Util
       upload_image
       movies
       shorts
+      clips
       work
     }
     FILES = %i{image_file}

@@ -24,15 +24,23 @@ end
 CLIP_MAPPING = {
   'd6ph7n4k35Y' => {
     clip_url: 'https://www.youtube.com/clip/UgkxfSrkkeGc-RzeXJGv1e1ZX5A8IJLVImPJ',
-    title: 'Pick and Pen - I changed my mind'
+    title: 'Pick and Pen'
   },
   '3eZfUbfl-MA' => {
     clip_url: 'https://www.youtube.com/clip/UgkxcNvckNZorFP1VzHWwJk1rCDzd1ao3SBm',
-    title: 'LAST NIGHT I WAS TWO CATS'
+    title: 'HUNGARY / LAST NIGHT I WAS TWO CATS'
   },
   'FRUaXmqxjJk' => {
     clip_url: 'https://www.youtube.com/clip/UgkxNfgVYLaohSr54cwKIhOeKND0m_ZDfvvw',
-    title: "MAO's BARBERSHOP"
+    title: "075a / MAO's BARBERSHOP"
+  },
+  'TyEc6Q0eOt4' => {
+    clip_url: 'https://www.youtube.com/clip/Ugkx7NDo1rLPlMZNJIN-NW1sBbEVfJg3o5zX',
+    title: '045a SIBERIA YOU ARE MY LIMIT'
+  },
+  'sQdMKkCuXkc' => {
+    clip_url: 'https://www.youtube.com/clip/UgkxJXS445a12K7FVD3I4chFA7EUDpIGxzEY',
+    title: '079b / Iran / KÉZFOGAS'
   }
 }
 

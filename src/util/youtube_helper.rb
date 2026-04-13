@@ -15,6 +15,9 @@ module DaVaz
         'UgkxfSrkkeGc-RzeXJGv1e1ZX5A8IJLVImPJ' => 'd6ph7n4k35Y',
         'UgkxcNvckNZorFP1VzHWwJk1rCDzd1ao3SBm' => '3eZfUbfl-MA',
         'UgkxNfgVYLaohSr54cwKIhOeKND0m_ZDfvvw' => 'FRUaXmqxjJk',
+        'Ugkxq-g82PK6fH-sLT7x-mzD6d1m1MGmNTfF' => 'FRUaXmqxjJk',
+        'Ugkx7NDo1rLPlMZNJIN-NW1sBbEVfJg3o5zX' => 'TyEc6Q0eOt4',
+        'UgkxJXS445a12K7FVD3I4chFA7EUDpIGxzEY' => 'sQdMKkCuXkc',
       }
 
       def self.extract_video_id(url)

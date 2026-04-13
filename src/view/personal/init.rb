@@ -307,7 +307,7 @@ module DaVaz::View
         initial = video_data.first(10)
         remaining = video_data.drop(10)
 
-        html = %(<h3 class="video-section-title">#{label}</h3>)
+        html = %(<h3 class="video-section-title">#{label} (#{video_data.length})</h3>)
         html << %(<div id="#{grid_id}" class="video-thumb-grid">)
         initial.each do |v|
           html << thumb_html(v)

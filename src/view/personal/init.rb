@@ -408,25 +408,11 @@ module DaVaz::View
       end
     end
 
+    # _thumbFallback and _checkThumb are defined in davaz.js (global)
     class CheckThumbScript < HtmlGrid::Div
       def init
         super
-        @value = <<~SCRIPT
-          <script type="text/javascript">
-          function _checkThumb(img) {
-            if (img.naturalWidth <= 120 && img.naturalHeight <= 90) {
-              var src = img.src;
-              if (src.indexOf('maxresdefault') !== -1) {
-                img.src = src.replace('maxresdefault', 'hqdefault');
-              } else if (src.indexOf('sddefault') !== -1) {
-                img.src = src.replace('sddefault', 'hqdefault');
-              } else {
-                img.parentNode.remove();
-              }
-            }
-          }
-          </script>
-        SCRIPT
+        @value = ''
       end
     end
 

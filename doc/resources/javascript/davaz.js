@@ -638,3 +638,25 @@ function toggleArticle(link, articleId, url) {
 		dojo.fx.wipeOut({node:node, duration:100}).play();
 	}
 }
+
+// YouTube thumbnail fallback: maxresdefault -> hqdefault, hq1/2/3 -> hqdefault
+function _thumbFallback(img) {
+  var src = img.src;
+  if (src.indexOf('maxresdefault') !== -1) {
+    img.src = src.replace('maxresdefault', 'hqdefault');
+  } else if (/\/hq[123]\./.test(src)) {
+    img.src = src.replace(/\/hq[123]\./, '/hqdefault.');
+  } else {
+    return false;
+  }
+  return true;
+}
+
+// Check thumbnail dimensions; fallback or remove if placeholder (120x90)
+function _checkThumb(img) {
+  if (img.naturalWidth <= 120 && img.naturalHeight <= 90) {
+    if (!_thumbFallback(img)) {
+      img.parentNode.remove();
+    }
+  }
+}

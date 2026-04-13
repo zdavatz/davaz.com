@@ -1,0 +1,160 @@
+#!/usr/bin/env ruby
+
+# Import YouTube Clips into the database.
+#
+# Step 1: Export clip URLs from YouTube (requires login in Chrome):
+#   Open https://www.youtube.com/feed/clips in Chrome, then in DevTools console run:
+#     document.querySelectorAll('a[href*="/clip/"]').forEach(a => console.log(a.href))
+#   Save the unique URLs to a file (one per line).
+#
+# Step 2: Fetch clip metadata via yt-dlp:
+#   bin/import_clips --fetch clip_urls.txt
+#   This creates csv/clips.json with metadata for each clip.
+#
+# Step 3: Import into database:
+#   bin/import_clips                # dry run from csv/clips.json
+#   bin/import_clips --apply        # apply changes
+#
+# The script also updates CLIP_SOURCE_VIDEOS in youtube_helper.rb.
+
+$: << File.expand_path('../src', File.dirname(__FILE__))
+
+require 'json'
+
+if ARGV.include?('--fetch')
+  # --- Fetch mode: use yt-dlp to get clip metadata ---
+  urls_file = ARGV[ARGV.index('--fetch') + 1]
+  unless urls_file && File.exist?(urls_file)
+    puts "Usage: bin/import_clips --fetch <clip_urls.txt>"
+    puts "File should contain one YouTube clip URL per line."
+    exit 1
+  end
+
+  urls = File.readlines(urls_file).map(&:strip).reject(&:empty?).uniq
+  puts "Fetching metadata for #{urls.length} clips...\n\n"
+
+  clips = []
+  urls.each do |url|
+    next unless url =~ %r{youtube\.com/clip/}
+    print "#{url} ... "
+    json_str = `yt-dlp --dump-json --skip-download '#{url}' 2>/dev/null`
+    if json_str.empty?
+      puts "FAILED"
+      next
+    end
+    data = JSON.parse(json_str)
+    thumb = data['thumbnail'] || ''
+    source_video_id = thumb[%r{/vi/([A-Za-z0-9_-]{11})/}, 1] || ''
+    clip = {
+      clip_id: data['id'],
+      title: data['title'],
+      clip_url: data['webpage_url'],
+      source_video_id: source_video_id,
+      duration: data['duration'],
+      channel: data['channel']
+    }
+    clips << clip
+    puts "OK (#{clip[:title]})"
+  end
+
+  out_path = File.join(File.expand_path('..', File.dirname(__FILE__)), 'csv', 'clips.json')
+  File.write(out_path, JSON.pretty_generate(clips))
+  puts "\nSaved #{clips.length} clips to #{out_path}"
+  exit 0
+end
+
+# --- Import mode: read csv/clips.json and insert into DB ---
+require 'util/config'
+require 'util/db_manager'
+
+DRY_RUN = !ARGV.include?('--apply')
+
+json_path = File.join(DaVaz.config.project_root, 'csv', 'clips.json')
+unless File.exist?(json_path)
+  puts "ERROR: #{json_path} not found."
+  puts "Run 'bin/import_clips --fetch <clip_urls.txt>' first."
+  exit 1
+end
+
+clips = JSON.parse(File.read(json_path), symbolize_names: true)
+puts "Loaded #{clips.length} clips from #{json_path}"
+
+if DRY_RUN
+  puts "=== DRY RUN (pass --apply to make changes) ===\n\n"
+else
+  puts "=== APPLYING CHANGES ===\n\n"
+end
+
+db = DaVaz::Util::DbManager.new
+existing = db.load_clips
+existing_urls = existing.map(&:url)
+
+# Check which clip URLs already exist (by clip ID)
+existing_clip_ids = existing_urls.filter_map { |u|
+  u[%r{youtube\.com/clip/([A-Za-z0-9_-]+)}, 1]
+}
+# Also check by source video ID
+existing_video_ids = existing_urls.filter_map { |u|
+  u[%r{(?:youtube\.com/watch\?.*v=|youtu\.be/)([A-Za-z0-9_-]{11})}, 1]
+}
+
+inserted = 0
+skipped = 0
+updated = 0
+
+clips.each do |clip|
+  clip_id = clip[:clip_id]
+  video_id = clip[:source_video_id]
+
+  if existing_clip_ids.include?(clip_id)
+    puts "#{clip[:title]} ... SKIP (clip URL already in DB)"
+    skipped += 1
+  elsif existing_video_ids.include?(video_id)
+    # Update existing entry from watch URL to clip URL
+    entry = existing.find { |e| e.url.include?(video_id) }
+    if entry
+      puts "#{clip[:title]} ... UPDATE (#{entry.artobject_id}: watch URL -> clip URL)"
+      puts "       Old: #{entry.url}"
+      puts "       New: #{clip[:clip_url]}"
+      unless DRY_RUN
+        db.update_artobject(entry.artobject_id, { url: clip[:clip_url] })
+        puts "       UPDATED!"
+      end
+      updated += 1
+    end
+  else
+    puts "#{clip[:title]} ... INSERT"
+    puts "       URL: #{clip[:clip_url]}"
+    puts "       Source video: #{video_id}"
+    unless DRY_RUN
+      db.insert_artobject({
+        artgroup_id: 'CLI',
+        title: clip[:title],
+        url: clip[:clip_url],
+        movie_type: 'original',
+        size: '',
+        location: '',
+        language: '',
+        text: '',
+        author: ''
+      })
+      puts "       INSERTED!"
+    end
+    inserted += 1
+  end
+end
+
+# Print CLIP_SOURCE_VIDEOS mapping for youtube_helper.rb
+puts "\n=== CLIP_SOURCE_VIDEOS mapping (for src/util/youtube_helper.rb) ==="
+clips.each do |clip|
+  puts "  '#{clip[:clip_id]}' => '#{clip[:source_video_id]}',"
+end
+
+puts "\n=== Summary ==="
+puts "Total clips:   #{clips.length}"
+puts "Would insert:  #{inserted}" if DRY_RUN
+puts "Inserted:      #{inserted}" unless DRY_RUN
+puts "Would update:  #{updated}" if DRY_RUN
+puts "Updated:       #{updated}" unless DRY_RUN
+puts "Skipped:       #{skipped}"
+puts "\nRun with --apply to make changes." if DRY_RUN

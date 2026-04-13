@@ -30,7 +30,7 @@ module DaVaz
           unless path
             # Fall back to YouTube thumbnail
             video_id = Util::YoutubeHelper.extract_video_id(item.url)
-            path = "https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" if video_id
+            path = "https://img.youtube.com/vi/#{video_id}/hqdefault.jpg" if video_id
           end
           next unless path
           props['images'].push(path)

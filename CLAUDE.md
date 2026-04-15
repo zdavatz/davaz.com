@@ -104,7 +104,7 @@ Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_descriptio
 
 ### YouTube 4K Migration Scripts (`bin/`)
 
-- `rebuild_movies_shorts_from_gozipa.rb` — **Primary rebuild script.** Deletes all MOV/SHO entries and recreates them exclusively from @gozipa's Videos and Shorts tabs via yt-dlp. Deduplicates by normalized title (prefers Enhanced 4K versions). Uses YouTube titles and descriptions. Strips emojis for MySQL `utf8` compatibility. Classifies by Shorts tab membership or duration: <=60s → `SHO`, >60s → `MOV`.
+- `rebuild_movies_shorts_from_gozipa.rb` — **Primary rebuild script.** Deletes all MOV/SHO entries and recreates them exclusively from @gozipa's Videos and Shorts tabs via yt-dlp. Deduplicates by normalized title (prefers Enhanced 4K versions). Uses YouTube titles and descriptions. Strips emojis for MySQL `utf8` compatibility. Classifies by Shorts tab membership or duration: <=60s → `SHO`, >60s → `MOV`. Fetches upload dates from YouTube API v3 (Step 6).
 - `update_4K_shorts_movies_yt.rb` — Legacy incremental updater. Scans @jdavatz and @gozipa channels, updates existing entries to 4K URLs, creates missing entries.
 - `update_youtube_4k` — Older updater using CSV or YouTube API mode.
 - `import_clips` — Fetches clip metadata via yt-dlp from `csv/clip_urls.txt`, saves to `json/clips.json`, and inserts/updates DB entries with proper `youtube.com/clip/` URLs. Supports `--fetch` (download metadata) and `--apply` (write to DB) modes.
@@ -115,3 +115,7 @@ Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_descriptio
 YouTube Clips (artgroup `CLI`) are short segments clipped from existing videos. They use `youtube.com/clip/CLIP_ID` URLs (not regular watch URLs) so they play the clip segment, not the full video. Clips can't be iframe-embedded — they link directly to YouTube. Clip metadata is stored in `json/clips.json`, which provides the `CLIP_SOURCE_VIDEOS` mapping (clip ID → source video ID) used for thumbnail images. The clips feed (`https://www.youtube.com/feed/clips`) requires authentication — clip URLs must be extracted from the browser, then metadata fetched via `bin/import_clips --fetch`.
 
 **Important**: `clips.json` must be read with `encoding: 'utf-8'` because the daemontools service runs without a UTF-8 locale (Ruby defaults to US-ASCII). The `ClipImage` view falls back to YouTube thumbnails (via source video ID) when no local image file exists.
+
+### Adding Individual Videos Manually
+
+When adding individual Enhanced 4K videos (not a full rebuild), use the YouTube Data API v3 to fetch title, description, duration, and upload date. Before inserting, always check for existing entries with the same video ID or similar normalized title to avoid duplicates. Classification: <=60s → `SHO`, >60s → `MOV`. Strip emojis from title/description for MySQL `utf8` compatibility. Set the upload date from the API's `publishedAt` field. If the new video is a 4K replacement for an existing non-4K entry, delete the old entry after inserting the new one.

@@ -92,7 +92,11 @@ Updates existing entries to 4K URLs and scans for missing videos:
 % bundle exec ruby bin/update_4K_shorts_movies_yt.rb --scan --apply
 ```
 
-Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos from the Shorts tab or <=60s are classified as Shorts, >60s as Movies. YouTube Clips created by Jürg are stored as artgroup `CLI`.
+Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos from the Shorts tab or <=60s are classified as Shorts, >60s as Movies. YouTube Clips created by Jürg are stored as artgroup `CLI`. The rebuild script also fetches upload dates from YouTube API v3 (requires `.yt-keys`).
+
+#### Adding individual videos manually
+
+For adding individual Enhanced 4K videos without a full rebuild, fetch metadata via YouTube Data API v3 (`venv` + Python or Ruby), check for duplicates by video ID and normalized title, then insert via `db_manager.insert_artobject`. Always delete old non-4K duplicates after inserting the 4K replacement. No app restart needed — videos appear on next page load.
 
 ### Adding YouTube Clips
 

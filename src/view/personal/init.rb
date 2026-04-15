@@ -309,7 +309,10 @@ module DaVaz::View
         initial = video_data.first(10)
         remaining = video_data.drop(10)
 
-        html = %(<h3 class="video-section-title">#{label} (#{video_data.length})</h3>)
+        # Build full index of all videos for search (id, url, title, thumb)
+        all_json = video_data.map { |v| [v[:id], v[:url], v[:title], v[:thumb]] }
+
+        html = %(<h3 class="video-section-title" id="video_title_#{section}">#{label} (#{video_data.length})</h3>)
         html << %(<div id="#{grid_id}" class="video-thumb-grid">)
         initial.each do |v|
           html << thumb_html(v)
@@ -320,6 +323,7 @@ module DaVaz::View
         html << <<~SCRIPT
           <script type="text/javascript">
           var #{queue_var} = #{json_remaining.to_json};
+          var _videoAll_#{section} = #{all_json.to_json};
           var #{loading_var} = false;
           function _loadMore_#{section}() {
             if (#{loading_var} || #{queue_var}.length === 0) return;
@@ -416,6 +420,112 @@ module DaVaz::View
       end
     end
 
+    class VideoSearchBar < HtmlGrid::Div
+      def init
+        super
+        @value = <<~HTML
+          <div id="video_search_bar" class="video-search-bar">
+            <input type="text" id="video_search_input" placeholder="Search video titles..." autocomplete="off">
+            <span id="video_search_count" class="video-search-count"></span>
+          </div>
+          <script type="text/javascript">
+          (function() {
+            var sections = ['clips', 'shorts', 'movies'];
+            var input = document.getElementById('video_search_input');
+            var countEl = document.getElementById('video_search_count');
+            if (!input) return;
+
+            function makeThumb(v) {
+              var a = document.createElement('a');
+              a.href = v[1]; a.target = '_blank';
+              a.className = 'video-thumb-link';
+              a.title = v[2];
+              var img = document.createElement('img');
+              img.src = v[3] || ('https://img.youtube.com/vi/' + v[0] + '/maxresdefault.jpg');
+              img.alt = v[2]; img.className = 'video-thumb-img';
+              img.onload = function() { _checkThumb(this); };
+              img.onerror = function() { this.parentNode.remove(); };
+              a.appendChild(img);
+              return a;
+            }
+
+            function doSearch() {
+              var q = input.value.trim().toLowerCase();
+              var totalMatches = 0;
+              for (var s = 0; s < sections.length; s++) {
+                var sec = sections[s];
+                var all = window['_videoAll_' + sec];
+                var grid = document.getElementById('video_thumbs_' + sec);
+                var title = document.getElementById('video_title_' + sec);
+                var status = document.getElementById('video_thumb_status_' + sec);
+                if (!all || !grid) continue;
+
+                if (q === '') {
+                  // Not searching — show section as-is (already rendered)
+                  if (title) { title.style.display = ''; }
+                  if (status) { status.style.display = ''; }
+                  // Only restore if we previously filtered
+                  if (grid.getAttribute('data-filtered') === '1') {
+                    grid.innerHTML = '';
+                    grid.removeAttribute('data-filtered');
+                    var initial = all.slice(0, 10);
+                    for (var i = 0; i < initial.length; i++) {
+                      grid.appendChild(makeThumb(initial[i]));
+                    }
+                    // Restore the queue for scroll loading
+                    window['_videoQueue_' + sec] = all.slice(10).map(function(v) { return v; });
+                    if (status) {
+                      var rem = all.length - 10;
+                      if (rem > 0) {
+                        status.style.display = '';
+                        status.textContent = 'Scroll for more (' + rem + ' remaining)';
+                      }
+                    }
+                    if (title) {
+                      var label = title.textContent.replace(/\\s*\\(\\d+\\)/, '');
+                      title.textContent = label + ' (' + all.length + ')';
+                    }
+                  }
+                  continue;
+                }
+
+                // Filter
+                var matches = [];
+                for (var i = 0; i < all.length; i++) {
+                  if (all[i][2].toLowerCase().indexOf(q) !== -1) {
+                    matches.push(all[i]);
+                  }
+                }
+                totalMatches += matches.length;
+                grid.innerHTML = '';
+                grid.setAttribute('data-filtered', '1');
+                for (var i = 0; i < matches.length; i++) {
+                  grid.appendChild(makeThumb(matches[i]));
+                }
+                // Update section title with match count
+                if (title) {
+                  var label = title.textContent.replace(/\\s*\\(\\d+.*\\)/, '');
+                  title.textContent = label + ' (' + matches.length + ')';
+                  title.style.display = matches.length === 0 ? 'none' : '';
+                }
+                if (status) { status.style.display = 'none'; }
+                // Clear scroll queue during search
+                window['_videoQueue_' + sec] = [];
+              }
+              if (q === '') {
+                countEl.textContent = '';
+              } else {
+                countEl.textContent = totalMatches + ' found';
+              }
+            }
+
+            input.addEventListener('input', doSearch);
+          })();
+          </script>
+        HTML
+      end
+    end
+
     class Init < Template
       CSS_FILES = [ :navigation_css, :init_css ]
       COMPONENTS = {
@@ -423,10 +533,11 @@ module DaVaz::View
         [0, 1] => component(Ticker, :movies),
         [0, 2] => InitComposite,
         [0, 3] => CheckThumbScript,
-        [0, 4] => component(VideoClipsGrid, :video_clips),
-        [0, 5] => component(VideoShortsGrid, :video_shorts),
-        [0, 6] => component(VideoMoviesGrid, :video_movies),
-        [0, 7] => PayPalDiv,
+        [0, 4] => VideoSearchBar,
+        [0, 5] => component(VideoClipsGrid, :video_clips),
+        [0, 6] => component(VideoShortsGrid, :video_shorts),
+        [0, 7] => component(VideoMoviesGrid, :video_movies),
+        [0, 8] => PayPalDiv,
       }
       CSS_ID_MAP = {
         0 => 'top_navigation',

@@ -260,3 +260,30 @@ div.video-thumb-status {
   font-size:   9pt;
   padding-top: 8px;
 }
+
+div.video-search-bar {
+  max-width:   780px;
+  margin:      20px auto 10px;
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+}
+
+div.video-search-bar input {
+  flex:          1;
+  padding:       6px 10px;
+  font-size:     11pt;
+  border:        1px solid #ccc;
+  border-radius: 4px;
+  outline:       none;
+}
+
+div.video-search-bar input:focus {
+  border-color: #888;
+}
+
+span.video-search-count {
+  font-size: 9pt;
+  color:     #888;
+  white-space: nowrap;
+}

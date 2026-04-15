@@ -124,6 +124,8 @@ Clip metadata (including source video IDs for thumbnails) is stored in `json/cli
 
 The homepage displays three separate sections of randomized YouTube video thumbnail grids: **Movies**, **Shorts**, and **Clips**. Each section has its own header and infinite scroll (10 initially, 10 more on scroll). Thumbnails load from YouTube's static CDN — no API quota is used. Videos open in a new tab. The order is reshuffled on every page reload. Private, blocked, or deleted videos are automatically hidden (detected client-side via thumbnail image dimensions).
 
+A type-ahead **search bar** above the grids filters all three sections by title in real time. Clearing the search restores the original grid layout with scroll-to-load.
+
 ### Clips Page
 
 Clips have a dedicated listing page at `/en/works/clips/` (analogous to Movies and Shorts). Each clip shows a click-to-play YouTube embed, title, details, and a "More" link for the full art object detail view. Clips are stored with artgroup `CLI` in the database. Preview images fall back to YouTube thumbnails (via source video ID) when no local image is uploaded.

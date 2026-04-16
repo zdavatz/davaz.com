@@ -100,23 +100,24 @@ For adding individual Enhanced 4K videos without a full rebuild, fetch metadata 
 
 ### Adding YouTube Clips
 
-YouTube Clips don't have a channel tab or API endpoint — they can only be listed from an authenticated browser session. To add new clips:
+YouTube Clips don't have a channel tab or API endpoint — they can only be listed from an authenticated browser session. The recommended workflow uses cookies exported from a logged-in Chrome session:
 
-1. Open `https://www.youtube.com/feed/clips` in Chrome (log in to each YouTube account)
-2. Extract clip URLs (from DevTools console or browser automation)
-3. Save URLs to `csv/clip_urls.txt` (one per line)
-4. Fetch metadata and import:
+1. In Chrome, log in to the account (e.g. @gozipa). Install a cookie-export extension like "Get cookies.txt LOCALLY".
+2. Visit `https://www.youtube.com`, click the extension → Export → save the Netscape-format file (e.g. `txt/gozipa.txt`).
+3. Repeat for each account (e.g. `txt/jdavatz.txt`). **Never commit these files to git** — they grant full account access.
+4. Upload to the server and run:
 
 ```zsh
-: Fetch clip metadata via yt-dlp (creates json/clips.json)
-% bundle exec ruby bin/import_clips --fetch csv/clip_urls.txt
+: Merge clips from one or more authenticated accounts into json/clips.json
+% bundle exec ruby bin/fetch_clips_from_feed.rb txt/gozipa.txt txt/jdavatz.txt
 
-: Dry run (shows what would change)
-% bundle exec ruby bin/import_clips
-
-: Apply changes
+: Apply to DB (inserts new clips, updates renamed titles)
 % bundle exec ruby bin/import_clips --apply
 ```
+
+The fetcher extracts clip_url, title, source_video_id, and duration directly from the `/feed/clips` page's `ytInitialData` — no yt-dlp required. After running, invalidate the cookies by signing out all YouTube sessions for that account.
+
+**Legacy workflow** (DevTools console + yt-dlp): see `bin/import_clips` header for the console snippet. Note: yt-dlp now requires cookies for clip extraction, so the feed-based fetcher above is simpler.
 
 Clip metadata (including source video IDs for thumbnails) is stored in `json/clips.json`. The `CLIP_SOURCE_VIDEOS` mapping in `youtube_helper.rb` reads from this file at runtime — no hardcoded mappings. Note: `clips.json` is read with explicit UTF-8 encoding since the daemontools service runs without a locale.
 

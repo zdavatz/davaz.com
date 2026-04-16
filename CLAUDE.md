@@ -107,7 +107,8 @@ Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_descriptio
 - `rebuild_movies_shorts_from_gozipa.rb` — **Primary rebuild script.** Deletes all MOV/SHO entries and recreates them exclusively from @gozipa's Videos and Shorts tabs via yt-dlp. Deduplicates by normalized title (prefers Enhanced 4K versions). Uses YouTube titles and descriptions. Strips emojis for MySQL `utf8` compatibility. Classifies by Shorts tab membership or duration: <=60s → `SHO`, >60s → `MOV`. Fetches upload dates from YouTube API v3 (Step 6).
 - `update_4K_shorts_movies_yt.rb` — Legacy incremental updater. Scans @jdavatz and @gozipa channels, updates existing entries to 4K URLs, creates missing entries.
 - `update_youtube_4k` — Older updater using CSV or YouTube API mode.
-- `import_clips` — Fetches clip metadata via yt-dlp from `csv/clip_urls.txt`, saves to `json/clips.json`, and inserts/updates DB entries with proper `youtube.com/clip/` URLs. Supports `--fetch` (download metadata) and `--apply` (write to DB) modes.
+- `fetch_clips_from_feed.rb` — Fetches clip metadata from authenticated `/feed/clips` pages using exported Netscape-format cookie files. Merges multiple accounts into `json/clips.json` (deduplicated by clip_id). Extracts clip_url, title, source_video_id, and duration from the page's `ytInitialData` — no yt-dlp required. Cookie files must never be committed to git.
+- `import_clips` — Reads `json/clips.json` and inserts/updates DB entries with proper `youtube.com/clip/` URLs. Supports `--fetch` (legacy: download metadata via yt-dlp from `csv/clip_urls.txt`) and `--apply` (write to DB). The `--fetch` mode now requires cookies because yt-dlp hit YouTube's bot challenges; prefer `fetch_clips_from_feed.rb` instead.
 - `send_email_gmail.py` — Sends email via Gmail API (OAuth2), uses same credentials as [old2new](https://github.com/zdavatz/old2new)
 
 ### YouTube Clips

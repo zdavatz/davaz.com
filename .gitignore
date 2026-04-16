@@ -6,6 +6,7 @@
 !/etc/trans_handler.yml
 .env
 .yt-keys
+/txt/*.txt
 
 /log
 /doc/resources/dojo*

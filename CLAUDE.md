@@ -117,6 +117,8 @@ YouTube Clips (artgroup `CLI`) are short segments clipped from existing videos. 
 
 **Important**: `clips.json` must be read with `encoding: 'utf-8'` because the daemontools service runs without a UTF-8 locale (Ruby defaults to US-ASCII). The `ClipImage` view falls back to YouTube thumbnails (via source video ID) when no local image file exists.
 
+`YoutubeHelper.clip_source_videos` caches the parsed `clips.json` in memory but reloads automatically when the file's mtime changes — so adding new clips doesn't require a service restart. If a clip's `source_video_id` lookup fails, the homepage grid silently drops the entry.
+
 ### Adding Individual Videos Manually
 
 When adding individual Enhanced 4K videos (not a full rebuild), use the YouTube Data API v3 to fetch title, description, duration, and upload date. Before inserting, always check for existing entries with the same video ID or similar normalized title to avoid duplicates. Classification: <=60s → `SHO`, >60s → `MOV`. Strip emojis from title/description for MySQL `utf8` compatibility. Set the upload date from the API's `publishedAt` field. If the new video is a 4K replacement for an existing non-4K entry, delete the old entry after inserting the new one.

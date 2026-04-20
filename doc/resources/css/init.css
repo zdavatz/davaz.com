@@ -271,15 +271,17 @@ div.video-search-bar {
 
 div.video-search-bar input {
   flex:          1;
-  padding:       6px 10px;
-  font-size:     11pt;
-  border:        1px solid #ccc;
-  border-radius: 4px;
+  padding:       8px 12px;
+  font-size:     12pt;
+  border:        2px solid #8a2be2;
+  border-radius: 6px;
   outline:       none;
+  box-shadow:    0 0 4px rgba(138, 43, 226, 0.3);
 }
 
 div.video-search-bar input:focus {
-  border-color: #888;
+  border-color: #6a1bbd;
+  box-shadow:   0 0 8px rgba(138, 43, 226, 0.6);
 }
 
 span.video-search-count {

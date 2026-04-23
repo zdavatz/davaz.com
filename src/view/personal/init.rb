@@ -421,11 +421,66 @@ module DaVaz::View
     end
 
     class VideoSearchBar < HtmlGrid::Div
+      STOPWORDS = %w[
+        the and for with from this that these those have has had been being was were
+        you your his her their our its who what when where why how can but not all any
+        out too very just some more than then also about into over only one two three
+        four five six seven eight nine ten first last next here there each every
+        der die das den dem des ein eine einen einem einer eines und oder aber doch
+        ist sind war waren sein werden wurde wurden haben hatte hatten hat als auch
+        mit ohne von zum zur nach bei aus auf für ueber fuer unter vor gegen zwischen
+        ich wir ihr mir mich dir dich ihm ihn ihnen uns euch schon noch nur nicht
+        kein keine keiner keines keinem keinen sich sie ihn ihm beim ins
+        il lo la gli le un uno una dei delle dello della degli
+        che come quando dove perche con senza per tra fra contro sopra sotto
+        sono sei siamo siete erano era dal dalla alle allo della sulla
+        www http https com org net ch html php www2 youtu tube watch video
+      ].to_set.freeze
+
+      def build_tag_cloud(videos, limit = 40)
+        counts = Hash.new(0)
+        display = {}
+        videos.each do |v|
+          text = "#{v.title} #{v.text}"
+          text.scan(/[\p{L}\p{N}]+/).each do |tok|
+            key = tok.downcase
+            next if key.length < 3
+            next if key =~ /\A\d+\z/
+            next if STOPWORDS.include?(key)
+            counts[key] += 1
+            display[key] ||= tok
+          end
+        end
+        counts.sort_by { |_, c| -c }.first(limit).map { |k, c| [display[k], k, c] }
+      end
+
+      def render_tag_cloud(tags)
+        return '' if tags.empty?
+        max = tags.first[2]
+        min = tags.last[2]
+        spread = [max - min, 1].max.to_f
+        spans = tags.map { |word, key, count|
+          scale = (count - min) / spread
+          size  = (0.8 + scale * 0.7).round(2)
+          label = word.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
+          %(<span class="video-tag" data-tag="#{key}" style="font-size:#{size}rem" title="#{count} matches">#{label}</span>)
+        }.join(' ')
+        %(<div id="video_tag_cloud" class="video-tag-cloud">#{spans}</div>)
+      end
+
       def init
         super
+        all_videos = []
+        %i[video_movies video_shorts video_clips].each do |attr|
+          val = @model.respond_to?(attr) ? @model.send(attr) : nil
+          all_videos.concat(val.to_a) if val
+        end
+        tags = build_tag_cloud(all_videos, 40)
+
         @value = <<~HTML
+          #{render_tag_cloud(tags)}
           <div id="video_search_bar" class="video-search-bar">
-            <input type="text" id="video_search_input" placeholder="Search video titles..." autocomplete="off">
+            <input type="text" id="video_search_input" placeholder="Search, e.g. nt" autocomplete="off">
             <span id="video_search_count" class="video-search-count"></span>
           </div>
           <script type="text/javascript">
@@ -530,6 +585,16 @@ module DaVaz::View
             }
 
             input.addEventListener('input', doSearch);
+
+            // Click-to-search on tag cloud
+            var tagEls = document.querySelectorAll('.video-tag');
+            for (var i = 0; i < tagEls.length; i++) {
+              tagEls[i].addEventListener('click', function() {
+                input.value = this.getAttribute('data-tag');
+                doSearch();
+                window.scrollTo({ top: input.getBoundingClientRect().top + window.scrollY - 20, behavior: 'smooth' });
+              });
+            }
           })();
           </script>
         HTML

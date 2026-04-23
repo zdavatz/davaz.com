@@ -261,9 +261,35 @@ div.video-thumb-status {
   padding-top: 8px;
 }
 
+div.video-tag-cloud {
+  max-width:   780px;
+  margin:      20px auto 0;
+  text-align:  center;
+  line-height: 2;
+  padding:     4px 0;
+}
+
+span.video-tag {
+  display:         inline-block;
+  padding:         2px 10px;
+  margin:          2px 3px;
+  background:      #f0e6ff;
+  color:           #6a1bbd;
+  border-radius:   12px;
+  cursor:          pointer;
+  user-select:     none;
+  transition:      background 0.15s, color 0.15s;
+  vertical-align:  middle;
+}
+
+span.video-tag:hover {
+  background: #8a2be2;
+  color:      white;
+}
+
 div.video-search-bar {
   max-width:   780px;
-  margin:      20px auto 10px;
+  margin:      10px auto;
   display:     flex;
   align-items: center;
   gap:         10px;

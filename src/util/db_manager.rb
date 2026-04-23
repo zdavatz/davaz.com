@@ -644,7 +644,7 @@ module DaVaz
           raise "Could not open DbConnection. Is the db server (MySQL) started?"
         end
         result = connection.query(<<~SQL.gsub(/\n/, ''))
-          SELECT artobject_id, artgroup_id, url, title
+          SELECT artobject_id, artgroup_id, url, title, text
            FROM artobjects
            WHERE artgroup_id IN ('MOV', 'SHO', 'CLI')
            AND url LIKE '%youtube%'
@@ -656,6 +656,7 @@ module DaVaz
           model.artgroup_id  = row['artgroup_id']
           model.url          = row['url']
           model.title        = row['title']
+          model.text         = row['text']
           model
         }
       end

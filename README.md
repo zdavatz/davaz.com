@@ -125,7 +125,7 @@ Clip metadata (including source video IDs for thumbnails) is stored in `json/cli
 
 The homepage displays three separate sections of randomized YouTube video thumbnail grids: **Movies**, **Shorts**, and **Clips**. Each section has its own header and infinite scroll (10 initially, 10 more on scroll). Thumbnails load from YouTube's static CDN — no API quota is used. Videos open in a new tab. The order is reshuffled on every page reload. Private, blocked, or deleted videos are automatically hidden (detected client-side via thumbnail image dimensions).
 
-A type-ahead **search bar** above the grids filters all three sections by title in real time. The bar has a prominent violet border so it stands out against the page, and its placeholder rotates through sample queries (e.g. `chick`, `Georgien`, `Kazakh`) to hint at searchable content. Clearing the search restores the original grid layout with scroll-to-load.
+A type-ahead **search bar** above the grids filters all three sections by title in real time. The bar has a prominent violet border so it stands out against the page, and its placeholder rotates through sample queries (e.g. `chick`, `Georgien`, `Kazakh`) to hint at searchable content. Above the bar, a **tag cloud** of the top ~40 keywords (extracted from video titles and descriptions, stopwords filtered) is rendered server-side; clicking a tag fills the search field and filters the grids. Clearing the search restores the original grid layout with scroll-to-load.
 
 ### Clips Page
 

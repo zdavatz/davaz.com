@@ -442,8 +442,8 @@ module DaVaz::View
         counts = Hash.new(0)
         display = {}
         videos.each do |v|
-          text = "#{v.title} #{v.text}"
-          text.scan(/[\p{L}\p{N}]+/).each do |tok|
+          next if v.title.nil? || v.title.strip.empty?
+          v.title.scan(/[\p{L}\p{N}]+/).each do |tok|
             key = tok.downcase
             next if key.length < 3
             next if key =~ /\A\d+\z/
@@ -558,9 +558,9 @@ module DaVaz::View
                 // Filter — match against title (idx 2) and description (idx 4)
                 var matches = [];
                 for (var i = 0; i < all.length; i++) {
-                  var title = (all[i][2] || '').toLowerCase();
-                  var desc = (all[i][4] || '').toLowerCase();
-                  if (title.indexOf(q) !== -1 || desc.indexOf(q) !== -1) {
+                  var t = (all[i][2] || '').toLowerCase();
+                  var d = (all[i][4] || '').toLowerCase();
+                  if (t.indexOf(q) !== -1 || d.indexOf(q) !== -1) {
                     matches.push(all[i]);
                   }
                 }

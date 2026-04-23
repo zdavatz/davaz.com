@@ -435,6 +435,7 @@ module DaVaz::View
         che come quando dove perche con senza per tra fra contro sopra sotto
         sono sei siamo siete erano era dal dalla alle allo della sulla
         www http https com org net ch html php www2 youtu tube watch video
+        enhanced
       ].to_set.freeze
 
       def build_tag_cloud(videos, limit = 40)

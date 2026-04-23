@@ -295,7 +295,7 @@ module DaVaz::View
           next unless video_id
           thumb = DaVaz::Util::YoutubeHelper.clip_thumbnail_url(v.url)
           thumb ||= "https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg"
-          { id: video_id, url: v.url, title: (v.title || '').gsub('"', '&quot;').gsub("'", '&#39;'), thumb: thumb }
+          { id: video_id, url: v.url, title: (v.title || '').gsub('"', '&quot;').gsub("'", '&#39;'), thumb: thumb, text: (v.text || '').to_s }
         }
         return if video_data.empty?
 
@@ -309,8 +309,8 @@ module DaVaz::View
         initial = video_data.first(10)
         remaining = video_data.drop(10)
 
-        # Build full index of all videos for search (id, url, title, thumb)
-        all_json = video_data.map { |v| [v[:id], v[:url], v[:title], v[:thumb]] }
+        # Build full index of all videos for search (id, url, title, thumb, text)
+        all_json = video_data.map { |v| [v[:id], v[:url], v[:title], v[:thumb], v[:text]] }
 
         html = %(<h3 class="video-section-title" id="video_title_#{section}">#{label} (#{video_data.length})</h3>)
         html << %(<div id="#{grid_id}" class="video-thumb-grid">)
@@ -319,7 +319,7 @@ module DaVaz::View
         end
         html << '</div>'
 
-        json_remaining = remaining.map { |v| [v[:id], v[:url], v[:title], v[:thumb]] }
+        json_remaining = remaining.map { |v| [v[:id], v[:url], v[:title], v[:thumb], v[:text]] }
         html << <<~SCRIPT
           <script type="text/javascript">
           var #{queue_var} = #{json_remaining.to_json};
@@ -554,10 +554,12 @@ module DaVaz::View
                   continue;
                 }
 
-                // Filter
+                // Filter — match against title (idx 2) and description (idx 4)
                 var matches = [];
                 for (var i = 0; i < all.length; i++) {
-                  if (all[i][2].toLowerCase().indexOf(q) !== -1) {
+                  var title = (all[i][2] || '').toLowerCase();
+                  var desc = (all[i][4] || '').toLowerCase();
+                  if (title.indexOf(q) !== -1 || desc.indexOf(q) !== -1) {
                     matches.push(all[i]);
                   }
                 }

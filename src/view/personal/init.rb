@@ -435,6 +435,16 @@ module DaVaz::View
             var countEl = document.getElementById('video_search_count');
             if (!input) return;
 
+            // Rotating placeholder samples to hint at searchable content
+            var samples = ['nt', 'chick', 'pi', 'Georgien', 'lim', 'sib', 'visu', 'last', 'uni', 'li', 'com', 'mo', 'Kazakh'];
+            var sampleIdx = 0;
+            input.placeholder = 'Search, e.g. ' + samples[0];
+            var rotator = setInterval(function() {
+              if (input.value !== '' || document.activeElement === input) return;
+              sampleIdx = (sampleIdx + 1) % samples.length;
+              input.placeholder = 'Search, e.g. ' + samples[sampleIdx];
+            }, 2000);
+
             function makeThumb(v) {
               var a = document.createElement('a');
               a.href = v[1]; a.target = '_blank';

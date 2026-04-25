@@ -165,6 +165,46 @@ div.movies-view-count {
   text-align:  right;
 }
 
+div.movies-sort-bar {
+  clear:         both;
+  width:         600px;
+  margin:        10px auto 10px;
+  padding:       8px 12px;
+  background:    #d8dee4;
+  border-radius: 6px;
+  text-align:    left;
+  font-size:     10pt;
+}
+
+span.movies-sort-label {
+  font-weight:  bold;
+  color:        #738494;
+  margin-right: 8px;
+}
+
+button.movies-sort-btn {
+  display:        inline-block;
+  padding:        4px 12px;
+  margin:         0 4px 0 0;
+  background:     white;
+  color:          #738494;
+  border:         1px solid #738494;
+  border-radius:  12px;
+  cursor:         pointer;
+  font-size:      10pt;
+  font-family:    inherit;
+  transition:     background 0.15s, color 0.15s;
+}
+
+button.movies-sort-btn:hover {
+  background: #B2C4D4;
+}
+
+button.movies-sort-btn.movies-sort-active {
+  background: #738494;
+  color:      white;
+}
+
 a.inner-top-navigation:visited,
 a.inner-top-navigation:link {
   color: #DAA520;

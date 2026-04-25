@@ -8,6 +8,7 @@ module DaVaz
       CACHE_TTL = 3600 # 1 hour
 
       @cache = {}
+      @comments_cache = {}
       @cache_timestamps = {}
 
       # Mapping of clip IDs to their source video IDs (for thumbnails).
@@ -133,7 +134,9 @@ module DaVaz
                   data['items'].each do |item|
                     id = item['id']
                     views = item.dig('statistics', 'viewCount')
+                    comments = item.dig('statistics', 'commentCount')
                     @cache[id] = views ? views.to_i : nil
+                    @comments_cache[id] = comments ? comments.to_i : nil
                     @cache_timestamps[id] = now
                   end
                 end
@@ -158,6 +161,11 @@ module DaVaz
         @cache[video_id]
       end
 
+      def self.cached_comment_count(video_id)
+        return nil unless video_id
+        @comments_cache[video_id]
+      end
+
       def self.format_view_count(count)
         return nil unless count
         if count >= 1_000_000
@@ -166,6 +174,17 @@ module DaVaz
           "#{(count / 1_000.0).round(1)}K views"
         else
           "#{count} views"
+        end
+      end
+
+      def self.format_comment_count(count)
+        return nil unless count
+        if count >= 1_000_000
+          "#{(count / 1_000_000.0).round(1)}M comments"
+        elsif count >= 1_000
+          "#{(count / 1_000.0).round(1)}K comments"
+        else
+          "#{count} comments"
         end
       end
     end

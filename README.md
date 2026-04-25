@@ -131,6 +131,10 @@ A type-ahead **search bar** above the grids filters all three sections by title 
 
 Clips have a dedicated listing page at `/en/works/clips/` (analogous to Movies and Shorts). Each clip shows a click-to-play YouTube embed, title, details, and a "More" link for the full art object detail view. Clips are stored with artgroup `CLI` in the database. Preview images fall back to YouTube thumbnails (via source video ID) when no local image is uploaded.
 
+### Movies Page Sorting
+
+The movies listing at `/en/works/movies/` shows each video with its YouTube view count and comment count. A sort bar at the top of the list lets you reorder videos client-side by **Default** (database order), **Most views**, or **Most comments**. Sorting is instant — no page reload — and uses `data-views` / `data-comments` attributes embedded on each movie's embed wrapper. View and comment counts are fetched together from the YouTube Data API v3 (`part=statistics`) and cached for 1 hour. The bar is styled in the page's gray-blue palette (`#738494` / `#d8dee4`) to match the existing top navigation.
+
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)
 * Dump DB: `mysqldump -u davaz -p -h localhost --databases davaz2 > davaz2_backup.sql`

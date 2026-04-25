@@ -94,13 +94,19 @@ module DaVaz::View
         super
         video_id = DaVaz::Util::YoutubeHelper.extract_video_id(@model.url)
         return unless video_id
-        view_count = DaVaz::Util::YoutubeHelper.cached_view_count(video_id)
-        views_html = if view_count
-          %(<div class="movies-view-count">#{DaVaz::Util::YoutubeHelper.format_view_count(view_count)}</div>)
-        else
-          ''
+        view_count    = DaVaz::Util::YoutubeHelper.cached_view_count(video_id)
+        comment_count = DaVaz::Util::YoutubeHelper.cached_comment_count(video_id)
+        stats_parts = []
+        if view_count
+          stats_parts << DaVaz::Util::YoutubeHelper.format_view_count(view_count)
         end
-        @value = %(<div class="movies-embed-wrapper" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" alt="#{video_id}" class="movies-embed-thumbnail" style="opacity:0" onerror="_thumbFallback(this)" onload="_checkThumb(this);this.style.opacity=1"><div class="movies-embed-play"></div></div>#{views_html})
+        if comment_count
+          stats_parts << DaVaz::Util::YoutubeHelper.format_comment_count(comment_count)
+        end
+        stats_html = stats_parts.empty? ? '' : %(<div class="movies-view-count">#{stats_parts.join(' &middot; ')}</div>)
+        data_views    = view_count    ? view_count.to_i    : -1
+        data_comments = comment_count ? comment_count.to_i : -1
+        @value = %(<div class="movies-embed-wrapper" data-views="#{data_views}" data-comments="#{data_comments}" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" alt="#{video_id}" class="movies-embed-thumbnail" style="opacity:0" onerror="_thumbFallback(this)" onload="_checkThumb(this);this.style.opacity=1"><div class="movies-embed-play"></div></div>#{stats_html})
       end
     end
 
@@ -186,21 +192,81 @@ module DaVaz::View
       end
     end
 
+    class MoviesSortBar < HtmlGrid::Div
+      CSS_CLASS = 'movies-sort-bar'
+
+      def init
+        super
+        @value = <<~HTML
+          <span class="movies-sort-label">Sort:</span>
+          <button type="button" class="movies-sort-btn movies-sort-active" data-sort="default">Default</button>
+          <button type="button" class="movies-sort-btn" data-sort="views">Most views</button>
+          <button type="button" class="movies-sort-btn" data-sort="comments">Most comments</button>
+          <script>
+          (function() {
+            function setup() {
+              var list = document.getElementById('movies_list');
+              if (!list) return;
+              var originalOrder = null;
+              function ensureOriginal() {
+                if (!originalOrder) originalOrder = Array.prototype.slice.call(list.children);
+              }
+              function readStat(item, attr) {
+                var w = item.querySelector('.movies-embed-wrapper');
+                if (!w) return -1;
+                var v = parseInt(w.getAttribute('data-' + attr) || '-1', 10);
+                return isNaN(v) ? -1 : v;
+              }
+              function sortBy(mode) {
+                ensureOriginal();
+                var items;
+                if (mode === 'default') {
+                  items = originalOrder.slice();
+                } else {
+                  items = Array.prototype.slice.call(list.children);
+                  items.sort(function(a, b) {
+                    return readStat(b, mode) - readStat(a, mode);
+                  });
+                }
+                items.forEach(function(el) { list.appendChild(el); });
+              }
+              var btns = document.querySelectorAll('.movies-sort-btn');
+              for (var i = 0; i < btns.length; i++) {
+                btns[i].addEventListener('click', function() {
+                  var mode = this.getAttribute('data-sort');
+                  sortBy(mode);
+                  for (var j = 0; j < btns.length; j++) btns[j].classList.remove('movies-sort-active');
+                  this.classList.add('movies-sort-active');
+                });
+              }
+            }
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', setup);
+            } else {
+              setup();
+            }
+          })();
+          </script>
+        HTML
+      end
+    end
+
     class MoviesComposite < HtmlGrid::DivComposite
       CSS_CLASS  = 'content'
       COMPONENTS = {
         [0, 0] => MoviesTitle,
         [0, 1] => :movie_top_link,
-        [0, 2] => MoviesList,
-        [0, 3] => :movies_gallery_view,
-        [0, 4] => OnloadMovies,
+        [0, 2] => MoviesSortBar,
+        [0, 3] => MoviesList,
+        [0, 4] => :movies_gallery_view,
+        [0, 5] => OnloadMovies,
       }
       CSS_ID_MAP = {
-        2 => 'movies_list',
-        3 => 'movies_gallery_view',
+        3 => 'movies_list',
+        4 => 'movies_gallery_view',
       }
       CSS_STYLE_MAP = {
-        3 => 'display:none;',
+        4 => 'display:none;',
       }
 
       def init

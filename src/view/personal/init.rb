@@ -421,6 +421,14 @@ module DaVaz::View
     end
 
     class VideoSearchBar < HtmlGrid::Div
+      # Curated tags that always appear in the cloud, even if the words
+      # aren't in any video title. The search query matches title OR
+      # description, so terms that only appear in descriptions still find
+      # their videos. Format: [display label, search query].
+      PROMOTED_TAGS = [
+        ['Prix de Bâle', 'prix de bâle'],
+      ].freeze
+
       STOPWORDS = %w[
         the and for with from this that these those have has had been being was were
         you your his her their our its who what when where why how can but not all any
@@ -456,16 +464,22 @@ module DaVaz::View
       end
 
       def render_tag_cloud(tags)
-        return '' if tags.empty?
-        max = tags.first[2]
-        min = tags.last[2]
+        return '' if tags.empty? && self.class::PROMOTED_TAGS.empty?
+        max = tags.first ? tags.first[2] : 1
+        min = tags.last  ? tags.last[2]  : 1
         spread = [max - min, 1].max.to_f
-        spans = tags.map { |word, key, count|
+        promoted = self.class::PROMOTED_TAGS.map { |label, query|
+          safe_label = label.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
+          safe_query = query.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
+          %(<span class="video-tag video-tag-promoted" data-tag="#{safe_query}">#{safe_label}</span>)
+        }
+        derived = tags.map { |word, key, count|
           scale = (count - min) / spread
           size  = (0.8 + scale * 0.7).round(2)
           label = word.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
           %(<span class="video-tag" data-tag="#{key}" style="font-size:#{size}rem" title="#{count} matches">#{label}</span>)
-        }.join(' ')
+        }
+        spans = (promoted + derived).join(' ')
         %(<div id="video_tag_cloud" class="video-tag-cloud">#{spans}</div>)
       end
 

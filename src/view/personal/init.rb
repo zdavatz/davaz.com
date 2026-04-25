@@ -502,7 +502,16 @@ module DaVaz::View
           label = word.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
           %(<span class="video-tag" data-tag="#{key}" style="font-size:#{size}rem" title="#{count} matches">#{label}</span>)
         }
-        spans = (promoted + derived).join(' ')
+        result = derived.dup
+        unless promoted.empty?
+          n_p = promoted.size
+          n_d = derived.size
+          positions = (0...n_p).map { |i| ((i + 1).to_f * (n_d + 1) / (n_p + 1)).round }
+          promoted.zip(positions).reverse_each do |tag, pos|
+            result.insert(pos, tag)
+          end
+        end
+        spans = result.join(' ')
         %(<div id="video_tag_cloud" class="video-tag-cloud">#{spans}</div>)
       end
 

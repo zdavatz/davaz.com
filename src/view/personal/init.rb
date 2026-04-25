@@ -434,6 +434,8 @@ module DaVaz::View
         ['kisses',       'kisses'],
         ['thinking',     'thinking'],
         ['bi öis',       'bi öis'],
+        ['hand',         'hand'],
+        ['curiosity',    'curiosity'],
       ].freeze
 
       STOPWORDS = %w[

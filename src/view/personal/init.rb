@@ -429,7 +429,7 @@ module DaVaz::View
         ['Prix de Bâle', 'prix de bâle'],
         ['pig',          'pig'],
         ['bear',         'bear'],
-        ['fucking E',    'fucking e'],
+        ['fucking E',    'fucking english'],
         ['penis',        'penis'],
         ['kisses',       'kisses'],
         ['thinking',     'thinking'],
@@ -470,12 +470,24 @@ module DaVaz::View
         counts.sort_by { |_, c| -c }.first(limit).map { |k, c| [display[k], k, c] }
       end
 
-      def render_tag_cloud(tags)
-        return '' if tags.empty? && self.class::PROMOTED_TAGS.empty?
+      def active_promoted_tags(videos)
+        haystacks = videos.map { |v|
+          t = v.title.to_s.downcase
+          d = v.respond_to?(:text) ? v.text.to_s.downcase : ''
+          [t, d]
+        }
+        self.class::PROMOTED_TAGS.select { |_label, query|
+          q = query.downcase
+          haystacks.any? { |t, d| t.include?(q) || d.include?(q) }
+        }
+      end
+
+      def render_tag_cloud(tags, promoted_tags = self.class::PROMOTED_TAGS)
+        return '' if tags.empty? && promoted_tags.empty?
         max = tags.first ? tags.first[2] : 1
         min = tags.last  ? tags.last[2]  : 1
         spread = [max - min, 1].max.to_f
-        promoted = self.class::PROMOTED_TAGS.map { |label, query|
+        promoted = promoted_tags.map { |label, query|
           safe_label = label.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
           safe_query = query.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
           %(<span class="video-tag video-tag-promoted" data-tag="#{safe_query}">#{safe_label}</span>)
@@ -507,9 +519,10 @@ module DaVaz::View
           all_videos.concat(val.to_a) if val
         end
         tags = build_tag_cloud(all_videos, 40)
+        promoted = active_promoted_tags(all_videos)
 
         @value = <<~HTML
-          #{render_tag_cloud(tags)}
+          #{render_tag_cloud(tags, promoted)}
           <div id="video_search_bar" class="video-search-bar">
             <input type="text" id="video_search_input" placeholder="Search, e.g. nt" autocomplete="off">
             <span id="video_search_count" class="video-search-count"></span>

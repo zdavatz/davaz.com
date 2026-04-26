@@ -170,6 +170,15 @@ div.movies-view-original {
   padding-top: 1px;
 }
 
+div.movies-view-original a {
+  color:           inherit;
+  text-decoration: none;
+}
+
+div.movies-view-original a:hover {
+  text-decoration: underline;
+}
+
 span.movies-view-label {
   color:       #888;
   font-weight: bold;

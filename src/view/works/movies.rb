@@ -111,7 +111,7 @@ module DaVaz::View
           orig_parts = []
           orig_parts << DaVaz::Util::YoutubeHelper.format_view_count(orig_views)       if orig_views
           orig_parts << DaVaz::Util::YoutubeHelper.format_comment_count(orig_comments) if orig_comments
-          original_html = %(<div class="movies-view-count movies-view-original"><span class="movies-view-label">Original:</span> #{orig_parts.join(' &middot; ')}</div>) unless orig_parts.empty?
+          original_html = %(<div class="movies-view-count movies-view-original"><a href="https://www.youtube.com/watch?v=#{original_id}" target="_blank" rel="noopener"><span class="movies-view-label">Original:</span> #{orig_parts.join(' &middot; ')}</a></div>) unless orig_parts.empty?
         end
 
         # Sort attributes aggregate 4K + original so videos with both versions

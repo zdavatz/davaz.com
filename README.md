@@ -135,7 +135,7 @@ Clips have a dedicated listing page at `/en/works/clips/` (analogous to Movies a
 
 The movies listing at `/en/works/movies/` shows each video with its YouTube view count and comment count. A sort bar at the top of the list lets you reorder videos client-side by **Default** (database order), **Most views**, or **Most comments**. Sorting is instant — no page reload — and uses `data-views` / `data-comments` attributes embedded on each movie's embed wrapper. View and comment counts are fetched together from the YouTube Data API v3 (`part=statistics`) and cached for 1 hour. The bar is styled in the page's gray-blue palette (`#738494` / `#d8dee4`) to match the existing top navigation.
 
-When a 4K video has a known non-4K original on `@jdavatz`, the page renders a second stats line beneath the 4K line labelled "Original:" so the original's view/comment counts can be compared. The mapping lives in `json/movie_originals.json` (`{gozipa_id: jdavatz_id}`) and is built by:
+When a 4K video has a known non-4K original on `@jdavatz`, the page renders a second stats line beneath the 4K line labelled "Original:" so the original's view/comment counts can be compared. The Original line is a link that opens the @jdavatz video on YouTube in a new tab. Sorting by views or comments uses the **aggregate** (4K + original) so videos with both versions rank fairly against single-version ones. The mapping lives in `json/movie_originals.json` (`{gozipa_id: jdavatz_id}`) and is built by:
 
 ```zsh
 % bundle exec ruby bin/build_movie_originals.rb

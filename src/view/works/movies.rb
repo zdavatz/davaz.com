@@ -97,16 +97,24 @@ module DaVaz::View
         view_count    = DaVaz::Util::YoutubeHelper.cached_view_count(video_id)
         comment_count = DaVaz::Util::YoutubeHelper.cached_comment_count(video_id)
         stats_parts = []
-        if view_count
-          stats_parts << DaVaz::Util::YoutubeHelper.format_view_count(view_count)
+        stats_parts << DaVaz::Util::YoutubeHelper.format_view_count(view_count)       if view_count
+        stats_parts << DaVaz::Util::YoutubeHelper.format_comment_count(comment_count) if comment_count
+        stats_html = stats_parts.empty? ? '' : %(<div class="movies-view-count"><span class="movies-view-label">4K:</span> #{stats_parts.join(' &middot; ')}</div>)
+
+        original_id = DaVaz::Util::YoutubeHelper.original_video_id(video_id)
+        original_html = ''
+        if original_id
+          orig_views    = DaVaz::Util::YoutubeHelper.cached_view_count(original_id)
+          orig_comments = DaVaz::Util::YoutubeHelper.cached_comment_count(original_id)
+          orig_parts = []
+          orig_parts << DaVaz::Util::YoutubeHelper.format_view_count(orig_views)       if orig_views
+          orig_parts << DaVaz::Util::YoutubeHelper.format_comment_count(orig_comments) if orig_comments
+          original_html = %(<div class="movies-view-count movies-view-original"><span class="movies-view-label">Original:</span> #{orig_parts.join(' &middot; ')}</div>) unless orig_parts.empty?
         end
-        if comment_count
-          stats_parts << DaVaz::Util::YoutubeHelper.format_comment_count(comment_count)
-        end
-        stats_html = stats_parts.empty? ? '' : %(<div class="movies-view-count">#{stats_parts.join(' &middot; ')}</div>)
+
         data_views    = view_count    ? view_count.to_i    : -1
         data_comments = comment_count ? comment_count.to_i : -1
-        @value = %(<div class="movies-embed-wrapper" data-views="#{data_views}" data-comments="#{data_comments}" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" alt="#{video_id}" class="movies-embed-thumbnail" style="opacity:0" onerror="_thumbFallback(this)" onload="_checkThumb(this);this.style.opacity=1"><div class="movies-embed-play"></div></div>#{stats_html})
+        @value = %(<div class="movies-embed-wrapper" data-views="#{data_views}" data-comments="#{data_comments}" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" alt="#{video_id}" class="movies-embed-thumbnail" style="opacity:0" onerror="_thumbFallback(this)" onload="_checkThumb(this);this.style.opacity=1"><div class="movies-embed-play"></div></div>#{stats_html}#{original_html})
       end
     end
 

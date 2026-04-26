@@ -11,6 +11,32 @@ module DaVaz
       @comments_cache = {}
       @cache_timestamps = {}
 
+      # Mapping of @gozipa (4K) video IDs to their @jdavatz (original) video IDs.
+      # Loaded lazily from json/movie_originals.json. Reloads when the file mtime
+      # changes — no service restart needed after running bin/build_movie_originals.rb.
+      def self.original_video_ids
+        candidates = []
+        if defined?(DaVaz) && DaVaz.respond_to?(:config) && DaVaz.config.respond_to?(:project_root)
+          candidates << File.join(DaVaz.config.project_root, 'json', 'movie_originals.json')
+        end
+        candidates << File.join(File.expand_path('../../..', __FILE__), 'json', 'movie_originals.json')
+        candidates << File.join(Dir.pwd, 'json', 'movie_originals.json')
+        path = candidates.find { |f| File.exist?(f) }
+        return @original_video_ids ||= {} unless path
+        mtime = File.mtime(path)
+        return @original_video_ids if @original_video_ids && @original_video_ids_mtime == mtime
+        @original_video_ids = JSON.parse(File.read(path, encoding: 'utf-8'))
+        @original_video_ids_mtime = mtime
+        @original_video_ids
+      rescue StandardError => e
+        warn "YoutubeHelper: failed to load movie_originals.json: #{e.message}"
+        @original_video_ids ||= {}
+      end
+
+      def self.original_video_id(video_id)
+        original_video_ids[video_id]
+      end
+
       # Mapping of clip IDs to their source video IDs (for thumbnails).
       # Loaded lazily from json/clips.json.
       def self.clip_source_videos
@@ -101,7 +127,11 @@ module DaVaz
         video_ids = art_objects.map { |ao|
           extract_video_id(ao.url)
         }.compact.uniq
-        fetch_view_counts(video_ids) if video_ids.any?
+        # Also prefetch counts for the @jdavatz originals so the movies page
+        # can show both lines without a second batched call.
+        originals = video_ids.map { |id| original_video_id(id) }.compact
+        all_ids = (video_ids + originals).uniq
+        fetch_view_counts(all_ids) if all_ids.any?
       end
 
       def self.fetch_view_counts(video_ids)

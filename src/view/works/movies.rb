@@ -102,6 +102,8 @@ module DaVaz::View
         stats_html = stats_parts.empty? ? '' : %(<div class="movies-view-count"><span class="movies-view-label">4K:</span> #{stats_parts.join(' &middot; ')}</div>)
 
         original_id = DaVaz::Util::YoutubeHelper.original_video_id(video_id)
+        orig_views = nil
+        orig_comments = nil
         original_html = ''
         if original_id
           orig_views    = DaVaz::Util::YoutubeHelper.cached_view_count(original_id)
@@ -112,8 +114,10 @@ module DaVaz::View
           original_html = %(<div class="movies-view-count movies-view-original"><span class="movies-view-label">Original:</span> #{orig_parts.join(' &middot; ')}</div>) unless orig_parts.empty?
         end
 
-        data_views    = view_count    ? view_count.to_i    : -1
-        data_comments = comment_count ? comment_count.to_i : -1
+        # Sort attributes aggregate 4K + original so videos with both versions
+        # rank fairly against single-version videos. -1 = entirely unknown.
+        data_views    = (view_count || orig_views)       ? (view_count.to_i    + orig_views.to_i)    : -1
+        data_comments = (comment_count || orig_comments) ? (comment_count.to_i + orig_comments.to_i) : -1
         @value = %(<div class="movies-embed-wrapper" data-views="#{data_views}" data-comments="#{data_comments}" onclick="this.innerHTML='<iframe src=\\'https://www.youtube.com/embed/#{video_id}?autoplay=1\\' frameborder=\\'0\\' allow=\\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\' allowfullscreen style=\\'position:absolute;top:0;left:0;width:100%;height:100%\\'></iframe>'"><img src="https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg" alt="#{video_id}" class="movies-embed-thumbnail" style="opacity:0" onerror="_thumbFallback(this)" onload="_checkThumb(this);this.style.opacity=1"><div class="movies-embed-play"></div></div>#{stats_html}#{original_html})
       end
     end

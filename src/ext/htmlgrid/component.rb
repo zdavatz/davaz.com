@@ -13,9 +13,11 @@ module HtmlGrid
     private
 
     def escape(v)
-      v = v.gsub(',', '<comma/>').gsub(/\r?\n/, '<br/>')
       v = v.gsub(/\&quot;|"/, '')
-      CGI::escapeHTML(v)
+      v = CGI::escapeHTML(v)
+      # Placeholders MUST come after CGI::escapeHTML — otherwise their `<`/`>`
+      # get encoded and the consumer's /<comma[^>]*>/g regex misses them.
+      v.gsub(',', '<comma/>').gsub(/\r?\n/, '<br/>')
     end
   end
 end

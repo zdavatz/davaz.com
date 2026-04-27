@@ -121,7 +121,7 @@ module DaVaz::Util
         india_ticker_link: 'Passage through India: One of Da Vaz\'s ' \
                            'memorable trips',
         init_drawing:      'Drawing',
-        intro_text:        <<~TEXT.gsub(/\n/, ''),
+        intro_text:        <<~TEXT.gsub(/\n/, ' ').strip,
           Swiss-born artist da vaz does not wait for
           the right<br>moment. He could be totally unprepared himself when
           his<br>adrenaline surges up. His searching eyes look for

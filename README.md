@@ -143,6 +143,10 @@ When a 4K video has a known non-4K original on `@jdavatz`, the page renders a se
 
 The script fetches both channels via `yt-dlp --flat-playlist` and matches by normalized title (same rules as the rebuild script). Re-run it whenever new videos are added to either channel. The helper hot-reloads the JSON on mtime change — no service restart needed.
 
+### Homepage Intro Text
+
+The artist intro paragraph on the homepage is a heredoc in `src/util/lookandfeel.rb` (`intro_text`). It uses `<<~TEXT.gsub(/\n/, ' ').strip` so source-formatting newlines collapse to **spaces** (not empty string) — otherwise words from adjacent source lines glue together (`for\nthe` → `forthe`). Intentional line breaks inside the paragraph are written as explicit `<br>` tags.
+
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)
 * Dump DB: `mysqldump -u davaz -p -h localhost --databases davaz2 > davaz2_backup.sql`

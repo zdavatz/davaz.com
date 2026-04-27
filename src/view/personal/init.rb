@@ -438,6 +438,7 @@ module DaVaz::View
         ['curiosity',    'curiosity'],
         ['BHUTAN',       'bhutan'],
         ['SIKKIM',       'sikkim'],
+        ['Alltag',       'alltag'],
       ].freeze
 
       STOPWORDS = %w[

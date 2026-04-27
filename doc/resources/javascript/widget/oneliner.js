@@ -26,7 +26,8 @@ define([
       if (this.messageIdx >= this.messages.length) {
         this.messageIdx = 0;
       }
-      this[this.nodeIn].innerHTML   = this.messages[this.messageIdx];
+      this[this.nodeIn].innerHTML   = this.messages[this.messageIdx]
+        .replace(/<comma[^>]*>/g, ',');
       this[this.nodeIn].style.color = this.colors[this.messageIdx];
       this.fadeOut();
     }

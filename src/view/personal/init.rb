@@ -441,6 +441,7 @@ module DaVaz::View
         ['Alltag',       'alltag'],
         ['love',         'camels in love'],
         ['CASTELBEL',    'castelbel'],
+        ['Eugen Beck',   'eugen beck'],
       ].freeze
 
       STOPWORDS = %w[

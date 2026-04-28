@@ -439,6 +439,8 @@ module DaVaz::View
         ['BHUTAN',       'bhutan'],
         ['SIKKIM',       'sikkim'],
         ['Alltag',       'alltag'],
+        ['love',         'camels in love'],
+        ['CASTELBEL',    'castelbel'],
       ].freeze
 
       STOPWORDS = %w[
@@ -456,6 +458,7 @@ module DaVaz::View
         sono sei siamo siete erano era dal dalla alle allo della sulla
         www http https com org net ch html php www2 youtu tube watch video
         enhanced
+        love castelbel müstair
       ].to_set.freeze
 
       def build_tag_cloud(videos, limit = 40)

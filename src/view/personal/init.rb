@@ -442,6 +442,7 @@ module DaVaz::View
         ['love',         'camels in love'],
         ['CASTELBEL',    'castelbel'],
         ['Eugen Beck',   'eugen beck'],
+        ['Portraits',    'portrait'],
       ].freeze
 
       STOPWORDS = %w[
@@ -459,7 +460,7 @@ module DaVaz::View
         sono sei siamo siete erano era dal dalla alle allo della sulla
         www http https com org net ch html php www2 youtu tube watch video
         enhanced
-        love castelbel müstair
+        love castelbel müstair portrait portraits
       ].to_set.freeze
 
       def build_tag_cloud(videos, limit = 40)

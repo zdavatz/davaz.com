@@ -446,6 +446,7 @@ module DaVaz::View
         ['Limits',           'limit'],
         ['Andras Péterffy',  'péterffy'],
         ['Chance',           'chance'],
+        ['Till Schaap',      'schaap'],
       ].freeze
 
       # Manually curated tags rendered in the violet (.video-tag) style —
@@ -471,7 +472,7 @@ module DaVaz::View
         www http https com org net ch html php www2 youtu tube watch video
         enhanced
         love castelbel müstair portrait portraits limit limits
-        andras péterffy peterffy chance
+        andras péterffy peterffy chance schaap
       ].to_set.freeze
 
       def build_tag_cloud(videos, limit = 40)

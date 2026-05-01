@@ -445,6 +445,7 @@ module DaVaz::View
         ['Portraits',    'portrait'],
         ['Limits',           'limit'],
         ['Andras Péterffy',  'péterffy'],
+        ['Chance',           'chance'],
       ].freeze
 
       STOPWORDS = %w[
@@ -463,7 +464,7 @@ module DaVaz::View
         www http https com org net ch html php www2 youtu tube watch video
         enhanced
         love castelbel müstair portrait portraits limit limits
-        andras péterffy peterffy
+        andras péterffy peterffy chance
       ].to_set.freeze
 
       def build_tag_cloud(videos, limit = 40)

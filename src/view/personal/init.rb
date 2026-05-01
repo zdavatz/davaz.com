@@ -448,6 +448,13 @@ module DaVaz::View
         ['Chance',           'chance'],
       ].freeze
 
+      # Manually curated tags rendered in the violet (.video-tag) style —
+      # for entries that should look like derived tags but wouldn't appear
+      # automatically (multi-word labels, terms only in descriptions, etc).
+      PROMOTED_TAGS_VIOLET = [
+        ['Male Mating', 'mating'],
+      ].freeze
+
       STOPWORDS = %w[
         the and for with from this that these those have has had been being was were
         you your his her their our its who what when where why how can but not all any
@@ -484,20 +491,29 @@ module DaVaz::View
         counts.sort_by { |_, c| -c }.first(limit).map { |k, c| [display[k], k, c] }
       end
 
-      def active_promoted_tags(videos)
+      def filter_active_tags(source, videos)
         haystacks = videos.map { |v|
           t = v.title.to_s.downcase
           d = v.respond_to?(:text) ? v.text.to_s.downcase : ''
           [t, d]
         }
-        self.class::PROMOTED_TAGS.select { |_label, query|
+        source.select { |_label, query|
           q = query.downcase
           haystacks.any? { |t, d| t.include?(q) || d.include?(q) }
         }
       end
 
-      def render_tag_cloud(tags, promoted_tags = self.class::PROMOTED_TAGS)
-        return '' if tags.empty? && promoted_tags.empty?
+      def active_promoted_tags(videos)
+        filter_active_tags(self.class::PROMOTED_TAGS, videos)
+      end
+
+      def active_promoted_violet_tags(videos)
+        filter_active_tags(self.class::PROMOTED_TAGS_VIOLET, videos)
+      end
+
+      def render_tag_cloud(tags, promoted_tags = self.class::PROMOTED_TAGS,
+                           violet_promoted_tags = self.class::PROMOTED_TAGS_VIOLET)
+        return '' if tags.empty? && promoted_tags.empty? && violet_promoted_tags.empty?
         max = tags.first ? tags.first[2] : 1
         min = tags.last  ? tags.last[2]  : 1
         spread = [max - min, 1].max.to_f
@@ -506,17 +522,22 @@ module DaVaz::View
           safe_query = query.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
           %(<span class="video-tag video-tag-promoted" data-tag="#{safe_query}">#{safe_label}</span>)
         }
+        violet_manual = violet_promoted_tags.map { |label, query|
+          safe_label = label.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
+          safe_query = query.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
+          %(<span class="video-tag" data-tag="#{safe_query}">#{safe_label}</span>)
+        }
         derived = tags.map { |word, key, count|
           scale = (count - min) / spread
           size  = (0.8 + scale * 0.7).round(2)
           label = word.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
           %(<span class="video-tag" data-tag="#{key}" style="font-size:#{size}rem" title="#{count} matches">#{label}</span>)
         }
-        result = derived.dup
+        result = violet_manual + derived
         unless promoted.empty?
           n_p = promoted.size
-          n_d = derived.size
-          positions = (0...n_p).map { |i| ((i + 1).to_f * (n_d + 1) / (n_p + 1)).round }
+          n_v = result.size
+          positions = (0...n_p).map { |i| ((i + 1).to_f * (n_v + 1) / (n_p + 1)).round }
           promoted.zip(positions).reverse_each do |tag, pos|
             result.insert(pos, tag)
           end
@@ -534,9 +555,10 @@ module DaVaz::View
         end
         tags = build_tag_cloud(all_videos, 40)
         promoted = active_promoted_tags(all_videos)
+        violet_manual = active_promoted_violet_tags(all_videos)
 
         @value = <<~HTML
-          #{render_tag_cloud(tags, promoted)}
+          #{render_tag_cloud(tags, promoted, violet_manual)}
           <div id="video_search_bar" class="video-search-bar">
             <input type="text" id="video_search_input" placeholder="Search, e.g. nt" autocomplete="off">
             <span id="video_search_count" class="video-search-count"></span>

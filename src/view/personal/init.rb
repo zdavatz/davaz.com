@@ -447,6 +447,9 @@ module DaVaz::View
         ['Andras Péterffy',  'péterffy'],
         ['Chance',           'chance'],
         ['Till Schaap',      'schaap'],
+        ['HO hoho',          'hoho'],
+        ['Liebst du mich?',  'liebst du mich'],
+        ['first step',       'first step'],
       ].freeze
 
       # Manually curated tags rendered in the violet (.video-tag) style —
@@ -454,6 +457,7 @@ module DaVaz::View
       # automatically (multi-word labels, terms only in descriptions, etc).
       PROMOTED_TAGS_VIOLET = [
         ['Male Mating', 'mating'],
+        ['dog',         'dog'],
       ].freeze
 
       STOPWORDS = %w[
@@ -472,7 +476,7 @@ module DaVaz::View
         www http https com org net ch html php www2 youtu tube watch video
         enhanced
         love castelbel müstair portrait portraits limit limits
-        andras péterffy peterffy chance schaap
+        andras péterffy peterffy chance schaap hoho
       ].to_set.freeze
 
       def build_tag_cloud(videos, limit = 40)

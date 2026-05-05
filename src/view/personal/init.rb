@@ -456,8 +456,9 @@ module DaVaz::View
       # for entries that should look like derived tags but wouldn't appear
       # automatically (multi-word labels, terms only in descriptions, etc).
       PROMOTED_TAGS_VIOLET = [
-        ['Male Mating', 'mating'],
-        ['dog',         'dog'],
+        ['Male Mating',   'mating'],
+        ['dog',           'dog'],
+        ['Vergangenheit', 'vergangenheit'],
       ].freeze
 
       STOPWORDS = %w[

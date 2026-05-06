@@ -458,7 +458,7 @@ module DaVaz::View
       PROMOTED_TAGS_VIOLET = [
         ['Male Mating',   'mating'],
         ['dog',           'dog'],
-        ['Vergangenheit', 'vergangenheit'],
+        ['work in progress', 'work in progress'],
       ].freeze
 
       STOPWORDS = %w[

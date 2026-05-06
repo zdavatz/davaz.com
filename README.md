@@ -92,11 +92,19 @@ Updates existing entries to 4K URLs and scans for missing videos:
 % bundle exec ruby bin/update_4K_shorts_movies_yt.rb --scan --apply
 ```
 
-Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). Videos from the Shorts tab or <=60s are classified as Shorts, >60s as Movies. YouTube Clips created by Jürg are stored as artgroup `CLI`. The rebuild script also fetches upload dates from YouTube API v3 (requires `.yt-keys`).
+Channels: `@jdavatz` (originals), `@gozipa` (Enhanced 4K). The rebuild script classifies videos from the Shorts tab or `<=60s` as `SHO`, longer ones as `MOV`. Individual manual additions use a finer-grained duration rule: `≤80s` → `CLI`, `81–240s` → `SHO`, `≥241s` → `MOV` (see "Adding individual videos manually" below). YouTube Clips created by Jürg are also stored as artgroup `CLI`. The rebuild script also fetches upload dates from YouTube API v3 (requires `.yt-keys`).
 
 #### Adding individual videos manually
 
 For adding individual Enhanced 4K videos without a full rebuild, fetch metadata via YouTube Data API v3 (`venv` + Python or Ruby), check for duplicates by video ID and normalized title, then insert via `db_manager.insert_artobject`. Always delete old non-4K duplicates after inserting the 4K replacement. No app restart needed — videos appear on next page load.
+
+Classification by duration (individual additions only — the rebuild script keeps the legacy `<=60s → SHO, >60s → MOV` rule):
+
+| Duration | artgroup_id |
+|----------|-------------|
+| ≤80s (≤1:20) | `CLI` |
+| 81–240s (1:21–4:00) | `SHO` |
+| ≥241s (≥4:01) | `MOV` |
 
 ### Adding YouTube Clips
 

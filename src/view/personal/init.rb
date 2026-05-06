@@ -453,6 +453,7 @@ module DaVaz::View
         ['MAUER EINSTURZ',   'mauer einsturz'],
         ['Kindheitserinnerungen', 'kindheitserinnerungen'],
         ['Handshake',        'handshake'],
+        ['good girls',       'good girls'],
       ].freeze
 
       # Manually curated tags rendered in the violet (.video-tag) style —
@@ -481,7 +482,7 @@ module DaVaz::View
         www http https com org net ch html php www2 youtu tube watch video
         enhanced
         love castelbel müstair portrait portraits limit limits
-        andras péterffy peterffy chance schaap hoho kindheitserinnerungen handshake
+        andras péterffy peterffy chance schaap hoho kindheitserinnerungen handshake girls
       ].to_set.freeze
 
       def build_tag_cloud(videos, limit = 40)

@@ -155,6 +155,10 @@ The script fetches both channels via `yt-dlp --flat-playlist` and matches by nor
 
 The artist intro paragraph on the homepage is a heredoc in `src/util/lookandfeel.rb` (`intro_text`). It uses `<<~TEXT.gsub(/\n/, ' ').strip` so source-formatting newlines collapse to **spaces** (not empty string) — otherwise words from adjacent source lines glue together (`for\nthe` → `forthe`). Intentional line breaks inside the paragraph are written as explicit `<br>` tags.
 
+### Panorama Viewer (Pannellum)
+
+360° panoramas on `/works/multiples/` are served by the bundled Pannellum viewer at `doc/resources/javascript/pannellum/pannellum.htm`, embedded with a `?panorama=<image_url>` query parameter (see `src/view/works/multiples.rb`). The bundled version was upgraded from Pannellum 2.2.1 (Dec 2022) to a newer 2.x build (Apr 2024) — adds mobile orientation control, modern `cursor:grab`/`grabbing` defaults, broader fullscreen prefix support, and the `contain:content` performance hint. The pre-upgrade file is kept locally as `pannellum.htm_back` (untracked).
+
 ### Database
 * [Backup](https://github.com/zdavatz/davaz.com/tree/master/db)
 * Dump DB: `mysqldump -u davaz -p -h localhost --databases davaz2 > davaz2_backup.sql`

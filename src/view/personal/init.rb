@@ -451,6 +451,7 @@ module DaVaz::View
         ['Liebst du mich?',  'liebst du mich'],
         ['first step',       'first step'],
         ['MAUER EINSTURZ',   'mauer einsturz'],
+        ['Kindheitserinnerungen', 'kindheitserinnerungen'],
       ].freeze
 
       # Manually curated tags rendered in the violet (.video-tag) style —
@@ -460,6 +461,7 @@ module DaVaz::View
         ['Male Mating',   'mating'],
         ['dog',           'dog'],
         ['work in progress', 'work in progress'],
+        ['secret police',    'secret police'],
       ].freeze
 
       STOPWORDS = %w[
@@ -478,7 +480,7 @@ module DaVaz::View
         www http https com org net ch html php www2 youtu tube watch video
         enhanced
         love castelbel müstair portrait portraits limit limits
-        andras péterffy peterffy chance schaap hoho
+        andras péterffy peterffy chance schaap hoho kindheitserinnerungen
       ].to_set.freeze
 
       def build_tag_cloud(videos, limit = 40)

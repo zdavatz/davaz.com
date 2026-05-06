@@ -37,6 +37,37 @@ module DaVaz
         original_video_ids[video_id]
       end
 
+      # Curated tags for the homepage tag cloud, loaded from
+      # json/promoted_tags.json with mtime-based reload (no service restart
+      # needed after editing the JSON). Returns
+      # { 'promoted' => [[label, query], ...], 'promoted_violet' => [...] }.
+      def self.promoted_tags_data
+        candidates = []
+        if defined?(DaVaz) && DaVaz.respond_to?(:config) && DaVaz.config.respond_to?(:project_root)
+          candidates << File.join(DaVaz.config.project_root, 'json', 'promoted_tags.json')
+        end
+        candidates << File.join(File.expand_path('../../..', __FILE__), 'json', 'promoted_tags.json')
+        candidates << File.join(Dir.pwd, 'json', 'promoted_tags.json')
+        path = candidates.find { |f| File.exist?(f) }
+        return @promoted_tags_data ||= { 'promoted' => [], 'promoted_violet' => [] } unless path
+        mtime = File.mtime(path)
+        return @promoted_tags_data if @promoted_tags_data && @promoted_tags_data_mtime == mtime
+        @promoted_tags_data = JSON.parse(File.read(path, encoding: 'utf-8'))
+        @promoted_tags_data_mtime = mtime
+        @promoted_tags_data
+      rescue StandardError => e
+        warn "YoutubeHelper: failed to load promoted_tags.json: #{e.message}"
+        @promoted_tags_data ||= { 'promoted' => [], 'promoted_violet' => [] }
+      end
+
+      def self.promoted_tags
+        promoted_tags_data['promoted'] || []
+      end
+
+      def self.promoted_tags_violet
+        promoted_tags_data['promoted_violet'] || []
+      end
+
       # Mapping of clip IDs to their source video IDs (for thumbnails).
       # Loaded lazily from json/clips.json.
       def self.clip_source_videos

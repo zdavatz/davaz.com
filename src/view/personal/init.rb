@@ -421,50 +421,12 @@ module DaVaz::View
     end
 
     class VideoSearchBar < HtmlGrid::Div
-      # Curated tags that always appear in the cloud, even if the words
-      # aren't in any video title. The search query matches title OR
-      # description, so terms that only appear in descriptions still find
-      # their videos. Format: [display label, search query].
-      PROMOTED_TAGS = [
-        ['Prix de Bâle', 'prix de bâle'],
-        ['pig',          'pig'],
-        ['bear',         'bear'],
-        ['fucking E',    'fucking english'],
-        ['penis',        'penis'],
-        ['kisses',       'kisses'],
-        ['thinking',     'thinking'],
-        ['bi öis',       'bi öis'],
-        ['hand',         'hand'],
-        ['curiosity',    'curiosity'],
-        ['BHUTAN',       'bhutan'],
-        ['SIKKIM',       'sikkim'],
-        ['Alltag',       'alltag'],
-        ['love',         'camels in love'],
-        ['CASTELBEL',    'castelbel'],
-        ['Eugen Beck',   'eugen beck'],
-        ['Portraits',    'portrait'],
-        ['Limits',           'limit'],
-        ['Andras Péterffy',  'péterffy'],
-        ['Chance',           'chance'],
-        ['Till Schaap',      'schaap'],
-        ['HO hoho',          'hoho'],
-        ['Liebst du mich?',  'liebst du mich'],
-        ['first step',       'first step'],
-        ['MAUER EINSTURZ',   'mauer einsturz'],
-        ['Kindheitserinnerungen', 'kindheitserinnerungen'],
-        ['Handshake',        'handshake'],
-        ['good girls',       'good girls'],
-      ].freeze
-
-      # Manually curated tags rendered in the violet (.video-tag) style —
-      # for entries that should look like derived tags but wouldn't appear
-      # automatically (multi-word labels, terms only in descriptions, etc).
-      PROMOTED_TAGS_VIOLET = [
-        ['Male Mating',   'mating'],
-        ['dog',           'dog'],
-        ['work in progress', 'work in progress'],
-        ['secret police',    'secret police'],
-      ].freeze
+      # Curated tags for the cloud are loaded from json/promoted_tags.json
+      # (with mtime-based reload — no restart needed after editing). The
+      # JSON has two arrays: "promoted" (gold) and "promoted_violet"
+      # (violet style). Each entry is [display label, search query]. The
+      # search query matches title OR description, so terms that only
+      # appear in descriptions still find their videos.
 
       STOPWORDS = %w[
         the and for with from this that these those have has had been being was were
@@ -515,15 +477,16 @@ module DaVaz::View
       end
 
       def active_promoted_tags(videos)
-        filter_active_tags(self.class::PROMOTED_TAGS, videos)
+        filter_active_tags(DaVaz::Util::YoutubeHelper.promoted_tags, videos)
       end
 
       def active_promoted_violet_tags(videos)
-        filter_active_tags(self.class::PROMOTED_TAGS_VIOLET, videos)
+        filter_active_tags(DaVaz::Util::YoutubeHelper.promoted_tags_violet, videos)
       end
 
-      def render_tag_cloud(tags, promoted_tags = self.class::PROMOTED_TAGS,
-                           violet_promoted_tags = self.class::PROMOTED_TAGS_VIOLET)
+      def render_tag_cloud(tags,
+                           promoted_tags = DaVaz::Util::YoutubeHelper.promoted_tags,
+                           violet_promoted_tags = DaVaz::Util::YoutubeHelper.promoted_tags_violet)
         return '' if tags.empty? && promoted_tags.empty? && violet_promoted_tags.empty?
         max = tags.first ? tags.first[2] : 1
         min = tags.last  ? tags.last[2]  : 1

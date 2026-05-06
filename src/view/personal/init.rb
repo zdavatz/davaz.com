@@ -450,6 +450,7 @@ module DaVaz::View
         ['HO hoho',          'hoho'],
         ['Liebst du mich?',  'liebst du mich'],
         ['first step',       'first step'],
+        ['MAUER EINSTURZ',   'mauer einsturz'],
       ].freeze
 
       # Manually curated tags rendered in the violet (.video-tag) style —

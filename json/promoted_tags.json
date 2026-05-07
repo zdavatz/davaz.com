@@ -27,12 +27,16 @@
     ["MAUER EINSTURZ", "mauer einsturz"],
     ["Kindheitserinnerungen", "kindheitserinnerungen"],
     ["Handshake", "handshake"],
-    ["good girls", "good girls"]
+    ["good girls", "good girls"],
+    ["CABBAGE TALES", "cabbage tales"],
+    ["Tatyana 1941", "tatyana 1941"]
   ],
   "promoted_violet": [
     ["Male Mating", "mating"],
     ["dog", "dog"],
     ["work in progress", "work in progress"],
-    ["secret police", "secret police"]
+    ["secret police", "secret police"],
+    ["telephone speaking", "telephone speaking"],
+    ["CALCUTTA", "calcutta"]
   ]
 }

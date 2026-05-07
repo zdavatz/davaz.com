@@ -445,6 +445,7 @@ module DaVaz::View
         enhanced
         love castelbel müstair portrait portraits limit limits
         andras péterffy peterffy chance schaap hoho kindheitserinnerungen handshake girls
+        cabbage tales tatyana
       ].to_set.freeze
 
       def build_tag_cloud(videos, limit = 40)

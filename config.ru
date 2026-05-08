@@ -3,6 +3,7 @@ $LOAD_PATH << lib_dir
 require 'util/config' # load config from etc/config.yml
 require 'davaz'
 require 'util/app'
+require 'util/api_videos'
 require 'rack'
 require 'rack/static'
 require 'rack/show_exceptions'
@@ -16,6 +17,7 @@ use(Rack::Static, urls: ["/doc/"])
 use Rack::ContentLength
 use Rack::Lint
 use Rack::RewindableInput::Middleware
+use DaVaz::Util::ApiVideos
 SBSM.info "Starting Rack::Server DaVaz::DaVaz::Util.new with log_pattern #{DaVaz.config.log_pattern}"
 app = Rack::ShowExceptions.new(DaVaz::Util::RackInterface.new())
 run app

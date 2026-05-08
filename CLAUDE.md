@@ -105,7 +105,24 @@ Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_descriptio
 - `etc/db_connection_data.yml` — MySQL credentials (copy from `.sample`)
 - `etc/pw_server.passwords` — Authentication credentials
 - `etc/pw_server.salt` — Password salt
+- `etc/api_tokens` — Bearer tokens for the `/api/videos` endpoint (one per line, `#` for comments). Generate with `bundle exec ruby bin/generate_api_token`. Read on every request (no restart needed). Never commit to git.
 - `.yt-keys` — YouTube Data API v3 keys (one per line, `#` for comments). Used to display view counts on movie and short embeds. Supports multiple keys for different YouTube accounts. Keys are read from project root first, then `~/.yt-keys`. Falls back to `YOUTUBE_API_KEY` / `YOUTUBE_API_KEY_2` env vars. App works without keys (view counts simply not shown).
+
+### Video API (`/api/videos`)
+
+A Rack middleware (`src/util/api_videos.rb`) wired before SBSM in `config.ru` exposes a stateless JSON API for adding YouTube videos to the artobjects table. Auth is via `Authorization: Bearer <token>` against `etc/api_tokens` (constant-time comparison via `Rack::Utils.secure_compare`). Only `POST /api/videos` is handled; everything else falls through to the SBSM stack.
+
+Request body (JSON):
+```json
+{
+  "url": "https://www.youtube.com/watch?v=...",
+  "tag_color": "yellow"  // optional: "yellow" → promoted (gold), "purple" → promoted_violet
+}
+```
+
+Behavior: extracts the video ID via `YoutubeHelper.extract_video_id`, returns `409` if a row with that URL already exists, fetches `snippet,contentDetails` from the YouTube API (using `.yt-keys`), strips emojis from title/description (MySQL `utf8` compat), classifies by duration (`<=80s` CLI, `81-240s` SHO, `>=241s` MOV — same rule as individual additions in CLAUDE.md), inserts via `db.insert_artobject`, and optionally appends `[title, title.downcase]` to the matching bucket in `json/promoted_tags.json`. Returns `201` with `{ id, artgroup_id, title, url, duration_seconds, tag_added }`. Status codes: `400` invalid JSON, `401` missing/wrong token, `404` video not on YouTube, `405` non-POST, `409` already exists, `422` missing/unrecognized URL, `502` YouTube API failed.
+
+Tests are unit-level (`test/api_videos_test.rb`) using `Rack::MockRequest` with a fake DbManager and a stubbed `fetch_metadata` — no live server or YouTube calls. The test suite covers auth, method gating, classification thresholds, duplicate detection, and validation errors.
 
 ### YouTube 4K Migration Scripts (`bin/`)
 

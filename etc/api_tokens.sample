@@ -1,0 +1,5 @@
+# API tokens for the /api/videos endpoint.
+# One token per line. Lines starting with # are ignored.
+# Generate with: bundle exec ruby bin/generate_api_token
+#
+# Copy this file to etc/api_tokens and add your tokens (do NOT commit).

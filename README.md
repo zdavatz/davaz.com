@@ -59,7 +59,25 @@ Use sample files in `etc` directory.
 YOUR_API_KEY_1
 YOUR_API_KEY_2
 EOF
+
+: API tokens for /api/videos (optional)
+% cp etc/api_tokens.sample etc/api_tokens
+% bundle exec ruby bin/generate_api_token >> etc/api_tokens
 ```
+
+### Video API (`POST /api/videos`)
+
+A small JSON API for adding YouTube videos without going through the admin UI. Auth via `Authorization: Bearer <token>` (tokens in `etc/api_tokens`, one per line). The server fetches title/duration/description from the YouTube Data API, classifies by duration (`<=80s` CLI, `81-240s` SHO, `>=241s` MOV), inserts into `artobjects`, and optionally appends a promoted tag to `json/promoted_tags.json`.
+
+```sh
+curl -X POST https://davaz.com/api/videos \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://www.youtube.com/watch?v=...","tag_color":"yellow"}'
+# → 201 {"id":2949,"artgroup_id":"CLI","title":"...","url":"...","duration_seconds":42,"tag_added":{...}}
+```
+
+`tag_color` is optional: `"yellow"` appends to `promoted` (gold), `"purple"` to `promoted_violet`. Status codes: `401` (bad token), `409` (URL already exists, returns existing `id`), `422` (missing/unrecognized URL), `405` (non-POST), `502` (YouTube API failed).
 
 ### YouTube 4K Migration
 

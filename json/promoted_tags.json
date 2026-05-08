@@ -30,7 +30,8 @@
     ["good girls", "good girls"],
     ["CABBAGE TALES", "cabbage tales"],
     ["Tatyana 1941", "tatyana 1941"],
-    ["girlfriend?", "girlfriend"]
+    ["girlfriend?", "girlfriend"],
+    ["Stalin", "stalin"]
   ],
   "promoted_violet": [
     ["Male Mating", "mating"],
@@ -40,7 +41,9 @@
     ["telephone speaking", "telephone speaking"],
     ["CALCUTTA", "calcutta"],
     ["In Allah's hand", "in allah's hand"],
-    ["Merci", "merci"]
+    ["Merci", "merci"],
+    ["Kleiner Rundgang", "kleiner rundgang"],
+    ["Frieden und Glück", "frieden und glück"]
   ],
   "stopwords": [
     "the", "and", "for", "with", "from", "this", "that", "these", "those",
@@ -74,6 +77,6 @@
     "love", "castelbel", "müstair", "portrait", "portraits", "limit", "limits",
     "andras", "péterffy", "peterffy", "chance", "schaap", "hoho",
     "kindheitserinnerungen", "handshake", "girls",
-    "cabbage", "tales", "tatyana", "girlfriend"
+    "cabbage", "tales", "tatyana", "girlfriend", "stalin"
   ]
 }

@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+# Generates a new API token for /api/videos and prints it to stdout.
+# To enable it, append the printed line to etc/api_tokens (one token
+# per line). The file is read on every request, so no restart is needed.
+#
+# Usage:
+#   bundle exec ruby bin/generate_api_token
+
+require 'securerandom'
+puts SecureRandom.hex(32)

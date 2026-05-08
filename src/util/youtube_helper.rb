@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'set'
 require 'uri'
 
 module DaVaz
@@ -66,6 +67,15 @@ module DaVaz
 
       def self.promoted_tags_violet
         promoted_tags_data['promoted_violet'] || []
+      end
+
+      # Stopwords for the homepage tag-cloud derivation. Tokens in this set
+      # are skipped when building the derived tag list. Reloads with the
+      # rest of promoted_tags.json (same mtime cache).
+      def self.stopwords
+        @stopwords_set = nil if @stopwords_data_object.nil? || !@stopwords_data_object.equal?(promoted_tags_data)
+        @stopwords_data_object = promoted_tags_data
+        @stopwords_set ||= Set.new((promoted_tags_data['stopwords'] || []).map(&:downcase))
       end
 
       # Mapping of clip IDs to their source video IDs (for thumbnails).

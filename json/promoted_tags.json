@@ -29,7 +29,8 @@
     ["Handshake", "handshake"],
     ["good girls", "good girls"],
     ["CABBAGE TALES", "cabbage tales"],
-    ["Tatyana 1941", "tatyana 1941"]
+    ["Tatyana 1941", "tatyana 1941"],
+    ["girlfriend?", "girlfriend"]
   ],
   "promoted_violet": [
     ["Male Mating", "mating"],
@@ -38,6 +39,41 @@
     ["secret police", "secret police"],
     ["telephone speaking", "telephone speaking"],
     ["CALCUTTA", "calcutta"],
-    ["In Allah's hand", "in allah's hand"]
+    ["In Allah's hand", "in allah's hand"],
+    ["Merci", "merci"]
+  ],
+  "stopwords": [
+    "the", "and", "for", "with", "from", "this", "that", "these", "those",
+    "have", "has", "had", "been", "being", "was", "were",
+    "you", "your", "his", "her", "their", "our", "its",
+    "who", "what", "when", "where", "why", "how",
+    "can", "but", "not", "all", "any", "out", "too", "very", "just",
+    "some", "more", "than", "then", "also", "about", "into", "over", "only",
+    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+    "first", "last", "next", "here", "there", "each", "every",
+    "der", "die", "das", "den", "dem", "des",
+    "ein", "eine", "einen", "einem", "einer", "eines",
+    "und", "oder", "aber", "doch",
+    "ist", "sind", "war", "waren", "sein", "werden", "wurde", "wurden",
+    "haben", "hatte", "hatten", "hat", "als", "auch",
+    "mit", "ohne", "von", "zum", "zur", "nach", "bei", "aus", "auf",
+    "für", "ueber", "fuer", "unter", "vor", "gegen", "zwischen",
+    "ich", "wir", "ihr", "mir", "mich", "dir", "dich", "ihm", "ihn", "ihnen",
+    "uns", "euch", "schon", "noch", "nur", "nicht",
+    "kein", "keine", "keiner", "keines", "keinem", "keinen",
+    "sich", "sie", "ihn", "ihm", "beim", "ins",
+    "il", "lo", "la", "gli", "le", "un", "uno", "una",
+    "dei", "delle", "dello", "della", "degli",
+    "che", "come", "quando", "dove", "perche", "con", "senza", "per",
+    "tra", "fra", "contro", "sopra", "sotto",
+    "sono", "sei", "siamo", "siete", "erano", "era",
+    "dal", "dalla", "alle", "allo", "della", "sulla",
+    "www", "http", "https", "com", "org", "net", "ch", "html", "php",
+    "www2", "youtu", "tube", "watch", "video",
+    "enhanced",
+    "love", "castelbel", "müstair", "portrait", "portraits", "limit", "limits",
+    "andras", "péterffy", "peterffy", "chance", "schaap", "hoho",
+    "kindheitserinnerungen", "handshake", "girls",
+    "cabbage", "tales", "tatyana", "girlfriend"
   ]
 }

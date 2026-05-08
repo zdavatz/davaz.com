@@ -428,36 +428,17 @@ module DaVaz::View
       # search query matches title OR description, so terms that only
       # appear in descriptions still find their videos.
 
-      STOPWORDS = %w[
-        the and for with from this that these those have has had been being was were
-        you your his her their our its who what when where why how can but not all any
-        out too very just some more than then also about into over only one two three
-        four five six seven eight nine ten first last next here there each every
-        der die das den dem des ein eine einen einem einer eines und oder aber doch
-        ist sind war waren sein werden wurde wurden haben hatte hatten hat als auch
-        mit ohne von zum zur nach bei aus auf für ueber fuer unter vor gegen zwischen
-        ich wir ihr mir mich dir dich ihm ihn ihnen uns euch schon noch nur nicht
-        kein keine keiner keines keinem keinen sich sie ihn ihm beim ins
-        il lo la gli le un uno una dei delle dello della degli
-        che come quando dove perche con senza per tra fra contro sopra sotto
-        sono sei siamo siete erano era dal dalla alle allo della sulla
-        www http https com org net ch html php www2 youtu tube watch video
-        enhanced
-        love castelbel müstair portrait portraits limit limits
-        andras péterffy peterffy chance schaap hoho kindheitserinnerungen handshake girls
-        cabbage tales tatyana
-      ].to_set.freeze
-
       def build_tag_cloud(videos, limit = 40)
         counts = Hash.new(0)
         display = {}
+        stopwords = DaVaz::Util::YoutubeHelper.stopwords
         videos.each do |v|
           next if v.title.nil? || v.title.strip.empty?
           v.title.scan(/[\p{L}\p{N}]+/).each do |tok|
             key = tok.downcase
             next if key.length < 3
             next if key =~ /\A\d+\z/
-            next if STOPWORDS.include?(key)
+            next if stopwords.include?(key)
             counts[key] += 1
             display[key] ||= tok
           end

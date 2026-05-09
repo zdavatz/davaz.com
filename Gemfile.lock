@@ -41,7 +41,7 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    nokogiri (1.19.1-x86_64-linux-gnu)
+    nokogiri (1.19.3-x86_64-linux-gnu)
       racc (~> 1.4)
     observer (0.1.2)
     odba (1.1.9)

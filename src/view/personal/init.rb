@@ -295,7 +295,7 @@ module DaVaz::View
           next unless video_id
           thumb = DaVaz::Util::YoutubeHelper.clip_thumbnail_url(v.url)
           thumb ||= "https://img.youtube.com/vi/#{video_id}/maxresdefault.jpg"
-          { id: video_id, url: v.url, title: (v.title || '').gsub('"', '&quot;').gsub("'", '&#39;'), thumb: thumb, text: (v.text || '').to_s }
+          { id: video_id, url: v.url, title: (v.title || '').to_s, thumb: thumb, text: (v.text || '').to_s }
         }
         return if video_data.empty?
 
@@ -368,7 +368,8 @@ module DaVaz::View
       private
 
       def thumb_html(v)
-        %(<a href="#{v[:url]}" target="_blank" class="video-thumb-link" title="#{v[:title]}"><img src="#{v[:thumb]}" alt="#{v[:title]}" class="video-thumb-img" onload="_checkThumb(this)" onerror="this.parentNode.remove()"></a>)
+        t = v[:title].to_s.gsub('&', '&amp;').gsub('"', '&quot;').gsub("'", '&#39;').gsub('<', '&lt;')
+        %(<a href="#{v[:url]}" target="_blank" class="video-thumb-link" title="#{t}"><img src="#{v[:thumb]}" alt="#{t}" class="video-thumb-img" onload="_checkThumb(this)" onerror="this.parentNode.remove()"></a>)
       end
     end
 

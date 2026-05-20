@@ -135,6 +135,10 @@
     [
       "ALICE in Wonderland",
       "alice in wonderland"
+    ],
+    [
+      "Arctic Circle, USINSK",
+      "arctic circle, usinsk"
     ]
   ],
   "promoted_violet": [
@@ -189,6 +193,10 @@
     [
       "Melinda Felletar",
       "melinda felletar"
+    ],
+    [
+      "Spur of the Moment",
+      "spur of the moment"
     ]
   ],
   "stopwords": [

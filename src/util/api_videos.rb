@@ -27,10 +27,12 @@ module DaVaz
     # promoted tag to json/promoted_tags.json.
     #
     # If no tag_color is given in the body, the description text is
-    # sniffed for a leading color word — "yellow", "purple", or "red"
-    # as the first whole word (or the entire description). This keeps
-    # working with the convention of putting the color name in the video
-    # description on YouTube.
+    # scanned anywhere for one of the recognized color words ("yellow",
+    # "purple", "red") — the earliest occurrence wins. This keeps
+    # working with the convention of putting the color name somewhere
+    # in the YouTube description, and means GUI clients don't need to
+    # know the supported colors: adding a new color is a server-only
+    # change (TAG_COLOR_BUCKETS + JSON bucket + CSS rule).
     class ApiVideos
       API_PATH = '/api/videos'.freeze
 
@@ -210,14 +212,19 @@ module DaVaz
         db.insert_artobject(values)
       end
 
-      # Picks a tag color from the description text if it starts with
-      # (or is just) one of the recognized color words. Conservative
-      # match — only the first whole word counts, so descriptions like
-      # "Red things" don't accidentally classify as red.
+      # Picks a tag color from the description text by scanning for any
+      # of the recognized color names (TAG_COLOR_BUCKETS keys) as a
+      # whole word, anywhere in the text — the earliest occurrence
+      # wins. Whole-word matching avoids false positives like "credits"
+      # (contains "red") or "purposefully" (contains "purple"). This
+      # supports the convention of writing the color word in the
+      # YouTube description so GUI clients don't need a local list of
+      # supported colors — adding a new color is a server-only change.
       def sniff_tag_color(text)
-        return nil if text.nil?
-        first = text.to_s.strip.downcase[/\A[a-z]+/]
-        TAG_COLOR_BUCKETS.key?(first) ? first : nil
+        return nil if text.nil? || TAG_COLOR_BUCKETS.empty?
+        alt = TAG_COLOR_BUCKETS.keys.map { |c| Regexp.escape(c) }.join('|')
+        m = /\b(#{alt})\b/i.match(text.to_s)
+        m && m[1].downcase
       end
 
       def append_promoted_tag(title, color)

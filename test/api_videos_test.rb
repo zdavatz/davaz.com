@@ -227,18 +227,47 @@ class TestApiVideos < Minitest::Test
     end
   end
 
-  def test_sniff_matches_first_whole_word_even_if_part_of_phrase
-    # Heuristic is intentionally loose: any leading color word triggers
-    # the tag, regardless of what follows. If stricter matching is
-    # needed, send tag_color explicitly in the body.
+  def test_sniff_finds_color_anywhere_in_description
+    # Scan-anywhere: the color word doesn't have to be at the start —
+    # GUI clients can keep using the existing convention of writing
+    # the color word anywhere in the description.
     @middleware.define_singleton_method(:fetch_metadata) do |vid|
-      { title: "T#{vid}", description: 'Red things from the desert',
+      { title: "T#{vid}", description: 'A great clip — purple — by Jürg.',
+        seconds: 30, published_on: '2026-05-08' }
+    end
+    res = post_json({ url: 'https://www.youtube.com/watch?v=abcdefghijk' },
+                    auth: 'secrettoken123')
+    assert_equal 201, res.status
+    assert_equal 'promoted_violet', JSON.parse(res.body).dig('tag_added', 'bucket')
+  end
+
+  def test_sniff_earliest_position_wins_when_multiple_colors_present
+    # When more than one color name appears, the one mentioned first
+    # wins (matches the legacy create_shorts_gui detect_tag_color
+    # semantics so behavior stays consistent across the client/server
+    # split).
+    @middleware.define_singleton_method(:fetch_metadata) do |vid|
+      { title: "T#{vid}", description: 'red then yellow then purple',
         seconds: 30, published_on: '2026-05-08' }
     end
     res = post_json({ url: 'https://www.youtube.com/watch?v=abcdefghijk' },
                     auth: 'secrettoken123')
     assert_equal 201, res.status
     assert_equal 'promoted_red', JSON.parse(res.body).dig('tag_added', 'bucket')
+  end
+
+  def test_sniff_uses_whole_word_match_not_substring
+    # "credits" contains "red" as a substring; whole-word matching
+    # must NOT classify this as red. Same for "purposefully" -> purple.
+    @middleware.define_singleton_method(:fetch_metadata) do |vid|
+      { title: "T#{vid}",
+        description: 'Special credits to friends — purposefully shot in 4K.',
+        seconds: 30, published_on: '2026-05-08' }
+    end
+    res = post_json({ url: 'https://www.youtube.com/watch?v=abcdefghijk' },
+                    auth: 'secrettoken123')
+    assert_equal 201, res.status
+    assert_nil JSON.parse(res.body)['tag_added']
   end
 
   def test_sniff_no_op_when_description_has_no_color_word

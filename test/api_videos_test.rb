@@ -61,17 +61,27 @@ class TestApiVideos < Minitest::Test
     @tokens_file.write("# comment\nsecrettoken123\n")
     @tokens_file.close
 
+    @tags_file = Tempfile.new(['promoted_tags', '.json'])
+    @tags_file.write(JSON.pretty_generate(
+      'promoted'        => [],
+      'promoted_violet' => [],
+      'promoted_red'    => []) + "\n")
+    @tags_file.close
+
     @db = FakeDbManager.new
     inner = ->(_env) { [200, { 'content-type' => 'text/plain' }, ['fallthrough']] }
     @middleware = DaVaz::Util::ApiVideos.new(
-      inner, db_manager: @db, tokens_file: @tokens_file.path)
+      inner, db_manager: @db,
+      tokens_file: @tokens_file.path,
+      tags_file: @tags_file.path)
     @mock = Rack::MockRequest.new(@middleware)
 
-    # Stub YouTube metadata to avoid network calls.
+    # Stub YouTube metadata to avoid network calls. Description has no
+    # leading color word so sniffing is a no-op for the default tests.
     @middleware.define_singleton_method(:fetch_metadata) do |video_id|
       {
         title: "Sample for #{video_id}",
-        description: "yellow\n\nOriginal: ...",
+        description: "Original: https://youtube.com/watch?v=other",
         seconds: 42,
         published_on: '2026-05-08'
       }
@@ -80,6 +90,11 @@ class TestApiVideos < Minitest::Test
 
   def teardown
     @tokens_file.unlink
+    @tags_file.unlink
+  end
+
+  def read_tags
+    JSON.parse(File.read(@tags_file.path, encoding: 'utf-8'))
   end
 
   def test_passes_through_non_api_paths
@@ -146,6 +161,95 @@ class TestApiVideos < Minitest::Test
       assert_equal 201, res.status, "duration #{secs} should produce 201"
       assert_equal expected, JSON.parse(res.body)['artgroup_id'], "duration #{secs} should be #{expected}"
     end
+  end
+
+  def test_explicit_tag_color_red_appends_to_promoted_red
+    res = post_json({ url: 'https://www.youtube.com/watch?v=abcdefghijk',
+                      tag_color: 'red' }, auth: 'secrettoken123')
+    assert_equal 201, res.status
+    body = JSON.parse(res.body)
+    assert_equal({ 'bucket' => 'promoted_red', 'label' => 'Sample for abcdefghijk' },
+                 body['tag_added'])
+    tags = read_tags
+    assert_equal [['Sample for abcdefghijk', 'sample for abcdefghijk']],
+                 tags['promoted_red']
+    assert_empty tags['promoted']
+    assert_empty tags['promoted_violet']
+  end
+
+  def test_unknown_tag_color_falls_through_to_sniff
+    @middleware.define_singleton_method(:fetch_metadata) do |vid|
+      { title: "vid#{vid}", description: 'red',
+        seconds: 30, published_on: '2026-05-08' }
+    end
+    res = post_json({ url: 'https://www.youtube.com/watch?v=abcdefghijk',
+                      tag_color: 'taupe' }, auth: 'secrettoken123')
+    assert_equal 201, res.status
+    assert_equal 'promoted_red', JSON.parse(res.body).dig('tag_added', 'bucket')
+  end
+
+  def test_sniff_picks_red_from_description_first_word
+    @middleware.define_singleton_method(:fetch_metadata) do |vid|
+      { title: "Title#{vid}", description: "red\n\nOriginal: ...",
+        seconds: 30, published_on: '2026-05-08' }
+    end
+    res = post_json({ url: 'https://www.youtube.com/watch?v=abcdefghijk' },
+                    auth: 'secrettoken123')
+    assert_equal 201, res.status
+    assert_equal 'promoted_red', JSON.parse(res.body).dig('tag_added', 'bucket')
+  end
+
+  def test_sniff_picks_yellow_purple_red
+    %w[yellow purple red].each do |color|
+      @tags_file = Tempfile.new(['promoted_tags', '.json'])
+      @tags_file.write(JSON.pretty_generate(
+        'promoted' => [], 'promoted_violet' => [], 'promoted_red' => []) + "\n")
+      @tags_file.close
+      @db = FakeDbManager.new
+      inner = ->(_env) { [200, {}, []] }
+      @middleware = DaVaz::Util::ApiVideos.new(
+        inner, db_manager: @db,
+        tokens_file: @tokens_file.path, tags_file: @tags_file.path)
+      @middleware.define_singleton_method(:fetch_metadata) do |vid|
+        { title: "T-#{color}", description: color,
+          seconds: 30, published_on: '2026-05-08' }
+      end
+      @mock = Rack::MockRequest.new(@middleware)
+      res = post_json({ url: "https://www.youtube.com/watch?v=#{color.ljust(11, 'x')}" },
+                      auth: 'secrettoken123')
+      assert_equal 201, res.status
+      expected_bucket = { 'yellow' => 'promoted',
+                          'purple' => 'promoted_violet',
+                          'red'    => 'promoted_red' }[color]
+      assert_equal expected_bucket,
+                   JSON.parse(res.body).dig('tag_added', 'bucket'),
+                   "color #{color} should pick bucket #{expected_bucket}"
+    end
+  end
+
+  def test_sniff_matches_first_whole_word_even_if_part_of_phrase
+    # Heuristic is intentionally loose: any leading color word triggers
+    # the tag, regardless of what follows. If stricter matching is
+    # needed, send tag_color explicitly in the body.
+    @middleware.define_singleton_method(:fetch_metadata) do |vid|
+      { title: "T#{vid}", description: 'Red things from the desert',
+        seconds: 30, published_on: '2026-05-08' }
+    end
+    res = post_json({ url: 'https://www.youtube.com/watch?v=abcdefghijk' },
+                    auth: 'secrettoken123')
+    assert_equal 201, res.status
+    assert_equal 'promoted_red', JSON.parse(res.body).dig('tag_added', 'bucket')
+  end
+
+  def test_sniff_no_op_when_description_has_no_color_word
+    res = post_json({ url: 'https://www.youtube.com/watch?v=abcdefghijk' },
+                    auth: 'secrettoken123')
+    assert_equal 201, res.status
+    assert_nil JSON.parse(res.body)['tag_added']
+    tags = read_tags
+    assert_empty tags['promoted']
+    assert_empty tags['promoted_violet']
+    assert_empty tags['promoted_red']
   end
 
   def test_409_when_already_exists

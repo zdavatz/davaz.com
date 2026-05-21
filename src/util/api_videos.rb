@@ -17,7 +17,7 @@ module DaVaz
     #   Content-Type: application/json
     #
     #   { "url": "https://www.youtube.com/watch?v=...",
-    #     "tag_color": "yellow"|"purple"  (optional)
+    #     "tag_color": "yellow"|"purple"|"red"  (optional)
     #   }
     #
     # Tokens live one-per-line in etc/api_tokens (lines starting with `#`
@@ -25,6 +25,12 @@ module DaVaz
     # from the YouTube Data API, classifies by duration (CLI / SHO / MOV),
     # inserts via DbManager#insert_artobject, and optionally appends a
     # promoted tag to json/promoted_tags.json.
+    #
+    # If no tag_color is given in the body, the description text is
+    # sniffed for a leading color word — "yellow", "purple", or "red"
+    # as the first whole word (or the entire description). This keeps
+    # working with the convention of putting the color name in the video
+    # description on YouTube.
     class ApiVideos
       API_PATH = '/api/videos'.freeze
 
@@ -33,11 +39,22 @@ module DaVaz
       CLI_MAX = 80
       SHO_MAX = 240
 
-      def initialize(app, db_manager: nil, tokens_file: nil)
+      # Mapping of tag-color names to the JSON bucket they populate.
+      # Add a new color here + a sibling array in json/promoted_tags.json
+      # + matching CSS to extend.
+      TAG_COLOR_BUCKETS = {
+        'yellow' => 'promoted',
+        'purple' => 'promoted_violet',
+        'red'    => 'promoted_red',
+      }.freeze
+
+      def initialize(app, db_manager: nil, tokens_file: nil, tags_file: nil)
         @app = app
         @db_manager = db_manager
         @tokens_file = tokens_file || File.join(
           DaVaz.config.project_root, 'etc', 'api_tokens')
+        @tags_file = tags_file || File.join(
+          DaVaz.config.project_root, 'json', 'promoted_tags.json')
       end
 
       def call(env)
@@ -93,9 +110,10 @@ module DaVaz
         id = insert(artgroup: artgroup, title: title, text: text, url: url, date: date)
         return json_response(500, error: 'insert failed') unless id
 
-        tag_color = body['tag_color'].to_s
+        tag_color = body['tag_color'].to_s.downcase
+        tag_color = sniff_tag_color(text) unless TAG_COLOR_BUCKETS.key?(tag_color)
         tag_added = nil
-        if %w[yellow purple].include?(tag_color)
+        if TAG_COLOR_BUCKETS.key?(tag_color)
           tag_added = append_promoted_tag(title, tag_color)
         end
 
@@ -192,16 +210,26 @@ module DaVaz
         db.insert_artobject(values)
       end
 
+      # Picks a tag color from the description text if it starts with
+      # (or is just) one of the recognized color words. Conservative
+      # match — only the first whole word counts, so descriptions like
+      # "Red things" don't accidentally classify as red.
+      def sniff_tag_color(text)
+        return nil if text.nil?
+        first = text.to_s.strip.downcase[/\A[a-z]+/]
+        TAG_COLOR_BUCKETS.key?(first) ? first : nil
+      end
+
       def append_promoted_tag(title, color)
-        path = File.join(DaVaz.config.project_root, 'json', 'promoted_tags.json')
-        return nil unless File.exist?(path)
-        data = JSON.parse(File.read(path, encoding: 'utf-8'))
-        bucket = (color == 'yellow' ? 'promoted' : 'promoted_violet')
+        return nil unless File.exist?(@tags_file)
+        bucket = TAG_COLOR_BUCKETS[color]
+        return nil unless bucket
+        data = JSON.parse(File.read(@tags_file, encoding: 'utf-8'))
         data[bucket] ||= []
         entry = [title, title.downcase]
         return nil if data[bucket].any? { |label, _| label == title }
         data[bucket] << entry
-        File.write(path, JSON.pretty_generate(data) + "\n")
+        File.write(@tags_file, JSON.pretty_generate(data) + "\n")
         { bucket: bucket, label: title }
       end
 

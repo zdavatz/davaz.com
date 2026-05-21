@@ -139,6 +139,10 @@
     [
       "Arctic Circle, USINSK",
       "arctic circle, usinsk"
+    ],
+    [
+      "Bagger Rondo",
+      "bagger rondo"
     ]
   ],
   "promoted_violet": [
@@ -197,7 +201,13 @@
     [
       "Spur of the Moment",
       "spur of the moment"
+    ],
+    [
+      "Yevgenyi Burak Meine Archivum 1960 -1990",
+      "yevgenyi burak meine archivum 1960 -1990"
     ]
+  ],
+  "promoted_red": [
   ],
   "stopwords": [
     "the",

@@ -299,6 +299,17 @@ span.video-tag-promoted:hover {
   color:      white;
 }
 
+span.video-tag-promoted-red {
+  background: #ffd6d6;
+  color:      #a00000;
+  border:     1px solid #c83232;
+}
+
+span.video-tag-promoted-red:hover {
+  background: #c83232;
+  color:      white;
+}
+
 div.video-search-bar {
   max-width:   780px;
   margin:      10px auto;

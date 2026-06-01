@@ -424,8 +424,9 @@ module DaVaz::View
     class VideoSearchBar < HtmlGrid::Div
       # Curated tags for the cloud are loaded from json/promoted_tags.json
       # (with mtime-based reload — no restart needed after editing). The
-      # JSON has three arrays: "promoted" (gold), "promoted_violet"
-      # (violet style), and "promoted_red" (red style). Each entry is
+      # JSON has four arrays: "promoted" (gold), "promoted_violet"
+      # (violet style), "promoted_red" (red style), and "promoted_green"
+      # (green style). Each entry is
       # [display label, search query]. The search query matches title OR
       # description, so terms that only appear in descriptions still find
       # their videos.
@@ -472,11 +473,16 @@ module DaVaz::View
         filter_active_tags(DaVaz::Util::YoutubeHelper.promoted_tags_red, videos)
       end
 
+      def active_promoted_green_tags(videos)
+        filter_active_tags(DaVaz::Util::YoutubeHelper.promoted_tags_green, videos)
+      end
+
       def render_tag_cloud(tags,
                            promoted_tags = DaVaz::Util::YoutubeHelper.promoted_tags,
                            violet_promoted_tags = DaVaz::Util::YoutubeHelper.promoted_tags_violet,
-                           red_promoted_tags = DaVaz::Util::YoutubeHelper.promoted_tags_red)
-        return '' if tags.empty? && promoted_tags.empty? && violet_promoted_tags.empty? && red_promoted_tags.empty?
+                           red_promoted_tags = DaVaz::Util::YoutubeHelper.promoted_tags_red,
+                           green_promoted_tags = DaVaz::Util::YoutubeHelper.promoted_tags_green)
+        return '' if tags.empty? && promoted_tags.empty? && violet_promoted_tags.empty? && red_promoted_tags.empty? && green_promoted_tags.empty?
         max = tags.first ? tags.first[2] : 1
         min = tags.last  ? tags.last[2]  : 1
         spread = [max - min, 1].max.to_f
@@ -495,13 +501,18 @@ module DaVaz::View
           safe_query = query.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
           %(<span class="video-tag video-tag-promoted-red" data-tag="#{safe_query}">#{safe_label}</span>)
         }
+        green_manual = green_promoted_tags.map { |label, query|
+          safe_label = label.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
+          safe_query = query.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
+          %(<span class="video-tag video-tag-promoted-green" data-tag="#{safe_query}">#{safe_label}</span>)
+        }
         derived = tags.map { |word, key, count|
           scale = (count - min) / spread
           size  = (0.8 + scale * 0.7).round(2)
           label = word.gsub('&', '&amp;').gsub('<', '&lt;').gsub('"', '&quot;')
           %(<span class="video-tag" data-tag="#{key}" style="font-size:#{size}rem" title="#{count} matches">#{label}</span>)
         }
-        result = red_manual + violet_manual + derived
+        result = green_manual + red_manual + violet_manual + derived
         unless promoted.empty?
           n_p = promoted.size
           n_v = result.size
@@ -525,9 +536,10 @@ module DaVaz::View
         promoted = active_promoted_tags(all_videos)
         violet_manual = active_promoted_violet_tags(all_videos)
         red_manual = active_promoted_red_tags(all_videos)
+        green_manual = active_promoted_green_tags(all_videos)
 
         @value = <<~HTML
-          #{render_tag_cloud(tags, promoted, violet_manual, red_manual)}
+          #{render_tag_cloud(tags, promoted, violet_manual, red_manual, green_manual)}
           <div id="video_search_bar" class="video-search-bar">
             <input type="text" id="video_search_input" placeholder="Search, e.g. nt" autocomplete="off">
             <span id="video_search_count" class="video-search-count"></span>

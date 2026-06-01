@@ -65,7 +65,8 @@ class TestApiVideos < Minitest::Test
     @tags_file.write(JSON.pretty_generate(
       'promoted'        => [],
       'promoted_violet' => [],
-      'promoted_red'    => []) + "\n")
+      'promoted_red'    => [],
+      'promoted_green'  => []) + "\n")
     @tags_file.close
 
     @db = FakeDbManager.new
@@ -199,11 +200,12 @@ class TestApiVideos < Minitest::Test
     assert_equal 'promoted_red', JSON.parse(res.body).dig('tag_added', 'bucket')
   end
 
-  def test_sniff_picks_yellow_purple_red
-    %w[yellow purple red].each do |color|
+  def test_sniff_picks_yellow_purple_red_green
+    %w[yellow purple red green].each do |color|
       @tags_file = Tempfile.new(['promoted_tags', '.json'])
       @tags_file.write(JSON.pretty_generate(
-        'promoted' => [], 'promoted_violet' => [], 'promoted_red' => []) + "\n")
+        'promoted' => [], 'promoted_violet' => [], 'promoted_red' => [],
+        'promoted_green' => []) + "\n")
       @tags_file.close
       @db = FakeDbManager.new
       inner = ->(_env) { [200, {}, []] }
@@ -220,7 +222,8 @@ class TestApiVideos < Minitest::Test
       assert_equal 201, res.status
       expected_bucket = { 'yellow' => 'promoted',
                           'purple' => 'promoted_violet',
-                          'red'    => 'promoted_red' }[color]
+                          'red'    => 'promoted_red',
+                          'green'  => 'promoted_green' }[color]
       assert_equal expected_bucket,
                    JSON.parse(res.body).dig('tag_added', 'bucket'),
                    "color #{color} should pick bucket #{expected_bucket}"
@@ -279,6 +282,7 @@ class TestApiVideos < Minitest::Test
     assert_empty tags['promoted']
     assert_empty tags['promoted_violet']
     assert_empty tags['promoted_red']
+    assert_empty tags['promoted_green']
   end
 
   def test_409_when_already_exists

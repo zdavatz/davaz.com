@@ -17,7 +17,7 @@ module DaVaz
     #   Content-Type: application/json
     #
     #   { "url": "https://www.youtube.com/watch?v=...",
-    #     "tag_color": "yellow"|"purple"|"red"  (optional)
+    #     "tag_color": "yellow"|"purple"|"red"|"green"  (optional)
     #   }
     #
     # Tokens live one-per-line in etc/api_tokens (lines starting with `#`
@@ -28,7 +28,7 @@ module DaVaz
     #
     # If no tag_color is given in the body, the description text is
     # scanned anywhere for one of the recognized color words ("yellow",
-    # "purple", "red") — the earliest occurrence wins. This keeps
+    # "purple", "red", "green") — the earliest occurrence wins. This keeps
     # working with the convention of putting the color name somewhere
     # in the YouTube description, and means GUI clients don't need to
     # know the supported colors: adding a new color is a server-only
@@ -48,6 +48,7 @@ module DaVaz
         'yellow' => 'promoted',
         'purple' => 'promoted_violet',
         'red'    => 'promoted_red',
+        'green'  => 'promoted_green',
       }.freeze
 
       def initialize(app, db_manager: nil, tokens_file: nil, tags_file: nil)

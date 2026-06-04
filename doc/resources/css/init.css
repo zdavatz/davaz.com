@@ -262,11 +262,12 @@ div.video-thumb-status {
 }
 
 div.video-tag-cloud {
-  max-width:   780px;
+  max-width:   100%;
   margin:      20px auto 0;
   text-align:  center;
   line-height: 2;
-  padding:     4px 0;
+  padding:     4px 12px;
+  box-sizing:  border-box;
 }
 
 span.video-tag {

@@ -188,6 +188,15 @@ module DaVaz::View
       end
     end
 
+    class AllesImFluss < HtmlGrid::Div
+      CSS_CLASS = 'alles-im-fluss'
+
+      def init
+        super
+        @value = @lookandfeel.lookup(:alles_im_fluss)
+      end
+    end
+
     class MoviePage < HtmlGrid::Div
       CSS_CLASS = 'movie-page display-inline'
 
@@ -397,7 +406,8 @@ module DaVaz::View
         [ 6, 0] => PicBottleneck,
         [ 7, 0] => CommunicationLinks,
         [ 9, 0] => component(Oneliner, :oneliner),
-        [10, 0] => MovieLinks,
+        [10, 0] => AllesImFluss,
+        [11, 0] => MovieLinks,
       }
 
       def init

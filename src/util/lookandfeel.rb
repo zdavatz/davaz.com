@@ -24,6 +24,7 @@ module DaVaz::Util
         ajax_upload_image:      'Upload Image',
         ajax_submit_entry:      'Submit entry',
         all_entries:            'All Entries',
+        alles_im_fluss:         'ALLES IM FLUSS',
         art_object:             'Art Object',
         artgroup:               'Artgroup',
         artgroup_id:            'Artgroup',

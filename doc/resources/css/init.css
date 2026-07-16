@@ -120,13 +120,14 @@ div.oneliner {
 }
 
 div.alles-im-fluss {
-  position:   absolute;
-  width:      560px;
-  left:       0px;
-  top:        550px;
-  text-align: center;
-  font:       bold 25pt Verdana, Geneva, Arial, Helvetica, sans-serif;
-  z-index:    2;
+  position:    absolute;
+  width:       780px;
+  left:        0px;
+  top:         550px;
+  text-align:  center;
+  white-space: nowrap;
+  font:        bold 20pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  z-index:     2;
 }
 
 div.movie-links {

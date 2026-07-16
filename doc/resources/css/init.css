@@ -121,12 +121,12 @@ div.oneliner {
 
 div.alles-im-fluss {
   position:    absolute;
-  width:       780px;
+  width:       560px;
   left:        0px;
   top:         550px;
   text-align:  center;
   white-space: nowrap;
-  font:        bold 20pt Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font:        bold 18pt Verdana, Geneva, Arial, Helvetica, sans-serif;
   z-index:     2;
 }
 

@@ -45,28 +45,10 @@ bundle exec ./bin/admin
 HTTP → Rack (config.ru) → RackInterface (util/app.rb) → SBSM State Machine → HtmlGrid Views → HTML Response
 ```
 
-### Source Layout (`src/`)
-
-- **`state/`** — SBSM state classes define request handling and state transitions. `state/global.rb` is the root state. `state/predefine.rb` defines the state hierarchy. States are organized by section: `gallery/`, `personal/`, `works/`, `communication/`, `public/`, `admin/`. Partials in `state/_partial/` provide reusable mixins (login, AJAX, paging, etc.).
-
-- **`view/`** — HtmlGrid component classes that render HTML. Mirror the state directory structure. `view/template.rb` is the base template. Partials in `view/_partial/` are reusable UI components.
-
-- **`model/`** — Domain models: `ArtObject` (main entity), `ArtGroup`, `Serie`, `Tag`, `Tool`, `Material`, `Guest`, `Link`, `Oneliner`, `Country`.
-
-- **`util/`** — Infrastructure code:
-  - `app.rb` — Main App class and RackInterface (Rack entry point)
-  - `db_manager.rb` — All database operations (~1200 lines, raw SQL via Mysql2)
-  - `session.rb` — Session management
-  - `config.rb` — Configuration via RCLConf
-  - `image_helper.rb` — Image processing with RMagick
-  - `lookandfeel.rb` — Theme/styling configuration
-  - `validator.rb` — Form input validation
-  - `trans_handler.davaz.rb` — URL translation/routing
-  - `youtube_helper.rb` — YouTube Data API v3 integration (view counts and comment counts for movie/short/clip embeds, batched prefetch with 1h cache, 5s HTTP timeouts). `@cache` holds view counts; `@comments_cache` holds comment counts; both populate in a single `part=statistics` API call.
-
 ### Key Patterns
 
 - **State machine pattern**: Each page/action is a state class. Navigation happens via state transitions defined in `predefine.rb`. States inherit from `SBSM::State`.
+- **YouTube stats integration**: `util/youtube_helper.rb` — YouTube Data API v3 integration (view counts and comment counts for movie/short/clip embeds, batched prefetch with 1h cache, 5s HTTP timeouts). `@cache` holds view counts; `@comments_cache` holds comment counts; both populate in a single `part=statistics` API call.
 - **Component-based views**: Views are Ruby classes inheriting from HtmlGrid components. UI is composed by mapping named slots to component classes.
 - **No ORM**: `DbManager` uses raw SQL queries directly. All DB access goes through the singleton `DaVaz.config.db_manager` or `app.db_manager`.
 - **Client-side JS**: Uses Dojo toolkit (1.7.x) in `doc/resources/` for AJAX interactions. Homepage video thumbnail grid uses vanilla JS for infinite scroll.
@@ -91,8 +73,8 @@ Tests use **Minitest** with **Watir 7 / Selenium WebDriver 4** for headless brow
 - `Rack::Lint` is NOT used in test config — sbsm's `body.rewind` call is incompatible with Rack 3.x Lint wrapper
 - Default Watir timeout is 15 seconds (`TEST_CLIENT_TIMEOUT` in `test/test_helper.rb`)
 
-### Current test status
-27 runs, 159 assertions, 0 failures, 0 errors, 5 skips. The 5 skips are known limitations:
+### Known test limitations
+Some tests are skipped by design (run the suite for current counts):
 - Stub db_manager does not support creating/updating art objects
 - Shop validation error messages not displayed in test environment
 - Movie thumbnail image not found during tests
@@ -108,32 +90,9 @@ Note: The admin movies WYSIWYG editor test (`test_admin_movies_update_descriptio
 - `etc/api_tokens` — Bearer tokens for the `/api/videos` endpoint (one per line, `#` for comments). Generate with `bundle exec ruby bin/generate_api_token`. Read on every request (no restart needed). Never commit to git.
 - `.yt-keys` — YouTube Data API v3 keys (one per line, `#` for comments). Used to display view counts on movie and short embeds. Supports multiple keys for different YouTube accounts. Keys are read from project root first, then `~/.yt-keys`. Falls back to `YOUTUBE_API_KEY` / `YOUTUBE_API_KEY_2` env vars. App works without keys (view counts simply not shown).
 
-### Video API (`/api/videos`)
+### YouTube video management (skill)
 
-A Rack middleware (`src/util/api_videos.rb`) wired before SBSM in `config.ru` exposes a stateless JSON API for adding YouTube videos to the artobjects table. Auth is via `Authorization: Bearer <token>` against `etc/api_tokens` (constant-time comparison via `Rack::Utils.secure_compare`). Only `POST /api/videos` is handled; everything else falls through to the SBSM stack.
-
-Request body (JSON):
-```json
-{
-  "url": "https://www.youtube.com/watch?v=...",
-  "tag_color": "yellow"  // optional: "yellow" → promoted (gold), "purple" → promoted_violet, "red" → promoted_red, "green" → promoted_green
-}
-```
-
-Behavior: extracts the video ID via `YoutubeHelper.extract_video_id`, returns `409` if a row with that URL already exists, fetches `snippet,contentDetails` from the YouTube API (using `.yt-keys`), strips emojis from title/description (MySQL `utf8` compat), classifies by duration (`<=80s` CLI, `81-240s` SHO, `>=241s` MOV — same rule as individual additions in CLAUDE.md), inserts via `db.insert_artobject`, and optionally appends `[title, title.downcase]` to the matching bucket in `json/promoted_tags.json`. Returns `201` with `{ id, artgroup_id, title, url, duration_seconds, tag_added }`. Status codes: `400` invalid JSON, `401` missing/wrong token, `404` video not on YouTube, `405` non-POST, `409` already exists, `422` missing/unrecognized URL, `502` YouTube API failed.
-
-**Tag-color sniffing**: if `tag_color` is omitted (or set to an unrecognized value), the API scans the description text for any recognized color name (`yellow`, `purple`, `red`, `green`) as a **whole word, anywhere** in the text — the earliest occurrence wins. Whole-word matching avoids false positives like "credits" (substring `red`) or "purposefully" (substring `purple`). This makes the convention of writing the color name in the YouTube description work automatically; GUI clients (e.g. `create_shorts_gui`) don't need to know the color list. To disable or override, pass an explicit `tag_color` in the body. The mapping `color → bucket` is centralized in `ApiVideos::TAG_COLOR_BUCKETS` — **adding a new color is server-only**: add a key there + a sibling array in `json/promoted_tags.json` + a `.video-tag-promoted-<color>` CSS rule.
-
-Tests are unit-level (`test/api_videos_test.rb`) using `Rack::MockRequest` with a fake DbManager and a stubbed `fetch_metadata` — no live server or YouTube calls. The test suite covers auth, method gating, classification thresholds, duplicate detection, and validation errors.
-
-### YouTube 4K Migration Scripts (`bin/`)
-
-- `rebuild_movies_shorts_from_gozipa.rb` — **Primary rebuild script.** Deletes all MOV/SHO entries and recreates them exclusively from @gozipa's Videos and Shorts tabs via yt-dlp. Deduplicates by normalized title (prefers Enhanced 4K versions). Uses YouTube titles and descriptions. Strips emojis for MySQL `utf8` compatibility. Classifies by Shorts tab membership or duration: <=60s → `SHO`, >60s → `MOV`. Fetches upload dates from YouTube API v3 (Step 6).
-- `update_4K_shorts_movies_yt.rb` — Legacy incremental updater. Scans @jdavatz and @gozipa channels, updates existing entries to 4K URLs, creates missing entries.
-- `update_youtube_4k` — Older updater using CSV or YouTube API mode.
-- `fetch_clips_from_feed.rb` — Fetches clip metadata from authenticated `/feed/clips` pages using exported Netscape-format cookie files. Merges multiple accounts into `json/clips.json` (deduplicated by clip_id). Extracts clip_url, title, source_video_id, and duration from the page's `ytInitialData` — no yt-dlp required. Cookie files must never be committed to git.
-- `import_clips` — Reads `json/clips.json` and inserts/updates DB entries with proper `youtube.com/clip/` URLs. Supports `--fetch` (legacy: download metadata via yt-dlp from `csv/clip_urls.txt`) and `--apply` (write to DB). The `--fetch` mode now requires cookies because yt-dlp hit YouTube's bot challenges; prefer `fetch_clips_from_feed.rb` instead.
-- `send_email_gmail.py` — Sends email via Gmail API (OAuth2), uses same credentials as [old2new](https://github.com/zdavatz/old2new)
+The `/api/videos` endpoint reference, the 4K migration/rebuild scripts in `bin/`, and the procedure for adding individual videos manually live in the `youtube-videos` skill (`.claude/skills/youtube-videos/SKILL.md`). Invoke it when adding videos, running rebuilds/imports, or working on the video API.
 
 ### YouTube Clips
 
@@ -142,7 +101,3 @@ YouTube Clips (artgroup `CLI`) are short segments clipped from existing videos. 
 **Important**: `clips.json` must be read with `encoding: 'utf-8'` because the daemontools service runs without a UTF-8 locale (Ruby defaults to US-ASCII). The `ClipImage` view falls back to YouTube thumbnails (via source video ID) when no local image file exists.
 
 `YoutubeHelper.clip_source_videos` caches the parsed `clips.json` in memory but reloads automatically when the file's mtime changes — so adding new clips doesn't require a service restart. If a clip's `source_video_id` lookup fails, the homepage grid silently drops the entry.
-
-### Adding Individual Videos Manually
-
-When adding individual Enhanced 4K videos (not a full rebuild), use the YouTube Data API v3 to fetch title, description, duration, and upload date. Before inserting, always check for existing entries with the same video ID or similar normalized title to avoid duplicates. Classification by duration: ≤80s (≤1:20) → `CLI`, 81–240s (1:21–4:00) → `SHO`, ≥241s (≥4:01) → `MOV`. Note: this differs from `rebuild_movies_shorts_from_gozipa.rb`'s legacy `<=60s → SHO, >60s → MOV` rule — the duration thresholds above apply to individual additions only and are not applied retroactively. Strip emojis from title/description for MySQL `utf8` compatibility. Set the upload date from the API's `publishedAt` field. If the new video is a 4K replacement for an existing non-4K entry, delete the old entry after inserting the new one.

@@ -580,6 +580,9 @@ module DaVaz::View
 
             function doSearch() {
               var q = input.value.trim().toLowerCase();
+              // Also match with all whitespace stripped, so "historie" finds
+              // "H I S T O R I E" and vice versa.
+              var qCompact = q.replace(/\\s+/g, '');
               var totalMatches = 0;
               for (var s = 0; s < sections.length; s++) {
                 var sec = sections[s];
@@ -618,13 +621,23 @@ module DaVaz::View
                   continue;
                 }
 
-                // Filter — match against title (idx 2) and description (idx 4)
+                // Filter — match against title (idx 2) and description (idx 4).
+                // Try raw substring first; if no hit, retry with whitespace
+                // stripped from both sides so "historie" finds "H I S T O R I E".
                 var matches = [];
                 for (var i = 0; i < all.length; i++) {
                   var t = (all[i][2] || '').toLowerCase();
                   var d = (all[i][4] || '').toLowerCase();
                   if (t.indexOf(q) !== -1 || d.indexOf(q) !== -1) {
                     matches.push(all[i]);
+                    continue;
+                  }
+                  if (qCompact.length > 0) {
+                    var tc = t.replace(/\\s+/g, '');
+                    var dc = d.replace(/\\s+/g, '');
+                    if (tc.indexOf(qCompact) !== -1 || dc.indexOf(qCompact) !== -1) {
+                      matches.push(all[i]);
+                    }
                   }
                 }
                 totalMatches += matches.length;

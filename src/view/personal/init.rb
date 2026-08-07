@@ -463,11 +463,15 @@ module DaVaz::View
         haystacks = videos.map { |v|
           t = v.title.to_s.downcase
           d = v.respond_to?(:text) ? v.text.to_s.downcase : ''
-          [t, d]
+          [t, d, t.gsub(/\s+/, ''), d.gsub(/\s+/, '')]
         }
         source.select { |_label, query|
-          q = query.downcase
-          haystacks.any? { |t, d| t.include?(q) || d.include?(q) }
+          q  = query.downcase
+          qc = q.gsub(/\s+/, '')
+          haystacks.any? { |t, d, tc, dc|
+            t.include?(q) || d.include?(q) ||
+              (!qc.empty? && (tc.include?(qc) || dc.include?(qc)))
+          }
         }
       end
 

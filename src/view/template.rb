@@ -96,6 +96,26 @@ module DaVaz::View
       'content'    => 'follow, index',
     }]
 
+    GA_MEASUREMENT_ID = 'G-Q83FT0JVH5'
+
+    def other_html_headers(context)
+      super + google_analytics(context)
+    end
+
+    def google_analytics(context)
+      loader = context.script(
+        'async' => 'async',
+        'src'   => "https://www.googletagmanager.com/gtag/js?id=#{GA_MEASUREMENT_ID}"
+      )
+      inline = context.script('type' => 'text/javascript') {
+        "window.dataLayer=window.dataLayer||[];" \
+        "function gtag(){dataLayer.push(arguments);}" \
+        "gtag('js', new Date());" \
+        "gtag('config', '#{GA_MEASUREMENT_ID}');"
+      }
+      loader + inline
+    end
+
     def dojo_container(model)
       divs = []
       div = HtmlGrid::Div.new(model, @session, self)

@@ -94,12 +94,25 @@ module DaVaz::View
     META_TAGS = [{
       'http-equiv' => 'robots',
       'content'    => 'follow, index',
+    }, {
+      'name'    => 'description',
+      'content' => 'Juerg Da Vaz – Swiss abstract artist. Paintings, drawings, movies, photos, exhibitions, lectures and personal reflections from a lifetime of art.',
     }]
 
     GA_MEASUREMENT_ID = 'G-Q83FT0JVH5'
+    CANONICAL_HOST    = 'https://www.davaz.com'
 
     def other_html_headers(context)
-      super + google_analytics(context)
+      super + canonical_link(context) + google_analytics(context)
+    end
+
+    def canonical_link(context)
+      path = @session.request_path.to_s
+      path = '/' if path.empty?
+      context.link(
+        'rel'  => 'canonical',
+        'href' => "#{CANONICAL_HOST}#{path}"
+      )
     end
 
     def google_analytics(context)

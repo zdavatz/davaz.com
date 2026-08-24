@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.davaz.com/en/personal/home/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.davaz.com/en/personal/work/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.davaz.com/en/personal/life/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.davaz.com/en/personal/inspiration/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.davaz.com/en/personal/family/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.davaz.com/en/personal/thefamily/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.davaz.com/en/works/movies/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.davaz.com/en/works/shorts/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.davaz.com/en/works/clips/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.davaz.com/en/works/multiples/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.davaz.com/en/works/paintings/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.davaz.com/en/works/drawings/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.davaz.com/en/works/photos/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.davaz.com/en/works/design/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.davaz.com/en/works/schnitzenthesen/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.davaz.com/en/communication/news/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.davaz.com/en/communication/links/</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.davaz.com/en/communication/guestbook/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.davaz.com/en/public/articles/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.davaz.com/en/public/lectures/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.davaz.com/en/public/exhibitions/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.davaz.com/en/gallery/init/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+</urlset>

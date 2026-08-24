@@ -7,6 +7,7 @@
 .env
 .yt-keys
 /etc/api_tokens
+/etc/gsc_service_account.json
 /txt/*.txt
 
 /log

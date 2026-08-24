@@ -5,4 +5,4 @@ Disallow: /*/admin/
 Disallow: /*/login/
 Disallow: /*/logout/
 
-Sitemap: https://www.davaz.com/sitemap.xml
+Sitemap: https://davaz.com/sitemap.xml

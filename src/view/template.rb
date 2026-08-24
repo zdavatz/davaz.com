@@ -100,7 +100,7 @@ module DaVaz::View
     }]
 
     GA_MEASUREMENT_ID = 'G-Q83FT0JVH5'
-    CANONICAL_HOST    = 'https://www.davaz.com'
+    CANONICAL_HOST    = 'https://davaz.com'
 
     def other_html_headers(context)
       super + canonical_link(context) + google_analytics(context)

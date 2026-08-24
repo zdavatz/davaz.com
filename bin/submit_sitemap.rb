@@ -6,8 +6,14 @@
 # can verify status (LastSubmitted, WarningCount, ErrorCount, ...).
 #
 # Prerequisites:
-#   - Service account created in Google Cloud, JSON key stored at
-#     etc/gsc_service_account.json (untracked; see .gitignore).
+#   - Service account created in Google Cloud, with a key stored under
+#     etc/ (untracked; see .gitignore). Two credential formats supported:
+#       * etc/gsc_service_account.json — modern JSON key (preferred)
+#       * etc/gsc_service_account.p12  — legacy PKCS#12 key. When using
+#         P12, the service-account email must be provided in
+#         etc/gsc_service_account.email (one line, plain text) because
+#         P12 files don't carry the client_email; default P12 password
+#         is 'notasecret'.
 #   - Search Console API enabled in the SAME Google Cloud project as
 #     the service account.
 #   - Service-account email added as a user with Full permission on
@@ -26,7 +32,11 @@ require 'net/http'
 require 'openssl'
 require 'uri'
 
-SERVICE_ACCOUNT_FILE = File.expand_path('../etc/gsc_service_account.json', __dir__)
+ETC_DIR              = File.expand_path('../etc', __dir__)
+JSON_KEY_FILE        = File.join(ETC_DIR, 'gsc_service_account.json')
+P12_KEY_FILE         = File.join(ETC_DIR, 'gsc_service_account.p12')
+P12_EMAIL_FILE       = File.join(ETC_DIR, 'gsc_service_account.email')
+P12_PASSWORD         = 'notasecret'
 SCOPE                = 'https://www.googleapis.com/auth/webmasters'
 TOKEN_ENDPOINT       = 'https://oauth2.googleapis.com/token'
 SC_API_BASE          = 'https://searchconsole.googleapis.com/webmasters/v3'
@@ -37,6 +47,24 @@ SITEMAP_URL  = ARGV[1] || 'https://davaz.com/sitemap.xml'
 
 def base64url(bin)
   Base64.urlsafe_encode64(bin).delete('=')
+end
+
+# Returns { 'client_email' => ..., 'private_key' => OpenSSL::PKey::RSA }
+def load_credentials
+  if File.exist?(JSON_KEY_FILE)
+    data = JSON.parse(File.read(JSON_KEY_FILE))
+    { 'client_email' => data['client_email'],
+      'private_key'  => OpenSSL::PKey::RSA.new(data['private_key']) }
+  elsif File.exist?(P12_KEY_FILE)
+    unless File.exist?(P12_EMAIL_FILE)
+      abort "P12 key found but #{P12_EMAIL_FILE} is missing — write the service-account email into it (one line)."
+    end
+    p12 = OpenSSL::PKCS12.new(File.binread(P12_KEY_FILE), P12_PASSWORD)
+    { 'client_email' => File.read(P12_EMAIL_FILE).strip,
+      'private_key'  => p12.key }
+  else
+    abort "No credentials found: expected #{JSON_KEY_FILE} or #{P12_KEY_FILE}"
+  end
 end
 
 def get_access_token(creds)
@@ -50,8 +78,7 @@ def get_access_token(creds)
     'exp'   => now + 3600
   }
   signing_input = "#{base64url(JSON.dump(header))}.#{base64url(JSON.dump(claims))}"
-  key = OpenSSL::PKey::RSA.new(creds['private_key'])
-  sig = key.sign(OpenSSL::Digest::SHA256.new, signing_input)
+  sig = creds['private_key'].sign(OpenSSL::Digest::SHA256.new, signing_input)
   jwt = "#{signing_input}.#{base64url(sig)}"
 
   res = Net::HTTP.post_form(URI(TOKEN_ENDPOINT),
@@ -87,10 +114,7 @@ def list_sitemaps(token, site_url)
   request(:get, "/sites/#{site}/sitemaps", token)
 end
 
-unless File.exist?(SERVICE_ACCOUNT_FILE)
-  abort "Service-account JSON not found at #{SERVICE_ACCOUNT_FILE}"
-end
-creds = JSON.parse(File.read(SERVICE_ACCOUNT_FILE))
+creds = load_credentials
 puts "Service account: #{creds['client_email']}"
 puts "Property:        #{SITE_URL}"
 puts "Sitemap:         #{SITEMAP_URL}"

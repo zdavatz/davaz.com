@@ -8,6 +8,8 @@
 .yt-keys
 /etc/api_tokens
 /etc/gsc_service_account.json
+/etc/gsc_service_account.p12
+/etc/gsc_service_account.email
 /txt/*.txt
 
 /log

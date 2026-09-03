@@ -17,7 +17,7 @@ GEM
     htmlgrid (1.2.4)
       sbsm (>= 1.2.7)
     logger (1.7.0)
-    mail (2.9.0)
+    mail (2.9.1)
       logger
       mini_mime (>= 0.1.1)
       net-imap
@@ -32,12 +32,12 @@ GEM
       prism (~> 1.5)
     mysql2 (0.5.7)
       bigdecimal
-    net-imap (0.6.3)
+    net-imap (0.6.6)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.2.2)
+    net-protocol (0.3.0)
       timeout
     net-smtp (0.5.1)
       net-protocol
@@ -78,7 +78,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.13.2)
     simplecov_json_formatter (0.1.4)
-    timeout (0.6.0)
+    timeout (0.6.1)
     watir (7.3.0)
       regexp_parser (>= 1.2, < 3)
       selenium-webdriver (~> 4.2)

@@ -59,7 +59,7 @@ GEM
     rmagick (5.5.0)
       observer (~> 0.1)
       pkg-config (~> 1.4)
-    rubyzip (3.2.2)
+    rubyzip (3.4.0)
     sbsm (1.6.1)
       chrono_logger
       hpricot
